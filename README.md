@@ -4,6 +4,8 @@ Computational chemistry engine derived entirely from the Persistence Theory.
 
 **0 adjustable parameters. Everything from s = 1/2.**
 
+PTC is still in development.
+
 ## What it does
 
 PTC computes molecular and atomic properties from a single arithmetic identity (the sieve of Eratosthenes at fixed point mu* = 15), with no fitted parameters and no empirical input beyond the electron mass as a unit conversion factor.
@@ -26,45 +28,6 @@ PTC computes molecular and atomic properties from a single arithmetic identity (
 | Biological clusters (spin) | 15/15 | correct | A |
 
 Total: ~1200 observables, 0 parameters.
-
-## Architecture
-
-The D_at engine uses a bifurcated cascade on T^3 = Z/3Z x Z/5Z x Z/7Z, reflecting the two phases of T4 spectral convergence (Mertens molecular):
-
-```
-cascade.py              -- unified entry point
-  |
-  +-- Phase 1 (n <= 7)  -- Perron eigenvalue lambda_0(T^4)
-  |   transfer_matrix.py    dense molecular graphs
-  |   + LP->sigma, VSEPR, formal charges
-  |
-  +-- Phase 2 (n >= 8)  -- per-bond cascade P0->P1->P2->P3
-      cascade_phase2.py     sparse graphs, 17 NLO corrections
-      cooperative, Dicke, T^3 perturbative, LP->pi,
-      ring strain, halogen pi-drain, etc.
-```
-
-The bifurcation at n = P_3 = 7 is structural (T4, D08): NLO corrections converge only when the molecular graph has enough second-shell neighbors for Mertens summation.
-
-## PT mechanisms discovered (17)
-
-1. sin^2_3 LFER (pKa)
-2. Cascade P_1 fold-back (dielectric)
-3. Kirkwood P_3 (dipole correlation)
-4. Inclusion-exclusion P_1 U P_2 (UV n->pi*)
-5. Double-pass LP (UV sigma->sigma*)
-6. Isolated pi bifurcation (UV pi->pi*)
-7. s-band bifurcation (E, d-block)
-8. CFSE metallic (E, d-block)
-9. Relativistic 5d (E, Pt/Au/Hg)
-10. Hybrid EP+D_KL (activation energy)
-11. Hexane P_0-S_3 (non-polar dielectric)
-12. LP->sigma back-donation (NH3, k=0 reference on Z/6Z)
-13. LP->pi cross-channel (heterocycles, P(P_1 U P_2) = 0.371)
-14. Blyholder-PT 3 channels (catalysis: sigma + pi_back - Pauli)
-15. d10 monovalent enhancement (E Cu+)
-16. d5s1 3d exchange-locking (E Cr)
-17. LP-LP Pauli repulsion (F2 bond length)
 
 ## Quick start
 
@@ -112,7 +75,7 @@ All formulas derive from the Persistence Theory (PT), which reconstructs the 43 
 
 The chemistry engine extends this framework to molecular bonding via the CRT decomposition on T^3, where the three active primes {3, 5, 7} define three orthogonal bonding channels (sigma, d-backdonation, ionic).
 
-See: *Persistence Theory: A Complete Monograph* (2026).
+See: *The Theory of Persistence : A Complete Monograph (2026)* ([10.5281/zenodo.18726591](https://zenodo.org/records/19520809))
 
 ## License
 
@@ -120,6 +83,4 @@ MIT
 
 ## Citation
 
-```
-SENEZ, Y. (2026). Persistence Theory: From Prime Gaps to the Standard Model.
-```
+Senez, Y. (2026). The Theory of Persistence : A Complete Monograph. ([10.5281/zenodo.18726591](https://zenodo.org/records/19520809))
