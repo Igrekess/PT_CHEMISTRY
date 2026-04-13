@@ -10,6 +10,13 @@ PTC is still in development.
 
 PTC computes molecular and atomic properties from a single arithmetic identity (the sieve of Eratosthenes at fixed point mu* = 15), with no fitted parameters and no empirical input beyond the electron mass as a unit conversion factor.
 
+## To go further
+
+-> To explore the mathematics behind this framework: [*PT-MATHEMATICS (PTM)*](https://github.com/Igrekess/PT_MATHEMATICS)  
+-> To explore the physics behind this framework: [*PT-PHYSICS (PTP)*](https://github.com/Igrekess/PT_PHYSICS)  
+-> To explore a color theory derived from Persistence Theory: [*Simplex Color Space (SCS)*](https://github.com/Igrekess/SimplexColorSpace)  
+-> For the full theoretical framework: [*The Theory of Persistence: A Complete Monograph (2026)*](https://zenodo.org/records/19520809)
+
 ### Current benchmarks
 
 | Observable | Count | MAE | Grade |
@@ -75,12 +82,10 @@ All formulas derive from the Persistence Theory (PT), which reconstructs the 43 
 
 The chemistry engine extends this framework to molecular bonding via the CRT decomposition on T^3, where the three active primes {3, 5, 7} define three orthogonal bonding channels (sigma, d-backdonation, ionic).
 
-See: *The Theory of Persistence : A Complete Monograph (2026)* ([10.5281/zenodo.18726591](https://zenodo.org/records/19520809))
-
 ## License
 
 MIT
 
 ## Citation
 
-Senez, Y. (2026). The Theory of Persistence : A Complete Monograph. ([10.5281/zenodo.18726591](https://zenodo.org/records/19520809))
+Senez, Y. (2026). [*The Theory of Persistence : A Complete Monograph.* ](https://zenodo.org/records/19520809)
