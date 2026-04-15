@@ -1,0 +1,6002 @@
+[
+  {
+    "name": "acetophenone",
+    "smiles": "CC(=O)C1=CC=CC=C1",
+    "D_exp": 80.979,
+    "category": "Organique"
+  },
+  {
+    "name": "quinoline",
+    "smiles": "c1ccc2ncccc2c1",
+    "D_exp": 85.488,
+    "category": "Inorganique"
+  },
+  {
+    "name": "IF",
+    "smiles": "FI",
+    "D_exp": 2.88,
+    "category": "Organique"
+  },
+  {
+    "name": "oxazole",
+    "smiles": "C1=COC=N1",
+    "D_exp": 36.704,
+    "category": "Organique"
+  },
+  {
+    "name": "2-chlorotoluene",
+    "smiles": "CC1=CC=CC=C1Cl",
+    "D_exp": 69.047,
+    "category": "Organique"
+  },
+  {
+    "name": "DMSO",
+    "smiles": "CS(=O)C",
+    "D_exp": 35.428,
+    "category": "Inorganique"
+  },
+  {
+    "name": "tert-butylbenzene",
+    "smiles": "CC(C)(C)c1ccccc1",
+    "D_exp": 106.149,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Acetyl_chloride",
+    "smiles": "CC(=O)Cl",
+    "D_exp": 27.6716,
+    "category": "Organique"
+  },
+  {
+    "name": "isobutyraldehyde",
+    "smiles": "CC(C)C=O",
+    "D_exp": 52.606,
+    "category": "Inorganique"
+  },
+  {
+    "name": "B2",
+    "smiles": "[B]=[B]",
+    "D_exp": 3.02,
+    "category": "Organique"
+  },
+  {
+    "name": "methylhydrazine",
+    "smiles": "CNN",
+    "D_exp": 31.18,
+    "category": "Organique"
+  },
+  {
+    "name": "2-methylthiophene",
+    "smiles": "CC1=CC=CS1",
+    "D_exp": 52.703,
+    "category": "Organique"
+  },
+  {
+    "name": "2-methylthiophene",
+    "smiles": "Cc1cccs1",
+    "D_exp": 54.963,
+    "category": "Inorganique"
+  },
+  {
+    "name": "SiS",
+    "smiles": "[Si]#[S]",
+    "D_exp": 6.39,
+    "category": "Organique"
+  },
+  {
+    "name": "2-phenylethanol",
+    "smiles": "OCCC1=CC=CC=C1",
+    "D_exp": 85.865,
+    "category": "Organique"
+  },
+  {
+    "name": "CuCl",
+    "smiles": "[Cu]Cl",
+    "D_exp": 3.83,
+    "category": "Organique"
+  },
+  {
+    "name": "cytosine",
+    "smiles": "NC1=NC(=O)NC=C1",
+    "D_exp": 58.898,
+    "category": "Organique"
+  },
+  {
+    "name": "pyrrolidine",
+    "smiles": "C1CCNC1",
+    "D_exp": 55.66,
+    "category": "Organique"
+  },
+  {
+    "name": "NO",
+    "smiles": "[N]=O",
+    "D_exp": 6.5,
+    "category": "Organique"
+  },
+  {
+    "name": "thiophenol",
+    "smiles": "Sc1ccccc1",
+    "D_exp": 59.832,
+    "category": "Inorganique"
+  },
+  {
+    "name": "NH",
+    "smiles": "[N][H]",
+    "D_exp": 3.47,
+    "category": "Organique"
+  },
+  {
+    "name": "furfuryl_alcohol",
+    "smiles": "OCC1=CC=CO1",
+    "D_exp": 58.056,
+    "category": "Organique"
+  },
+  {
+    "name": "isoquinoline",
+    "smiles": "c1ccc2ccncc2c1",
+    "D_exp": 85.445,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Methanediol",
+    "smiles": "C(O)O",
+    "D_exp": 25.2706,
+    "category": "Organique"
+  },
+  {
+    "name": "Aziridine",
+    "smiles": "C1CN1",
+    "D_exp": 29.3328,
+    "category": "Organique"
+  },
+  {
+    "name": "cis_1_2_Dichloroethene",
+    "smiles": "C(=C\\Cl)\\Cl",
+    "D_exp": 21.6646,
+    "category": "Organique"
+  },
+  {
+    "name": "1_2_Dichloroethene",
+    "smiles": "C(=CCl)Cl",
+    "D_exp": 21.6646,
+    "category": "Organique"
+  },
+  {
+    "name": "MTBE",
+    "smiles": "CC(C)(C)OC",
+    "D_exp": 69.772,
+    "category": "Organique"
+  },
+  {
+    "name": "LiF",
+    "smiles": "[Li]F",
+    "D_exp": 5.97,
+    "category": "Organique"
+  },
+  {
+    "name": "di-n-propyl_ether",
+    "smiles": "CCCOCCC",
+    "D_exp": 81.818,
+    "category": "Organique"
+  },
+  {
+    "name": "PS",
+    "smiles": "[P]=S",
+    "D_exp": 4.5,
+    "category": "Organique"
+  },
+  {
+    "name": "PO",
+    "smiles": "[P]=O",
+    "D_exp": 5.69,
+    "category": "Organique"
+  },
+  {
+    "name": "1-bromopropane",
+    "smiles": "CCCBr",
+    "D_exp": 40.161,
+    "category": "Organique"
+  },
+  {
+    "name": "1-chloropropane",
+    "smiles": "CCCCl",
+    "D_exp": 40.724,
+    "category": "Organique"
+  },
+  {
+    "name": "SiH",
+    "smiles": "[Si][H]",
+    "D_exp": 3.06,
+    "category": "Organique"
+  },
+  {
+    "name": "propyne",
+    "smiles": "CC#C",
+    "D_exp": 29.4,
+    "category": "Organique"
+  },
+  {
+    "name": "MTBE",
+    "smiles": "COC(C)(C)C",
+    "D_exp": 69.775,
+    "category": "Inorganique"
+  },
+  {
+    "name": "C2H6",
+    "smiles": "CC",
+    "D_exp": 28.89,
+    "category": "Organique"
+  },
+  {
+    "name": "2_Chloroethanol",
+    "smiles": "C(CCl)O",
+    "D_exp": 32.3289,
+    "category": "Organique"
+  },
+  {
+    "name": "propanethiol",
+    "smiles": "CCCS",
+    "D_exp": 43.93,
+    "category": "Organique"
+  },
+  {
+    "name": "Cl2",
+    "smiles": "ClCl",
+    "D_exp": 2.51,
+    "category": "Organique"
+  },
+  {
+    "name": "2-pyrrolidone",
+    "smiles": "O=C1CCCN1",
+    "D_exp": 55.445,
+    "category": "Organique"
+  },
+  {
+    "name": "Ag2",
+    "smiles": "[Ag][Ag]",
+    "D_exp": 1.66,
+    "category": "Organique"
+  },
+  {
+    "name": "butanal",
+    "smiles": "CCCC=O",
+    "D_exp": 52.52,
+    "category": "Organique"
+  },
+  {
+    "name": "VF3",
+    "smiles": "F[V](F)F",
+    "D_exp": 17.737,
+    "category": "Inorganique"
+  },
+  {
+    "name": "nicotinic_acid",
+    "smiles": "OC(=O)c1cccnc1",
+    "D_exp": 68.224,
+    "category": "Organique"
+  },
+  {
+    "name": "isopropyl_mercaptan",
+    "smiles": "CC(C)S",
+    "D_exp": 44.021,
+    "category": "Inorganique"
+  },
+  {
+    "name": "ClNO",
+    "smiles": "ClN=O",
+    "D_exp": 8.203,
+    "category": "Organique"
+  },
+  {
+    "name": "2-hexanone",
+    "smiles": "CCCCC(=O)C",
+    "D_exp": 77.164,
+    "category": "Inorganique"
+  },
+  {
+    "name": "MIBK",
+    "smiles": "CC(C)CC(=O)C",
+    "D_exp": 77.235,
+    "category": "Inorganique"
+  },
+  {
+    "name": "THP",
+    "smiles": "C1CCOCC1",
+    "D_exp": 64.63,
+    "category": "Organique"
+  },
+  {
+    "name": "N2",
+    "smiles": "N#N",
+    "D_exp": 9.759,
+    "category": "Organique"
+  },
+  {
+    "name": "pinacol",
+    "smiles": "CC(O)(C)C(O)(C)C",
+    "D_exp": 86.453,
+    "category": "Organique"
+  },
+  {
+    "name": "1-butyne",
+    "smiles": "CCC#C",
+    "D_exp": 41.556,
+    "category": "Organique"
+  },
+  {
+    "name": "PH",
+    "smiles": "[P][H]",
+    "D_exp": 2.95,
+    "category": "Organique"
+  },
+  {
+    "name": "benzofuran",
+    "smiles": "C1=CC=C2C(=C1)C=CO2",
+    "D_exp": 75.601,
+    "category": "Organique"
+  },
+  {
+    "name": "succinimide",
+    "smiles": "O=C1CCC(=O)N1",
+    "D_exp": 54.965,
+    "category": "Organique"
+  },
+  {
+    "name": "SO3mol",
+    "smiles": "O=S(=O)=O",
+    "D_exp": 14.31,
+    "category": "Organique"
+  },
+  {
+    "name": "thioanisole",
+    "smiles": "CSC1=CC=CC=C1",
+    "D_exp": 72.383,
+    "category": "Organique"
+  },
+  {
+    "name": "1PeOH",
+    "smiles": "CCCCCO",
+    "D_exp": 69.89,
+    "category": "Organique"
+  },
+  {
+    "name": "isopropylamine",
+    "smiles": "CC(C)N",
+    "D_exp": 48.385,
+    "category": "Organique"
+  },
+  {
+    "name": "NaF",
+    "smiles": "[Na]F",
+    "D_exp": 4.91,
+    "category": "Organique"
+  },
+  {
+    "name": "Benzoyl_fluoride",
+    "smiles": "C1=CC=C(C=C1)C(=O)F",
+    "D_exp": 69.1569,
+    "category": "Organique"
+  },
+  {
+    "name": "cyclohexanone",
+    "smiles": "O=C1CCCCC1",
+    "D_exp": 72.555,
+    "category": "Inorganique"
+  },
+  {
+    "name": "butane",
+    "smiles": "CCCC",
+    "D_exp": 53.61,
+    "category": "Organique"
+  },
+  {
+    "name": "trans_1_2_Dichloroethene",
+    "smiles": "C(=C/Cl)\\Cl",
+    "D_exp": 21.6457,
+    "category": "Organique"
+  },
+  {
+    "name": "1-hexanol",
+    "smiles": "CCCCCCO",
+    "D_exp": 82.056,
+    "category": "Organique"
+  },
+  {
+    "name": "sulfolane",
+    "smiles": "C1CCS(=O)(=O)C1",
+    "D_exp": 60.711,
+    "category": "Organique"
+  },
+  {
+    "name": "isobutan",
+    "smiles": "CC(C)C",
+    "D_exp": 53.7,
+    "category": "Organique"
+  },
+  {
+    "name": "fluorobenzene",
+    "smiles": "C1=CC=C(C=C1)F",
+    "D_exp": 57.888,
+    "category": "Organique"
+  },
+  {
+    "name": "H2",
+    "smiles": "[H][H]",
+    "D_exp": 4.478,
+    "category": "Organique"
+  },
+  {
+    "name": "N-methylpiperidine",
+    "smiles": "CN1CCCCC1",
+    "D_exp": 80.131,
+    "category": "Organique"
+  },
+  {
+    "name": "phenyl_isocyanate",
+    "smiles": "O=C=NC1=CC=CC=C1",
+    "D_exp": 71.344,
+    "category": "Organique"
+  },
+  {
+    "name": "CO2",
+    "smiles": "O=C=O",
+    "D_exp": 16.56,
+    "category": "Organique"
+  },
+  {
+    "name": "dimethyl_sulfone",
+    "smiles": "CS(=O)(=O)C",
+    "D_exp": 40.317,
+    "category": "Organique"
+  },
+  {
+    "name": "BeCl2",
+    "smiles": "Cl[Be]Cl",
+    "D_exp": 9.55,
+    "category": "Organique"
+  },
+  {
+    "name": "2-furaldehyde",
+    "smiles": "O=Cc1ccco1",
+    "D_exp": 52.907,
+    "category": "Inorganique"
+  },
+  {
+    "name": "CHCl3",
+    "smiles": "C(Cl)(Cl)Cl",
+    "D_exp": 14.53,
+    "category": "Organique"
+  },
+  {
+    "name": "EtBr",
+    "smiles": "CCBr",
+    "D_exp": 27.88,
+    "category": "Organique"
+  },
+  {
+    "name": "Benzoyl_chloride",
+    "smiles": "C1=CC=C(C=C1)C(=O)Cl",
+    "D_exp": 67.5394,
+    "category": "Organique"
+  },
+  {
+    "name": "thiophene_2_carboxaldehyde",
+    "smiles": "O=CC1=CC=CS1",
+    "D_exp": 51.726,
+    "category": "Organique"
+  },
+  {
+    "name": "indane",
+    "smiles": "C1Cc2ccccc2C1",
+    "D_exp": 88.816,
+    "category": "Inorganique"
+  },
+  {
+    "name": "diisopropyl_ether",
+    "smiles": "CC(C)OC(C)C",
+    "D_exp": 82.09,
+    "category": "Organique"
+  },
+  {
+    "name": "benzyl_chloride",
+    "smiles": "ClCC1=CC=CC=C1",
+    "D_exp": 69.037,
+    "category": "Organique"
+  },
+  {
+    "name": "EtNH2",
+    "smiles": "CCN",
+    "D_exp": 36.06,
+    "category": "Organique"
+  },
+  {
+    "name": "xylene_m",
+    "smiles": "CC1=CC(=CC=C1)C",
+    "D_exp": 81.838,
+    "category": "Organique"
+  },
+  {
+    "name": "xylene_p",
+    "smiles": "CC1=CC=C(C=C1)C",
+    "D_exp": 81.831,
+    "category": "Organique"
+  },
+  {
+    "name": "2_Bromoethanol",
+    "smiles": "C(CBr)O",
+    "D_exp": 31.694,
+    "category": "Organique"
+  },
+  {
+    "name": "Carbon_dioxide_124389",
+    "smiles": "C(=O)=O",
+    "D_exp": 16.5642,
+    "category": "Organique"
+  },
+  {
+    "name": "imidazole",
+    "smiles": "c1cnc[nH]1",
+    "D_exp": 39.742,
+    "category": "Inorganique"
+  },
+  {
+    "name": "HFC_152a",
+    "smiles": "CC(F)F",
+    "D_exp": 30.69,
+    "category": "Organique"
+  },
+  {
+    "name": "2-methyltetrahydrofuran",
+    "smiles": "CC1CCCO1",
+    "D_exp": 64.653,
+    "category": "Organique"
+  },
+  {
+    "name": "2-bromopropane",
+    "smiles": "CC(Br)C",
+    "D_exp": 40.289,
+    "category": "Organique"
+  },
+  {
+    "name": "methyl_isopropyl_ketone",
+    "smiles": "CC(C)C(=O)C",
+    "D_exp": 65.038,
+    "category": "Organique"
+  },
+  {
+    "name": "2-methylbutane",
+    "smiles": "CCC(C)C",
+    "D_exp": 65.845,
+    "category": "Organique"
+  },
+  {
+    "name": "pentane",
+    "smiles": "CCCCC",
+    "D_exp": 65.77,
+    "category": "Organique"
+  },
+  {
+    "name": "THF",
+    "smiles": "C1CCOC1",
+    "D_exp": 52.28,
+    "category": "Organique"
+  },
+  {
+    "name": "1,1-dichloroethane",
+    "smiles": "CC(Cl)Cl",
+    "D_exp": 27.731,
+    "category": "Organique"
+  },
+  {
+    "name": "isopent",
+    "smiles": "CC(C)CC",
+    "D_exp": 65.84,
+    "category": "Organique"
+  },
+  {
+    "name": "LiBr",
+    "smiles": "[Li]Br",
+    "D_exp": 4.34,
+    "category": "Organique"
+  },
+  {
+    "name": "AgCl",
+    "smiles": "[Ag]Cl",
+    "D_exp": 3.24,
+    "category": "Organique"
+  },
+  {
+    "name": "cresol_m",
+    "smiles": "CC1=CC(=CC=C1)O",
+    "D_exp": 74.024,
+    "category": "Organique"
+  },
+  {
+    "name": "phenyl_methanol",
+    "smiles": "C1=CC=C(C=C1)CO",
+    "D_exp": 73.694,
+    "category": "Organique"
+  },
+  {
+    "name": "xylene_o",
+    "smiles": "CC1=CC=CC=C1C",
+    "D_exp": 81.819,
+    "category": "Organique"
+  },
+  {
+    "name": "2pentanon",
+    "smiles": "CC(=O)CCC",
+    "D_exp": 65.0,
+    "category": "Organique"
+  },
+  {
+    "name": "mesitylene",
+    "smiles": "CC1=CC(=CC(=C1)C)C",
+    "D_exp": 94.131,
+    "category": "Organique"
+  },
+  {
+    "name": "Ethyl",
+    "smiles": "C[CH2]",
+    "D_exp": 24.5794,
+    "category": "Organique"
+  },
+  {
+    "name": "morpholine",
+    "smiles": "C1COCCN1",
+    "D_exp": 59.232,
+    "category": "Organique"
+  },
+  {
+    "name": "1,2,4-triazole",
+    "smiles": "C1=NNC=N1",
+    "D_exp": 35.201,
+    "category": "Organique"
+  },
+  {
+    "name": "N-methylpyrrole",
+    "smiles": "Cn1cccc1",
+    "D_exp": 59.045,
+    "category": "Inorganique"
+  },
+  {
+    "name": "benzene",
+    "smiles": "c1ccccc1",
+    "D_exp": 56.42,
+    "category": "Organique"
+  },
+  {
+    "name": "3-methylthiophene",
+    "smiles": "Cc1ccsc1",
+    "D_exp": 54.973,
+    "category": "Inorganique"
+  },
+  {
+    "name": "CH3SH",
+    "smiles": "CS",
+    "D_exp": 19.58,
+    "category": "Organique"
+  },
+  {
+    "name": "CuH",
+    "smiles": "[Cu][H]",
+    "D_exp": 2.64,
+    "category": "Organique"
+  },
+  {
+    "name": "FeI2",
+    "smiles": "I[Fe]I",
+    "D_exp": 5.823,
+    "category": "Inorganique"
+  },
+  {
+    "name": "cresol_o",
+    "smiles": "CC1=CC=CC=C1O",
+    "D_exp": 73.986,
+    "category": "Organique"
+  },
+  {
+    "name": "TiBr2",
+    "smiles": "Br[Ti]Br",
+    "D_exp": 8.848,
+    "category": "Inorganique"
+  },
+  {
+    "name": "HSO3F",
+    "smiles": "OS(=O)(=O)F",
+    "D_exp": 21.507,
+    "category": "Inorganique"
+  },
+  {
+    "name": "urea",
+    "smiles": "NC(=O)N",
+    "D_exp": 31.287,
+    "category": "Inorganique"
+  },
+  {
+    "name": "H2O",
+    "smiles": "O",
+    "D_exp": 9.511,
+    "category": "Organique"
+  },
+  {
+    "name": "neopent",
+    "smiles": "CC(C)(C)C",
+    "D_exp": 65.99,
+    "category": "Organique"
+  },
+  {
+    "name": "3-pentanone",
+    "smiles": "CCC(=O)CC",
+    "D_exp": 64.998,
+    "category": "Organique"
+  },
+  {
+    "name": "VinylF",
+    "smiles": "FC=C",
+    "D_exp": 23.9,
+    "category": "Organique"
+  },
+  {
+    "name": "Li2",
+    "smiles": "[Li][Li]",
+    "D_exp": 1.046,
+    "category": "Organique"
+  },
+  {
+    "name": "p-diethylbenzene",
+    "smiles": "CCc1ccc(CC)cc1",
+    "D_exp": 106.142,
+    "category": "Inorganique"
+  },
+  {
+    "name": "PN",
+    "smiles": "[P]#N",
+    "D_exp": 6.39,
+    "category": "Organique"
+  },
+  {
+    "name": "1-chlorobutane",
+    "smiles": "CCCCCl",
+    "D_exp": 52.906,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Iodine_monochloride",
+    "smiles": "ClI",
+    "D_exp": 2.1491,
+    "category": "Organique"
+  },
+  {
+    "name": "VF5",
+    "smiles": "[V](F)(F)(F)(F)F",
+    "D_exp": 24.29,
+    "category": "d-block"
+  },
+  {
+    "name": "2-chloropropane",
+    "smiles": "CC(Cl)C",
+    "D_exp": 40.858,
+    "category": "Organique"
+  },
+  {
+    "name": "Methyl_nitrite",
+    "smiles": "CON=O",
+    "D_exp": 24.6271,
+    "category": "Organique"
+  },
+  {
+    "name": "N,N-diethylformamide",
+    "smiles": "CCN(CC)C=O",
+    "D_exp": 71.951,
+    "category": "Organique"
+  },
+  {
+    "name": "Diazirine",
+    "smiles": "C1N=N1",
+    "D_exp": 18.2849,
+    "category": "Organique"
+  },
+  {
+    "name": "chlorobenzene",
+    "smiles": "C1=CC=C(C=C1)Cl",
+    "D_exp": 56.583,
+    "category": "Organique"
+  },
+  {
+    "name": "CrF6",
+    "smiles": "F[Cr](F)(F)(F)(F)F",
+    "D_exp": 23.35,
+    "category": "Inorganique"
+  },
+  {
+    "name": "CHClF",
+    "smiles": "ClCF",
+    "D_exp": 16.73,
+    "category": "Organique"
+  },
+  {
+    "name": "cyclohexanol",
+    "smiles": "OC1CCCCC1",
+    "D_exp": 77.229,
+    "category": "Inorganique"
+  },
+  {
+    "name": "DIPK",
+    "smiles": "CC(C)C(=O)C(C)C",
+    "D_exp": 89.436,
+    "category": "Inorganique"
+  },
+  {
+    "name": "CHF3",
+    "smiles": "C(F)(F)F",
+    "D_exp": 19.52,
+    "category": "Organique"
+  },
+  {
+    "name": "diethyl_sulfide",
+    "smiles": "CCSCC",
+    "D_exp": 56.044,
+    "category": "Organique"
+  },
+  {
+    "name": "LiI",
+    "smiles": "[Li]I",
+    "D_exp": 3.54,
+    "category": "Organique"
+  },
+  {
+    "name": "toluene",
+    "smiles": "Cc1ccccc1",
+    "D_exp": 68.69,
+    "category": "Organique"
+  },
+  {
+    "name": "Hypoiodous_acid",
+    "smiles": "OI",
+    "D_exp": 6.4646,
+    "category": "Organique"
+  },
+  {
+    "name": "ICl",
+    "smiles": "Cl[I]",
+    "D_exp": 2.15,
+    "category": "Organique"
+  },
+  {
+    "name": "TiO",
+    "smiles": "[Ti]=O",
+    "D_exp": 6.87,
+    "category": "Organique"
+  },
+  {
+    "name": "ethylbenzene",
+    "smiles": "CCC1=CC=CC=C1",
+    "D_exp": 81.708,
+    "category": "Organique"
+  },
+  {
+    "name": "CN",
+    "smiles": "[C]#[N]",
+    "D_exp": 7.72,
+    "category": "Organique"
+  },
+  {
+    "name": "SiCl",
+    "smiles": "[Si]Cl",
+    "D_exp": 4.02,
+    "category": "Organique"
+  },
+  {
+    "name": "N,N-dimethylacetamide",
+    "smiles": "CC(=O)N(C)C",
+    "D_exp": 59.86,
+    "category": "Organique"
+  },
+  {
+    "name": "BeF",
+    "smiles": "[Be]F",
+    "D_exp": 5.85,
+    "category": "Organique"
+  },
+  {
+    "name": "benzaldehyde",
+    "smiles": "C1=CC=C(C=C1)C=O",
+    "D_exp": 68.515,
+    "category": "Organique"
+  },
+  {
+    "name": "allene",
+    "smiles": "C=C=C",
+    "D_exp": 29.35,
+    "category": "Organique"
+  },
+  {
+    "name": "ethyl_propyl_ether",
+    "smiles": "CCCOCC",
+    "D_exp": 69.654,
+    "category": "Inorganique"
+  },
+  {
+    "name": "cresol_p",
+    "smiles": "CC1=CC=C(C=C1)O",
+    "D_exp": 73.953,
+    "category": "Organique"
+  },
+  {
+    "name": "cyclohexanol",
+    "smiles": "C1CCC(CC1)O",
+    "D_exp": 77.229,
+    "category": "Organique"
+  },
+  {
+    "name": "2-pentanol",
+    "smiles": "CCCC(C)O",
+    "D_exp": 70.099,
+    "category": "Organique"
+  },
+  {
+    "name": "1-bromobutane",
+    "smiles": "CCCCBr",
+    "D_exp": 52.316,
+    "category": "Inorganique"
+  },
+  {
+    "name": "N-methylpyrrolidine",
+    "smiles": "CN1CCCC1",
+    "D_exp": 67.499,
+    "category": "Inorganique"
+  },
+  {
+    "name": "2-methyl-2-butanol",
+    "smiles": "CCC(C)(C)O",
+    "D_exp": 70.25,
+    "category": "Inorganique"
+  },
+  {
+    "name": "1-amino-2-propanol",
+    "smiles": "CC(O)CN",
+    "D_exp": 52.463,
+    "category": "Organique"
+  },
+  {
+    "name": "Isocyanoacetylene",
+    "smiles": "C#C[N+]#[C-]",
+    "D_exp": 24.2115,
+    "category": "Organique"
+  },
+  {
+    "name": "CuO",
+    "smiles": "[Cu]=O",
+    "D_exp": 2.75,
+    "category": "Organique"
+  },
+  {
+    "name": "Bromochloromethane",
+    "smiles": "C(Cl)Br",
+    "D_exp": 14.5438,
+    "category": "Organique"
+  },
+  {
+    "name": "thiophene_blind",
+    "smiles": "C1=CSC=C1",
+    "D_exp": 40.43,
+    "category": "Inorganique"
+  },
+  {
+    "name": "piperazine",
+    "smiles": "C1CNCCN1",
+    "D_exp": 62.155,
+    "category": "Organique"
+  },
+  {
+    "name": "propylbenzene",
+    "smiles": "CCCc1ccccc1",
+    "D_exp": 93.882,
+    "category": "Inorganique"
+  },
+  {
+    "name": "bromobenzene",
+    "smiles": "C1=CC=C(C=C1)Br",
+    "D_exp": 55.931,
+    "category": "Organique"
+  },
+  {
+    "name": "propanal",
+    "smiles": "CCC=O",
+    "D_exp": 40.35,
+    "category": "Organique"
+  },
+  {
+    "name": "BrCl",
+    "smiles": "ClBr",
+    "D_exp": 2.173,
+    "category": "Organique"
+  },
+  {
+    "name": "sec-butylamine",
+    "smiles": "CCC(C)N",
+    "D_exp": 60.548,
+    "category": "Organique"
+  },
+  {
+    "name": "3-acetylpyridine",
+    "smiles": "CC(=O)c1cccnc1",
+    "D_exp": 75.978,
+    "category": "Organique"
+  },
+  {
+    "name": "resorcinol",
+    "smiles": "OC1=CC(=CC=C1)O",
+    "D_exp": 66.149,
+    "category": "Organique"
+  },
+  {
+    "name": "4-acetylpyridine",
+    "smiles": "CC(=O)c1ccncc1",
+    "D_exp": 75.982,
+    "category": "Organique"
+  },
+  {
+    "name": "NMP",
+    "smiles": "CN1CCCC1=O",
+    "D_exp": 67.671,
+    "category": "Organique"
+  },
+  {
+    "name": "indane",
+    "smiles": "C1CC2=CC=CC=C2C1",
+    "D_exp": 89.326,
+    "category": "Organique"
+  },
+  {
+    "name": "AlCl",
+    "smiles": "[Al]Cl",
+    "D_exp": 5.13,
+    "category": "Organique"
+  },
+  {
+    "name": "iPrOH",
+    "smiles": "CC(C)O",
+    "D_exp": 45.05,
+    "category": "Organique"
+  },
+  {
+    "name": "Hypofluorous_acid",
+    "smiles": "OF",
+    "D_exp": 6.4728,
+    "category": "Organique"
+  },
+  {
+    "name": "2,5-dimethylfuran",
+    "smiles": "Cc1ccc(C)o1",
+    "D_exp": 66.305,
+    "category": "Inorganique"
+  },
+  {
+    "name": "2-methylfuran",
+    "smiles": "CC1=CC=CO1",
+    "D_exp": 53.924,
+    "category": "Organique"
+  },
+  {
+    "name": "4-fluorotoluene",
+    "smiles": "CC1=CC=C(F)C=C1",
+    "D_exp": 70.403,
+    "category": "Organique"
+  },
+  {
+    "name": "ScF",
+    "smiles": "[Sc]F",
+    "D_exp": 5.99,
+    "category": "d-block"
+  },
+  {
+    "name": "Cu2",
+    "smiles": "[Cu][Cu]",
+    "D_exp": 1.886,
+    "category": "Organique"
+  },
+  {
+    "name": "I2",
+    "smiles": "II",
+    "D_exp": 1.542,
+    "category": "Organique"
+  },
+  {
+    "name": "methyl_propyl_sulfide",
+    "smiles": "CCCSC",
+    "D_exp": 56.031,
+    "category": "Inorganique"
+  },
+  {
+    "name": "anisole",
+    "smiles": "COc1ccccc1",
+    "D_exp": 73.357,
+    "category": "Inorganique"
+  },
+  {
+    "name": "CFCl3",
+    "smiles": "FC(Cl)(Cl)Cl",
+    "D_exp": 14.81,
+    "category": "Organique"
+  },
+  {
+    "name": "n-butylamine",
+    "smiles": "CCCCN",
+    "D_exp": 60.416,
+    "category": "Organique"
+  },
+  {
+    "name": "methyl_propyl_ether",
+    "smiles": "CCCOC",
+    "D_exp": 57.355,
+    "category": "Inorganique"
+  },
+  {
+    "name": "barbituric_acid",
+    "smiles": "O=C1CC(=O)NC(=O)N1",
+    "D_exp": 61.892,
+    "category": "Organique"
+  },
+  {
+    "name": "DMSO",
+    "smiles": "CS(C)=O",
+    "D_exp": 35.29,
+    "category": "Organique"
+  },
+  {
+    "name": "pentanal",
+    "smiles": "CCCCC=O",
+    "D_exp": 64.66,
+    "category": "Organique"
+  },
+  {
+    "name": "cumene",
+    "smiles": "CC(C)c1ccccc1",
+    "D_exp": 94.004,
+    "category": "Inorganique"
+  },
+  {
+    "name": "propionamide",
+    "smiles": "CCC(=O)N",
+    "D_exp": 48.224,
+    "category": "Organique"
+  },
+  {
+    "name": "BeO",
+    "smiles": "[Be]=O",
+    "D_exp": 4.54,
+    "category": "Organique"
+  },
+  {
+    "name": "BeH",
+    "smiles": "[Be][H]",
+    "D_exp": 2.034,
+    "category": "Organique"
+  },
+  {
+    "name": "2-methylpentane",
+    "smiles": "CCCC(C)C",
+    "D_exp": 78.011,
+    "category": "Organique"
+  },
+  {
+    "name": "phenylacetylene",
+    "smiles": "C#CC1=CC=CC=C1",
+    "D_exp": 69.802,
+    "category": "Organique"
+  },
+  {
+    "name": "PCl",
+    "smiles": "[P]Cl",
+    "D_exp": 3.19,
+    "category": "Organique"
+  },
+  {
+    "name": "piperidine",
+    "smiles": "C1CCNCC1",
+    "D_exp": 67.67,
+    "category": "Organique"
+  },
+  {
+    "name": "hexane",
+    "smiles": "CCCCCC",
+    "D_exp": 77.93,
+    "category": "Organique"
+  },
+  {
+    "name": "N-methylmorpholine",
+    "smiles": "CN1CCOCC1",
+    "D_exp": 71.464,
+    "category": "Organique"
+  },
+  {
+    "name": "SF",
+    "smiles": "[S]F",
+    "D_exp": 3.36,
+    "category": "Organique"
+  },
+  {
+    "name": "Chlorodifluoromethane",
+    "smiles": "C(F)(F)Cl",
+    "D_exp": 17.3838,
+    "category": "Organique"
+  },
+  {
+    "name": "CH4",
+    "smiles": "C",
+    "D_exp": 17.04,
+    "category": "Organique"
+  },
+  {
+    "name": "3-methylpentane",
+    "smiles": "CCC(C)CC",
+    "D_exp": 77.983,
+    "category": "Organique"
+  },
+  {
+    "name": "1-pentyne",
+    "smiles": "CCCC#C",
+    "D_exp": 53.719,
+    "category": "Organique"
+  },
+  {
+    "name": "1,2-dichloropropane",
+    "smiles": "CC(CCl)Cl",
+    "D_exp": 40.05,
+    "category": "Organique"
+  },
+  {
+    "name": "1,2-dichloroethane",
+    "smiles": "C(CCl)Cl",
+    "D_exp": 27.753,
+    "category": "Organique"
+  },
+  {
+    "name": "1,2-dichloroethane",
+    "smiles": "ClCCCl",
+    "D_exp": 27.753,
+    "category": "Inorganique"
+  },
+  {
+    "name": "CHF3",
+    "smiles": "FC(F)F",
+    "D_exp": 19.341,
+    "category": "Inorganique"
+  },
+  {
+    "name": "indene",
+    "smiles": "C1=Cc2ccccc2C1",
+    "D_exp": 83.233,
+    "category": "Inorganique"
+  },
+  {
+    "name": "CF3Me",
+    "smiles": "CC(F)(F)F",
+    "D_exp": 31.54,
+    "category": "Organique"
+  },
+  {
+    "name": "acetal",
+    "smiles": "CCOC(OCC)C",
+    "D_exp": 86.028,
+    "category": "Organique"
+  },
+  {
+    "name": "NS",
+    "smiles": "[N]=S",
+    "D_exp": 4.85,
+    "category": "Organique"
+  },
+  {
+    "name": "tert-butylamine",
+    "smiles": "CC(C)(C)N",
+    "D_exp": 60.717,
+    "category": "Organique"
+  },
+  {
+    "name": "allyl_alcohol",
+    "smiles": "OCC=C",
+    "D_exp": 39.713,
+    "category": "Inorganique"
+  },
+  {
+    "name": "NF3",
+    "smiles": "FN(F)F",
+    "D_exp": 8.59,
+    "category": "Organique"
+  },
+  {
+    "name": "isoxazole",
+    "smiles": "C1=NOC=C1",
+    "D_exp": 35.729,
+    "category": "Organique"
+  },
+  {
+    "name": "2-ethylhexanol",
+    "smiles": "CCCCC(CC)CO",
+    "D_exp": 106.46,
+    "category": "Organique"
+  },
+  {
+    "name": "allyl_alcohol",
+    "smiles": "C=CCO",
+    "D_exp": 39.713,
+    "category": "Organique"
+  },
+  {
+    "name": "2,2-dimethylbutane",
+    "smiles": "CCC(C)(C)C",
+    "D_exp": 78.126,
+    "category": "Organique"
+  },
+  {
+    "name": "BrF",
+    "smiles": "FBr",
+    "D_exp": 2.55,
+    "category": "Organique"
+  },
+  {
+    "name": "CH3F",
+    "smiles": "CF",
+    "D_exp": 18.1,
+    "category": "Organique"
+  },
+  {
+    "name": "mesityl_oxide",
+    "smiles": "CC(=CC(=O)C)C",
+    "D_exp": 71.625,
+    "category": "Organique"
+  },
+  {
+    "name": "cumene",
+    "smiles": "CC(C)C1=CC=CC=C1",
+    "D_exp": 93.922,
+    "category": "Organique"
+  },
+  {
+    "name": "diacetyl",
+    "smiles": "CC(=O)C(=O)C",
+    "D_exp": 51.804,
+    "category": "Organique"
+  },
+  {
+    "name": "Dihydrogen",
+    "smiles": "[HH]",
+    "D_exp": 4.4634,
+    "category": "Organique"
+  },
+  {
+    "name": "methyl_salicylate",
+    "smiles": "COC(=O)C1=CC=CC=C1O",
+    "D_exp": 89.77,
+    "category": "Organique"
+  },
+  {
+    "name": "C2F6",
+    "smiles": "FC(F)(F)C(F)(F)F",
+    "D_exp": 33.722,
+    "category": "Inorganique"
+  },
+  {
+    "name": "diisopropylamine",
+    "smiles": "CC(C)NC(C)C",
+    "D_exp": 84.852,
+    "category": "Organique"
+  },
+  {
+    "name": "2-acetylpyridine",
+    "smiles": "CC(=O)c1ccccn1",
+    "D_exp": 75.92,
+    "category": "Organique"
+  },
+  {
+    "name": "1-butanol",
+    "smiles": "CCCCO",
+    "D_exp": 57.734,
+    "category": "Organique"
+  },
+  {
+    "name": "diglyme",
+    "smiles": "COCCOC",
+    "D_exp": 60.99,
+    "category": "Organique"
+  },
+  {
+    "name": "BF2H",
+    "smiles": "FB(F)",
+    "D_exp": 16.176,
+    "category": "Inorganique"
+  },
+  {
+    "name": "pyrazine",
+    "smiles": "C1=CN=CC=N1",
+    "D_exp": 46.515,
+    "category": "Organique"
+  },
+  {
+    "name": "23DMbut",
+    "smiles": "CC(C)C(C)C",
+    "D_exp": 78.03,
+    "category": "Organique"
+  },
+  {
+    "name": "cyclopentanol",
+    "smiles": "OC1CCCC1",
+    "D_exp": 64.824,
+    "category": "Organique"
+  },
+  {
+    "name": "CP",
+    "smiles": "[C]=[P]",
+    "D_exp": 5.33,
+    "category": "Organique"
+  },
+  {
+    "name": "catechol",
+    "smiles": "C1=CC=C(C(=C1)O)O",
+    "D_exp": 66.114,
+    "category": "Organique"
+  },
+  {
+    "name": "ScO",
+    "smiles": "[Sc]=O",
+    "D_exp": 6.96,
+    "category": "Organique"
+  },
+  {
+    "name": "cyclohexanone",
+    "smiles": "C1CCC(=O)CC1",
+    "D_exp": 72.087,
+    "category": "Organique"
+  },
+  {
+    "name": "VF2",
+    "smiles": "F[V]F",
+    "D_exp": 12.945,
+    "category": "Inorganique"
+  },
+  {
+    "name": "OCl",
+    "smiles": "[O]Cl",
+    "D_exp": 2.75,
+    "category": "Organique"
+  },
+  {
+    "name": "ClO",
+    "smiles": "[Cl][O]",
+    "D_exp": 2.75,
+    "category": "Organique"
+  },
+  {
+    "name": "benzonitrile",
+    "smiles": "C1=CC=C(C=C1)C#N",
+    "D_exp": 65.956,
+    "category": "Organique"
+  },
+  {
+    "name": "triethylamine",
+    "smiles": "CCN(CC)CC",
+    "D_exp": 84.315,
+    "category": "Organique"
+  },
+  {
+    "name": "phenol",
+    "smiles": "Oc1ccccc1",
+    "D_exp": 60.83,
+    "category": "Organique"
+  },
+  {
+    "name": "CH3CHO",
+    "smiles": "CC=O",
+    "D_exp": 28.02,
+    "category": "Organique"
+  },
+  {
+    "name": "isobutanol",
+    "smiles": "CC(C)CO",
+    "D_exp": 57.83,
+    "category": "Organique"
+  },
+  {
+    "name": "delta_valerolactone",
+    "smiles": "O=C1CCCCO1",
+    "D_exp": 64.349,
+    "category": "Organique"
+  },
+  {
+    "name": "BH",
+    "smiles": "[B][H]",
+    "D_exp": 3.42,
+    "category": "Organique"
+  },
+  {
+    "name": "hydroquinone",
+    "smiles": "C1=CC(=CC=C1O)O",
+    "D_exp": 66.039,
+    "category": "Organique"
+  },
+  {
+    "name": "Fluorotrichloromethane",
+    "smiles": "C(F)(Cl)(Cl)Cl",
+    "D_exp": 14.83,
+    "category": "Organique"
+  },
+  {
+    "name": "1,2,3-trimethylbenzene",
+    "smiles": "Cc1cccc(C)c1C",
+    "D_exp": 94.062,
+    "category": "Inorganique"
+  },
+  {
+    "name": "styrene_oxide",
+    "smiles": "C1(CO1)C2=CC=CC=C2",
+    "D_exp": 79.843,
+    "category": "Organique"
+  },
+  {
+    "name": "EtSH",
+    "smiles": "CCS",
+    "D_exp": 31.76,
+    "category": "Organique"
+  },
+  {
+    "name": "cis_1_2_Dibromoethene",
+    "smiles": "C(=C\\Br)\\Br",
+    "D_exp": 20.2872,
+    "category": "Organique"
+  },
+  {
+    "name": "1_2_Dibromoethene",
+    "smiles": "C(=CBr)Br",
+    "D_exp": 20.2872,
+    "category": "Organique"
+  },
+  {
+    "name": "Nitrous_acid",
+    "smiles": "N(=O)O",
+    "D_exp": 12.9725,
+    "category": "Organique"
+  },
+  {
+    "name": "furan",
+    "smiles": "c1ccoc1",
+    "D_exp": 41.09,
+    "category": "Organique"
+  },
+  {
+    "name": "pyrimidine",
+    "smiles": "C1=CN=CN=C1",
+    "D_exp": 46.518,
+    "category": "Organique"
+  },
+  {
+    "name": "trans_1_2_Dibromoethene",
+    "smiles": "C(=C/Br)\\Br",
+    "D_exp": 20.2851,
+    "category": "Organique"
+  },
+  {
+    "name": "1,2-dibromoethane",
+    "smiles": "BrCCBr",
+    "D_exp": 26.616,
+    "category": "Inorganique"
+  },
+  {
+    "name": "NOBr",
+    "smiles": "BrN=O",
+    "D_exp": 7.791,
+    "category": "Inorganique"
+  },
+  {
+    "name": "diallyl_sulfide",
+    "smiles": "C=CCSC=C",
+    "D_exp": 57.802,
+    "category": "Organique"
+  },
+  {
+    "name": "biphenyl",
+    "smiles": "C1=CC=C(C=C1)C2=CC=CC=C2",
+    "D_exp": 109.842,
+    "category": "Organique"
+  },
+  {
+    "name": "anisole",
+    "smiles": "COC1=CC=CC=C1",
+    "D_exp": 73.357,
+    "category": "Organique"
+  },
+  {
+    "name": "MeCN",
+    "smiles": "CC#N",
+    "D_exp": 25.77,
+    "category": "Organique"
+  },
+  {
+    "name": "Br2",
+    "smiles": "BrBr",
+    "D_exp": 1.971,
+    "category": "Organique"
+  },
+  {
+    "name": "Au2",
+    "smiles": "[Au][Au]",
+    "D_exp": 2.29,
+    "category": "Organique"
+  },
+  {
+    "name": "1,2,4-trimethylbenzene",
+    "smiles": "Cc1ccc(C)c(C)c1",
+    "D_exp": 94.107,
+    "category": "Inorganique"
+  },
+  {
+    "name": "propane",
+    "smiles": "CCC",
+    "D_exp": 41.44,
+    "category": "Organique"
+  },
+  {
+    "name": "SiO",
+    "smiles": "[Si]#[O]",
+    "D_exp": 8.26,
+    "category": "Organique"
+  },
+  {
+    "name": "NaI",
+    "smiles": "[Na]I",
+    "D_exp": 3.04,
+    "category": "Organique"
+  },
+  {
+    "name": "S2",
+    "smiles": "[S]=[S]",
+    "D_exp": 4.369,
+    "category": "Organique"
+  },
+  {
+    "name": "Difluorobromomethane",
+    "smiles": "C(F)(F)Br",
+    "D_exp": 16.6348,
+    "category": "Organique"
+  },
+  {
+    "name": "hexanal",
+    "smiles": "CCCCCC=O",
+    "D_exp": 76.83,
+    "category": "Organique"
+  },
+  {
+    "name": "heptane",
+    "smiles": "CCCCCCC",
+    "D_exp": 90.09,
+    "category": "Organique"
+  },
+  {
+    "name": "spiropentane",
+    "smiles": "C1CC11CC1",
+    "D_exp": 53.295,
+    "category": "Organique"
+  },
+  {
+    "name": "2,4-dimethylpentane",
+    "smiles": "CC(C)CC(C)C",
+    "D_exp": 90.236,
+    "category": "Organique"
+  },
+  {
+    "name": "2-butene_trans",
+    "smiles": "CC=CC",
+    "D_exp": 47.903,
+    "category": "Organique"
+  },
+  {
+    "name": "1,1,1-trifluoroacetone",
+    "smiles": "CC(=O)C(F)(F)F",
+    "D_exp": 42.632,
+    "category": "Organique"
+  },
+  {
+    "name": "2-methylhexane",
+    "smiles": "CCCCC(C)C",
+    "D_exp": 90.162,
+    "category": "Organique"
+  },
+  {
+    "name": "C2H2",
+    "smiles": "C#C",
+    "D_exp": 17.07,
+    "category": "Organique"
+  },
+  {
+    "name": "cyclopentanone",
+    "smiles": "O=C1CCCC1",
+    "D_exp": 59.788,
+    "category": "Organique"
+  },
+  {
+    "name": "1,3,5-trimethylbenzene",
+    "smiles": "Cc1cc(C)cc(C)c1",
+    "D_exp": 94.131,
+    "category": "Inorganique"
+  },
+  {
+    "name": "CHFCl2",
+    "smiles": "FC(Cl)Cl",
+    "D_exp": 15.977,
+    "category": "Inorganique"
+  },
+  {
+    "name": "ethylbenzene",
+    "smiles": "CCc1ccccc1",
+    "D_exp": 81.708,
+    "category": "Inorganique"
+  },
+  {
+    "name": "3-methylhexane",
+    "smiles": "CCCC(C)CC",
+    "D_exp": 90.128,
+    "category": "Organique"
+  },
+  {
+    "name": "glyoxylic_acid",
+    "smiles": "OC(=O)C=O",
+    "D_exp": 32.025,
+    "category": "Organique"
+  },
+  {
+    "name": "chloroform",
+    "smiles": "ClC(Cl)Cl",
+    "D_exp": 14.527,
+    "category": "Inorganique"
+  },
+  {
+    "name": "MEK",
+    "smiles": "CC(=O)CC",
+    "D_exp": 52.84,
+    "category": "Organique"
+  },
+  {
+    "name": "1,4-dioxane",
+    "smiles": "C1COCCO1",
+    "D_exp": 56.22,
+    "category": "Organique"
+  },
+  {
+    "name": "C2",
+    "smiles": "[C]#[C]",
+    "D_exp": 6.248,
+    "category": "Organique"
+  },
+  {
+    "name": "EtCl",
+    "smiles": "CCCl",
+    "D_exp": 28.57,
+    "category": "Organique"
+  },
+  {
+    "name": "ClF",
+    "smiles": "FCl",
+    "D_exp": 2.62,
+    "category": "Organique"
+  },
+  {
+    "name": "LiCl",
+    "smiles": "[Li]Cl",
+    "D_exp": 4.9,
+    "category": "Organique"
+  },
+  {
+    "name": "HOCl",
+    "smiles": "ClO",
+    "D_exp": 6.871,
+    "category": "Organique"
+  },
+  {
+    "name": "NF",
+    "smiles": "[N]F",
+    "D_exp": 3.47,
+    "category": "Organique"
+  },
+  {
+    "name": "2-butanone",
+    "smiles": "CCC(=O)C",
+    "D_exp": 52.846,
+    "category": "Organique"
+  },
+  {
+    "name": "3-cyanopyridine",
+    "smiles": "N#Cc1cccnc1",
+    "D_exp": 60.523,
+    "category": "Organique"
+  },
+  {
+    "name": "3-ethylpentane",
+    "smiles": "CCC(CC)CC",
+    "D_exp": 90.11,
+    "category": "Organique"
+  },
+  {
+    "name": "naphthalene",
+    "smiles": "c1ccc2ccccc2c1",
+    "D_exp": 89.15,
+    "category": "Organique"
+  },
+  {
+    "name": "diethyl_sulfoxide",
+    "smiles": "CCS(=O)CC",
+    "D_exp": 59.885,
+    "category": "Organique"
+  },
+  {
+    "name": "furfural",
+    "smiles": "O=CC1=CC=CO1",
+    "D_exp": 52.907,
+    "category": "Organique"
+  },
+  {
+    "name": "THT",
+    "smiles": "C1CCSC1",
+    "D_exp": 50.83,
+    "category": "Organique"
+  },
+  {
+    "name": "Hydrogen_fluoride",
+    "smiles": "F",
+    "D_exp": 5.8661,
+    "category": "Organique"
+  },
+  {
+    "name": "2,3-dimethylpentane",
+    "smiles": "CC(C)C(C)CC",
+    "D_exp": 90.157,
+    "category": "Organique"
+  },
+  {
+    "name": "Et2O",
+    "smiles": "CCOCC",
+    "D_exp": 57.5,
+    "category": "Organique"
+  },
+  {
+    "name": "3,3-dimethylpentane",
+    "smiles": "CCC(C)(C)CC",
+    "D_exp": 90.231,
+    "category": "Organique"
+  },
+  {
+    "name": "O2",
+    "smiles": "O=O",
+    "D_exp": 5.116,
+    "category": "Organique"
+  },
+  {
+    "name": "SOBr2",
+    "smiles": "BrS(Br)=O",
+    "D_exp": 8.707,
+    "category": "Inorganique"
+  },
+  {
+    "name": "2-butanol",
+    "smiles": "CCC(O)C",
+    "D_exp": 57.922,
+    "category": "Inorganique"
+  },
+  {
+    "name": "dimethyl_disulfide",
+    "smiles": "CSSC",
+    "D_exp": 34.408,
+    "category": "Organique"
+  },
+  {
+    "name": "N-methylformamide",
+    "smiles": "CNC=O",
+    "D_exp": 35.614,
+    "category": "Organique"
+  },
+  {
+    "name": "2-butanol",
+    "smiles": "CCC(C)O",
+    "D_exp": 57.923,
+    "category": "Organique"
+  },
+  {
+    "name": "Tetrachloromethane",
+    "smiles": "C(Cl)(Cl)(Cl)Cl",
+    "D_exp": 13.2588,
+    "category": "Organique"
+  },
+  {
+    "name": "1,2-epoxybutane",
+    "smiles": "CCC1CO1",
+    "D_exp": 51.323,
+    "category": "Organique"
+  },
+  {
+    "name": "BS",
+    "smiles": "[B]#[S]",
+    "D_exp": 5.8,
+    "category": "Organique"
+  },
+  {
+    "name": "2-methylfuran",
+    "smiles": "Cc1ccco1",
+    "D_exp": 54.07,
+    "category": "Inorganique"
+  },
+  {
+    "name": "anthracene",
+    "smiles": "C1=CC2=CC3=CC=CC=C3C=C2C=C1",
+    "D_exp": 124.191,
+    "category": "Organique"
+  },
+  {
+    "name": "BeF2",
+    "smiles": "F[Be]F",
+    "D_exp": 13.17,
+    "category": "Organique"
+  },
+  {
+    "name": "diethylamine",
+    "smiles": "CCNCC",
+    "D_exp": 60.74,
+    "category": "Organique"
+  },
+  {
+    "name": "2-methyl-2-butene",
+    "smiles": "CC=C(C)C",
+    "D_exp": 60.166,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Dibromofluorochloromethane",
+    "smiles": "C(F)(Cl)(Br)Br",
+    "D_exp": 13.4937,
+    "category": "Organique"
+  },
+  {
+    "name": "BN",
+    "smiles": "[B]=[N]",
+    "D_exp": 3.9,
+    "category": "Organique"
+  },
+  {
+    "name": "Dibromomethane",
+    "smiles": "C(Br)Br",
+    "D_exp": 13.8914,
+    "category": "Organique"
+  },
+  {
+    "name": "HF",
+    "smiles": "[H]F",
+    "D_exp": 5.869,
+    "category": "Organique"
+  },
+  {
+    "name": "acetylacetone",
+    "smiles": "CC(=O)CC(=O)C",
+    "D_exp": 64.327,
+    "category": "Organique"
+  },
+  {
+    "name": "tBuOH",
+    "smiles": "CC(C)(C)O",
+    "D_exp": 58.13,
+    "category": "Organique"
+  },
+  {
+    "name": "fluorene",
+    "smiles": "C1=CC=C2C(=C1)CC3=CC=CC=C32",
+    "D_exp": 117.312,
+    "category": "Organique"
+  },
+  {
+    "name": "TMP",
+    "smiles": "CP(C)C",
+    "D_exp": 46.01,
+    "category": "Organique"
+  },
+  {
+    "name": "octane",
+    "smiles": "CCCCCCCC",
+    "D_exp": 102.25,
+    "category": "Organique"
+  },
+  {
+    "name": "Dichloromethane",
+    "smiles": "C(Cl)Cl",
+    "D_exp": 15.2319,
+    "category": "Organique"
+  },
+  {
+    "name": "o-xylene",
+    "smiles": "Cc1ccccc1C",
+    "D_exp": 81.819,
+    "category": "Inorganique"
+  },
+  {
+    "name": "CrO",
+    "smiles": "[Cr]=O",
+    "D_exp": 4.649,
+    "category": "Organique"
+  },
+  {
+    "name": "2,2,3-trimethylbutane",
+    "smiles": "CC(C)C(C)(C)C",
+    "D_exp": 90.264,
+    "category": "Organique"
+  },
+  {
+    "name": "CoO",
+    "smiles": "[Co]=O",
+    "D_exp": 3.94,
+    "category": "Organique"
+  },
+  {
+    "name": "cHex",
+    "smiles": "C1CCCCC1",
+    "D_exp": 72.96,
+    "category": "Organique"
+  },
+  {
+    "name": "4-cyanopyridine",
+    "smiles": "N#Cc1ccncc1",
+    "D_exp": 60.465,
+    "category": "Organique"
+  },
+  {
+    "name": "Tribromofluoromethane",
+    "smiles": "C(F)(Br)(Br)Br",
+    "D_exp": 12.6796,
+    "category": "Organique"
+  },
+  {
+    "name": "p-xylene",
+    "smiles": "Cc1ccc(C)cc1",
+    "D_exp": 81.831,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Bromotrichloromethane",
+    "smiles": "C(Cl)(Cl)(Cl)Br",
+    "D_exp": 12.5603,
+    "category": "Organique"
+  },
+  {
+    "name": "valeronitrile",
+    "smiles": "CCCCC#N",
+    "D_exp": 62.269,
+    "category": "Organique"
+  },
+  {
+    "name": "m-xylene",
+    "smiles": "Cc1cccc(C)c1",
+    "D_exp": 81.839,
+    "category": "Inorganique"
+  },
+  {
+    "name": "m-cresol",
+    "smiles": "Cc1cccc(O)c1",
+    "D_exp": 74.024,
+    "category": "Inorganique"
+  },
+  {
+    "name": "benzaldehyde",
+    "smiles": "O=Cc1ccccc1",
+    "D_exp": 68.52,
+    "category": "Inorganique"
+  },
+  {
+    "name": "di-n-butylamine",
+    "smiles": "CCCCNCCCC",
+    "D_exp": 108.874,
+    "category": "Organique"
+  },
+  {
+    "name": "thioanisole",
+    "smiles": "CSc1ccccc1",
+    "D_exp": 72.207,
+    "category": "Inorganique"
+  },
+  {
+    "name": "isobuten",
+    "smiles": "C=C(C)C",
+    "D_exp": 47.96,
+    "category": "Organique"
+  },
+  {
+    "name": "Si2",
+    "smiles": "[Si]=[Si]",
+    "D_exp": 3.21,
+    "category": "Organique"
+  },
+  {
+    "name": "EtSMe",
+    "smiles": "CCSC",
+    "D_exp": 43.85,
+    "category": "Organique"
+  },
+  {
+    "name": "ethanolamine",
+    "smiles": "NCCO",
+    "D_exp": 40.216,
+    "category": "Organique"
+  },
+  {
+    "name": "Cr2",
+    "smiles": "[Cr][Cr]",
+    "D_exp": 1.53,
+    "category": "Organique"
+  },
+  {
+    "name": "isooctane",
+    "smiles": "CC(C)CC(C)(C)C",
+    "D_exp": 102.5,
+    "category": "Organique"
+  },
+  {
+    "name": "crotonaldehyde",
+    "smiles": "CC=CC=O",
+    "D_exp": 46.915,
+    "category": "Organique"
+  },
+  {
+    "name": "1,1,1-trichloroethane",
+    "smiles": "CC(Cl)(Cl)Cl",
+    "D_exp": 26.902,
+    "category": "Organique"
+  },
+  {
+    "name": "ScCl",
+    "smiles": "[Sc]Cl",
+    "D_exp": 4.62,
+    "category": "d-block"
+  },
+  {
+    "name": "2,3-dimethylhexane",
+    "smiles": "CCC(C)C(C)CC",
+    "D_exp": 102.309,
+    "category": "Inorganique"
+  },
+  {
+    "name": "thioacetone",
+    "smiles": "CC(=S)C",
+    "D_exp": 38.96,
+    "category": "Organique"
+  },
+  {
+    "name": "methylcyclohexane",
+    "smiles": "CC1CCCCC1",
+    "D_exp": 85.23,
+    "category": "Organique"
+  },
+  {
+    "name": "2-cyanopyridine",
+    "smiles": "N#Cc1ccccn1",
+    "D_exp": 60.494,
+    "category": "Organique"
+  },
+  {
+    "name": "1,2-dichlorobenzene",
+    "smiles": "C1=CC=C(C(=C1)Cl)Cl",
+    "D_exp": 55.806,
+    "category": "Organique"
+  },
+  {
+    "name": "EtOMe",
+    "smiles": "CCOC",
+    "D_exp": 45.18,
+    "category": "Organique"
+  },
+  {
+    "name": "3,3-dimethylhexane",
+    "smiles": "CCC(C)(C)CCC",
+    "D_exp": 102.372,
+    "category": "Inorganique"
+  },
+  {
+    "name": "phenanthrene",
+    "smiles": "C1=CC2=C3C=CC=CC3=CC2=CC=1",
+    "D_exp": 112.538,
+    "category": "Organique"
+  },
+  {
+    "name": "thiazole",
+    "smiles": "C1=CSC=N1",
+    "D_exp": 35.511,
+    "category": "Organique"
+  },
+  {
+    "name": "acetaldehyde_dimethyl_acetal",
+    "smiles": "CC(OC)OC",
+    "D_exp": 61.51,
+    "category": "Organique"
+  },
+  {
+    "name": "bromobenzene",
+    "smiles": "Brc1ccccc1",
+    "D_exp": 55.931,
+    "category": "Inorganique"
+  },
+  {
+    "name": "iodoethane",
+    "smiles": "CCI",
+    "D_exp": 27.343,
+    "category": "Organique"
+  },
+  {
+    "name": "1,3-butanediol",
+    "smiles": "CC(O)CCO",
+    "D_exp": 61.959,
+    "category": "Inorganique"
+  },
+  {
+    "name": "vinyl_acetate",
+    "smiles": "CC(=O)OC=C",
+    "D_exp": 52.052,
+    "category": "Organique"
+  },
+  {
+    "name": "2,6-dimethylpyridine",
+    "smiles": "Cc1cccc(C)n1",
+    "D_exp": 76.623,
+    "category": "Inorganique"
+  },
+  {
+    "name": "CBr4",
+    "smiles": "BrC(Br)(Br)Br",
+    "D_exp": 10.88,
+    "category": "Organique"
+  },
+  {
+    "name": "2,4-dimethylhexane",
+    "smiles": "CC(C)CCC(C)C",
+    "D_exp": 102.295,
+    "category": "Inorganique"
+  },
+  {
+    "name": "TiCl4",
+    "smiles": "[Ti](Cl)(Cl)(Cl)Cl",
+    "D_exp": 17.84,
+    "category": "d-block"
+  },
+  {
+    "name": "1,4-butanediol",
+    "smiles": "OCCCCO",
+    "D_exp": 61.893,
+    "category": "Organique"
+  },
+  {
+    "name": "nonane",
+    "smiles": "CCCCCCCCC",
+    "D_exp": 114.4,
+    "category": "Organique"
+  },
+  {
+    "name": "ZnF2",
+    "smiles": "F[Zn]F",
+    "D_exp": 8.53,
+    "category": "d-block"
+  },
+  {
+    "name": "cis-2-pentene",
+    "smiles": "CCC=CC",
+    "D_exp": 60.012,
+    "category": "Inorganique"
+  },
+  {
+    "name": "2,3-dimethyl-2-butene",
+    "smiles": "CC(=C(C)C)C",
+    "D_exp": 72.386,
+    "category": "Inorganique"
+  },
+  {
+    "name": "2butyne",
+    "smiles": "CC#CC",
+    "D_exp": 41.44,
+    "category": "Organique"
+  },
+  {
+    "name": "AlO",
+    "smiles": "[Al]=O",
+    "D_exp": 5.27,
+    "category": "Organique"
+  },
+  {
+    "name": "propene",
+    "smiles": "CC=C",
+    "D_exp": 35.63,
+    "category": "Organique"
+  },
+  {
+    "name": "methyl_methacrylate",
+    "smiles": "COC(=O)C(=C)C",
+    "D_exp": 64.028,
+    "category": "Organique"
+  },
+  {
+    "name": "FeCl2",
+    "smiles": "Cl[Fe]Cl",
+    "D_exp": 8.29,
+    "category": "d-block"
+  },
+  {
+    "name": "isoxazole",
+    "smiles": "c1conc1",
+    "D_exp": 35.729,
+    "category": "Inorganique"
+  },
+  {
+    "name": "TiF2",
+    "smiles": "F[Ti]F",
+    "D_exp": 13.678,
+    "category": "Inorganique"
+  },
+  {
+    "name": "AlCl2",
+    "smiles": "Cl[Al]Cl",
+    "D_exp": 8.837,
+    "category": "Inorganique"
+  },
+  {
+    "name": "biphenyl",
+    "smiles": "c1ccc(-c2ccccc2)cc1",
+    "D_exp": 109.843,
+    "category": "Inorganique"
+  },
+  {
+    "name": "decane",
+    "smiles": "CCCCCCCCCC",
+    "D_exp": 126.62,
+    "category": "Organique"
+  },
+  {
+    "name": "methyl_vinyl_ketone",
+    "smiles": "C=CC(=O)C",
+    "D_exp": 46.887,
+    "category": "Organique"
+  },
+  {
+    "name": "TiH",
+    "smiles": "[Ti][H]",
+    "D_exp": 2.08,
+    "category": "Organique"
+  },
+  {
+    "name": "acetophenone",
+    "smiles": "CC(=O)c1ccccc1",
+    "D_exp": 80.98,
+    "category": "Inorganique"
+  },
+  {
+    "name": "1-iodopropane",
+    "smiles": "CCCI",
+    "D_exp": 39.517,
+    "category": "Organique"
+  },
+  {
+    "name": "ethyl_acrylate",
+    "smiles": "CCOC(=O)C=C",
+    "D_exp": 64.049,
+    "category": "Organique"
+  },
+  {
+    "name": "pyrazole",
+    "smiles": "C1=CNN=C1",
+    "D_exp": 40.027,
+    "category": "Organique"
+  },
+  {
+    "name": "CH3I",
+    "smiles": "CI",
+    "D_exp": 15.1,
+    "category": "Organique"
+  },
+  {
+    "name": "ethylene_oxide",
+    "smiles": "C1CO1",
+    "D_exp": 26.95,
+    "category": "Organique"
+  },
+  {
+    "name": "MgO",
+    "smiles": "[Mg]=O",
+    "D_exp": 3.53,
+    "category": "Organique"
+  },
+  {
+    "name": "1,1,2-trichloroethane",
+    "smiles": "ClCC(Cl)Cl",
+    "D_exp": 26.877,
+    "category": "Organique"
+  },
+  {
+    "name": "CH2Br2",
+    "smiles": "BrCBr",
+    "D_exp": 14.09,
+    "category": "Organique"
+  },
+  {
+    "name": "aniline",
+    "smiles": "Nc1ccccc1",
+    "D_exp": 63.91,
+    "category": "Organique"
+  },
+  {
+    "name": "2-methyl-1-butene",
+    "smiles": "CCC(=C)C",
+    "D_exp": 60.098,
+    "category": "Inorganique"
+  },
+  {
+    "name": "crotonic_acid",
+    "smiles": "CC=CC(=O)O",
+    "D_exp": 51.967,
+    "category": "Organique"
+  },
+  {
+    "name": "CH2Cl2",
+    "smiles": "ClCCl",
+    "D_exp": 15.45,
+    "category": "Organique"
+  },
+  {
+    "name": "DMF",
+    "smiles": "CN(C)C=O",
+    "D_exp": 47.84,
+    "category": "Organique"
+  },
+  {
+    "name": "KF",
+    "smiles": "[K]F",
+    "D_exp": 5.144,
+    "category": "Organique"
+  },
+  {
+    "name": "acetone",
+    "smiles": "CC(C)=O",
+    "D_exp": 40.57,
+    "category": "Organique"
+  },
+  {
+    "name": "Na2",
+    "smiles": "[Na][Na]",
+    "D_exp": 0.735,
+    "category": "Organique"
+  },
+  {
+    "name": "MgF2",
+    "smiles": "F[Mg]F",
+    "D_exp": 10.85,
+    "category": "Inorganique"
+  },
+  {
+    "name": "chlorobenzene",
+    "smiles": "Clc1ccccc1",
+    "D_exp": 56.583,
+    "category": "Inorganique"
+  },
+  {
+    "name": "formamide",
+    "smiles": "C(=O)N",
+    "D_exp": 23.615,
+    "category": "Organique"
+  },
+  {
+    "name": "Dichlorofluorobromomethane",
+    "smiles": "C(F)(Cl)(Cl)Br",
+    "D_exp": 14.1793,
+    "category": "Organique"
+  },
+  {
+    "name": "BCl",
+    "smiles": "[B]Cl",
+    "D_exp": 5.17,
+    "category": "Organique"
+  },
+  {
+    "name": "CS",
+    "smiles": "[C]#[S]",
+    "D_exp": 7.36,
+    "category": "Organique"
+  },
+  {
+    "name": "diethyl_disulfide",
+    "smiles": "CCSSCC",
+    "D_exp": 58.827,
+    "category": "Inorganique"
+  },
+  {
+    "name": "HBr",
+    "smiles": "[H]Br",
+    "D_exp": 3.76,
+    "category": "Organique"
+  },
+  {
+    "name": "gamma-butyrolactone",
+    "smiles": "O=C1CCCO1",
+    "D_exp": 52.216,
+    "category": "Inorganique"
+  },
+  {
+    "name": "methyl_benzoate",
+    "smiles": "COC(=O)C1=CC=CC=C1",
+    "D_exp": 85.647,
+    "category": "Organique"
+  },
+  {
+    "name": "formamid",
+    "smiles": "NC=O",
+    "D_exp": 23.62,
+    "category": "Organique"
+  },
+  {
+    "name": "acrylN",
+    "smiles": "C=CC#N",
+    "D_exp": 32.04,
+    "category": "Organique"
+  },
+  {
+    "name": "N-ethylaniline",
+    "smiles": "CCNC1=CC=CC=C1",
+    "D_exp": 88.605,
+    "category": "Organique"
+  },
+  {
+    "name": "1butene",
+    "smiles": "C=CCC",
+    "D_exp": 47.79,
+    "category": "Organique"
+  },
+  {
+    "name": "SiCl4",
+    "smiles": "Cl[Si](Cl)(Cl)Cl",
+    "D_exp": 16.5,
+    "category": "Organique"
+  },
+  {
+    "name": "OH",
+    "smiles": "[O][H]",
+    "D_exp": 4.392,
+    "category": "Organique"
+  },
+  {
+    "name": "undecane",
+    "smiles": "CCCCCCCCCCC",
+    "D_exp": 138.734,
+    "category": "Organique"
+  },
+  {
+    "name": "2-ethylpyridine",
+    "smiles": "CCc1ccccn1",
+    "D_exp": 76.448,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Hydrogen_bromide",
+    "smiles": "Br",
+    "D_exp": 3.6871,
+    "category": "Organique"
+  },
+  {
+    "name": "cyclohexylamine",
+    "smiles": "NC1CCCCC1",
+    "D_exp": 79.917,
+    "category": "Organique"
+  },
+  {
+    "name": "butyl_acetate",
+    "smiles": "CCCCOC(=O)C",
+    "D_exp": 81.875,
+    "category": "Organique"
+  },
+  {
+    "name": "2-methyl-1,3-propanediol",
+    "smiles": "OCC(C)CO",
+    "D_exp": 62.043,
+    "category": "Organique"
+  },
+  {
+    "name": "1-PrOH",
+    "smiles": "CCCO",
+    "D_exp": 45.59,
+    "category": "Organique"
+  },
+  {
+    "name": "Mn2O3_frag",
+    "smiles": "O=[Mn]O[Mn]=O",
+    "D_exp": 18.956,
+    "category": "Inorganique"
+  },
+  {
+    "name": "HOBr",
+    "smiles": "BrO",
+    "D_exp": 6.582,
+    "category": "Organique"
+  },
+  {
+    "name": "acenaphthene",
+    "smiles": "C1CC2=CC=CC3=C2C1=CC=C3",
+    "D_exp": 110.112,
+    "category": "Organique"
+  },
+  {
+    "name": "gamma-butyrolactone",
+    "smiles": "C1CC(=O)OC1",
+    "D_exp": 52.216,
+    "category": "Organique"
+  },
+  {
+    "name": "SiH4",
+    "smiles": "[SiH4]",
+    "D_exp": 12.94,
+    "category": "Organique"
+  },
+  {
+    "name": "2-methylpyridine",
+    "smiles": "Cc1ccccn1",
+    "D_exp": 64.254,
+    "category": "Inorganique"
+  },
+  {
+    "name": "caprolactam",
+    "smiles": "C1CCC(=O)NCC1",
+    "D_exp": 79.182,
+    "category": "Organique"
+  },
+  {
+    "name": "Fluorochlorobromomethane",
+    "smiles": "C(F)(Cl)Br",
+    "D_exp": 15.0749,
+    "category": "Organique"
+  },
+  {
+    "name": "Cyclopropanone",
+    "smiles": "C1CC1=O",
+    "D_exp": 33.3172,
+    "category": "Organique"
+  },
+  {
+    "name": "pyruvic_acid",
+    "smiles": "CC(=O)C(=O)O",
+    "D_exp": 43.049,
+    "category": "Organique"
+  },
+  {
+    "name": "NMA2",
+    "smiles": "CC(=O)NC",
+    "D_exp": 48.15,
+    "category": "Organique"
+  },
+  {
+    "name": "trimethylacetic_acid",
+    "smiles": "CC(C)(C)C(=O)O",
+    "D_exp": 69.99,
+    "category": "Organique"
+  },
+  {
+    "name": "thiophenol",
+    "smiles": "C1=CC=C(C=C1)S",
+    "D_exp": 59.843,
+    "category": "Organique"
+  },
+  {
+    "name": "4-methylpyridine",
+    "smiles": "Cc1ccncc1",
+    "D_exp": 64.203,
+    "category": "Inorganique"
+  },
+  {
+    "name": "dodecane",
+    "smiles": "CCCCCCCCCCCC",
+    "D_exp": 150.894,
+    "category": "Organique"
+  },
+  {
+    "name": "SCl",
+    "smiles": "[S]Cl",
+    "D_exp": 2.68,
+    "category": "Organique"
+  },
+  {
+    "name": "HCFC_141b",
+    "smiles": "CC(F)(Cl)Cl",
+    "D_exp": 28.484,
+    "category": "Organique"
+  },
+  {
+    "name": "Trimethylsilyl",
+    "smiles": "C[Si](C)C",
+    "D_exp": 46.4011,
+    "category": "Organique"
+  },
+  {
+    "name": "tetrahydrofurfuryl_alcohol",
+    "smiles": "OCC1CCCO1",
+    "D_exp": 69.414,
+    "category": "Organique"
+  },
+  {
+    "name": "dimethoxymethane",
+    "smiles": "COCOC",
+    "D_exp": 49.136,
+    "category": "Organique"
+  },
+  {
+    "name": "CrF2",
+    "smiles": "F[Cr]F",
+    "D_exp": 11.36,
+    "category": "d-block"
+  },
+  {
+    "name": "methylcycloheptane",
+    "smiles": "CC1CCCCCC1",
+    "D_exp": 97.178,
+    "category": "Inorganique"
+  },
+  {
+    "name": "3-methyl-1-butene",
+    "smiles": "CC(C)C=C",
+    "D_exp": 60.019,
+    "category": "Inorganique"
+  },
+  {
+    "name": "3-methylpyridine",
+    "smiles": "Cc1cccnc1",
+    "D_exp": 64.18,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Dichlorodibromomethane",
+    "smiles": "C(Cl)(Cl)(Br)Br",
+    "D_exp": 11.8866,
+    "category": "Organique"
+  },
+  {
+    "name": "VH",
+    "smiles": "[V][H]",
+    "D_exp": 2.13,
+    "category": "Organique"
+  },
+  {
+    "name": "acrylamide",
+    "smiles": "C=CC(=O)N",
+    "D_exp": 42.382,
+    "category": "Organique"
+  },
+  {
+    "name": "VO",
+    "smiles": "[V]=O",
+    "D_exp": 6.545,
+    "category": "Organique"
+  },
+  {
+    "name": "1penten",
+    "smiles": "C=CCCC",
+    "D_exp": 59.95,
+    "category": "Organique"
+  },
+  {
+    "name": "p-chlorotoluene",
+    "smiles": "Cc1ccc(Cl)cc1",
+    "D_exp": 69.143,
+    "category": "Inorganique"
+  },
+  {
+    "name": "1-pentene",
+    "smiles": "CCCC=C",
+    "D_exp": 59.954,
+    "category": "Organique"
+  },
+  {
+    "name": "ScH",
+    "smiles": "[Sc][H]",
+    "D_exp": 2.06,
+    "category": "Organique"
+  },
+  {
+    "name": "methylcyclopentane",
+    "smiles": "CC1CCCC1",
+    "D_exp": 72.781,
+    "category": "Organique"
+  },
+  {
+    "name": "EtF",
+    "smiles": "CCF",
+    "D_exp": 29.7,
+    "category": "Organique"
+  },
+  {
+    "name": "IBr",
+    "smiles": "Br[I]",
+    "D_exp": 1.817,
+    "category": "Organique"
+  },
+  {
+    "name": "cycloheptane",
+    "smiles": "C1CCCCCC1",
+    "D_exp": 84.851,
+    "category": "Organique"
+  },
+  {
+    "name": "cC4H8",
+    "smiles": "C1CCC1",
+    "D_exp": 47.49,
+    "category": "Organique"
+  },
+  {
+    "name": "N,N-dimethylaniline",
+    "smiles": "CN(C)C1=CC=CC=C1",
+    "D_exp": 88.134,
+    "category": "Organique"
+  },
+  {
+    "name": "ethyl_vinyl_ether",
+    "smiles": "CCOC=C",
+    "D_exp": 51.822,
+    "category": "Organique"
+  },
+  {
+    "name": "benzoic_acid",
+    "smiles": "C1=CC=C(C=C1)C(=O)O",
+    "D_exp": 73.764,
+    "category": "Organique"
+  },
+  {
+    "name": "quinazoline",
+    "smiles": "c1ccc2ncncc2c1",
+    "D_exp": 80.258,
+    "category": "Organique"
+  },
+  {
+    "name": "2_Cyclopropen_1_imine",
+    "smiles": "C1=CC1=N",
+    "D_exp": 29.5484,
+    "category": "Organique"
+  },
+  {
+    "name": "POBr3",
+    "smiles": "BrP(Br)(Br)=O",
+    "D_exp": 13.083,
+    "category": "Inorganique"
+  },
+  {
+    "name": "quinoxaline",
+    "smiles": "c1ccc2nccnc2c1",
+    "D_exp": 80.287,
+    "category": "Organique"
+  },
+  {
+    "name": "thioformaldehyde",
+    "smiles": "C=S",
+    "D_exp": 14.694,
+    "category": "Organique"
+  },
+  {
+    "name": "Bromodichloromethane",
+    "smiles": "C(Cl)(Cl)Br",
+    "D_exp": 13.614,
+    "category": "Organique"
+  },
+  {
+    "name": "Nitric_acid",
+    "smiles": "[N+](=O)(O)[O-]",
+    "D_exp": 16.0815,
+    "category": "Organique"
+  },
+  {
+    "name": "Benzene",
+    "smiles": "C1=CC=CC=C1",
+    "D_exp": 56.6295,
+    "category": "Organique"
+  },
+  {
+    "name": "acetone",
+    "smiles": "CC(=O)C",
+    "D_exp": 40.673,
+    "category": "Inorganique"
+  },
+  {
+    "name": "BrF3",
+    "smiles": "F[Br](F)F",
+    "D_exp": 6.277,
+    "category": "Inorganique"
+  },
+  {
+    "name": "PF",
+    "smiles": "[P]F",
+    "D_exp": 4.47,
+    "category": "Organique"
+  },
+  {
+    "name": "indene",
+    "smiles": "C1C=CC2=CC=CC=C21",
+    "D_exp": 83.261,
+    "category": "Organique"
+  },
+  {
+    "name": "CH2NH",
+    "smiles": "C=N",
+    "D_exp": 18.11,
+    "category": "Organique"
+  },
+  {
+    "name": "NaCl",
+    "smiles": "[Na]Cl",
+    "D_exp": 4.23,
+    "category": "Organique"
+  },
+  {
+    "name": "dicyanog",
+    "smiles": "N#CC#N",
+    "D_exp": 21.45,
+    "category": "Organique"
+  },
+  {
+    "name": "DME",
+    "smiles": "COC",
+    "D_exp": 32.9,
+    "category": "Organique"
+  },
+  {
+    "name": "1-hexene",
+    "smiles": "CCCCC=C",
+    "D_exp": 72.112,
+    "category": "Organique"
+  },
+  {
+    "name": "HCN",
+    "smiles": "C#N",
+    "D_exp": 13.39,
+    "category": "Organique"
+  },
+  {
+    "name": "2-PrOH",
+    "smiles": "CC(O)C",
+    "D_exp": 45.77,
+    "category": "Organique"
+  },
+  {
+    "name": "K2",
+    "smiles": "[K][K]",
+    "D_exp": 0.514,
+    "category": "Organique"
+  },
+  {
+    "name": "1-methylcyclohexene",
+    "smiles": "CC1=CCCCC1",
+    "D_exp": 79.471,
+    "category": "Inorganique"
+  },
+  {
+    "name": "HCl",
+    "smiles": "[H]Cl",
+    "D_exp": 4.43,
+    "category": "Organique"
+  },
+  {
+    "name": "NCl",
+    "smiles": "[N]Cl",
+    "D_exp": 2.75,
+    "category": "Organique"
+  },
+  {
+    "name": "Nitrosyl_chloride",
+    "smiles": "N(=O)Cl",
+    "D_exp": 8.1107,
+    "category": "Organique"
+  },
+  {
+    "name": "cyclopentane",
+    "smiles": "C1CCCC1",
+    "D_exp": 60.44,
+    "category": "Organique"
+  },
+  {
+    "name": "malononitrile",
+    "smiles": "C(C#N)C#N",
+    "D_exp": 34.671,
+    "category": "Organique"
+  },
+  {
+    "name": "KI",
+    "smiles": "[K]I",
+    "D_exp": 3.31,
+    "category": "Organique"
+  },
+  {
+    "name": "N,N-dimethylurea",
+    "smiles": "CN(C)C(=O)N",
+    "D_exp": 55.859,
+    "category": "Organique"
+  },
+  {
+    "name": "PCl3",
+    "smiles": "ClP(Cl)Cl",
+    "D_exp": 9.94,
+    "category": "Organique"
+  },
+  {
+    "name": "salicylic_acid",
+    "smiles": "OC1=CC=CC=C1C(=O)O",
+    "D_exp": 78.428,
+    "category": "Organique"
+  },
+  {
+    "name": "cyclohexene",
+    "smiles": "C1CCC=CC1",
+    "D_exp": 67.206,
+    "category": "Organique"
+  },
+  {
+    "name": "Fluorodichloromethane",
+    "smiles": "C(F)(Cl)Cl",
+    "D_exp": 15.771,
+    "category": "Organique"
+  },
+  {
+    "name": "phthalazine",
+    "smiles": "c1ccc2cnncc2c1",
+    "D_exp": 79.358,
+    "category": "Organique"
+  },
+  {
+    "name": "maleimide",
+    "smiles": "O=C1C=CC(=O)N1",
+    "D_exp": 48.938,
+    "category": "Organique"
+  },
+  {
+    "name": "butyrN",
+    "smiles": "CCCC#N",
+    "D_exp": 50.08,
+    "category": "Organique"
+  },
+  {
+    "name": "Hydrogen_chloride",
+    "smiles": "Cl",
+    "D_exp": 4.4322,
+    "category": "Organique"
+  },
+  {
+    "name": "valeric_acid",
+    "smiles": "CCCCC(=O)O",
+    "D_exp": 69.997,
+    "category": "Organique"
+  },
+  {
+    "name": "guaiacol",
+    "smiles": "COC1=CC=CC=C1O",
+    "D_exp": 77.378,
+    "category": "Organique"
+  },
+  {
+    "name": "Pentatetraene",
+    "smiles": "C=C=C=C=C",
+    "D_exp": 41.1301,
+    "category": "Organique"
+  },
+  {
+    "name": "dimethylphosphine",
+    "smiles": "CPC",
+    "D_exp": 34.377,
+    "category": "Inorganique"
+  },
+  {
+    "name": "1-heptene",
+    "smiles": "CCCCCC=C",
+    "D_exp": 84.273,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Cyclobutene",
+    "smiles": "C1CC=C1",
+    "D_exp": 41.0822,
+    "category": "Organique"
+  },
+  {
+    "name": "propyl_formate",
+    "smiles": "CCCOC=O",
+    "D_exp": 57.177,
+    "category": "Inorganique"
+  },
+  {
+    "name": "acenaphthylene",
+    "smiles": "C1=CC2=C3C(=C1)C=CC3=CC=C2",
+    "D_exp": 104.505,
+    "category": "Organique"
+  },
+  {
+    "name": "iodobenzene",
+    "smiles": "IC1=CC=CC=C1",
+    "D_exp": 55.262,
+    "category": "Organique"
+  },
+  {
+    "name": "thioacetic_acid",
+    "smiles": "CC(=O)S",
+    "D_exp": 31.162,
+    "category": "Organique"
+  },
+  {
+    "name": "fluorobenzene",
+    "smiles": "Fc1ccccc1",
+    "D_exp": 57.888,
+    "category": "Inorganique"
+  },
+  {
+    "name": "pyridazine",
+    "smiles": "C1=CC=NN=C1",
+    "D_exp": 45.663,
+    "category": "Organique"
+  },
+  {
+    "name": "2_Fluoroethanol",
+    "smiles": "C(CF)O",
+    "D_exp": 33.5057,
+    "category": "Organique"
+  },
+  {
+    "name": "cyclooctane",
+    "smiles": "C1CCCCCCC1",
+    "D_exp": 96.863,
+    "category": "Organique"
+  },
+  {
+    "name": "N_Methylethanamine",
+    "smiles": "CCNC",
+    "D_exp": 47.3295,
+    "category": "Organique"
+  },
+  {
+    "name": "DMDSch",
+    "smiles": "CSCSC",
+    "D_exp": 46.73,
+    "category": "Organique"
+  },
+  {
+    "name": "Chlorodibromomethane",
+    "smiles": "C(Cl)(Br)Br",
+    "D_exp": 12.9481,
+    "category": "Organique"
+  },
+  {
+    "name": "ClO2_rad",
+    "smiles": "O=[Cl]=O",
+    "D_exp": 5.338,
+    "category": "Inorganique"
+  },
+  {
+    "name": "acrolein",
+    "smiles": "O=CC=C",
+    "D_exp": 34.582,
+    "category": "Inorganique"
+  },
+  {
+    "name": "AlBr3",
+    "smiles": "Br[Al](Br)Br",
+    "D_exp": 11.304,
+    "category": "Inorganique"
+  },
+  {
+    "name": "acrolein",
+    "smiles": "C=CC=O",
+    "D_exp": 34.58,
+    "category": "Organique"
+  },
+  {
+    "name": "3-hydroxypyridine",
+    "smiles": "Oc1cccnc1",
+    "D_exp": 56.371,
+    "category": "Organique"
+  },
+  {
+    "name": "p-dichlorobenzene",
+    "smiles": "Clc1ccc(Cl)cc1",
+    "D_exp": 56.302,
+    "category": "Inorganique"
+  },
+  {
+    "name": "cyclopropene",
+    "smiles": "C1C=C1",
+    "D_exp": 28.449,
+    "category": "Organique"
+  },
+  {
+    "name": "CaO",
+    "smiles": "[Ca]=O",
+    "D_exp": 4.695,
+    "category": "Inorganique"
+  },
+  {
+    "name": "methyl_butyrate",
+    "smiles": "CCCC(=O)OC",
+    "D_exp": 69.625,
+    "category": "Organique"
+  },
+  {
+    "name": "perfluoropropane",
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)F",
+    "D_exp": 47.345,
+    "category": "Organique"
+  },
+  {
+    "name": "azetidine",
+    "smiles": "C1CNC1",
+    "D_exp": 42.175,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Hydrogen_isocyanide",
+    "smiles": "[C-]#[NH+]",
+    "D_exp": 12.4988,
+    "category": "Organique"
+  },
+  {
+    "name": "methyl_acrylate",
+    "smiles": "COC(=O)C=C",
+    "D_exp": 51.884,
+    "category": "Organique"
+  },
+  {
+    "name": "HI",
+    "smiles": "[H]I",
+    "D_exp": 3.05,
+    "category": "Organique"
+  },
+  {
+    "name": "cyclodecane",
+    "smiles": "C1CCCCCCCCC1",
+    "D_exp": 121.063,
+    "category": "Inorganique"
+  },
+  {
+    "name": "1,3-dioxolane",
+    "smiles": "C1COCO1",
+    "D_exp": 44.462,
+    "category": "Organique"
+  },
+  {
+    "name": "CHF2Cl",
+    "smiles": "FC(F)Cl",
+    "D_exp": 17.603,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Benzyl",
+    "smiles": "[CH2]C1=CC=CC=C1",
+    "D_exp": 64.8993,
+    "category": "Organique"
+  },
+  {
+    "name": "m-dichlorobenzene",
+    "smiles": "Clc1cccc(Cl)c1",
+    "D_exp": 56.334,
+    "category": "Inorganique"
+  },
+  {
+    "name": "1,3-dioxane",
+    "smiles": "C1COCOC1",
+    "D_exp": 56.887,
+    "category": "Organique"
+  },
+  {
+    "name": "1,3-propanediol",
+    "smiles": "OCCCO",
+    "D_exp": 49.757,
+    "category": "Organique"
+  },
+  {
+    "name": "salicylaldehyde",
+    "smiles": "OC1=CC=CC=C1C=O",
+    "D_exp": 72.22,
+    "category": "Organique"
+  },
+  {
+    "name": "P2",
+    "smiles": "[P]#[P]",
+    "D_exp": 5.033,
+    "category": "Organique"
+  },
+  {
+    "name": "2_Iodoethanol",
+    "smiles": "C(CI)O",
+    "D_exp": 30.9735,
+    "category": "Organique"
+  },
+  {
+    "name": "NMA",
+    "smiles": "CC(=O)N",
+    "D_exp": 36.26,
+    "category": "Organique"
+  },
+  {
+    "name": "Fluorodibromomethane",
+    "smiles": "C(F)(Br)Br",
+    "D_exp": 14.3873,
+    "category": "Organique"
+  },
+  {
+    "name": "hexafluorobenzene",
+    "smiles": "C1(=C(C(=C(C(=C1F)F)F)F)F)F",
+    "D_exp": 59.778,
+    "category": "Organique"
+  },
+  {
+    "name": "ZnO",
+    "smiles": "[Zn]=O",
+    "D_exp": 1.61,
+    "category": "Organique"
+  },
+  {
+    "name": "TMA",
+    "smiles": "CN(C)C",
+    "D_exp": 48.32,
+    "category": "Organique"
+  },
+  {
+    "name": "Hydrogen_iodide",
+    "smiles": "I",
+    "D_exp": 3.0487,
+    "category": "Organique"
+  },
+  {
+    "name": "Naphthalene",
+    "smiles": "C1=CC=C2C=CC=CC2=C1",
+    "D_exp": 89.8714,
+    "category": "Organique"
+  },
+  {
+    "name": "diethyl_oxalate",
+    "smiles": "CCOC(=O)C(=O)OCC",
+    "D_exp": 85.182,
+    "category": "Organique"
+  },
+  {
+    "name": "diketene",
+    "smiles": "C=CC(=O)OC=C",
+    "D_exp": 57.934,
+    "category": "Organique"
+  },
+  {
+    "name": "2-methoxyethanol",
+    "smiles": "COCCO",
+    "D_exp": 49.43,
+    "category": "Organique"
+  },
+  {
+    "name": "acrylic_acid",
+    "smiles": "OC(=O)C=C",
+    "D_exp": 39.83,
+    "category": "Inorganique"
+  },
+  {
+    "name": "AgF",
+    "smiles": "[Ag]F",
+    "D_exp": 3.54,
+    "category": "Organique"
+  },
+  {
+    "name": "H2S",
+    "smiles": "S",
+    "D_exp": 7.45,
+    "category": "Organique"
+  },
+  {
+    "name": "CaF",
+    "smiles": "[Ca]F",
+    "D_exp": 5.29,
+    "category": "Organique"
+  },
+  {
+    "name": "Phenanthrene",
+    "smiles": "C1=CC=C2C(=C1)C=CC3=CC=CC=C32",
+    "D_exp": 123.2118,
+    "category": "Organique"
+  },
+  {
+    "name": "SiOCl2",
+    "smiles": "Cl[Si](=O)Cl",
+    "D_exp": 15.395,
+    "category": "Inorganique"
+  },
+  {
+    "name": "CH",
+    "smiles": "[C][H]",
+    "D_exp": 3.465,
+    "category": "Organique"
+  },
+  {
+    "name": "paraldehyde",
+    "smiles": "CC1OC(C)OC(C)O1",
+    "D_exp": 86.095,
+    "category": "Organique"
+  },
+  {
+    "name": "CrF",
+    "smiles": "[Cr]F",
+    "D_exp": 4.56,
+    "category": "d-block"
+  },
+  {
+    "name": "methyl_vinyl_ether",
+    "smiles": "COC=C",
+    "D_exp": 39.501,
+    "category": "Organique"
+  },
+  {
+    "name": "12butadiene",
+    "smiles": "C=C=CC",
+    "D_exp": 41.27,
+    "category": "Organique"
+  },
+  {
+    "name": "propyl_acetate",
+    "smiles": "CCCOC(=O)C",
+    "D_exp": 69.739,
+    "category": "Organique"
+  },
+  {
+    "name": "12-crown-4",
+    "smiles": "C1COCCOCCOCCO1",
+    "D_exp": 113.739,
+    "category": "Organique"
+  },
+  {
+    "name": "difluorobromomethane",
+    "smiles": "FC(F)Br",
+    "D_exp": 16.887,
+    "category": "Organique"
+  },
+  {
+    "name": "Chlorofluoromethane",
+    "smiles": "C(F)Cl",
+    "D_exp": 16.5502,
+    "category": "Organique"
+  },
+  {
+    "name": "SiH2F2",
+    "smiles": "F[SiH2]F",
+    "D_exp": 17.244,
+    "category": "Organique"
+  },
+  {
+    "name": "p-fluorotoluene",
+    "smiles": "Cc1ccc(F)cc1",
+    "D_exp": 70.521,
+    "category": "Inorganique"
+  },
+  {
+    "name": "TiI4",
+    "smiles": "[Ti](I)(I)(I)I",
+    "D_exp": 12.199,
+    "category": "Inorganique"
+  },
+  {
+    "name": "ScOH",
+    "smiles": "O[Sc]",
+    "D_exp": 11.369,
+    "category": "Inorganique"
+  },
+  {
+    "name": "styrene",
+    "smiles": "C=Cc1ccccc1",
+    "D_exp": 74.85,
+    "category": "Organique"
+  },
+  {
+    "name": "MePH2",
+    "smiles": "PC",
+    "D_exp": 22.21,
+    "category": "Organique"
+  },
+  {
+    "name": "1,2-propanediol",
+    "smiles": "CC(O)CO",
+    "D_exp": 49.89,
+    "category": "Organique"
+  },
+  {
+    "name": "3_Dioxiranone",
+    "smiles": "C1(=O)OO1",
+    "D_exp": 16.7055,
+    "category": "Organique"
+  },
+  {
+    "name": "KCl",
+    "smiles": "[K]Cl",
+    "D_exp": 4.43,
+    "category": "Organique"
+  },
+  {
+    "name": "Ethoxy",
+    "smiles": "CC[O]",
+    "D_exp": 28.4427,
+    "category": "Organique"
+  },
+  {
+    "name": "Carbonic_acid",
+    "smiles": "C(=O)(O)O",
+    "D_exp": 25.3439,
+    "category": "Organique"
+  },
+  {
+    "name": "MecPr",
+    "smiles": "C1CC1C",
+    "D_exp": 47.8,
+    "category": "Organique"
+  },
+  {
+    "name": "Propadienone",
+    "smiles": "C=C=C=O",
+    "D_exp": 27.7867,
+    "category": "Organique"
+  },
+  {
+    "name": "methacrylonitrile",
+    "smiles": "CC(=C)C#N",
+    "D_exp": 44.995,
+    "category": "Organique"
+  },
+  {
+    "name": "benzonitrile",
+    "smiles": "N#Cc1ccccc1",
+    "D_exp": 65.956,
+    "category": "Inorganique"
+  },
+  {
+    "name": "pentafluoroethane",
+    "smiles": "FC(F)C(F)(F)F",
+    "D_exp": 32.671,
+    "category": "Organique"
+  },
+  {
+    "name": "1,3-dioxolane",
+    "smiles": "C1OCOC1",
+    "D_exp": 44.529,
+    "category": "Inorganique"
+  },
+  {
+    "name": "VinylCl",
+    "smiles": "C=CCl",
+    "D_exp": 22.66,
+    "category": "Organique"
+  },
+  {
+    "name": "BO",
+    "smiles": "[B]#[O]",
+    "D_exp": 8.28,
+    "category": "Organique"
+  },
+  {
+    "name": "CCl",
+    "smiles": "[C]Cl",
+    "D_exp": 3.96,
+    "category": "Organique"
+  },
+  {
+    "name": "cyclopentene",
+    "smiles": "C1CC=CC1",
+    "D_exp": 54.863,
+    "category": "Organique"
+  },
+  {
+    "name": "Difluorodibromomethane",
+    "smiles": "C(F)(F)(Br)Br",
+    "D_exp": 15.0293,
+    "category": "Organique"
+  },
+  {
+    "name": "pentafluoroethane",
+    "smiles": "FC(F)(F)C(F)F",
+    "D_exp": 32.671,
+    "category": "Inorganique"
+  },
+  {
+    "name": "isopropyl_acetate",
+    "smiles": "CC(C)OC(=O)C",
+    "D_exp": 69.887,
+    "category": "Organique"
+  },
+  {
+    "name": "4-hydroxypyridine",
+    "smiles": "Oc1ccncc1",
+    "D_exp": 56.232,
+    "category": "Organique"
+  },
+  {
+    "name": "isopropyl_acetate",
+    "smiles": "CC(=O)OC(C)C",
+    "D_exp": 69.89,
+    "category": "Inorganique"
+  },
+  {
+    "name": "HBF4_frag",
+    "smiles": "FB(F)(F)F",
+    "D_exp": 24.766,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Bromofluoromethane",
+    "smiles": "C(F)Br",
+    "D_exp": 15.8576,
+    "category": "Organique"
+  },
+  {
+    "name": "1-fluorobutane",
+    "smiles": "CCCCF",
+    "D_exp": 53.844,
+    "category": "Inorganique"
+  },
+  {
+    "name": "benzoxazole",
+    "smiles": "c1ccc2ocnc2c1",
+    "D_exp": 70.306,
+    "category": "Organique"
+  },
+  {
+    "name": "Fulvenone",
+    "smiles": "C1=CC(=C=O)C=C1",
+    "D_exp": 54.5389,
+    "category": "Organique"
+  },
+  {
+    "name": "FeCl3",
+    "smiles": "Cl[Fe](Cl)Cl",
+    "D_exp": 10.71,
+    "category": "d-block"
+  },
+  {
+    "name": "SiC",
+    "smiles": "[Si]#[C]",
+    "D_exp": 4.64,
+    "category": "Organique"
+  },
+  {
+    "name": "ZnH",
+    "smiles": "[Zn][H]",
+    "D_exp": 0.85,
+    "category": "Organique"
+  },
+  {
+    "name": "ethyl_formate",
+    "smiles": "CCOC=O",
+    "D_exp": 44.855,
+    "category": "Organique"
+  },
+  {
+    "name": "2,3-dimethyl-1,3-butadiene",
+    "smiles": "CC(=C)C(=C)C",
+    "D_exp": 66.664,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Hypochlorous_acid",
+    "smiles": "OCl",
+    "D_exp": 6.8025,
+    "category": "Organique"
+  },
+  {
+    "name": "acrylic_acid",
+    "smiles": "C=CC(=O)O",
+    "D_exp": 39.907,
+    "category": "Organique"
+  },
+  {
+    "name": "2-azetidinone",
+    "smiles": "O=C1CCN1",
+    "D_exp": 42.057,
+    "category": "Organique"
+  },
+  {
+    "name": "NiH",
+    "smiles": "[Ni][H]",
+    "D_exp": 2.54,
+    "category": "Organique"
+  },
+  {
+    "name": "2_Butynyl",
+    "smiles": "CC#C[CH2]",
+    "D_exp": 37.3914,
+    "category": "Organique"
+  },
+  {
+    "name": "dimethylurea",
+    "smiles": "CNC(=O)NC",
+    "D_exp": 55.974,
+    "category": "Organique"
+  },
+  {
+    "name": "methylenecyclopropane",
+    "smiles": "C=C1CC1",
+    "D_exp": 41.133,
+    "category": "Organique"
+  },
+  {
+    "name": "DMS",
+    "smiles": "CSC",
+    "D_exp": 31.67,
+    "category": "Organique"
+  },
+  {
+    "name": "MnCl2",
+    "smiles": "Cl[Mn]Cl",
+    "D_exp": 8.67,
+    "category": "d-block"
+  },
+  {
+    "name": "alanine",
+    "smiles": "CC(N)C(=O)O",
+    "D_exp": 52.558,
+    "category": "Organique"
+  },
+  {
+    "name": "2-methylimidazole",
+    "smiles": "CC1=NC=CN1",
+    "D_exp": 52.237,
+    "category": "Organique"
+  },
+  {
+    "name": "1_1_Ethenediol",
+    "smiles": "C=C(O)O",
+    "D_exp": 31.8881,
+    "category": "Organique"
+  },
+  {
+    "name": "LiOH",
+    "smiles": "[Li]O",
+    "D_exp": 8.921,
+    "category": "Inorganique"
+  },
+  {
+    "name": "trioxane",
+    "smiles": "C1OCOCO1",
+    "D_exp": 48.412,
+    "category": "Organique"
+  },
+  {
+    "name": "S2F2",
+    "smiles": "FSSF",
+    "D_exp": 11.412,
+    "category": "Inorganique"
+  },
+  {
+    "name": "SiF",
+    "smiles": "[Si]F",
+    "D_exp": 5.57,
+    "category": "Organique"
+  },
+  {
+    "name": "allyl_chloride",
+    "smiles": "C=CCCl",
+    "D_exp": 34.886,
+    "category": "Organique"
+  },
+  {
+    "name": "propylene_oxide",
+    "smiles": "CC1CO1",
+    "D_exp": 39.31,
+    "category": "Organique"
+  },
+  {
+    "name": "VO2",
+    "smiles": "O=[V]=O",
+    "D_exp": 13.448,
+    "category": "Inorganique"
+  },
+  {
+    "name": "1,4-cyclohexadiene",
+    "smiles": "C1C=CCC=C1",
+    "D_exp": 61.565,
+    "category": "Organique"
+  },
+  {
+    "name": "glycolal",
+    "smiles": "OCC=O",
+    "D_exp": 32.44,
+    "category": "Organique"
+  },
+  {
+    "name": "4-aminophenol",
+    "smiles": "NC1=CC=C(O)C=C1",
+    "D_exp": 68.559,
+    "category": "Organique"
+  },
+  {
+    "name": "benzimidazole",
+    "smiles": "C1=CC=C2C(=C1)N=CN2",
+    "D_exp": 73.468,
+    "category": "Organique"
+  },
+  {
+    "name": "Peroxynitrous_acid",
+    "smiles": "N(=O)OO",
+    "D_exp": 14.7104,
+    "category": "Organique"
+  },
+  {
+    "name": "2,6-dimethylpyridine",
+    "smiles": "CC1=CC=CC(=N1)C",
+    "D_exp": 76.62,
+    "category": "Organique"
+  },
+  {
+    "name": "AlH",
+    "smiles": "[Al][H]",
+    "D_exp": 2.98,
+    "category": "Organique"
+  },
+  {
+    "name": "trifluoroethanol",
+    "smiles": "C(C(F)(F)F)O",
+    "D_exp": 35.892,
+    "category": "Organique"
+  },
+  {
+    "name": "Butatriene",
+    "smiles": "C=C=C=C",
+    "D_exp": 35.0462,
+    "category": "Organique"
+  },
+  {
+    "name": "Tribromochloromethane",
+    "smiles": "C(Cl)(Br)(Br)Br",
+    "D_exp": 11.2062,
+    "category": "Organique"
+  },
+  {
+    "name": "NO2",
+    "smiles": "O=[N]=O",
+    "D_exp": 9.62,
+    "category": "Organique"
+  },
+  {
+    "name": "isoprene",
+    "smiles": "CC(=C)C=C",
+    "D_exp": 54.43,
+    "category": "Organique"
+  },
+  {
+    "name": "FeCl",
+    "smiles": "[Fe]Cl",
+    "D_exp": 3.52,
+    "category": "d-block"
+  },
+  {
+    "name": "NaO",
+    "smiles": "[Na][O]",
+    "D_exp": 2.6,
+    "category": "Organique"
+  },
+  {
+    "name": "1,3-cyclohexadiene",
+    "smiles": "C1CC=CC=C1",
+    "D_exp": 61.544,
+    "category": "Organique"
+  },
+  {
+    "name": "N2H4",
+    "smiles": "NN",
+    "D_exp": 17.96,
+    "category": "Organique"
+  },
+  {
+    "name": "CS2",
+    "smiles": "S=C=S",
+    "D_exp": 11.09,
+    "category": "Organique"
+  },
+  {
+    "name": "NaBr",
+    "smiles": "[Na]Br",
+    "D_exp": 3.79,
+    "category": "Organique"
+  },
+  {
+    "name": "adamantane",
+    "smiles": "C1C2CC3CC1CC(C2)C3",
+    "D_exp": 111.824,
+    "category": "Organique"
+  },
+  {
+    "name": "SH",
+    "smiles": "[S][H]",
+    "D_exp": 3.56,
+    "category": "Organique"
+  },
+  {
+    "name": "ethanol",
+    "smiles": "CCO",
+    "D_exp": 33.43,
+    "category": "Organique"
+  },
+  {
+    "name": "2-aminophenol",
+    "smiles": "NC1=CC=CC=C1O",
+    "D_exp": 68.549,
+    "category": "Organique"
+  },
+  {
+    "name": "BF",
+    "smiles": "[B]F",
+    "D_exp": 7.81,
+    "category": "Organique"
+  },
+  {
+    "name": "3_Buten_2_one",
+    "smiles": "CC(=O)C=C",
+    "D_exp": 46.4575,
+    "category": "Organique"
+  },
+  {
+    "name": "CaF2",
+    "smiles": "F[Ca]F",
+    "D_exp": 11.684,
+    "category": "Inorganique"
+  },
+  {
+    "name": "cC3H6",
+    "smiles": "C1CC1",
+    "D_exp": 35.29,
+    "category": "Organique"
+  },
+  {
+    "name": "C2H4",
+    "smiles": "C=C",
+    "D_exp": 23.09,
+    "category": "Organique"
+  },
+  {
+    "name": "CBrCl3",
+    "smiles": "ClC(Cl)(Cl)Br",
+    "D_exp": 12.867,
+    "category": "Inorganique"
+  },
+  {
+    "name": "1-methylimidazole",
+    "smiles": "CN1C=CN=C1",
+    "D_exp": 51.755,
+    "category": "Organique"
+  },
+  {
+    "name": "Si2Cl6",
+    "smiles": "Cl[Si](Cl)(Cl)[Si](Cl)(Cl)Cl",
+    "D_exp": 27.372,
+    "category": "Inorganique"
+  },
+  {
+    "name": "TiO2",
+    "smiles": "O=[Ti]=O",
+    "D_exp": 13.23,
+    "category": "d-block"
+  },
+  {
+    "name": "CuBr2",
+    "smiles": "Br[Cu]Br",
+    "D_exp": 5.267,
+    "category": "Inorganique"
+  },
+  {
+    "name": "NiO",
+    "smiles": "[Ni]=O",
+    "D_exp": 3.91,
+    "category": "Organique"
+  },
+  {
+    "name": "1_2_Butadiene",
+    "smiles": "CC=C=C",
+    "D_exp": 41.1027,
+    "category": "Organique"
+  },
+  {
+    "name": "HFC_134a",
+    "smiles": "FCC(F)(F)F",
+    "D_exp": 31.864,
+    "category": "Organique"
+  },
+  {
+    "name": "biuret",
+    "smiles": "NC(=O)NC(=O)N",
+    "D_exp": 51.641,
+    "category": "Organique"
+  },
+  {
+    "name": "butyric_acid",
+    "smiles": "CCCC(=O)O",
+    "D_exp": 57.883,
+    "category": "Organique"
+  },
+  {
+    "name": "isoquinoline",
+    "smiles": "C1=CC=C2C=NC=CC2=C1",
+    "D_exp": 85.445,
+    "category": "Organique"
+  },
+  {
+    "name": "EtSSH",
+    "smiles": "CCSS",
+    "D_exp": 34.46,
+    "category": "Organique"
+  },
+  {
+    "name": "methyl_thiocyanate",
+    "smiles": "CSC#N",
+    "D_exp": 28.053,
+    "category": "Organique"
+  },
+  {
+    "name": "quinoline",
+    "smiles": "C1=CC=C2C(=C1)C=CC=N2",
+    "D_exp": 85.488,
+    "category": "Organique"
+  },
+  {
+    "name": "methyl_propanoate",
+    "smiles": "CCC(=O)OC",
+    "D_exp": 57.471,
+    "category": "Organique"
+  },
+  {
+    "name": "glycerol",
+    "smiles": "OCC(O)CO",
+    "D_exp": 54.096,
+    "category": "Organique"
+  },
+  {
+    "name": "diethyl_carbonate",
+    "smiles": "CCOC(=O)OCC",
+    "D_exp": 74.093,
+    "category": "Organique"
+  },
+  {
+    "name": "Ethylperoxy",
+    "smiles": "CCO[O]",
+    "D_exp": 31.115,
+    "category": "Organique"
+  },
+  {
+    "name": "Bromoform",
+    "smiles": "C(Br)(Br)Br",
+    "D_exp": 12.2645,
+    "category": "Organique"
+  },
+  {
+    "name": "MnBr2",
+    "smiles": "Br[Mn]Br",
+    "D_exp": 7.613,
+    "category": "Inorganique"
+  },
+  {
+    "name": "CF",
+    "smiles": "[C]F",
+    "D_exp": 5.56,
+    "category": "Organique"
+  },
+  {
+    "name": "Isobutene",
+    "smiles": "CC(=C)C",
+    "D_exp": 47.3619,
+    "category": "Organique"
+  },
+  {
+    "name": "isobutyric_acid",
+    "smiles": "CC(C)C(=O)O",
+    "D_exp": 57.968,
+    "category": "Organique"
+  },
+  {
+    "name": "DMA",
+    "smiles": "CNC",
+    "D_exp": 36.34,
+    "category": "Organique"
+  },
+  {
+    "name": "MnF2",
+    "smiles": "F[Mn]F",
+    "D_exp": 11.11,
+    "category": "d-block"
+  },
+  {
+    "name": "VF",
+    "smiles": "[V]F",
+    "D_exp": 5.45,
+    "category": "d-block"
+  },
+  {
+    "name": "CuCl2",
+    "smiles": "Cl[Cu]Cl",
+    "D_exp": 6.46,
+    "category": "d-block"
+  },
+  {
+    "name": "succinic_anhydride",
+    "smiles": "O=C1OC(=O)CC1",
+    "D_exp": 51.962,
+    "category": "Organique"
+  },
+  {
+    "name": "adiponitrile",
+    "smiles": "N#CCCCCC#N",
+    "D_exp": 71.555,
+    "category": "Organique"
+  },
+  {
+    "name": "CH3OH",
+    "smiles": "CO",
+    "D_exp": 21.29,
+    "category": "Organique"
+  },
+  {
+    "name": "ethyl_propanoate",
+    "smiles": "CCOC(=O)CC",
+    "D_exp": 70.109,
+    "category": "Organique"
+  },
+  {
+    "name": "NiBr2",
+    "smiles": "Br[Ni]Br",
+    "D_exp": 6.71,
+    "category": "Inorganique"
+  },
+  {
+    "name": "ClF3",
+    "smiles": "F[Cl](F)F",
+    "D_exp": 5.417,
+    "category": "Inorganique"
+  },
+  {
+    "name": "cyclopentadiene",
+    "smiles": "C1C=CC=C1",
+    "D_exp": 49.304,
+    "category": "Organique"
+  },
+  {
+    "name": "CuCl",
+    "smiles": "Cl[Cu]",
+    "D_exp": 3.75,
+    "category": "d-block"
+  },
+  {
+    "name": "Phenylethene",
+    "smiles": "C=CC1=CC=CC=C1",
+    "D_exp": 75.1377,
+    "category": "Organique"
+  },
+  {
+    "name": "1_Phenylethenol",
+    "smiles": "C=C(C1=CC=CC=C1)O",
+    "D_exp": 79.5546,
+    "category": "Organique"
+  },
+  {
+    "name": "CH2O",
+    "smiles": "C=O",
+    "D_exp": 15.46,
+    "category": "Organique"
+  },
+  {
+    "name": "EtOAc",
+    "smiles": "CCOC(=O)C",
+    "D_exp": 57.56,
+    "category": "Organique"
+  },
+  {
+    "name": "ethyl_acetate",
+    "smiles": "CC(=O)OCC",
+    "D_exp": 57.559,
+    "category": "Inorganique"
+  },
+  {
+    "name": "2-aminopyridine",
+    "smiles": "Nc1ccccn1",
+    "D_exp": 59.27,
+    "category": "Organique"
+  },
+  {
+    "name": "FeBr2",
+    "smiles": "Br[Fe]Br",
+    "D_exp": 7.297,
+    "category": "Inorganique"
+  },
+  {
+    "name": "AuH",
+    "smiles": "[Au][H]",
+    "D_exp": 3.11,
+    "category": "Organique"
+  },
+  {
+    "name": "epichlorohydrin",
+    "smiles": "ClCC1CO1",
+    "D_exp": 38.959,
+    "category": "Organique"
+  },
+  {
+    "name": "2-methylpyridine",
+    "smiles": "CC1=CC=CC=N1",
+    "D_exp": 64.254,
+    "category": "Organique"
+  },
+  {
+    "name": "BH3",
+    "smiles": "[BH3]",
+    "D_exp": 11.535,
+    "category": "Inorganique"
+  },
+  {
+    "name": "oxetane",
+    "smiles": "C1COC1",
+    "D_exp": 39.26,
+    "category": "Organique"
+  },
+  {
+    "name": "benzoic_acid",
+    "smiles": "OC(=O)c1ccccc1",
+    "D_exp": 73.764,
+    "category": "Inorganique"
+  },
+  {
+    "name": "pyridine",
+    "smiles": "c1ccncc1",
+    "D_exp": 51.43,
+    "category": "Organique"
+  },
+  {
+    "name": "butad",
+    "smiles": "C=CC=C",
+    "D_exp": 42.13,
+    "category": "Organique"
+  },
+  {
+    "name": "4-methylpyridine",
+    "smiles": "CC1=CC=NC=C1",
+    "D_exp": 64.203,
+    "category": "Organique"
+  },
+  {
+    "name": "indole",
+    "smiles": "C1=CC=C2C(=C1)C=CN2",
+    "D_exp": 78.208,
+    "category": "Organique"
+  },
+  {
+    "name": "EtCN",
+    "smiles": "CCC#N",
+    "D_exp": 37.93,
+    "category": "Organique"
+  },
+  {
+    "name": "Acetone_enol",
+    "smiles": "CC(=C)O",
+    "D_exp": 39.6181,
+    "category": "Organique"
+  },
+  {
+    "name": "Dichlorodifluoromethane",
+    "smiles": "C(F)(F)(Cl)Cl",
+    "D_exp": 16.5227,
+    "category": "Organique"
+  },
+  {
+    "name": "2_Methylallyl",
+    "smiles": "CC(=C)[CH2]",
+    "D_exp": 43.551,
+    "category": "Organique"
+  },
+  {
+    "name": "HOSO2",
+    "smiles": "OS(=O)=O",
+    "D_exp": 20.871,
+    "category": "Inorganique"
+  },
+  {
+    "name": "MgH",
+    "smiles": "[Mg][H]",
+    "D_exp": 1.28,
+    "category": "Organique"
+  },
+  {
+    "name": "Iodotrifluoromethane",
+    "smiles": "C(F)(F)(F)I",
+    "D_exp": 16.9281,
+    "category": "Organique"
+  },
+  {
+    "name": "3-methylpyridine",
+    "smiles": "CC1=CN=CC=C1",
+    "D_exp": 64.179,
+    "category": "Organique"
+  },
+  {
+    "name": "SO",
+    "smiles": "O=S",
+    "D_exp": 5.343,
+    "category": "Organique"
+  },
+  {
+    "name": "PFCl2",
+    "smiles": "ClP(Cl)F",
+    "D_exp": 11.188,
+    "category": "Inorganique"
+  },
+  {
+    "name": "triethylborane",
+    "smiles": "CCB(CC)CC",
+    "D_exp": 86.331,
+    "category": "Organique"
+  },
+  {
+    "name": "Isocyanobenzene",
+    "smiles": "[C-]#[N+]C1=CC=CC=C1",
+    "D_exp": 64.3577,
+    "category": "Organique"
+  },
+  {
+    "name": "F2",
+    "smiles": "FF",
+    "D_exp": 1.602,
+    "category": "Organique"
+  },
+  {
+    "name": "Allyl",
+    "smiles": "C=C[CH2]",
+    "D_exp": 31.4505,
+    "category": "Organique"
+  },
+  {
+    "name": "Tetrafluoroethylene",
+    "smiles": "C(=C(F)F)(F)F",
+    "D_exp": 24.9024,
+    "category": "Organique"
+  },
+  {
+    "name": "4-aminopyridine",
+    "smiles": "Nc1ccncc1",
+    "D_exp": 59.148,
+    "category": "Organique"
+  },
+  {
+    "name": "CFC12",
+    "smiles": "FC(F)(Cl)Cl",
+    "D_exp": 16.54,
+    "category": "Organique"
+  },
+  {
+    "name": "thymine",
+    "smiles": "CC1=CNC(=O)NC1=O",
+    "D_exp": 69.066,
+    "category": "Organique"
+  },
+  {
+    "name": "1,4-pentadiene",
+    "smiles": "C=CCC=C",
+    "D_exp": 54.127,
+    "category": "Inorganique"
+  },
+  {
+    "name": "n_Propyl",
+    "smiles": "CC[CH2]",
+    "D_exp": 36.5658,
+    "category": "Organique"
+  },
+  {
+    "name": "oxazole",
+    "smiles": "c1cocn1",
+    "D_exp": 36.704,
+    "category": "Inorganique"
+  },
+  {
+    "name": "glyoxal",
+    "smiles": "O=CC=O",
+    "D_exp": 26.74,
+    "category": "Organique"
+  },
+  {
+    "name": "lactic_acid",
+    "smiles": "CC(C(=O)O)O",
+    "D_exp": 49.635,
+    "category": "Organique"
+  },
+  {
+    "name": "Iodobenzene",
+    "smiles": "C1=CC=C(C=C1)I",
+    "D_exp": 54.6916,
+    "category": "Organique"
+  },
+  {
+    "name": "diethanolamine",
+    "smiles": "OCCNCCO",
+    "D_exp": 69.718,
+    "category": "Organique"
+  },
+  {
+    "name": "N-methylimidazole",
+    "smiles": "Cn1ccnc1",
+    "D_exp": 54.134,
+    "category": "Inorganique"
+  },
+  {
+    "name": "urea",
+    "smiles": "NC(N)=O",
+    "D_exp": 31.97,
+    "category": "Organique"
+  },
+  {
+    "name": "Difluorochlorobromomethane",
+    "smiles": "C(F)(F)(Cl)Br",
+    "D_exp": 15.8196,
+    "category": "Organique"
+  },
+  {
+    "name": "CCl4mol",
+    "smiles": "ClC(Cl)(Cl)Cl",
+    "D_exp": 13.01,
+    "category": "Organique"
+  },
+  {
+    "name": "iso_Butyl",
+    "smiles": "CC(C)[CH2]",
+    "D_exp": 48.6367,
+    "category": "Organique"
+  },
+  {
+    "name": "n_Butyl",
+    "smiles": "CCC[CH2]",
+    "D_exp": 48.5768,
+    "category": "Organique"
+  },
+  {
+    "name": "imidazole",
+    "smiles": "C1=CN=CN1",
+    "D_exp": 39.742,
+    "category": "Organique"
+  },
+  {
+    "name": "EG",
+    "smiles": "OCCO",
+    "D_exp": 37.64,
+    "category": "Organique"
+  },
+  {
+    "name": "135hextr",
+    "smiles": "C=CC=CC=C",
+    "D_exp": 60.93,
+    "category": "Organique"
+  },
+  {
+    "name": "AlF",
+    "smiles": "[Al]F",
+    "D_exp": 6.88,
+    "category": "Organique"
+  },
+  {
+    "name": "Hypobromous_acid",
+    "smiles": "OBr",
+    "D_exp": 6.4892,
+    "category": "Organique"
+  },
+  {
+    "name": "Hydrazino",
+    "smiles": "N[NH]",
+    "D_exp": 14.0383,
+    "category": "Organique"
+  },
+  {
+    "name": "CH3Cl",
+    "smiles": "CCl",
+    "D_exp": 16.31,
+    "category": "Organique"
+  },
+  {
+    "name": "methyl_cyanoacetate",
+    "smiles": "COC(=O)CC#N",
+    "D_exp": 53.612,
+    "category": "Organique"
+  },
+  {
+    "name": "ZnCl",
+    "smiles": "[Zn]Cl",
+    "D_exp": 2.29,
+    "category": "d-block"
+  },
+  {
+    "name": "KBr",
+    "smiles": "[K]Br",
+    "D_exp": 3.93,
+    "category": "Organique"
+  },
+  {
+    "name": "Cl2O",
+    "smiles": "ClOCl",
+    "D_exp": 4.265,
+    "category": "Organique"
+  },
+  {
+    "name": "NH2OH",
+    "smiles": "NO",
+    "D_exp": 14.706,
+    "category": "Organique"
+  },
+  {
+    "name": "IBr",
+    "smiles": "BrI",
+    "D_exp": 1.843,
+    "category": "Inorganique"
+  },
+  {
+    "name": "3-aminopyridine",
+    "smiles": "Nc1cccnc1",
+    "D_exp": 58.999,
+    "category": "Organique"
+  },
+  {
+    "name": "vinylOH",
+    "smiles": "OC=C",
+    "D_exp": 27.76,
+    "category": "Organique"
+  },
+  {
+    "name": "AgH",
+    "smiles": "[Ag][H]",
+    "D_exp": 2.29,
+    "category": "Organique"
+  },
+  {
+    "name": "NiCl2",
+    "smiles": "Cl[Ni]Cl",
+    "D_exp": 7.74,
+    "category": "d-block"
+  },
+  {
+    "name": "CuF",
+    "smiles": "[Cu]F",
+    "D_exp": 4.42,
+    "category": "Organique"
+  },
+  {
+    "name": "CaCl",
+    "smiles": "[Ca]Cl",
+    "D_exp": 4.13,
+    "category": "Organique"
+  },
+  {
+    "name": "Ac2O",
+    "smiles": "CC(=O)OC(=O)C",
+    "D_exp": 56.99,
+    "category": "Organique"
+  },
+  {
+    "name": "BF2Cl",
+    "smiles": "FB(F)Cl",
+    "D_exp": 17.071,
+    "category": "Inorganique"
+  },
+  {
+    "name": "S2F10",
+    "smiles": "FS(F)(F)(F)(F)S(F)(F)(F)(F)F",
+    "D_exp": 35.375,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Dibromophosgene",
+    "smiles": "C(=O)(Br)Br",
+    "D_exp": 13.2659,
+    "category": "Organique"
+  },
+  {
+    "name": "SiHCl3",
+    "smiles": "Cl[SiH](Cl)Cl",
+    "D_exp": 15.838,
+    "category": "Organique"
+  },
+  {
+    "name": "nitrobenzene",
+    "smiles": "[O-][N+](=O)c1ccccc1",
+    "D_exp": 65.229,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Tetrabromomethane",
+    "smiles": "C(Br)(Br)(Br)Br",
+    "D_exp": 10.5299,
+    "category": "Organique"
+  },
+  {
+    "name": "CrO3",
+    "smiles": "O=[Cr](=O)=O",
+    "D_exp": 14.9,
+    "category": "d-block"
+  },
+  {
+    "name": "1,1,2-trifluoroethane",
+    "smiles": "FCC(F)F",
+    "D_exp": 30.979,
+    "category": "Inorganique"
+  },
+  {
+    "name": "DMC",
+    "smiles": "COC(=O)OC",
+    "D_exp": 49.33,
+    "category": "Organique"
+  },
+  {
+    "name": "pyrrole",
+    "smiles": "c1cc[nH]c1",
+    "D_exp": 44.59,
+    "category": "Organique"
+  },
+  {
+    "name": "MnOH",
+    "smiles": "O[Mn]",
+    "D_exp": 8.58,
+    "category": "Inorganique"
+  },
+  {
+    "name": "OF",
+    "smiles": "[O]F",
+    "D_exp": 2.24,
+    "category": "Organique"
+  },
+  {
+    "name": "methyl_acetate",
+    "smiles": "CC(=O)OC",
+    "D_exp": 45.289,
+    "category": "Organique"
+  },
+  {
+    "name": "MeOCHO",
+    "smiles": "COC=O",
+    "D_exp": 32.74,
+    "category": "Organique"
+  },
+  {
+    "name": "MgF",
+    "smiles": "[Mg]F",
+    "D_exp": 4.59,
+    "category": "Organique"
+  },
+  {
+    "name": "LiO",
+    "smiles": "[Li][O]",
+    "D_exp": 3.44,
+    "category": "Organique"
+  },
+  {
+    "name": "trifluoroacetic_acid",
+    "smiles": "OC(=O)C(F)(F)F",
+    "D_exp": 35.837,
+    "category": "Organique"
+  },
+  {
+    "name": "norbornene",
+    "smiles": "C1CC2CC1C=C2",
+    "D_exp": 73.735,
+    "category": "Organique"
+  },
+  {
+    "name": "SiF3Br",
+    "smiles": "F[Si](F)(F)Br",
+    "D_exp": 19.305,
+    "category": "Inorganique"
+  },
+  {
+    "name": "BeCl",
+    "smiles": "[Be]Cl",
+    "D_exp": 3.85,
+    "category": "Organique"
+  },
+  {
+    "name": "Vinyl_bromide",
+    "smiles": "C=CBr",
+    "D_exp": 21.7036,
+    "category": "Organique"
+  },
+  {
+    "name": "PH3",
+    "smiles": "P",
+    "D_exp": 9.89,
+    "category": "Organique"
+  },
+  {
+    "name": "BF3",
+    "smiles": "FB(F)F",
+    "D_exp": 20.01,
+    "category": "Organique"
+  },
+  {
+    "name": "benzothiophene",
+    "smiles": "c1ccc2sccc2c1",
+    "D_exp": 76.391,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Pentachloroethane",
+    "smiles": "C(C(Cl)(Cl)Cl)(Cl)Cl",
+    "D_exp": 24.7442,
+    "category": "Organique"
+  },
+  {
+    "name": "Al2",
+    "smiles": "[Al]=[Al]",
+    "D_exp": 1.55,
+    "category": "Organique"
+  },
+  {
+    "name": "CF4",
+    "smiles": "FC(F)(F)F",
+    "D_exp": 20.2,
+    "category": "Organique"
+  },
+  {
+    "name": "NaOH",
+    "smiles": "[Na]O",
+    "D_exp": 8.006,
+    "category": "Inorganique"
+  },
+  {
+    "name": "uracil",
+    "smiles": "O=C1NC=CC(=O)N1",
+    "D_exp": 56.854,
+    "category": "Organique"
+  },
+  {
+    "name": "Sulfuric_acid",
+    "smiles": "OS(=O)(=O)O",
+    "D_exp": 24.9695,
+    "category": "Organique"
+  },
+  {
+    "name": "CH3Br",
+    "smiles": "CBr",
+    "D_exp": 15.69,
+    "category": "Organique"
+  },
+  {
+    "name": "propylene_carbonate",
+    "smiles": "CC1COC(=O)O1",
+    "D_exp": 57.371,
+    "category": "Organique"
+  },
+  {
+    "name": "S2Cl2",
+    "smiles": "ClSSCl",
+    "D_exp": 8.46,
+    "category": "Inorganique"
+  },
+  {
+    "name": "HNO",
+    "smiles": "N=O",
+    "D_exp": 8.57,
+    "category": "Organique"
+  },
+  {
+    "name": "triethyl_phosphate",
+    "smiles": "CCOP(=O)(OCC)OCC",
+    "D_exp": 103.656,
+    "category": "Organique"
+  },
+  {
+    "name": "FeO",
+    "smiles": "[Fe]=O",
+    "D_exp": 4.17,
+    "category": "Organique"
+  },
+  {
+    "name": "1_3_Cycloheptadiene",
+    "smiles": "C1CC=CC=CC1",
+    "D_exp": 72.7223,
+    "category": "Organique"
+  },
+  {
+    "name": "Fulminic_acid",
+    "smiles": "[C-]#[N+]O",
+    "D_exp": 15.2783,
+    "category": "Organique"
+  },
+  {
+    "name": "AlCl3",
+    "smiles": "Cl[Al](Cl)Cl",
+    "D_exp": 13.16,
+    "category": "Organique"
+  },
+  {
+    "name": "divinyl_ether",
+    "smiles": "C=COC=C",
+    "D_exp": 46.194,
+    "category": "Organique"
+  },
+  {
+    "name": "VOF3",
+    "smiles": "F[V](=O)(F)F",
+    "D_exp": 22.558,
+    "category": "Inorganique"
+  },
+  {
+    "name": "MgBr2",
+    "smiles": "Br[Mg]Br",
+    "D_exp": 7.455,
+    "category": "Inorganique"
+  },
+  {
+    "name": "MeSiH3",
+    "smiles": "[SiH3]C",
+    "D_exp": 25.96,
+    "category": "Organique"
+  },
+  {
+    "name": "3-nitrotoluene",
+    "smiles": "CC1=CC(=CC=C1)[N+](=O)[O-]",
+    "D_exp": 77.613,
+    "category": "Organique"
+  },
+  {
+    "name": "Biallenyl",
+    "smiles": "C=C=CC=C=C",
+    "D_exp": 53.3265,
+    "category": "Organique"
+  },
+  {
+    "name": "VOCl3",
+    "smiles": "Cl[V](=O)(Cl)Cl",
+    "D_exp": 19.301,
+    "category": "Inorganique"
+  },
+  {
+    "name": "glycine",
+    "smiles": "NCC(=O)O",
+    "D_exp": 40.55,
+    "category": "Organique"
+  },
+  {
+    "name": "Methyl_hypochlorite",
+    "smiles": "COCl",
+    "D_exp": 18.4388,
+    "category": "Organique"
+  },
+  {
+    "name": "vinyl_fluoride",
+    "smiles": "C=CF",
+    "D_exp": 23.895,
+    "category": "Organique"
+  },
+  {
+    "name": "Tetrachloroethene",
+    "smiles": "C(=C(Cl)Cl)(Cl)Cl",
+    "D_exp": 19.9188,
+    "category": "Organique"
+  },
+  {
+    "name": "perfluorocyclobutane",
+    "smiles": "FC1(F)C(F)(F)C(F)(F)C1(F)F",
+    "D_exp": 52.282,
+    "category": "Organique"
+  },
+  {
+    "name": "Cycloheptatriene",
+    "smiles": "C1C=CC=CC=C1",
+    "D_exp": 67.3747,
+    "category": "Organique"
+  },
+  {
+    "name": "4-nitrotoluene",
+    "smiles": "CC1=CC=C(C=C1)[N+](=O)[O-]",
+    "D_exp": 77.554,
+    "category": "Organique"
+  },
+  {
+    "name": "Trimethylsiloxy",
+    "smiles": "C[Si](C)(C)[O]",
+    "D_exp": 51.4013,
+    "category": "Organique"
+  },
+  {
+    "name": "CuBr",
+    "smiles": "Br[Cu]",
+    "D_exp": 3.36,
+    "category": "d-block"
+  },
+  {
+    "name": "TiF4",
+    "smiles": "[Ti](F)(F)(F)F",
+    "D_exp": 24.27,
+    "category": "d-block"
+  },
+  {
+    "name": "benzofuran",
+    "smiles": "c1ccc2occc2c1",
+    "D_exp": 75.676,
+    "category": "Inorganique"
+  },
+  {
+    "name": "1,2-difluoroethane",
+    "smiles": "FCCF",
+    "D_exp": 30.161,
+    "category": "Organique"
+  },
+  {
+    "name": "Vinyl_iodide",
+    "smiles": "C=CI",
+    "D_exp": 21.1231,
+    "category": "Organique"
+  },
+  {
+    "name": "malonic_acid",
+    "smiles": "C(C(=O)O)C(=O)O",
+    "D_exp": 49.329,
+    "category": "Organique"
+  },
+  {
+    "name": "Oxaziridine",
+    "smiles": "C1NO1",
+    "D_exp": 20.3288,
+    "category": "Organique"
+  },
+  {
+    "name": "1_5_Hexadiene",
+    "smiles": "C=CCCC=C",
+    "D_exp": 65.5048,
+    "category": "Organique"
+  },
+  {
+    "name": "MgI",
+    "smiles": "[Mg]I",
+    "D_exp": 2.32,
+    "category": "Inorganique"
+  },
+  {
+    "name": "nitromethane",
+    "smiles": "C[N+](=O)[O-]",
+    "D_exp": 25.32,
+    "category": "Organique"
+  },
+  {
+    "name": "SOCl2",
+    "smiles": "ClS(Cl)=O",
+    "D_exp": 10.172,
+    "category": "Organique"
+  },
+  {
+    "name": "maleic_anhydride",
+    "smiles": "O=C1OC(=O)C=C1",
+    "D_exp": 46.29,
+    "category": "Organique"
+  },
+  {
+    "name": "succinic_acid",
+    "smiles": "C(CC(=O)O)C(=O)O",
+    "D_exp": 62.119,
+    "category": "Organique"
+  },
+  {
+    "name": "2-nitrotoluene",
+    "smiles": "CC1=CC=CC=C1[N+](=O)[O-]",
+    "D_exp": 77.407,
+    "category": "Organique"
+  },
+  {
+    "name": "Na2F2",
+    "smiles": "F[Na].[Na]F",
+    "D_exp": 9.844,
+    "category": "Inorganique"
+  },
+  {
+    "name": "methyl_isocyanate",
+    "smiles": "CN=C=O",
+    "D_exp": 30.069,
+    "category": "Organique"
+  },
+  {
+    "name": "SiH2Cl2",
+    "smiles": "Cl[SiH2]Cl",
+    "D_exp": 15.019,
+    "category": "Organique"
+  },
+  {
+    "name": "CH2F2",
+    "smiles": "FCF",
+    "D_exp": 18.06,
+    "category": "Organique"
+  },
+  {
+    "name": "Phosgene",
+    "smiles": "C(=O)(Cl)Cl",
+    "D_exp": 14.6654,
+    "category": "Organique"
+  },
+  {
+    "name": "3_4_Bis_methylene_cyclobutene",
+    "smiles": "C=C1C=CC1=C",
+    "D_exp": 53.9888,
+    "category": "Organique"
+  },
+  {
+    "name": "SO2mol",
+    "smiles": "O=S=O",
+    "D_exp": 11.03,
+    "category": "Organique"
+  },
+  {
+    "name": "Peroxyhypochlorous_acid",
+    "smiles": "OOCl",
+    "D_exp": 8.5544,
+    "category": "Organique"
+  },
+  {
+    "name": "CH2I2",
+    "smiles": "C(I)I",
+    "D_exp": 12.941,
+    "category": "Inorganique"
+  },
+  {
+    "name": "succinonitrile",
+    "smiles": "C(CC#N)C#N",
+    "D_exp": 47.099,
+    "category": "Organique"
+  },
+  {
+    "name": "carbonyl_sulfide",
+    "smiles": "C(=O)=S",
+    "D_exp": 14.318,
+    "category": "Organique"
+  },
+  {
+    "name": "Methoxymethyl",
+    "smiles": "CO[CH2]",
+    "D_exp": 28.3632,
+    "category": "Organique"
+  },
+  {
+    "name": "Tetrafluoromethane",
+    "smiles": "C(F)(F)(F)F",
+    "D_exp": 20.1929,
+    "category": "Organique"
+  },
+  {
+    "name": "1_3_Butadien_2_ol",
+    "smiles": "C=CC(=C)O",
+    "D_exp": 45.8781,
+    "category": "Organique"
+  },
+  {
+    "name": "11DFE",
+    "smiles": "C=C(F)F",
+    "D_exp": 24.5,
+    "category": "Organique"
+  },
+  {
+    "name": "CoF2",
+    "smiles": "F[Co]F",
+    "D_exp": 9.737,
+    "category": "Inorganique"
+  },
+  {
+    "name": "SiH3Br",
+    "smiles": "[SiH3]Br",
+    "D_exp": 13.323,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Chlorotrifluoromethane",
+    "smiles": "C(F)(F)(F)Cl",
+    "D_exp": 18.3162,
+    "category": "Organique"
+  },
+  {
+    "name": "3_Butenyl",
+    "smiles": "[CH2]CC=C",
+    "D_exp": 42.8536,
+    "category": "Organique"
+  },
+  {
+    "name": "Bromotrifluoromethane",
+    "smiles": "C(F)(F)(F)Br",
+    "D_exp": 17.5556,
+    "category": "Organique"
+  },
+  {
+    "name": "CrOF2",
+    "smiles": "F[Cr](=O)F",
+    "D_exp": 15.241,
+    "category": "Inorganique"
+  },
+  {
+    "name": "MgCl2",
+    "smiles": "Cl[Mg]Cl",
+    "D_exp": 8.185,
+    "category": "Inorganique"
+  },
+  {
+    "name": "dimethyl_phosphite",
+    "smiles": "COP(=O)OC",
+    "D_exp": 49.069,
+    "category": "Organique"
+  },
+  {
+    "name": "SF2",
+    "smiles": "FSF",
+    "D_exp": 7.47,
+    "category": "Organique"
+  },
+  {
+    "name": "Sulfurous_acid",
+    "smiles": "OS(=O)O",
+    "D_exp": 20.1548,
+    "category": "Organique"
+  },
+  {
+    "name": "nitrobenzene",
+    "smiles": "C1=CC=C(C=C1)[N+](=O)[O-]",
+    "D_exp": 65.229,
+    "category": "Organique"
+  },
+  {
+    "name": "N2O",
+    "smiles": "[N-]=[N+]=O",
+    "D_exp": 11.44,
+    "category": "Organique"
+  },
+  {
+    "name": "CBr2F2",
+    "smiles": "FC(F)(Br)Br",
+    "D_exp": 15.393,
+    "category": "Inorganique"
+  },
+  {
+    "name": "nitrosobenzene",
+    "smiles": "O=NC1=CC=CC=C1",
+    "D_exp": 61.169,
+    "category": "Organique"
+  },
+  {
+    "name": "Divinylacetylene",
+    "smiles": "C=CC#CC=C",
+    "D_exp": 53.9183,
+    "category": "Organique"
+  },
+  {
+    "name": "ScBr2",
+    "smiles": "Br[Sc]Br",
+    "D_exp": 9.862,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Fulvene",
+    "smiles": "C=C1C=CC=C1",
+    "D_exp": 55.2688,
+    "category": "Organique"
+  },
+  {
+    "name": "MnF",
+    "smiles": "[Mn]F",
+    "D_exp": 4.28,
+    "category": "d-block"
+  },
+  {
+    "name": "Carbon_suboxide",
+    "smiles": "C(=C=O)=C=O",
+    "D_exp": 28.2157,
+    "category": "Organique"
+  },
+  {
+    "name": "pyrazine",
+    "smiles": "c1cnccn1",
+    "D_exp": 46.516,
+    "category": "Inorganique"
+  },
+  {
+    "name": "vinylacetylene",
+    "smiles": "C=CC#C",
+    "D_exp": 35.03,
+    "category": "Organique"
+  },
+  {
+    "name": "NCl3",
+    "smiles": "ClN(Cl)Cl",
+    "D_exp": 6.287,
+    "category": "Inorganique"
+  },
+  {
+    "name": "KOH",
+    "smiles": "[K]O",
+    "D_exp": 8.175,
+    "category": "Inorganique"
+  },
+  {
+    "name": "N2O4",
+    "smiles": "O=[N+]([O-])[N+](=O)[O-]",
+    "D_exp": 20.013,
+    "category": "Organique"
+  },
+  {
+    "name": "triethyl_phosphite",
+    "smiles": "CCOP(OCC)OCC",
+    "D_exp": 98.358,
+    "category": "Organique"
+  },
+  {
+    "name": "ZnF",
+    "smiles": "[Zn]F",
+    "D_exp": 3.7,
+    "category": "d-block"
+  },
+  {
+    "name": "propanac",
+    "smiles": "CCC(=O)O",
+    "D_exp": 46.3,
+    "category": "Organique"
+  },
+  {
+    "name": "tetramethylsilane",
+    "smiles": "C[Si](C)(C)C",
+    "D_exp": 63.903,
+    "category": "Organique"
+  },
+  {
+    "name": "BCl3",
+    "smiles": "ClB(Cl)Cl",
+    "D_exp": 13.69,
+    "category": "Organique"
+  },
+  {
+    "name": "beta-propiolactone",
+    "smiles": "O=C1CCO1",
+    "D_exp": 39.42,
+    "category": "Inorganique"
+  },
+  {
+    "name": "beta_propiolactone",
+    "smiles": "C1CC(=O)O1",
+    "D_exp": 39.409,
+    "category": "Organique"
+  },
+  {
+    "name": "ethylene_carbonate",
+    "smiles": "C1COC(=O)O1",
+    "D_exp": 45.142,
+    "category": "Organique"
+  },
+  {
+    "name": "Ni(CO)4",
+    "smiles": "[Ni](=C=O)(=C=O)(=C=O)=C=O",
+    "D_exp": 50.74,
+    "category": "d-block"
+  },
+  {
+    "name": "Difluoromethane",
+    "smiles": "C(F)F",
+    "D_exp": 18.0484,
+    "category": "Organique"
+  },
+  {
+    "name": "Nitrosomethane",
+    "smiles": "CN=O",
+    "D_exp": 20.6887,
+    "category": "Organique"
+  },
+  {
+    "name": "Formaldoxime",
+    "smiles": "C=NO",
+    "D_exp": 21.0014,
+    "category": "Organique"
+  },
+  {
+    "name": "glycolic_acid",
+    "smiles": "C(C(=O)O)O",
+    "D_exp": 37.689,
+    "category": "Organique"
+  },
+  {
+    "name": "SCl2",
+    "smiles": "ClSCl",
+    "D_exp": 5.569,
+    "category": "Organique"
+  },
+  {
+    "name": "AcOH",
+    "smiles": "CC(O)=O",
+    "D_exp": 33.54,
+    "category": "Organique"
+  },
+  {
+    "name": "acetic_acid",
+    "smiles": "CC(=O)O",
+    "D_exp": 33.544,
+    "category": "Inorganique"
+  },
+  {
+    "name": "SiF3H",
+    "smiles": "F[SiH](F)F",
+    "D_exp": 19.658,
+    "category": "Inorganique"
+  },
+  {
+    "name": "1_1_Dichloroethene",
+    "smiles": "C=C(Cl)Cl",
+    "D_exp": 21.6078,
+    "category": "Organique"
+  },
+  {
+    "name": "trans_Cycloheptene",
+    "smiles": "C1CCC=CCC1",
+    "D_exp": 77.0111,
+    "category": "Organique"
+  },
+  {
+    "name": "Formyl_chloride",
+    "smiles": "C(=O)Cl",
+    "D_exp": 15.2746,
+    "category": "Organique"
+  },
+  {
+    "name": "BeI2",
+    "smiles": "I[Be]I",
+    "D_exp": 6.67,
+    "category": "Inorganique"
+  },
+  {
+    "name": "SiH3Cl",
+    "smiles": "[SiH3]Cl",
+    "D_exp": 13.96,
+    "category": "Organique"
+  },
+  {
+    "name": "Oxiranyl",
+    "smiles": "C1[CH]O1",
+    "D_exp": 22.2306,
+    "category": "Organique"
+  },
+  {
+    "name": "SOF2",
+    "smiles": "FS(=O)F",
+    "D_exp": 12.738,
+    "category": "Organique"
+  },
+  {
+    "name": "Vinylidene_2143693",
+    "smiles": "C=[C]",
+    "D_exp": 14.9624,
+    "category": "Organique"
+  },
+  {
+    "name": "NiF3",
+    "smiles": "F[Ni](F)F",
+    "D_exp": 11.762,
+    "category": "Inorganique"
+  },
+  {
+    "name": "SiF4",
+    "smiles": "F[Si](F)(F)F",
+    "D_exp": 24.59,
+    "category": "Organique"
+  },
+  {
+    "name": "Isocyanomethane",
+    "smiles": "C[N+]#[C-]",
+    "D_exp": 24.4351,
+    "category": "Organique"
+  },
+  {
+    "name": "SiOF2",
+    "smiles": "F[Si](=O)F",
+    "D_exp": 18.692,
+    "category": "Inorganique"
+  },
+  {
+    "name": "pyridazine",
+    "smiles": "c1ccnnc1",
+    "D_exp": 45.666,
+    "category": "Inorganique"
+  },
+  {
+    "name": "FeBr3",
+    "smiles": "Br[Fe](Br)Br",
+    "D_exp": 9.503,
+    "category": "Inorganique"
+  },
+  {
+    "name": "HOCN",
+    "smiles": "OC#N",
+    "D_exp": 18.817,
+    "category": "Organique"
+  },
+  {
+    "name": "CFC113a",
+    "smiles": "FC(F)(F)Cl",
+    "D_exp": 18.49,
+    "category": "Organique"
+  },
+  {
+    "name": "HCOOH",
+    "smiles": "OC=O",
+    "D_exp": 21.29,
+    "category": "Organique"
+  },
+  {
+    "name": "NiF",
+    "smiles": "[Ni]F",
+    "D_exp": 4.36,
+    "category": "d-block"
+  },
+  {
+    "name": "MgBr",
+    "smiles": "[Mg]Br",
+    "D_exp": 2.922,
+    "category": "Inorganique"
+  },
+  {
+    "name": "SiCl2",
+    "smiles": "Cl[Si]Cl",
+    "D_exp": 8.988,
+    "category": "Inorganique"
+  },
+  {
+    "name": "LiH",
+    "smiles": "[Li][H]",
+    "D_exp": 2.429,
+    "category": "Organique"
+  },
+  {
+    "name": "trimethylsilane",
+    "smiles": "C[SiH](C)C",
+    "D_exp": 51.231,
+    "category": "Organique"
+  },
+  {
+    "name": "oxalic_acid",
+    "smiles": "C(=O)(C(=O)O)O",
+    "D_exp": 37.289,
+    "category": "Organique"
+  },
+  {
+    "name": "Isofulminic_acid",
+    "smiles": "C#[N+][O-]",
+    "D_exp": 14.6095,
+    "category": "Organique"
+  },
+  {
+    "name": "S2O",
+    "smiles": "S=S=O",
+    "D_exp": 8.908,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Cyanoacetylene",
+    "smiles": "C#CC#N",
+    "D_exp": 25.3782,
+    "category": "Organique"
+  },
+  {
+    "name": "pyridine_N-oxide",
+    "smiles": "[O-][n+]1ccccc1",
+    "D_exp": 54.85,
+    "category": "Organique"
+  },
+  {
+    "name": "AlF3",
+    "smiles": "F[Al](F)F",
+    "D_exp": 18.29,
+    "category": "Organique"
+  },
+  {
+    "name": "HCOF",
+    "smiles": "C(=O)F",
+    "D_exp": 17.12,
+    "category": "Organique"
+  },
+  {
+    "name": "Nitrosobenzene",
+    "smiles": "C1=CC=C(C=C1)N=O",
+    "D_exp": 60.6239,
+    "category": "Organique"
+  },
+  {
+    "name": "CoCl2",
+    "smiles": "Cl[Co]Cl",
+    "D_exp": 7.91,
+    "category": "d-block"
+  },
+  {
+    "name": "indazole",
+    "smiles": "c1ccc2[nH]ncc2c1",
+    "D_exp": 72.831,
+    "category": "Organique"
+  },
+  {
+    "name": "PF2Cl",
+    "smiles": "FP(F)Cl",
+    "D_exp": 13.106,
+    "category": "Inorganique"
+  },
+  {
+    "name": "nitroethane",
+    "smiles": "CC[N+](=O)[O-]",
+    "D_exp": 37.277,
+    "category": "Organique"
+  },
+  {
+    "name": "Chloroallene",
+    "smiles": "C=C=CCl",
+    "D_exp": 28.1922,
+    "category": "Organique"
+  },
+  {
+    "name": "FeF2",
+    "smiles": "F[Fe]F",
+    "D_exp": 10.0,
+    "category": "d-block"
+  },
+  {
+    "name": "TiF",
+    "smiles": "[Ti]F",
+    "D_exp": 5.84,
+    "category": "d-block"
+  },
+  {
+    "name": "1_1_Dibromoethene",
+    "smiles": "C=C(Br)Br",
+    "D_exp": 20.2447,
+    "category": "Organique"
+  },
+  {
+    "name": "CBrF3",
+    "smiles": "FC(F)(F)Br",
+    "D_exp": 17.775,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Ethanimine",
+    "smiles": "CC=N",
+    "D_exp": 30.241,
+    "category": "Organique"
+  },
+  {
+    "name": "SF4",
+    "smiles": "FS(F)(F)F",
+    "D_exp": 13.86,
+    "category": "Organique"
+  },
+  {
+    "name": "COCl2",
+    "smiles": "ClC(Cl)=O",
+    "D_exp": 14.793,
+    "category": "Organique"
+  },
+  {
+    "name": "FeOH",
+    "smiles": "O[Fe]",
+    "D_exp": 9.478,
+    "category": "Inorganique"
+  },
+  {
+    "name": "NaH",
+    "smiles": "[Na][H]",
+    "D_exp": 1.97,
+    "category": "Organique"
+  },
+  {
+    "name": "trimethylborane",
+    "smiles": "CB(C)C",
+    "D_exp": 49.957,
+    "category": "Organique"
+  },
+  {
+    "name": "FeF",
+    "smiles": "[Fe]F",
+    "D_exp": 4.51,
+    "category": "d-block"
+  },
+  {
+    "name": "cyanamide",
+    "smiles": "NC#N",
+    "D_exp": 20.287,
+    "category": "Organique"
+  },
+  {
+    "name": "BCl2H",
+    "smiles": "ClB(Cl)",
+    "D_exp": 12.931,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Si2H6",
+    "smiles": "[SiH3][SiH3]",
+    "D_exp": 22.08,
+    "category": "Organique"
+  },
+  {
+    "name": "SiF3Cl",
+    "smiles": "F[Si](F)(F)Cl",
+    "D_exp": 21.113,
+    "category": "Inorganique"
+  },
+  {
+    "name": "1_2_4_Cyclohexatriene",
+    "smiles": "C1C=CC=C=C1",
+    "D_exp": 53.3265,
+    "category": "Organique"
+  },
+  {
+    "name": "SiH3F",
+    "smiles": "[SiH3]F",
+    "D_exp": 15.95,
+    "category": "Organique"
+  },
+  {
+    "name": "KH",
+    "smiles": "[K][H]",
+    "D_exp": 1.76,
+    "category": "Organique"
+  },
+  {
+    "name": "NH2F",
+    "smiles": "NF",
+    "D_exp": 11.35,
+    "category": "Inorganique"
+  },
+  {
+    "name": "TiCl",
+    "smiles": "[Ti]Cl",
+    "D_exp": 4.44,
+    "category": "d-block"
+  },
+  {
+    "name": "o_Benzyne",
+    "smiles": "C1=CC#CC=C1",
+    "D_exp": 48.3431,
+    "category": "Organique"
+  },
+  {
+    "name": "NH3",
+    "smiles": "N",
+    "D_exp": 12.02,
+    "category": "Organique"
+  },
+  {
+    "name": "CrCl3",
+    "smiles": "Cl[Cr](Cl)Cl",
+    "D_exp": 11.976,
+    "category": "Inorganique"
+  },
+  {
+    "name": "CO",
+    "smiles": "[C-]#[O+]",
+    "D_exp": 11.092,
+    "category": "Organique"
+  },
+  {
+    "name": "TiOCl2",
+    "smiles": "Cl[Ti](=O)Cl",
+    "D_exp": 15.938,
+    "category": "Inorganique"
+  },
+  {
+    "name": "PCl5",
+    "smiles": "Cl[P](Cl)(Cl)(Cl)Cl",
+    "D_exp": 12.76,
+    "category": "Organique"
+  },
+  {
+    "name": "FeF3",
+    "smiles": "F[Fe](F)F",
+    "D_exp": 15.282,
+    "category": "Inorganique"
+  },
+  {
+    "name": "ScCl3",
+    "smiles": "Cl[Sc](Cl)Cl",
+    "D_exp": 14.745,
+    "category": "Inorganique"
+  },
+  {
+    "name": "dimethyl_methylphosphonate",
+    "smiles": "CP(=O)(OC)OC",
+    "D_exp": 62.663,
+    "category": "Organique"
+  },
+  {
+    "name": "B2H6",
+    "smiles": "[BH2]([H])[BH2]",
+    "D_exp": 22.631,
+    "category": "Inorganique"
+  },
+  {
+    "name": "1,3,5-triazine",
+    "smiles": "C1=NC=NC=N1",
+    "D_exp": 41.417,
+    "category": "Organique"
+  },
+  {
+    "name": "ScCl2",
+    "smiles": "Cl[Sc]Cl",
+    "D_exp": 10.98,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Buckminsterfullerene",
+    "smiles": "C12=C3C4=C5C6=C1C7=C8C9=C1C%10=C%11C(=C29)C3=C2C3=C4C4=C5C5=C9C6=C7C6=C7C8=C1C1=C8C%10=C%10C%11=C2C2=C3C3=C4C4=C5C5=C%11C%12=C(C6=C95)C7=C1C1=C%12C5=C%11C4=C3C3=C5C(=C81)C%10=C23",
+    "D_exp": 416.2342,
+    "category": "Organique"
+  },
+  {
+    "name": "CrCl2",
+    "smiles": "Cl[Cr]Cl",
+    "D_exp": 9.39,
+    "category": "d-block"
+  },
+  {
+    "name": "p_Benzyne",
+    "smiles": "C1=C=CC=C=C1",
+    "D_exp": 46.9404,
+    "category": "Organique"
+  },
+  {
+    "name": "Fe(CO)5",
+    "smiles": "[Fe](=C=O)(=C=O)(=C=O)(=C=O)=C=O",
+    "D_exp": 61.91,
+    "category": "d-block"
+  },
+  {
+    "name": "MnCl",
+    "smiles": "[Mn]Cl",
+    "D_exp": 3.53,
+    "category": "d-block"
+  },
+  {
+    "name": "POCl3",
+    "smiles": "ClP(Cl)(Cl)=O",
+    "D_exp": 14.78,
+    "category": "Organique"
+  },
+  {
+    "name": "MgCl",
+    "smiles": "[Mg]Cl",
+    "D_exp": 3.24,
+    "category": "Organique"
+  },
+  {
+    "name": "1_Chloropropyne",
+    "smiles": "CC#CCl",
+    "D_exp": 28.0875,
+    "category": "Organique"
+  },
+  {
+    "name": "trimethyl_borate",
+    "smiles": "COB(OC)OC",
+    "D_exp": 66.651,
+    "category": "Organique"
+  },
+  {
+    "name": "Mg(OH)2",
+    "smiles": "O[Mg]O",
+    "D_exp": 17.029,
+    "category": "Inorganique"
+  },
+  {
+    "name": "2_Cyclopropen_1_one",
+    "smiles": "C1=CC1=O",
+    "D_exp": 27.4583,
+    "category": "Organique"
+  },
+  {
+    "name": "Iodosilane",
+    "smiles": "[SiH3]I",
+    "D_exp": 12.3746,
+    "category": "Organique"
+  },
+  {
+    "name": "hexamethyldisiloxane",
+    "smiles": "C[Si](C)(C)O[Si](C)(C)C",
+    "D_exp": 105.2,
+    "category": "Organique"
+  },
+  {
+    "name": "N2H2",
+    "smiles": "N=N",
+    "D_exp": 11.12,
+    "category": "Organique"
+  },
+  {
+    "name": "VF4",
+    "smiles": "F[V](F)(F)F",
+    "D_exp": 21.306,
+    "category": "Inorganique"
+  },
+  {
+    "name": "NiF2",
+    "smiles": "F[Ni]F",
+    "D_exp": 9.58,
+    "category": "d-block"
+  },
+  {
+    "name": "CI4",
+    "smiles": "C(I)(I)(I)I",
+    "D_exp": 9.077,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Methylene",
+    "smiles": "[CH2]",
+    "D_exp": 7.408,
+    "category": "Organique"
+  },
+  {
+    "name": "ZnI2",
+    "smiles": "I[Zn]I",
+    "D_exp": 4.192,
+    "category": "Inorganique"
+  },
+  {
+    "name": "IF5",
+    "smiles": "F[I](F)(F)(F)F",
+    "D_exp": 13.745,
+    "category": "Inorganique"
+  },
+  {
+    "name": "SF6",
+    "smiles": "FS(F)(F)(F)(F)F",
+    "D_exp": 20.459,
+    "category": "Inorganique"
+  },
+  {
+    "name": "3_Methylenecyclopropene",
+    "smiles": "C=C1C=C1",
+    "D_exp": 34.345,
+    "category": "Organique"
+  },
+  {
+    "name": "Disulfene_oxide",
+    "smiles": "O=S=S",
+    "D_exp": 8.7766,
+    "category": "Organique"
+  },
+  {
+    "name": "Li2O",
+    "smiles": "[Li]O[Li]",
+    "D_exp": 7.614,
+    "category": "Inorganique"
+  },
+  {
+    "name": "VCl4",
+    "smiles": "[V](Cl)(Cl)(Cl)Cl",
+    "D_exp": 15.8,
+    "category": "d-block"
+  },
+  {
+    "name": "HBO2",
+    "smiles": "OB=O",
+    "D_exp": 18.528,
+    "category": "Inorganique"
+  },
+  {
+    "name": "COF2b",
+    "smiles": "C(=O)(F)F",
+    "D_exp": 18.28,
+    "category": "Organique"
+  },
+  {
+    "name": "NiCl",
+    "smiles": "[Ni]Cl",
+    "D_exp": 3.63,
+    "category": "d-block"
+  },
+  {
+    "name": "Isocyanic_acid",
+    "smiles": "C(=N)=O",
+    "D_exp": 18.2494,
+    "category": "Organique"
+  },
+  {
+    "name": "CrF3",
+    "smiles": "F[Cr](F)F",
+    "D_exp": 15.813,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Fe2O3_frag",
+    "smiles": "O=[Fe]O[Fe]=O",
+    "D_exp": 19.455,
+    "category": "Inorganique"
+  },
+  {
+    "name": "trimethyl_phosphite",
+    "smiles": "COP(OC)OC",
+    "D_exp": 61.575,
+    "category": "Organique"
+  },
+  {
+    "name": "NHF2",
+    "smiles": "FNF",
+    "D_exp": 10.69,
+    "category": "Inorganique"
+  },
+  {
+    "name": "Dioxyamidogen",
+    "smiles": "[NH]O[O]",
+    "D_exp": 9.6294,
+    "category": "Organique"
+  },
+  {
+    "name": "BFCl2",
+    "smiles": "ClB(Cl)F",
+    "D_exp": 14.51,
+    "category": "Inorganique"
+  },
+  {
+    "name": "POF3",
+    "smiles": "FP(F)(F)=O",
+    "D_exp": 21.328,
+    "category": "Inorganique"
+  },
+  {
+    "name": "SF6",
+    "smiles": "F[S](F)(F)(F)(F)F",
+    "D_exp": 20.27,
+    "category": "Organique"
+  },
+  {
+    "name": "PF5",
+    "smiles": "FP(F)(F)(F)F",
+    "D_exp": 23.67,
+    "category": "Organique"
+  },
+  {
+    "name": "thiophene",
+    "smiles": "c1ccsc1",
+    "D_exp": 39.56,
+    "category": "Organique"
+  },
+  {
+    "name": "H2O2",
+    "smiles": "OO",
+    "D_exp": 11.09,
+    "category": "Organique"
+  },
+  {
+    "name": "TiOH",
+    "smiles": "O[Ti]",
+    "D_exp": 11.662,
+    "category": "Inorganique"
+  },
+  {
+    "name": "AlH3",
+    "smiles": "[AlH3]",
+    "D_exp": 10.675,
+    "category": "Inorganique"
+  },
+  {
+    "name": "HNCO",
+    "smiles": "N=C=O",
+    "D_exp": 18.433,
+    "category": "Organique"
+  },
+  {
+    "name": "Ethenedione",
+    "smiles": "C(=C=O)=O",
+    "D_exp": 19.7128,
+    "category": "Organique"
+  },
+  {
+    "name": "CuF2",
+    "smiles": "F[Cu]F",
+    "D_exp": 7.91,
+    "category": "d-block"
+  },
+  {
+    "name": "CoCl",
+    "smiles": "[Co]Cl",
+    "D_exp": 3.51,
+    "category": "d-block"
+  },
+  {
+    "name": "SiBr4",
+    "smiles": "Br[Si](Br)(Br)Br",
+    "D_exp": 13.666,
+    "category": "Inorganique"
+  },
+  {
+    "name": "CrCl",
+    "smiles": "[Cr]Cl",
+    "D_exp": 3.78,
+    "category": "d-block"
+  }
+]
