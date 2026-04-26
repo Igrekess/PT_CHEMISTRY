@@ -35,6 +35,7 @@ STRINGS = {
     "tab_bandgap": {"fr": "Band Gaps", "en": "Band Gaps"},
     "tab_freq": {"fr": "Frequences", "en": "Frequencies"},
     "tab_nmr": {"fr": "RMN", "en": "NMR"},
+    "tab_aromaticity": {"fr": "Aromaticité", "en": "Aromaticity"},
     "tab_benchmark": {"fr": "Benchmark", "en": "Benchmark"},
     "tab_why": {"fr": "Pourquoi ?", "en": "Why?"},
     "tab_explorer": {"fr": "Explorateur", "en": "Explorer"},

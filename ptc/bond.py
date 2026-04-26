@@ -4,7 +4,7 @@ bond.py — Bond observables (r_e, ω_e) and result dataclass.
 The bond ENERGY is computed in molecule.py via the molecular polygon.
 This module provides physical observables and the BondResult container.
 
-March 2026 — Persistence Theory
+March 2026 — Théorie de la Persistance
 """
 from __future__ import annotations
 

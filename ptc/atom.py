@@ -1,6 +1,9 @@
 """
 atom.py — Atom class with complete PT ionization energy engine.
 
+Ported from ptchem_gauge/core/simplex.py v1.0 (1062 lines).
+The physics is IDENTICAL — only import paths changed.
+
 PRINCIPLE:
   ONE operation — the VOLUME of the curved simplex/polygon —
   reproduces ALL atomic physics.

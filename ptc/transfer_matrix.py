@@ -22,7 +22,7 @@ CONSTRAINTS:
   - 0 external data (no Pauling EN, no VSEPR tables)
   - All screening from: IE/Ry, LP/(2P_l), per/P_l
 
-March 2026 — Persistence Theory
+March 2026 — Théorie de la Persistance
 """
 from __future__ import annotations
 
@@ -47,12 +47,12 @@ from ptc.constants import (
 from ptc.atom import IE_eV, EA_eV
 from ptc.topology import Topology, valence_electrons
 from ptc.data.experimental import IE_NIST, EA_NIST, MASS
-from ptc.periodic import period, l_of, _n_fill_aufbau, ns_config
+from ptc.periodic import period, l_of, _n_fill_aufbau, ns_config, _np_of
 from ptc.bond import BondResult, r_equilibrium, omega_e
 from ptc.dft_polygon import (electron_density, dft_spectrum,
                               electron_density_Z30, dft_spectrum_Z30,
                               vertex_cross_spectrum_Z30)
-from ptc.screening_bond import _np_of as _np_of_sb, D0_screening as _D0_screening_sb
+from ptc.screening_bond_v4 import _np_of as _np_of_v4, D0_screening as _D0_screening_v4
 
 # ── T³ screening weight [Z mod {3,5,7}] ────────────────────────────
 _TWO_PI = 2.0 * math.pi
@@ -61,6 +61,72 @@ _TWO_PI = 2.0 * math.pi
 _HALOGENS = frozenset({9, 17, 35, 53})
 _CHALCOGENS = frozenset({16, 34, 52})
 _BLOCK_P = {1: P1, 2: P2, 3: P3}  # angular momentum l → prime P_l
+
+# ── Dimer D₀ cache for C9c sub-saturated polygon override ──────────
+# Memoized homo/heteronuclear D₀ from a direct engine call on the
+# 2-atom topology. Re-entrancy is safe: dimers have no rings, so
+# C9c does not trigger inside the recursive call.
+_DIMER_D_CACHE: Dict[Tuple[int, int], float] = {}
+
+
+def _dimer_D_cached(Za: int, Zb: int) -> float:
+    """Memoized dimer D₀ (eV) via the engine itself."""
+    key = (min(Za, Zb), max(Za, Zb))
+    if key in _DIMER_D_CACHE:
+        return _DIMER_D_CACHE[key]
+    from ptc.smiles_parser import _SYM
+    from ptc.topology import build_topology
+    if Za >= len(_SYM) or Zb >= len(_SYM):
+        _DIMER_D_CACHE[key] = 0.0
+        return 0.0
+    sa, sb = _SYM[Za], _SYM[Zb]
+    if not sa or not sb:
+        _DIMER_D_CACHE[key] = 0.0
+        return 0.0
+    smiles = f"[{sa}][{sb}]"
+    try:
+        topo = build_topology(smiles)
+        res = compute_D_at_transfer(topo)
+        D = float(res.D_at)
+    except Exception:
+        D = 0.0
+    _DIMER_D_CACHE[key] = D
+    return D
+
+
+def _huckel_polygon_multiplier(N: int, n_e: int) -> float:
+    """Sum_k n_k cos(2π k / N) over Aufbau-filled cycle modes.
+
+    For a homonuclear ring of N atoms with n_e σ-delocalized electrons,
+    cycle-Hückel modes ε_k = α - 2t cos(2πk/N) (β = -t < 0). Filling in
+    pairs from largest cosine (most bonding) gives the per-D_dimer
+    multiplier of the polygon stabilization, calibrated by D_dimer = 2t.
+    """
+    if N < 2 or n_e <= 0:
+        return 0.0
+    cosines = sorted([math.cos(_TWO_PI * k / N) for k in range(N)], reverse=True)
+    rem = n_e
+    mult = 0.0
+    for c in cosines:
+        if rem >= 2:
+            mult += 2.0 * c
+            rem -= 2
+        elif rem == 1:
+            mult += 1.0 * c
+            rem -= 1
+        else:
+            break
+    return mult
+
+
+def _is_s1_outer(Z: int) -> bool:
+    """True if outer shell is ns¹ with no p valence (Group 1 or Group 11).
+
+    These are the σ-aromatic sub-saturated atoms: alkali (Li, Na, K, …)
+    and coinage (Cu, Ag, Au). The np filter excludes excited-state s¹
+    p-block species (would never occur from neutral SMILES).
+    """
+    return ns_config(Z) == 1 and _np_of(Z) == 0
 
 
 def _chi(d: dict) -> float:
@@ -2278,12 +2344,12 @@ def _diat_face_P2(c: _DiatCommon) -> _DiatP2Result:
         D_exch_Hund += _eps_g_op * _k1_dn * (RY / P2) * S_HALF
 
     # ── CFSE: P₃→P₂ crystal field coupling [d-block, ligand avec LP] ──
-    # PT: the crystal field is the projection of the heptagonal face
-    # (Z/14Z) onto the pentagon (Z/10Z) via CRT.
-    # r₇ = nf_eff mod P₃ = position on the heptagonal circle.
+    # PT: le champ cristallin est la projection de la face heptagonale
+    # (Z/14Z) sur le pentagone (Z/10Z) via le CRT.
+    # r₇ = nf_eff mod P₃ = position sur le cercle heptagonal.
     # Amplitude = sin²(2π·r₇/P₃) × D₇/P₂ (Principe 3 : Pythagore CRT).
     # Gate: is_d_block AND lp_partner > 0 (champ cristallin = ligand fort).
-    # 0 adjustable parameters.
+    # 0 paramètre ajusté.
     D_CFSE = 0.0
     for _Z_cf, _d_cf, _nf_cf in [(c.Zi, c.di, c.nf_i), (c.Zj, c.dj, c.nf_j)]:
         if not _d_cf.get('is_d_block', False):
@@ -2305,12 +2371,12 @@ def _diat_face_P2(c: _DiatCommon) -> _DiatP2Result:
     D_exch_Hund += D_CFSE
 
     # ── DARK MODES k=2,4 on Z/10Z [d-block spectral structure] ──
-    # PT: the Fourier modes k=2 and k=4 on Z/(2P₂)Z carry
-    # cross-gap information between the 3 CRT faces.
+    # PT: les modes de Fourier k=2 et k=4 sur Z/(2P₂)Z transportent
+    # l'information de cross-gap entre les 3 faces CRT.
     # k=2 = beat P₁⊗P₂ (R35_DARK + R57_DARK)
     # k=4 = mode propre pentagone (R37_DARK)
-    # Prototype validated on atomic IE (test_dblock_dark.py).
-    # 0 adjustable parameters.
+    # Prototype validé sur IE atomiques (test_dblock_dark.py).
+    # 0 paramètre ajusté.
     D_dark = 0.0
     _omega_10 = 2.0 * math.pi / (2 * P2)  # 2π/10
     for _Z_dk, _d_dk, _nf_dk in [(c.Zi, c.di, c.nf_i), (c.Zj, c.dj, c.nf_j)]:
@@ -3158,11 +3224,11 @@ def _compute_bond_seed(i: int, j: int, bo: float, bi: int,
 def _compute_bond_seed_v4(i: int, j: int, bo: float, bi: int,
                           topology: Topology, atom_data: dict,
                           huckel_caps: Dict[int, float] = None) -> BondSeed:
-    """Compute bond seed with Phase 1 DFT-GFT spectral cross-spectrum correction.
+    """Compute bond seed with v4's DFT-GFT spectral cross-spectrum correction.
 
     This function:
     1. Calls the proven _compute_bond_seed for the base computation
-    2. Computes Phase 1 DFT cross-spectrum on Z/(2P₁)Z for both atoms
+    2. Computes v4's DFT cross-spectrum on Z/(2P₁)Z for both atoms
     3. Applies a spectral coherence correction to the P₁ face energy
 
     The cross-spectrum captures inter-atomic spectral coherence:
@@ -3182,8 +3248,8 @@ def _compute_bond_seed_v4(i: int, j: int, bo: float, bi: int,
     di, dj = atom_data[Zi], atom_data[Zj]
     l_i, l_j = di['l'], dj['l']
 
-    np_i = _np_of_sb(Zi)
-    np_j = _np_of_sb(Zj)
+    np_i = _np_of_v4(Zi)
+    np_j = _np_of_v4(Zj)
 
     # Electron counts on hex face
     if l_i == 0:
@@ -3284,17 +3350,17 @@ def _compute_bond_seed_v4(i: int, j: int, bo: float, bi: int,
 def _compute_bond_seed_spectral(topology: Topology, atom_data: dict,
                                 huckel_caps: Dict[int, float] = None
                                 ) -> Dict[int, BondSeed]:
-    """Per-bond seeds from Phase 1 spectral blending (Phase 1 ⊗ 4-face DFT).
+    """Per-bond seeds from v4 spectral blending (v4 ⊗ 4-face DFT).
 
-    For each bond, computes BOTH the Phase 1 diatomic seed and the 4-face
+    For each bond, computes BOTH the v4 diatomic seed and the 4-face
     DFT seed (with cross-spectrum correction), then caps overbinding:
 
-    When DFT/Phase1 > (1 + S₃) ≈ 1.219, the DFT seed overbinds relative
-    to the Phase 1 reference. The cap blends toward Phase 1 × (1 + S₃), modulated
+    When DFT/v4 > (1 + S₃) ≈ 1.219, the DFT seed overbinds relative
+    to the v4 reference. The cap blends toward v4 × (1 + S₃), modulated
     by molecule size: full for n=3, fading to zero for n >= P₃ = 7.
 
     For n >= 7, the DFT + SCF pipeline is well-calibrated and no
-    cap is needed. The Phase 1 seed serves as a SPECTRAL ANCHOR: the truth
+    cap is needed. The v4 seed serves as a SPECTRAL ANCHOR: the truth
     about the per-bond energy in the limit of no multi-center effects.
 
     0 adjustable parameters (cap ratio = 1 + S₃, size fade = (n-P₁)/(P₃-P₁)).
@@ -3307,22 +3373,22 @@ def _compute_bond_seed_spectral(topology: Topology, atom_data: dict,
         lp_i = topology.lp[i]
         lp_j = topology.lp[j]
 
-        # ── Phase 1 diatomic reference ──
-        sr = _D0_screening_sb(Zi, Zj, bo, lp_A=lp_i, lp_B=lp_j)
+        # ── v4 diatomic reference ──
+        sr = _D0_screening_v4(Zi, Zj, bo, lp_A=lp_i, lp_B=lp_j)
         D0_v4 = sr.D0
 
-        # ── 4-face DFT seed (with Phase 1 cross-spectrum correction) ──
+        # ── 4-face DFT seed (with v4 cross-spectrum correction) ──
         dft_seed = _compute_bond_seed_v4(i, j, bo, bi, topology, atom_data, huckel_caps)
         D0_dft = dft_seed.D0
 
         # ── Spectral blending ──
-        # The Phase 1 seed is the truth for an isolated bond.
+        # The v4 seed is the truth for an isolated bond.
         # The DFT seed captures multi-center context (promotion sharing,
         # vacancy, LP cooperation) but systematically overbinds for
         # small molecules (n=3-6) and is well-calibrated for large ones.
         #
         # Blending strategy:
-        # 1. Cap DFT at Phase 1 × (1 + S₃) when overbinding detected
+        # 1. Cap DFT at v4 × (1 + S₃) when overbinding detected
         # 2. The cap is MODULATED by molecule size: full for n=3,
         #    fading to zero for n>6 (where DFT + SCF work well).
         #
@@ -3335,7 +3401,7 @@ def _compute_bond_seed_spectral(topology: Topology, atom_data: dict,
         f_size = max(0.0, 1.0 - float(n_atoms - P1) / (P3 - P1))  # 1@n=3, 0@n≥7
 
         if ratio > _CAP_RATIO and f_size > 0:
-            # DFT overbinds: blend toward Phase 1 × cap_ratio
+            # DFT overbinds: blend toward v4 × cap_ratio
             D0_capped = D0_v4 * _CAP_RATIO
             # Interpolate: D0 = f_size × D0_capped + (1 - f_size) × D0_dft
             D0_blend = f_size * D0_capped + (1.0 - f_size) * D0_dft
@@ -3559,7 +3625,7 @@ def _scf_spectral(topology: Topology, atom_data: dict,
             continue
         d_k = atom_data[Z_k]
         l_k = d_k['l']
-        np_k = _np_of_sb(Z_k) if l_k >= 1 else 0
+        np_k = _np_of_v4(Z_k) if l_k >= 1 else 0
         lp_k = topology.lp[k]
         P_face = P2 if d_k.get('is_d_block', False) else P1
 
@@ -4034,6 +4100,20 @@ def _spectral_correction(T_P1: np.ndarray, topology: Topology,
                 if (topology.bonds[bi][0] in ring
                     and topology.bonds[bi][1] in ring))
 
+            # σ-aromatic eligibility [mirrors C9b gate]:
+            # rings of size 3-6 with only non-C non-H atoms at period ≥ 3
+            # are σ-aromatic (delocalised on Z/(2P₁)Z). The angular
+            # strain assumes sp-linear ideal (θ_pt = 180°) which is
+            # physically wrong for these systems — their natural
+            # geometry IS the ring angle, not a distortion away from it.
+            ring_Zs = [topology.Z_list[k] for k in ring]
+            is_sigma_aro_eligible = (
+                3 <= N_ring <= 6
+                and all(z not in (1, 6) for z in ring_Zs)
+                and all(period(z) >= 3 for z in ring_Zs)
+                and not is_aro
+            )
+
             for k in ring:
                 z_k = topology.z_count[k]
                 if z_k < 2:
@@ -4050,9 +4130,10 @@ def _spectral_correction(T_P1: np.ndarray, topology: Topology,
                 D_avg = (sum(bond_energies.get(bi, 0.0) for bi in bonds_at_k)
                          / max(len(bonds_at_k), 1))
 
-                # Angular strain
+                # Angular strain (skip for σ-aromatic eligible rings —
+                # their ring geometry is natural, not strained)
                 delta_theta = abs(theta_pt - theta_ring)
-                if delta_theta > 1.0:
+                if delta_theta > 1.0 and not is_sigma_aro_eligible:
                     delta_rad = math.radians(delta_theta)
                     E_corr -= -math.log(C3) * delta_rad ** 2 * D_avg
 
@@ -4413,11 +4494,11 @@ def _ghost_attenuation(topology: Topology, atom_data: dict) -> float:
 
 
 # ╔════════════════════════════════════════════════════════════════════╗
-# ║  TRIATOMIC FAST-PATH: 3×3 + Phase 1 seeds                              ║
+# ║  TRIATOMIC FAST-PATH: 3×3 + v4 seeds                              ║
 # ║                                                                    ║
 # ║  Triatomic A-B-C = 2 bonds sharing a central vertex B.            ║
 # ║  Architecture:                                                     ║
-# ║    1. Phase 1 per-bond seeds (diatomic-quality D₀ for each bond)       ║
+# ║    1. v4 per-bond seeds (diatomic-quality D₀ for each bond)       ║
 # ║    2. 3×3 eigenvalue renormalization (σ sharing at center)         ║
 # ║    3. Face corrections (vacancy, Hückel 3c, LP cooperation)       ║
 # ║    4. Per-type routing (linear/bent/radical)                       ║
@@ -4428,7 +4509,7 @@ def _ghost_attenuation(topology: Topology, atom_data: dict) -> float:
 
 def _triatomic_fast_path(topology: Topology,
                          atom_data: dict) -> Optional[TransferResult]:
-    """Dedicated triatomic engine: Phase 1 seeds + 3×3 coordination correction.
+    """Dedicated triatomic engine: v4 seeds + 3×3 coordination correction.
 
     Returns TransferResult or None if not a valid triatomic (A-B-C).
 
@@ -4438,13 +4519,13 @@ def _triatomic_fast_path(topology: Topology,
     creating ±15-25% seed bias. This engine bypasses the poly pipeline.
 
     Strategy:
-      - Phase 1 seeds give diatomic-quality per-bond D₀ (baseline)
+      - v4 seeds give diatomic-quality per-bond D₀ (baseline)
       - 3×3 Hamiltonian provides the coordination correction delta
       - Face corrections add vacancy, Hückel 3c, LP cooperation
       - Per-type routing handles bent/linear/radical/ionic specifics
 
     PT architecture:
-      dim 1 (P₁=3): Phase 1 per-bond D₀ (σ+π+ionic, 10 corrections)
+      dim 1 (P₁=3): v4 per-bond D₀ (σ+π+ionic, 10 corrections)
       dim 2 (P₂=5): coordination + face corrections on Z/(2P₂)Z
       dim 0 (P₀=2): ghost VP attenuation (Mertens p≥11)
 
@@ -4493,16 +4574,16 @@ def _triatomic_fast_path(topology: Topology,
     # s-block acceptor linear: Be, Mg centers (no LP, no π, but linear)
     is_sblock_linear = (lp_B == 0 and l_B == 0 and zc[B] == 2 and per_B >= 2)
 
-    # ── Phase 1 per-bond seeds (diatomic quality) ──
+    # ── v4 per-bond seeds (diatomic quality) ──
     def _v4_seed(ia, ib, bo):
         Zi, Zj = topology.Z_list[ia], topology.Z_list[ib]
         lp_i, lp_j = topology.lp[ia], topology.lp[ib]
-        return _D0_screening_sb(Zi, Zj, bo, lp_A=lp_i, lp_B=lp_j)
+        return _D0_screening_v4(Zi, Zj, bo, lp_A=lp_i, lp_B=lp_j)
 
     sr_AB = _v4_seed(bond_AB[0], bond_AB[1], bo_AB)
     sr_BC = _v4_seed(bond_BC[0], bond_BC[1], bo_BC)
 
-    # Start from Phase 1 seeds as baseline
+    # Start from v4 seeds as baseline
     D0_AB = sr_AB.D0
     D0_BC = sr_BC.D0
 
@@ -4567,7 +4648,7 @@ def _triatomic_fast_path(topology: Topology,
     #   (per_B−2)/P₁ :  diffusivity excess beyond per=2
     #   S₃           :  hexagonal face coupling
     #   (½ + ⟨lp_t⟩ × D₃) : base ½ (orbital overlap) + terminal LP donation
-    # Applied multiplicatively to Phase 1 seeds before per-type corrections.
+    # Applied multiplicatively to v4 seeds before per-type corrections.
     # 0 adjustable parameters.
     if per_B >= P1 and l_B <= 1 and not is_linear and not is_sblock_linear:
         _lp_term_avg = sum(float(topology.lp[t]) for t in terms) / max(zc[B], 1)
@@ -4649,7 +4730,7 @@ def _triatomic_fast_path(topology: Topology,
     # Coulomb stabilization. For per≥3, LP is too diffuse.
     # Gate: all terminals lp=0 + compact center (per ≤ 2).
     #
-    # Anti-double-counting: the diatomic seed S_holo already
+    # Anti-double-counting (v4.1): the diatomic seed S_holo already
     # captures intra-bond LP holonomy. F3 should only add the
     # inter-bond cooperative Coulomb stabilization — the angular
     # projection sin²(θ/2) = (1 − cos θ)/2 of the LP field onto
@@ -4922,7 +5003,7 @@ def _triatomic_fast_path(topology: Topology,
     # All 11 formerly-excluded patterns now have dedicated routing below.
     # No early returns — every triatomic is handled by the dedicated engine.
 
-    # ── Per-type coordination corrections (on Phase 1 baseline) ──
+    # ── Per-type coordination corrections (on v4 baseline) ──
     mechanism = "triatomic_base"
 
     # ── RADICAL branch (NO2-like) ──
@@ -4930,7 +5011,7 @@ def _triatomic_fast_path(topology: Topology,
     # π channel and the 3×3 σ renormalization is strong.
     if is_radical:
         # R1: Split D_P1 into σ and π components per bond order.
-        # The Phase 1 seed lumps σ+π into D_P1. For radicals, σ gets f_renorm
+        # The v4 seed lumps σ+π into D_P1. For radicals, σ gets f_renorm
         # (coordination sharing) while π gets (1-s) blocking (radical
         # occupies half the π manifold).
         for sr, bo_r, label in [(sr_AB, bo_AB, 'AB'), (sr_BC, bo_BC, 'BC')]:
@@ -4965,7 +5046,7 @@ def _triatomic_fast_path(topology: Topology,
             f_renorm = 1.0
 
         # L1: σ renormalization via 3×3 eigensystem
-        # Decompose Phase 1 into σ (D_P1) and non-σ (D_P2 + D_P3).
+        # Decompose v4 into σ (D_P1) and non-σ (D_P2 + D_P3).
         # For bo_span >= 2 (triple+single), the triple bond's σ channel
         # is partially shielded from coordination competition by its
         # large bo. Apply reduced f_renorm: only 1/bo of the compression.
@@ -5077,12 +5158,12 @@ def _triatomic_fast_path(topology: Topology,
     # ── S-BLOCK LINEAR branch (BeF2, BeCl2) ──
     elif is_sblock_linear:
         # s-block centers (Be, Mg) form ionic-dominated bonds.
-        # The Phase 1 diatomic seeds undercount because the strong ionic
+        # The v4 diatomic seeds undercount because the strong ionic
         # character (Pythagore) is enhanced by bilateral coordination.
         # S1: No σ renormalization for s-block — the 3×3 eigensystem
         # is designed for covalent coordination and gives misleading
         # f_renorm for strongly ionic Be/Mg centers.
-        # Keep Phase 1 seeds as-is (f_renorm = 1.0 effectively).
+        # Keep v4 seeds as-is (f_renorm = 1.0 effectively).
         # S2: Ionic bilateral boost from Pythagore.
         # Each terminal donates LP → center vacancy. The bilateral
         # donation creates an ionic field that stabilizes both bonds.
@@ -5146,7 +5227,7 @@ def _triatomic_fast_path(topology: Topology,
         # Carbon center with lp=1, z=2, no π: LP blocks σ channel.
         # Gate: at least one terminal must have LP (heavy atom), not H.
         # For CH₂ (both terminals = H), the LP cooperation with H is
-        # already captured by the Phase 1 seed — no attenuation needed.
+        # already captured by the v4 seed — no attenuation needed.
         if Z_B == 6 and lp_B == 1 and n_pi_total == 0:
             max_term_lp = max(topology.lp[t] for t in terms)
             if max_term_lp > 0:
@@ -5219,7 +5300,7 @@ def _triatomic_fast_path(topology: Topology,
 
         D0_final = D0_bond * ghost_atten
 
-        # Per-face decomposition using Phase 1 ratios
+        # Per-face decomposition using v4 ratios
         D0_raw = sr.D0
         if D0_raw > 1e-10:
             scale_b = D0_bond / D0_raw
@@ -5272,7 +5353,7 @@ def _triatomic_fast_path(topology: Topology,
 # ╚════════════════════════════════════════════════════════════════════╝
 
 def compute_D_at_transfer(topology: Topology,
-                          source: str = "phase1") -> TransferResult:
+                          source: str = "v4") -> TransferResult:
     """Compute molecular atomization energy via SCF on T⁴.
 
     Pipeline:
@@ -5280,7 +5361,7 @@ def compute_D_at_transfer(topology: Topology,
       2. Diatomic fast-path (2x2 analytical formula)
       3. Huckel aromatic caps (ring pi delocalization)
       4. Per-bond seeds (4-face DFT screening)
-      4b. DFT cross-spectrum correction + Parseval budget
+      4b. [v4] DFT cross-spectrum correction + Parseval budget
       5. Shell attenuation (hypervalent vertices)
       6. SCF iterate (Perron on T_T4)
       7. Ghost attenuation (Mertens tail p>=11)
@@ -5288,16 +5369,16 @@ def compute_D_at_transfer(topology: Topology,
       9. Assembly -> TransferResult
 
     Sources:
-      "phase1" (default): Phase 1 spectral DFT cross-spectrum correction on
+      "v4" (default): v4 spectral DFT cross-spectrum correction on
           Z/(2P₁)Z + Parseval budget for hypervalent vertices. The
           cross-spectrum captures inter-atomic spectral coherence.
           The Parseval budget distributes spectral power at vertices
           with z > P_l across their bonds.
-      "phase1_spectral": per-bond seeds from Phase 1 D0_screening (diatomic
+      "v4_spectral": per-bond seeds from v4 D0_screening (diatomic
           quality) + Parseval z^(-1/6) sharing + DFT vertex coupling.
-          Replaces the 4-face DFT pipeline with direct Phase 1 calls.
-      "full_pt": original engine without Phase 1 corrections.
-      "full_pt_phase1": alias for "phase1".
+          Replaces the 4-face DFT pipeline with direct v4 calls.
+      "full_pt": original engine without v4 corrections.
+      "full_pt_v4": alias for "v4".
 
     0 adjustable parameters. All from s = 1/2.
     """
@@ -5316,10 +5397,10 @@ def compute_D_at_transfer(topology: Topology,
         lp_i = topology.lp[i]
         lp_j = topology.lp[j]
 
-        # ── Phase 1 screening_bond direct pathway ──
+        # ── v4 screening_bond direct pathway ──
         # D0_screening already includes D_FULL, all 7 screening terms,
-        # and per-face decomposition. No ghost needed (absorbed in Phase 1).
-        sr = _D0_screening_sb(Zi, Zj, bo, lp_A=lp_i, lp_B=lp_j)
+        # and per-face decomposition. No ghost needed (absorbed in v4).
+        sr = _D0_screening_v4(Zi, Zj, bo, lp_A=lp_i, lp_B=lp_j)
         D0_final = sr.D0
 
         # Physical observables
@@ -5355,9 +5436,9 @@ def compute_D_at_transfer(topology: Topology,
         )
 
     # ══════════════════════════════════════════════════════════════════
-    # TRIATOMIC FAST-PATH (n_atoms=3, n_bonds=2): 3x3 + Phase 1 seeds
+    # TRIATOMIC FAST-PATH (n_atoms=3, n_bonds=2): 3x3 + v4 seeds
     # ══════════════════════════════════════════════════════════════════
-    if n_atoms == 3 and n_bonds == 2 and source in ("phase1", "full_pt_phase1"):
+    if n_atoms == 3 and n_bonds == 2 and source in ("v4", "full_pt_v4"):
         _tri_result = _triatomic_fast_path(topology, atom_data)
         if _tri_result is not None:
             return _tri_result
@@ -5370,18 +5451,18 @@ def compute_D_at_transfer(topology: Topology,
     huckel_caps = _huckel_aromatic(topology, atom_data)
 
     # Step 4: Per-bond seeds
-    _use_phase1 = source in ("phase1", "full_pt_phase1")
-    _use_phase1_spectral = source == "phase1_spectral"
+    _use_v4 = source in ("v4", "full_pt_v4")
+    _use_v4_spectral = source == "v4_spectral"
     bond_seeds: Dict[int, BondSeed] = {}
 
-    if _use_phase1_spectral:
-        # ── phase1_spectral: Phase 1-capped 4-face DFT seeds ──
-        # The spectral blending caps overbinding DFT seeds at Phase 1 × (1+S₃)
+    if _use_v4_spectral:
+        # ── v4_spectral: v4-capped 4-face DFT seeds ──
+        # The spectral blending caps overbinding DFT seeds at v4 × (1+S₃)
         # and fades the correction for n > P₃ (where SCF handles sharing).
         bond_seeds = _compute_bond_seed_spectral(topology, atom_data, huckel_caps)
     else:
         for bi, (i, j, bo) in enumerate(topology.bonds):
-            if _use_phase1:
+            if _use_v4:
                 bond_seeds[bi] = _compute_bond_seed_v4(
                     i, j, bo, bi, topology, atom_data, huckel_caps
                 )
@@ -5390,34 +5471,34 @@ def compute_D_at_transfer(topology: Topology,
                     i, j, bo, bi, topology, atom_data, huckel_caps
                 )
 
-    # ── SMALL-MOLECULE SEED CALIBRATION [Phase 1 anchor, 0 params] ─────────
+    # ── SMALL-MOLECULE SEED CALIBRATION [v4 anchor, 0 params] ─────────
     # For small molecules (n < P₃), the polyatomic bond seeds deviate
-    # from the Phase 1 diatomic values because the vertex polygon DFT was
-    # tuned for large molecules. The Phase 1 engine (MAE 0.93% on 135
+    # from the v4 diatomic values because the vertex polygon DFT was
+    # tuned for large molecules. The v4 engine (MAE 0.93% on 135
     # diatomics) provides a high-quality per-bond reference.
     #
     # TRIATOMIC REGIME (n=3): the poly engine's vertex DFT shares a
     # single polygon between 2 bonds, creating large correlated errors
-    # (±15-25%). For triatomics, use a STRONG blend toward Phase 1 with a
+    # (±15-25%). For triatomics, use a STRONG blend toward v4 with a
     # 3-center coordination screening factor:
     #
-    #   D0_tri = Phase 1 × (1 - (z_c - 1) × D₃ / z_c)
+    #   D0_tri = v4 × (1 - (z_c - 1) × D₃ / z_c)
     #
     # where z_c is the central vertex coordination. The factor D₃/z_c
     # captures the face density shared between bonds (Fisher dispersion
     # on Z/(2P₁)Z, divided by z neighbors).
     #
-    # LARGER MOLECULES (n=4..6): blend toward Phase 1 with C₃ factor.
+    # LARGER MOLECULES (n=4..6): blend toward v4 with C₃ factor.
     #
     # Three regimes for overbinding:
-    # 1. EXCESS > (1+S₃): cap at Phase 1 × (1+S₃)
+    # 1. EXCESS > (1+S₃): cap at v4 × (1+S₃)
     # 2. MILD EXCESS (ratio in (1, 1+S₃]): graduated damping D₃×S₃×f_size
     #    (only when mean ratio > 1, i.e. collective overbinding)
-    # 3. DEFICIT (ratio < 1): blend toward Phase 1 with C₃
+    # 3. DEFICIT (ratio < 1): blend toward v4 with C₃
     #
     # 0 adjustable parameters.
-    if not _use_phase1_spectral:
-        if n_atoms < P3 and _use_phase1:
+    if not _use_v4_spectral:
+        if n_atoms < P3 and _use_v4:
             _EXCESS_THRESHOLD = 1.0 + S3  # ≈ 1.219
             _f_size = max(0.0, 1.0 - float(n_atoms - P1) / (P3 - P1))
 
@@ -5438,7 +5519,7 @@ def compute_D_at_transfer(topology: Topology,
             _sr_v4_cache: Dict[int, object] = {}
             for bi, (i, j, bo) in enumerate(topology.bonds):
                 Zi, Zj = topology.Z_list[i], topology.Z_list[j]
-                sr_v4 = _D0_screening_sb(Zi, Zj, bo,
+                sr_v4 = _D0_screening_v4(Zi, Zj, bo,
                                          lp_A=topology.lp[i],
                                          lp_B=topology.lp[j])
                 _sr_v4_cache[bi] = sr_v4
@@ -5457,7 +5538,7 @@ def compute_D_at_transfer(topology: Topology,
                 # bond are spectrally orthogonal to the σ-mode of the
                 # single bond on Z/(2P₁)Z.  The vertex DFT correctly
                 # captures the σ→π donation (multi-center enhancement),
-                # which is absent in the isolated diatomic Phase 1 seed.
+                # which is absent in the isolated diatomic v4 seed.
                 #
                 # Each asymmetric linear endpoint adds 1/(2P₁) spectral
                 # budget from the orthogonal σ-mode.  The Parseval
@@ -5481,7 +5562,7 @@ def compute_D_at_transfer(topology: Topology,
                 _thr_bi = _EXCESS_THRESHOLD * C3 ** (-_n_asym_bi / 2.0)
 
                 if ratio > _thr_bi:
-                    # Overbinding seed — cap at Phase 1 × threshold
+                    # Overbinding seed — cap at v4 × threshold
                     D0_capped = sr_v4.D0 * _thr_bi
                     _scale_cap = D0_capped / max(seed.D0, 1e-10)
                     bond_seeds[bi] = BondSeed(
@@ -5549,7 +5630,7 @@ def compute_D_at_transfer(topology: Topology,
                                 Q_eff=seed.Q_eff,
                             )
                 elif ratio < 1.0 and _f_size > 0:
-                    # Underbinding seed — blend toward Phase 1, guarded by
+                    # Underbinding seed — blend toward v4, guarded by
                     # bond-order-dependent Shannon cap.
                     _bo_bi = topology.bonds[bi][2]
                     _shannon_bo = (RY / P1
@@ -5581,13 +5662,13 @@ def compute_D_at_transfer(topology: Topology,
         # Shell attenuation handles polygon promotion (Z/6Z -> Z/10Z).
         # Both are applied: Parseval is a SPECTRAL correction (gentle),
         # shell attenuation is a GEOMETRIC correction (strong for excess bonds).
-        if _use_phase1:
+        if _use_v4:
             bond_seeds = _parseval_budget(topology, atom_data, bond_seeds)
 
     # v4_spectral: spectral SCF replaces static Parseval
     # The SCF iterates the Parseval constraint mode-by-mode until
     # convergence, capturing inter-bond spectral competition.
-    if _use_phase1_spectral:
+    if _use_v4_spectral:
         bond_seeds = _scf_spectral(topology, atom_data, bond_seeds)
 
     # Step 5: Shell attenuation (hypervalent vertices, in-place)
@@ -6317,10 +6398,10 @@ def compute_D_at_transfer(topology: Topology,
     # PT derivation: the triple bond's k≥1 modes on the hexagonal face
     # create a confining potential at the shared vertex. The single bond's
     # k=0 (σ) mode is rigidified, reducing its screening.
-    # The stabilisation energy uses the Phase 1 DIATOMIC D_P1 reference:
+    # The stabilisation energy uses the v4 DIATOMIC D_P1 reference:
     #   ΔD = D_P1_v4(triple) × (bo-1)/bo × S₃ × s × f_deficit
     # where f_deficit = max(0, 1 - D_current/D_v4) clamps the boost:
-    # bonds already at or above their Phase 1 diatomic value get no boost.
+    # bonds already at or above their v4 diatomic value get no boost.
     # This avoids over-boosting molecules where the polyatomic pipeline
     # already captures the cooperative energy.
     #
@@ -6329,10 +6410,10 @@ def compute_D_at_transfer(topology: Topology,
     # lp=0 neighbors (no LP suppression of sigma confinement).
     # 0 adjustable parameters.
     if not topology.is_diatomic and topology.n_atoms >= 4:
-        # Pre-compute Phase 1 diatomic references for deficit gating
+        # Pre-compute v4 diatomic references for deficit gating
         _v4_diat_refs: Dict[int, float] = {}
         for bi_ref, (i_ref, j_ref, bo_ref) in enumerate(topology.bonds):
-            sr_ref = _D0_screening_sb(topology.Z_list[i_ref], topology.Z_list[j_ref],
+            sr_ref = _D0_screening_v4(topology.Z_list[i_ref], topology.Z_list[j_ref],
                                       bo_ref, lp_A=topology.lp[i_ref],
                                       lp_B=topology.lp[j_ref])
             _v4_diat_refs[bi_ref] = sr_ref.D0
@@ -6359,10 +6440,10 @@ def compute_D_at_transfer(topology: Topology,
                 bo_triple = bo_b
             else:
                 continue
-            # Use Phase 1 diatomic D_P1 for the triple bond
+            # Use v4 diatomic D_P1 for the triple bond
             i_t, j_t, _ = topology.bonds[bi_triple]
             Zi_t, Zj_t = topology.Z_list[i_t], topology.Z_list[j_t]
-            sr_v4_triple = _D0_screening_sb(Zi_t, Zj_t, bo_triple,
+            sr_v4_triple = _D0_screening_v4(Zi_t, Zj_t, bo_triple,
                                             lp_A=topology.lp[i_t],
                                             lp_B=topology.lp[j_t])
             pi_frac = (bo_triple - 1.0) / bo_triple
@@ -6391,7 +6472,7 @@ def compute_D_at_transfer(topology: Topology,
                     bond_energies[bk] = D_old * (1.0 + f_gft)
 
     # ── C9: RING HOLONOMY T³ [Z mod {3,5,7} frustration] ─────────────
-    # Parallel transport on T³: each edge (i→j) of the cycle accumulates
+    # Transport parallèle sur T³ : chaque arête (i→j) du cycle accumule
     # une phase sin²(2π·Δr_k/P_k) par face k.
     E_ring_holo = 0.0
     if topology.rings and topology.n_atoms >= 4:
@@ -6447,6 +6528,166 @@ def compute_D_at_transfer(topology: Topology,
                 / n_cyclomatic
             )
             E_ring_holo += holo
+
+    # ── C9c: SUB-SATURATED s¹ RING POLYGON OVERRIDE ──────────────────
+    # When every ring atom carries outer ns¹ with no np valence, the
+    # σ ring system is electron-deficient: only ⌊n_e/2⌋ delocalized
+    # pairs are available for N edges, so the per-edge sum of
+    # bond_energies over-counts a 2c-2e localized picture that does
+    # not exist. The PT-pure unit is the polygon P_N itself, not the
+    # edge: cycle-Hückel modes ε_k = α - 2t cos(2πk/N) carry the
+    # bonding, calibrated by β = D_dimer / 2.
+    #
+    # Override the in-ring edge-sum by:
+    #     D_polygon = D_dimer · Σ_k n_k cos(2πk/N)
+    # with Aufbau filling (largest cos first), n_e = N (one s¹
+    # electron per atom, neutral ring assumption).
+    #
+    # Gate: every ring atom is Group 1 alkali (Li/Na/K/Rb/Cs/Fr) or
+    # Group 11 coinage (Cu/Ag/Au) — i.e. ns=1, np=0. Ring size 3..6.
+    s1_rings_handled: set = set()
+    if topology.rings and topology.n_atoms >= 3:
+        ring_bond_set_c9c = topology.ring_bonds or set()
+        for ring in topology.rings:
+            N_ring = len(ring)
+            if not (3 <= N_ring <= 6):
+                continue
+            Zs_r = [topology.Z_list[k] for k in ring]
+            if not all(_is_s1_outer(z) for z in Zs_r):
+                continue
+            ring_set = set(ring)
+            ring_bis = []
+            for bi_r in ring_bond_set_c9c:
+                i_r, j_r, _ = topology.bonds[bi_r]
+                if i_r in ring_set and j_r in ring_set:
+                    ring_bis.append(bi_r)
+            if not ring_bis:
+                continue
+            edge_sum = sum(bond_energies.get(bi_r, 0.0) for bi_r in ring_bis)
+            if edge_sum <= 0:
+                continue
+            # σ-electron count: 1 per s¹ atom, neutral ring
+            n_e = N_ring
+            mult = _huckel_polygon_multiplier(N_ring, n_e)
+            # D_dimer reference: homonuclear → unique; heteronuclear →
+            # average over the distinct (Zi,Zj) pairs of in-ring edges
+            unique_Z = set(Zs_r)
+            if len(unique_Z) == 1:
+                zh = next(iter(unique_Z))
+                D_dim = _dimer_D_cached(zh, zh)
+            else:
+                pairs = set()
+                for bi_r in ring_bis:
+                    i_r, j_r, _ = topology.bonds[bi_r]
+                    pairs.add((min(topology.Z_list[i_r], topology.Z_list[j_r]),
+                               max(topology.Z_list[i_r], topology.Z_list[j_r])))
+                ds = [_dimer_D_cached(za, zb) for za, zb in pairs]
+                D_dim = sum(ds) / len(ds) if ds else 0.0
+            if D_dim <= 0:
+                continue
+            D_polygon = mult * D_dim
+            E_ring_holo += D_polygon - edge_sum
+            s1_rings_handled.add(tuple(ring))
+
+    # ── C9b: σ-AROMATICITY [non-carbon metal rings] ──────────────────
+    # Aromaticity = holonomic phase condition on a closed cycle of T³.
+    # _huckel_aromatic handles π-aromaticity via SMILES bo=1.5 gate.
+    # For non-C metal rings (Al₃⁻, Bi₃³⁻, Hg₄²⁻, mixed Zintl clusters,
+    # actinide-capped rings…) the σ channel on Z/(2P₁)Z supports the
+    # same Hückel-like delocalization — SMILES emits no bo=1.5 flag for
+    # metals, so this block catches them.
+    #
+    # The stabilisation is modulated by the T³ Fourier coherence of the
+    # ring composition, f_coh ∈ [0,1]:
+    #     f_coh = (S₃·C₁ + S₅·C₂ + S₇·C₃) / (S₃+S₅+S₇)
+    #     C_k   = |1/N · Σ_a exp(2π i · (Z_a mod P_k) / P_k)|²
+    # f_coh = 1 for strict homonuclear (all residues aligned on every
+    # T³ face); f_coh < 1 proportionally as the composition dephases.
+    # No arbitrary threshold — the PT-pure modulator carries the physics.
+    #
+    # Gate (narrow, verified 0/806 overlap with existing bench):
+    #   - ring size 3 ≤ N ≤ 6
+    #   - no carbon or hydrogen in ring (C/H handled elsewhere)
+    #   - every ring atom has period ≥ 3 (σ-aromaticity regime)
+    #   - ring not SMILES-aromatic (bo ≠ 1.5 everywhere)
+    #
+    # Stabilisation per ring: +S₃ · sin²(π/N) · Σ_bonds D_bond · f_coh
+    if topology.rings and topology.n_atoms >= 3:
+        ring_bond_set = topology.ring_bonds or set()
+        for ring in topology.rings:
+            if tuple(ring) in s1_rings_handled:
+                continue  # C9c already handled this ring
+            N_ring = len(ring)
+            if not (3 <= N_ring <= 6):
+                continue
+            Zs = [topology.Z_list[k] for k in ring]
+            if any(z in (1, 6) for z in Zs):
+                continue
+            if any(period(z) < 3 for z in Zs):
+                continue
+            ring_set = set(ring)
+            ring_bis = []
+            is_aro_ring = False
+            for bi_r in ring_bond_set:
+                i_r, j_r, bo_r = topology.bonds[bi_r]
+                if i_r in ring_set and j_r in ring_set:
+                    ring_bis.append(bi_r)
+                    if abs(bo_r - 1.5) < 0.01:
+                        is_aro_ring = True
+            if is_aro_ring:
+                continue
+            D_ring_sum = sum(bond_energies.get(bi_r, 0.0) for bi_r in ring_bis)
+            if D_ring_sum <= 0:
+                continue
+            # T³ Fourier coherence across the ring (PT-pure, no threshold)
+            f_coh = 0.0
+            _S_SUM_COH = S3 + S5 + S7
+            for k_face, Pk in ((0, P1), (1, P2), (2, P3)):
+                s_re = 0.0
+                s_im = 0.0
+                for a in ring:
+                    phase = 2.0 * math.pi * (Zs[ring.index(a)] % Pk) / Pk \
+                            if False else \
+                            2.0 * math.pi * (topology.Z_list[a] % Pk) / Pk
+                    s_re += math.cos(phase)
+                    s_im += math.sin(phase)
+                Ck = (s_re * s_re + s_im * s_im) / (N_ring * N_ring)
+                Sk = (S3, S5, S7)[k_face]
+                f_coh += Sk * Ck
+            f_coh /= _S_SUM_COH
+            # ── f-block back-donation [actinide-capped rings] ──────
+            # When ring atoms have f-block (l=3) exocyclic neighbors
+            # (e.g. U-capped Bi₃), the 5f orbitals donate into the σ
+            # ring system via the pent-hept cross-face coupling R₅₇
+            # = D₅·D₇ — same mechanism as atom.py insight #75, now on
+            # the ring cycle rather than on a single atom.
+            #
+            # Magnitude:  + R₅₇ · D_ring · (n_f_cap / N_ring)
+            # where n_f_cap = number of ring atoms having ≥1 exocyclic
+            # f-block neighbor.
+            n_f_cap = 0
+            for a in ring:
+                has_f_nb = False
+                for bi_nb in topology.vertex_bonds.get(a, []):
+                    ii, jj, _ = topology.bonds[bi_nb]
+                    nb = jj if ii == a else ii
+                    if nb in ring_set:
+                        continue
+                    Z_b = topology.Z_list[nb]
+                    if period(Z_b) >= 6 and l_of(Z_b) == 3:
+                        has_f_nb = True
+                        break
+                if has_f_nb:
+                    n_f_cap += 1
+            f_cap = (D5 * D7) * (n_f_cap / N_ring) if n_f_cap else 0.0
+
+            E_ring_holo += (
+                S3
+                * math.sin(math.pi / N_ring) ** 2
+                * D_ring_sum
+                * f_coh
+                * (1.0 + f_cap)
+            )
 
     # ── C10: PERRON SPECTRAL REDISTRIBUTION [T5 on molecular graph] ──
     # The Ruelle spectral correction D₃ × σ(δλ) is distributed PER-BOND
@@ -6644,7 +6885,7 @@ def compute_D_at_transfer(topology: Topology,
             E_angle += S3 * abs(cos_theta) * D_avg_v * S_HALF / z_v
 
         # (MC2b/MC2c removed — triatomic 3-center effects are handled
-        #  by the Phase 1 seed anchor in the seed calibration section above.)
+        #  by the v4 seed anchor in the seed calibration section above.)
 
         # ── MC3: E_lp_anti — LP-LP anti-bonding repulsion ──────────────
         # UNILATERAL only: one LP atom in multi-bond at non-hybridized

@@ -52,7 +52,7 @@ Q_KOIDE = Fraction(2, 3)
 # ╚════════════════════════════════════════════════════════════════╝
 _Q = Fraction(13, 15)                      # q_stat = 1 - 2/mu [L0]
 
-# delta_p = (1 - q^p) / p  [T6, D07: holonomy on Z/pZ]
+# delta_p = (1 - q^p) / p  [T6, D07: holonomie sur Z/pZ]
 def _delta(p):
     return float((1 - _Q**p) / p)
 
@@ -87,15 +87,15 @@ C3_TH, C5_TH, C7_TH = 1.0 - S3_TH, 1.0 - S5_TH, 1.0 - S7_TH
 # Chaleur latente de bifurcation [A8]
 L_BIFURC = float(_Q_TH) - float(_Q)
 
-# ── alpha_EM nu [D09: product of 3 cascade filters] ──
+# ── alpha_EM nu [D09: produit des 3 filtres en cascade] ──
 AEM = S3 * S5 * S7                         # 1/136.28
 
 # ── Taux d'arret [T4, D04: formule maitresse f(p)] ──
 LAM = 2.0 / MU_STAR
 
 # ── Facteur de traduction SI ──
-# ONLY non-PT input: m_e c^2 in eV (unit choice, not a parameter).
-# Everything else derived from s=1/2 + this factor.
+# SEUL input non-PT: m_e c^2 en eV (choix d'unite, pas un parametre).
+# Tout le reste est derive de s=1/2 + ce facteur.
 ME_C2_EV = 510998.95                       # m_e c^2 (CODATA 2018)
 HBAR_C_EV_A = 1973.269804                 # hbar*c en eV*A (exact, nouveau SI)
 HBAR_EV_S = 6.582e-16                     # hbar en eV*s (definition SI)
@@ -156,8 +156,8 @@ R37_DARK = AEM * I3 * I7
 R57_DARK = AEM * I5 * I7
 ALPHA_DARK = (I3 * I5 * I7) ** 2
 
-# Dark quadrupole k=2 on Z/(2P1)Z [D13: spin foam]
-# The 3 cross-gap beats alias onto k=2 (triangle mode):
+# Quadrupole sombre k=2 sur Z/(2P1)Z [D13: spin foam]
+# Les 3 battements cross-gap aliasent sur k=2 (mode triangle):
 #   (3,5): beat=2, (3,7): beat=4=2 mod 3, (5,7): beat=2
 R_DARK_K2 = R35_DARK + R37_DARK + R57_DARK
 
@@ -200,7 +200,7 @@ GAMMA_2 = _gamma(2)                        # 0.867 > 1/2 (ACTIVE)
 #   psi = cos(theta_2) = 1-delta_2 = 197/225
 #   N = (p+1)^(p+1)-1 = 26                  canaux charges
 #
-# Archimedean spiral feedback modulated by gamma_3:
+# Feedback spirale d'Archimede modulate par gamma_3:
 #   r = alpha_1 * (gamma_3^2+gamma_5^2+gamma_7^2)
 #   Pi = (delta_5+delta_7)/sum(gamma) * (1+alpha_bare/5^2)
 

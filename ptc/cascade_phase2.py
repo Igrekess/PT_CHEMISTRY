@@ -1,27 +1,27 @@
 """
-PTC CASCADE — Unified D_at engine on T³.
+PTC CASCADE — Moteur D_at unifié sur T³.
 
-Contains BOTH phases of molecular spectral convergence:
+Contient les DEUX phases de la convergence spectrale moléculaire :
 
-  PHASE 1 (n ≤ P₃ = 7) : delegates to transfer_matrix.py (Perron λ₀)
+  PHASE 1 (n ≤ P₃ = 7) : délègue à transfer_matrix.py (Perron λ₀)
     + post-corrections LP→σ, charges formelles, VSEPR.
 
   PHASE 2 (n > P₃) : cascade per-bond P₀→P₁→P₂→P₃
-    + 17 NLO corrections (cooperative, Dicke, T³ perturbative,
+    + 17 corrections NLO (coopérative, Dicke, T³ perturbatif,
       LP→π, ring strain, halogen π-drain, etc.)
 
-The bifurcation at n = P₃ = 7 is the Phase 1 / Phase 2 transition
-of molecular Mertens convergence [T4, D08] :
-  Phase 1: dense molecular graph → T⁴ Perron exact.
-  Phase 2: sparse graph → NLO corrections converge.
+La bifurcation à n = P₃ = 7 est la transition Phase 1 / Phase 2
+de la convergence de Mertens moléculaire [T4, D08] :
+  Phase 1 : le graphe moléculaire est dense → T⁴ Perron exact.
+  Phase 2 : le graphe est sparse → corrections NLO convergent.
 
 Architecture per-bond (Phase 2) :
    Face P₀ (Z/2Z) — parity/LP gate
    Face P₁ (Z/6Z) — σ+π bonding  ← DOMINANT
-   Face P₂ (Z/10Z) — d/π² conditioned by P₁
-   Face P₃ (Z/14Z) — ionique conditioned by P₁+P₂
+   Face P₂ (Z/10Z) — d/π² conditionné par P₁
+   Face P₃ (Z/14Z) — ionique conditionné par P₁+P₂
 
-0 adjustable parameters. All from s = 1/2.
+0 paramètre ajusté. Tout depuis s = 1/2.
 """
 
 import math
@@ -44,13 +44,13 @@ from ptc.periodic import period, l_of, ns_config
 from ptc.data.experimental import IE_NIST, EA_NIST, MASS
 from ptc.bond import r_equilibrium
 
-# ── Import Phase 1 screening modules (pure PT, no calibration) ──
-# Phase 1 engine (delegation for n ≤ 7)
+# ── Import v4 screening modules (pure PT, no calibration) ──
+# v4 engine (delegation for n ≤ 7)
 from ptc.transfer_matrix import compute_D_at_transfer
-# Phase 1 per-bond seed (diatomic quality, for triatomic solver)
-from ptc.screening_bond import D0_screening as _D0_screening_phase1
+# v4 per-bond seed (diatomic quality, for triatomic v5 solver)
+from ptc.screening_bond_v4 import D0_screening as _D0_screening_v4
 
-# Shared screening functions (used by both Phase 1 and Phase 2)
+# Shared screening functions (used by both v4 and v5)
 from ptc.screening import (
     _resolve_atom_data,
     BondSeed,
@@ -64,7 +64,7 @@ from ptc.screening import (
     _apply_shell_attenuation,
     _build_T4, _scf_iterate,
 )
-from ptc.vertex_dft import vertex_dft, vertex_dft_P2, vertex_dft_P3
+from ptc.vertex_dft_v5 import vertex_dft_v5, vertex_dft_v5_P2, vertex_dft_v5_P3
 
 
 # ════════════════════════════════════════════════════════════════════
@@ -125,12 +125,12 @@ def _screening_P1_cascade(i: int, j: int, bo: float, bi: int,
                            ctx_i: VertexCtx, ctx_j: VertexCtx) -> float:
     """P₁ screening with contextual peer floor.
 
-    Uses the SAME Phase 1 pipeline (dim3 + vertex_DFT + dim1 + bifurcation)
+    Uses the SAME v4 pipeline (dim3 + vertex_DFT + dim1 + bifurcation)
     but with a contextual peer floor instead of universal D₇.
-    The Phase 1 _vertex_polygon_dft is called directly — it already
+    The v4 _vertex_polygon_dft is called directly — it already
     implements the full DFT on Z/(2P_l)Z with all the modes.
 
-    The ONLY change vs Phase 1: the peer floor is per-bond contextual
+    The ONLY change vs v4: the peer floor is per-bond contextual
     via _peer_floor(), which replaces f_size-gated C17/C18.
     """
     Zi, Zj = topology.Z_list[i], topology.Z_list[j]
@@ -143,12 +143,12 @@ def _screening_P1_cascade(i: int, j: int, bo: float, bi: int,
     S_dim3, sigma_3 = _dim3_overcrowding(i, j, topology, atom_data)
     S += S_dim3
 
-    # ── dim 2: vertex DFT (NATIVE contextual + competition + Fisher)
+    # ── dim 2: vertex DFT v5 (NATIVE contextual + competition + Fisher)
     # All effects integrated in S: no post-hoc corrections needed.
-    S_dft_A = vertex_dft(i, bi, topology, atom_data)
-    S_dft_B = vertex_dft(j, bi, topology, atom_data)
+    S_dft_A = vertex_dft_v5(i, bi, topology, atom_data)
+    S_dft_B = vertex_dft_v5(j, bi, topology, atom_data)
 
-    # ── dim 2: LP mutual (cross-polygon LP coupling) ──
+    # ── dim 2: LP mutual (cross-polygon LP coupling, v4 function) ──
     S_mutual = _dim2_lp_mutual(i, j, topology, atom_data)
 
     # Degree-aware amplification for z=2 (triatomic regime)
@@ -173,11 +173,11 @@ def _screening_P1_cascade(i: int, j: int, bo: float, bi: int,
 
     S += (S_dft_A + S_dft_B) / 2.0 + S_mutual
 
-    # ── dim 1: exchange/Bohr/polarity ──
+    # ── dim 1: exchange/Bohr/polarity (v4 function) ──
     S_dim1, Q_eff = _dim1_exchange(i, j, topology, atom_data)
     S += S_dim1
 
-    # ── Bifurcation ──
+    # ── Bifurcation (v4 logic) ──
     per_i, per_j = di['per'], dj['per']
     delta_per = abs(per_i - per_j)
     f_bif = 1.0 - (1.0 - F_BIFURC) * min(delta_per, P1) / P1 * Q_eff
@@ -231,7 +231,7 @@ def _lp_crowding(v: int, topology: Topology, atom_data: dict,
     # Sum LP on adjacent terminals, weighted by compactness.
     # Super-Bohr gate: F/O LP (IE > Ry×(1+S₃)) is structural
     # screening that is EXCLUDED from crowding UNLESS the centre
-    # has no d-vacancy, non-deficient, and no LP (same as Phase 1 C2).
+    # has no d-vacancy, non-deficient, and no LP (same as v4 C2).
     _center_has_d_vacancy = per_v >= P1 and d_v.get('l', 0) >= 1
     # Super-Bohr gate: include high-IE terminal LP when the centre
     # itself has LP (e.g. N in NF3: lp=1, F terminals lp=3).
@@ -273,7 +273,7 @@ def _lp_crowding(v: int, topology: Topology, atom_data: dict,
     # When n ≥ 2 high-IE terminals surround an LP centre (e.g. N in NF3),
     # their LP modes constructively interfere on the centre's polygon,
     # creating cross-vertex screening: D₃ × n(n−1)/(z×P₁).
-    # This is the converse of vertex_dft §4 (Fisher anti-correlation
+    # This is the converse of vertex_dft_v5 §4 (Fisher anti-correlation
     # for LP-free partners), applied to super-Bohr LP partners.
     if _include_super_bohr and n_above_bohr >= 2 and lp_v > 0:
         S_pair_super = D3 * float(n_above_bohr * (n_above_bohr - 1)) / (z_v * P1)
@@ -303,7 +303,7 @@ def _lp_crowding(v: int, topology: Topology, atom_data: dict,
 
 
 # ════════════════════════════════════════════════════════════════════
-#  HÜCKEL AROMATIC 
+#  HÜCKEL AROMATIC (imported from v4)
 # ════════════════════════════════════════════════════════════════════
 # Uses _huckel_aromatic from transfer_matrix.py directly.
 
@@ -384,19 +384,19 @@ class CascadeResult(NamedTuple):
 
 # ════════════════════════════════════════════════════════════════════
 #  TRIATOMIC V5 NATIVE SOLVER
-#  Phase 1 diatomic-quality seeds + 3×3 cooperation + Phase 2-improved face
+#  v4 diatomic-quality seeds + 3×3 cooperation + v5-improved face
 #  corrections (GFT peer saturation, σ-π D₃ gate, d-block routing).
 #  0 adjustable parameters.  All from s = 1/2.
 # ════════════════════════════════════════════════════════════════════
 
 def _triatomic_v5(topology: Topology, atom_data: dict) -> CascadeResult:
-    """Triatomic solver: Phase 1 seeds + 3×3 cooperation + Phase 2 corrections.
+    """V5 native triatomic solver: v4 seeds + 3×3 cooperation + v5 corrections.
 
     Architecture:
-      1. Phase 1 diatomic-quality per-bond seeds (_D0_screening_phase1)
+      1. v4 diatomic-quality per-bond seeds (_D0_screening_v4)
       2. 3×3 Hamiltonian → f_renorm (bilateral cooperation)
       3. Per-type routing (radical/linear/bent/sblock/carbene)
-      4. Face corrections F1-F7 with Phase 2 improvements
+      4. Face corrections F1-F7 with v5 improvements
       5. Ghost VP attenuation
 
     0 adjustable parameters.  All from s = 1/2.
@@ -441,11 +441,11 @@ def _triatomic_v5(topology: Topology, atom_data: dict) -> CascadeResult:
     is_sblock_linear = (lp_B == 0 and l_B == 0 and zc[B] == 2
                         and per_B >= 2)
 
-    # ── 4. Phase 1 per-bond seeds (diatomic quality) ──
-    def _phase1_seed(ia, ib, bo):
+    # ── 4. v4 per-bond seeds (diatomic quality) ──
+    def _v4_seed(ia, ib, bo):
         Zi, Zj = topology.Z_list[ia], topology.Z_list[ib]
         lp_i, lp_j = topology.lp[ia], topology.lp[ib]
-        return _D0_screening_phase1(Zi, Zj, bo, lp_A=lp_i, lp_B=lp_j)
+        return _D0_screening_v4(Zi, Zj, bo, lp_A=lp_i, lp_B=lp_j)
 
     # ── 4a. d-block terminal effective bond order ──────────────
     # When a d-block terminal (z=1) bonds to a partner with LP,
@@ -487,17 +487,17 @@ def _triatomic_v5(topology: Topology, atom_data: dict) -> CascadeResult:
                 _bo_eff_BC = _bo_bo + _delta_bo
             break  # one d-block per bond
 
-    sr_AB = _phase1_seed(bond_AB[0], bond_AB[1], _bo_eff_AB)
-    sr_BC = _phase1_seed(bond_BC[0], bond_BC[1], _bo_eff_BC)
+    sr_AB = _v4_seed(bond_AB[0], bond_AB[1], _bo_eff_AB)
+    sr_BC = _v4_seed(bond_BC[0], bond_BC[1], _bo_eff_BC)
     D0_AB = sr_AB.D0
     D0_BC = sr_BC.D0
 
     # ── 4b. Deep ionic S_ion restoration ──
-    # Phase 1 seeds attenuate S_ion (Pythagorean anti-screening) when
+    # v4 seeds attenuate S_ion (Pythagorean anti-screening) when
     # EA_acc < S₃×Ry (Born-Haber gate inactive). For deep ionic bonds
     # (ie_ratio < s), restore the attenuated fraction so the ionic P₃
     # contribution enters D₀ at full strength.
-    # 0 adjustable parameters — uses the Phase 1 seed's stored face components.
+    # 0 adjustable parameters — uses the v4 seed's stored face components.
     for sr, lbl in [(sr_AB, 'AB'), (sr_BC, 'BC')]:
         if sr.D_P3 > 0 and sr.D_P1 > 0.01:
             _ia_sr = bond_AB[0] if lbl == 'AB' else bond_BC[0]
@@ -528,7 +528,7 @@ def _triatomic_v5(topology: Topology, atom_data: dict) -> CascadeResult:
 
     # ── 4c. Coulomb vertex boost (dim 0) ──────────────────────────
     # When ie_ratio < s AND EA_acc < S₃×Ry (Born-Haber gate inactive),
-    # the Phase 1 P₃ face under-contributes because cap_P3 depends on EA.
+    # the v4 P₃ face under-contributes because cap_P3 depends on EA.
     # The dim 0 vertex Coulomb energy supplements the deficit:
     #   D_coulomb = q_ct² × COULOMB_EV_A / r_eq × f_Born
     #   boost = max(0, D_coulomb - D_P3_current) × f_depth
@@ -596,7 +596,7 @@ def _triatomic_v5(topology: Topology, atom_data: dict) -> CascadeResult:
     #     When the d-block atom is the centre, the 3×3 Hamiltonian
     #     and face corrections (F4/F6/F7) already capture d-orbital
     #     bonding. The boost is only needed when the d-block vertex
-    #     is treated as a simple endpoint by the Phase 1 bilateral seed.
+    #     is treated as a simple endpoint by the v4 bilateral seed.
     _cross_P1P2 = float(P1) / P2  # = 3/5 = 0.60
     for (ia_d, ib_d, bo_d, _), lbl_d in [
             (bond_AB, 'AB'), (bond_BC, 'BC')]:
@@ -900,7 +900,7 @@ def _triatomic_v5(topology: Topology, atom_data: dict) -> CascadeResult:
                 E_bilat = (_f_ct_avg ** 2 * COULOMB_EV_A / _r_avg_f8
                            * S_HALF * C3 * _f_lp_f8)
                 # ── P₃ deficit gate ──
-                # When the Phase 1 seeds already capture significant
+                # When the v4 seeds already capture significant
                 # ionic character (high D_P3), F8 bilateral is
                 # double-counting. Gate by the P₃ deficit ratio:
                 # if sum(D_P3) ≥ q_ct × COULOMB/r → F8 not needed.
@@ -923,7 +923,7 @@ def _triatomic_v5(topology: Topology, atom_data: dict) -> CascadeResult:
     # ── 8. Per-type routing (cooperation on SCF energies) ──
 
     if is_radical:
-        # Sigma/pi split with f_renorm (using Phase 1 seed ratios)
+        # Sigma/pi split with f_renorm (using v4 seed ratios)
         for lbl, sr, bo_r in [('AB', sr_AB, bo_AB), ('BC', sr_BC, bo_BC)]:
             sig_frac = 1.0 / max(bo_r, 1)
             pi_frac = max(0.0, bo_r - 1) / max(bo_r, 1)
@@ -969,7 +969,7 @@ def _triatomic_v5(topology: Topology, atom_data: dict) -> CascadeResult:
 
         # L1: σ renormalization via 3×3 eigensystem
         # Use ABSOLUTE CRT components (D_P1, D_P2+D_P3), not fractions.
-        # The Phase 1 reconstructed components capture more than D0 because
+        # The v4 reconstructed components capture more than D0 because
         # D_P1 + D_P2 + D_P3 may exceed D0 (CRT non-orthogonality).
         D_sig_AB, D_nonsig_AB = sr_AB.D_P1, sr_AB.D_P2 + sr_AB.D_P3
         D_sig_BC, D_nonsig_BC = sr_BC.D_P1, sr_BC.D_P2 + sr_BC.D_P3
@@ -1112,7 +1112,7 @@ def _triatomic_v5(topology: Topology, atom_data: dict) -> CascadeResult:
         ghost_atten = math.exp(-S_ghost * D_FULL)
 
         D0_final = D0_bond * ghost_atten
-        # Per-face decomposition from Phase 1 seed ratios
+        # Per-face decomposition from v4 seed ratios
         sr = sr_AB if bi_bond == bi_AB else sr_BC
         D0_seed = sr.D0
         scale_b = D0_bond / D0_seed if D0_seed > 1e-10 else 1.0
@@ -1133,7 +1133,7 @@ def _triatomic_v5(topology: Topology, atom_data: dict) -> CascadeResult:
 def compute_D_at_cascade(topology: Topology) -> CascadeResult:
     """Compute D_at via cascade on T³.
 
-    Uses Phase 1's proven screening functions for each face,
+    Uses v4's proven screening functions for each face,
     with contextual peer floor (no f_size) and sequential
     cascade conditioning P₁ → P₂ → P₃.
 
@@ -1151,13 +1151,13 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
     # n=4-7: PHASE 1 — Perron eigenvalue λ₀(T⁴) + post-corrections
     # n≥8:   PHASE 2 — per-bond cascade (17 corrections NLO)
     if n_atoms == P1 and n_bonds == 2:
-        atom_data = _resolve_atom_data(topology)
+        atom_data = _resolve_atom_data(topology, "v4")
         return _triatomic_v5(topology, atom_data)
     if n_atoms <= P3:
         r4 = compute_D_at_transfer(topology)
         D_at_base = r4.D_at
-        # ── Formal charge correction for Phase 1-delegated molecules ──
-        # Phase 1 atom_data is keyed by Z (not per-vertex), so it cannot
+        # ── Formal charge correction for v4-delegated molecules ──
+        # v4 atom_data is keyed by Z (not per-vertex), so it cannot
         # represent charge-shifted IEs natively.  Apply a post-cascade
         # correction: each charge-bearing bond is weakened because the
         # charge separation widens the effective IE gap on Z/(2P₁)Z,
@@ -1168,22 +1168,22 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
         # Leading-order correction per bond:
         #   δD/D ≈ -D₃ × (|q_i| + |q_j|) / P₁
         # The factor 1/P₁ comes from the P₁ modes sharing the polygon.
-        _charges_ph1 = getattr(topology, 'charges', None)
-        if _charges_ph1 is not None and any(q != 0 for q in _charges_ph1):
+        _charges_v4 = getattr(topology, 'charges', None)
+        if _charges_v4 is not None and any(q != 0 for q in _charges_v4):
             _delta = 0.0
             D_bond_avg = D_at_base / max(n_bonds, 1)
-            for bi_ph1, (i_ph1, j_ph1, bo_ph1) in enumerate(topology.bonds):
-                qi_ph1 = _charges_ph1[i_ph1] if i_ph1 < len(_charges_ph1) else 0
-                qj_ph1 = _charges_ph1[j_ph1] if j_ph1 < len(_charges_ph1) else 0
-                if qi_ph1 == 0 and qj_ph1 == 0:
+            for bi_v4, (i_v4, j_v4, bo_v4) in enumerate(topology.bonds):
+                qi_v4 = _charges_v4[i_v4] if i_v4 < len(_charges_v4) else 0
+                qj_v4 = _charges_v4[j_v4] if j_v4 < len(_charges_v4) else 0
+                if qi_v4 == 0 and qj_v4 == 0:
                     continue
-                q_abs = abs(qi_ph1) + abs(qj_ph1)
+                q_abs = abs(qi_v4) + abs(qj_v4)
                 # Charge separation increases screening → bond weakening
                 _delta -= D3 * q_abs / P1 * D_bond_avg
             D_at_base += _delta
             D_at_base = max(D_at_base, 0.0)
         # ── LP→σ BACK-DONATION (per≤2, isolated LP reference mode) ──
-        # Phase 1 captures LP screening but underestimates LP stabilization.
+        # v4 captures LP screening but underestimates LP stabilization.
         # PT mechanism: on Z/(2P₁)Z, a SINGLE LP at k=0 creates a
         # reference mode that lifts the Fourier floor for bonding modes
         # (k≥1).  This constructive DFT shift STRENGTHENS each bond.
@@ -1194,7 +1194,7 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
         #
         # Gate: per ≤ 2 (compact LP, Bohr-localized).
         #       lp = 1 exactly (O with lp=2 has mutual LP stabilization
-        #       already captured by Phase 1's bilateral LP balance).
+        #       already captured by v4's bilateral LP balance).
         #       ALL bonding partners have lp = 0 (LP asymmetry is
         #       UNCOMPENSATED — the missing mechanism).
         #       Not for d-block (l ≥ 2).
@@ -1237,7 +1237,7 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
         # ── VSEPR hypervalent axial attenuation ──────────────────────
         # [dim 0+2: simplicial complex, Phase 2]
         #
-        # PT basis (Principle 4, geometric bifurcation) :
+        # PT basis (Principe 4, bifurcation géométrique) :
         # For p-block vertices with steric number (z+lp) > P₁,
         # the VSEPR geometry places bonds in AXIAL positions that
         # live on the pentagonal face Z/(2P₂)Z instead of the
@@ -1256,7 +1256,7 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
         #   sin²(π/P₁) (triangle factor on the simplicial boundary).
         #
         # Steric = 6 (octahedral → square pyramidal) :
-        #   Phase 1 shell_attenuation already handles z > P₁ excess bonds.
+        #   v4 shell_attenuation already handles z > P₁ excess bonds.
         #   Additional LP trans screening: exp(-lp × S₃).
         #   This is the converse of the TBP case: LP doesn't create
         #   axial/equatorial splitting but screens ALL bonds uniformly
@@ -1283,7 +1283,7 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
             # These are the molecules where VSEPR splitting is MISSING:
             # ClF₃ (z=3,lp=2), BrF₃, IF₃ — T-shape with 2 LP in
             # equatorial plane. The 2 axial bonds are 3c-4e character
-            # and live on Z/(2P₂)Z. Without this correction, Phase 1
+            # and live on Z/(2P₂)Z. Without this correction, v4
             # treats all 3 bonds equally → 50-70% over-estimation.
             #
             # For z > P₁ (seesaw: SF₄, z=4, lp=1), shell_attenuation
@@ -1331,20 +1331,20 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
         D_at_base = max(D_at_base, 0.0)
 
         # ════════════════════════════════════════════════════════════
-        #  PHASE 2 CORRECTIONS PORTED TO PHASE 1 PATH — STATUS
+        #  v5 CORRECTIONS PORTED TO v4 PATH — STATUS
         #
         #  ✅ LP→σ back-donation (above): VALIDATED, NH₃ -7.6→-0.9%
         #
-        #  ❌ LP→π cross-channel: Phase 1 already handles LP+π correctly
+        #  ❌ LP→π cross-channel: v4 already handles LP+π correctly
         #     via bilateral screening balance. Adding boost = double-
         #     counting → cyanamide +3→+14%, dicyanog +0.25→+14%.
         #
         #  ❌ π-drain, cooperative, ring strain: these are SCREENING
-        #     corrections. Phase 1's Perron eigenvalue implicitly captures
+        #     corrections. v4's Perron eigenvalue implicitly captures
         #     the same screening via the spectral gap. Adding them
         #     double-counts → COF₂ -6→-19%, CH₃NH₂ -12→-11%.
         #
-        #  Conclusion: Phase 1's transfer matrix is a COMPLETE screening
+        #  Conclusion: v4's transfer matrix is a COMPLETE screening
         #  engine for n≤7. Only the LP→σ reference mode mechanism is
         #  genuinely missing (uncompensated LP creates a k=0 boost
         #  that T⁴ cannot represent).
@@ -1358,12 +1358,12 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
             iterations=0,
         )
 
-    atom_data = _resolve_atom_data(topology)
+    atom_data = _resolve_atom_data(topology, "v4")
 
     # ── Vertex contexts ──
     ctxs = [VertexCtx(v, topology, atom_data) for v in range(n_atoms)]
 
-    # ── Hückel aromatic caps ──
+    # ── Hückel aromatic caps (v4 function) ──
     huckel_caps = _huckel_aromatic(topology, atom_data)
 
     # ══════════════════════════════════════════════════════════════
@@ -1372,15 +1372,15 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
     #
     # ARCHITECTURE — Bifurcation Phase 1 / Phase 2 (avril 2026)
     #
-    # Code above (n ≤ P₃) is PHASE 1: Perron eigenvalue.
-    # Code below (n > P₃) is PHASE 2: per-bond cascade.
+    # Le code ci-dessus (n ≤ P₃) est PHASE 1 : Perron eigenvalue.
+    # Le code ci-dessous (n > P₃) est PHASE 2 : cascade per-bond.
     #
     # Le gap Perron entre Phase 1 (λ₀ exact) et Phase 2 (per-bond)
-    # is structurally analogous to T4 Phase 1 (k ≤ 6) : les
-    # NLO corrections have not yet converged.  The eigenvector
-    # Perron IS the convergent limit for dense graphs.
-    # No local correction can replace the global eigenvalue.
-    # n = P₃ = 7 is the structural threshold [T4, molecular Mertens].
+    # est structurellement analogue à T4 Phase 1 (k ≤ 6) : les
+    # corrections NLO n'ont pas encore convergé.  Le vecteur propre
+    # de Perron EST la limite convergente pour les graphes denses.
+    # Aucune correction locale ne peut remplacer l'eigenvalue globale.
+    # n = P₃ = 7 est le seuil structurel [T4, Mertens moléculaire].
     # ══════════════════════════════════════════════════════════════
 
     D_P0 = {}
@@ -1473,8 +1473,8 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
             D_P1[bi] = D_P1_sig + D_pi
 
         # ── FACE P₂ (Z/10Z) — conditioned by P₁ ──
-        S_P2_dft = (vertex_dft_P2(i, bi, topology, atom_data)
-                     + vertex_dft_P2(j, bi, topology, atom_data)) / 2.0
+        S_P2_dft = (vertex_dft_v5_P2(i, bi, topology, atom_data)
+                     + vertex_dft_v5_P2(j, bi, topology, atom_data)) / 2.0
         cap_p2, _ = _cap_P2(i, j, bo, topology, atom_data)
         if cap_p2 > 0:
             ie_min_p2 = min(ie_i_eff, ie_j_eff)
@@ -1495,8 +1495,8 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
             D_P2[bi] += _dim2_vacancy_boost(i, j, bo, topology, atom_data)
 
         # ── FACE P₃ (Z/14Z) — conditioned by P₁+P₂ ──
-        S_P3_dft = (vertex_dft_P3(i, bi, topology, atom_data)
-                     + vertex_dft_P3(j, bi, topology, atom_data)) / 2.0
+        S_P3_dft = (vertex_dft_v5_P3(i, bi, topology, atom_data)
+                     + vertex_dft_v5_P3(j, bi, topology, atom_data)) / 2.0
         cap_p3, _, Q_p3 = _cap_P3(i, j, bo, topology, atom_data)
         S_P3_eff = S_P3_dft * S5 * (1.0 - Q_eff)
         D_P3_raw = cap_p3 * math.exp(-S_P3_eff * DEPTH_P3) if cap_p3 > 0 else 0.0
@@ -1549,7 +1549,7 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
             Q_eff=Q_effs.get(bi, 0.0),
         )
 
-    # ── SCF T⁴ (Perron eigenvector) ──
+    # ── SCF T⁴ (Perron eigenvector from v4) ──
     if n_atoms >= 3:
         bond_energies_scf, _ = _scf_iterate(topology, atom_data, bond_seeds)
         bond_energies: Dict[int, float] = dict(bond_energies_scf)
@@ -1558,15 +1558,15 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
 
     # ── Shell attenuation (hypervalent vertices z > P_l) ──
     # Excess bonds at per≥3 vertices use sparser circle: ×P_l/P_{l+1}.
-    # Imported from Phase 1. Critical for SF₆, PCl₅, SO₃, SCl₂.
+    # Imported from v4. Critical for SF₆, PCl₅, SO₃, SCl₂.
     _apply_shell_attenuation(topology, atom_data, bond_energies)
 
     # ── CROSS-FACE COUNTER-ATTENUATION (excess bond LP restoration) ──
     # Shell attenuation reduces excess bonds by P_l/P_{l+1} (0.6 for l=1).
-    # The Phase 1 d-vacancy bridge restores partially (ratio_eff ≈ 0.76-0.80).
+    # The v4 d-vacancy bridge restores partially (ratio_eff ≈ 0.76-0.80).
     # But a SECOND restoration channel exists: terminal LP couples back
     # into the sparse circle via cross-face σ→P₂ donation (CROSS₃₅).
-    # This channel is NOT in Phase 1's shell_attenuation.
+    # This channel is NOT in v4's shell_attenuation.
     #
     # PT basis: the excess bond lives on Z/(2P_{l+1})Z (sparse circle).
     # Terminal LP (on Z/(2P_l)Z, dense circle) can couple INTO the
@@ -1610,7 +1610,7 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
     # per=2 high-IE terminals (F, O) couple efficiently into the
     # d-vacancy bridge: their compact LP enables strong σ→d
     # back-donation that partially restores the attenuated capacity.
-    # Phase 1 captures this through post-hoc corrections; Phase 2 needs an
+    # v4 captures this through post-hoc corrections; v5 needs an
     # explicit back-donation boost.  Coupling: D₃ × f_IE where
     # f_IE = (IE_terminal / Ry)^{P₁} measures the Bohr-localization
     # fraction.  Only fires at hypervalent vertices (z > P_l) with
@@ -1823,7 +1823,7 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
     #     Coupling D₃ (delta on Z/(2P₁)Z, direct — no hop attenuation).
     #     Only fires when sibling partners carry LP (H has lp=0 → no screen).
     #     PT basis: LP fills non-bonding slots, reducing the vertex capacity
-    #     for each bond. This is the mechanism that Phase 1 captures via C2/C7/C17.
+    #     for each bond. This is the mechanism that v4 captures via C2/C7/C17.
     if n_atoms >= 3:
         for bi, (i, j, bo) in enumerate(topology.bonds):
             D_bi = bond_energies.get(bi, 0.0)
@@ -2109,7 +2109,7 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
 
     # ── C5: T³ PERTURBATIVE SCREENING [Z mod {3,5,7}, 0 params] ──
     # Cross-vertex NLO on T³ = Z/3Z × Z/5Z × Z/7Z.
-    # Ported from Phase 1 (transfer_matrix.py L6154-6203): pure PT, no calibration.
+    # Ported from v4 (transfer_matrix.py L6154-6203): pure PT, no calibration.
     _TWO_PI = 2.0 * math.pi
     if n_atoms >= 3:
         _crt = [(Z % P1, Z % P2, Z % P3) for Z in topology.Z_list]
@@ -2173,7 +2173,7 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
             bond_energies[bi] = D_bi * (1.0 - delta * D3)
 
     # ── C6: DICKE VERTEX COHERENCE [T1 on molecular graph] ──
-    # Ported from Phase 1 (transfer_matrix.py L6205-6235): pure PT.
+    # Ported from v4 (transfer_matrix.py L6205-6235): pure PT.
     if not topology.is_diatomic:
         for v in range(n_atoms):
             z_v = topology.z_count[v]

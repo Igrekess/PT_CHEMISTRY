@@ -5,7 +5,7 @@ Bridge between input string and the molecular engine.
 Topology is a frozen graph: atoms + bonds + derived properties
 (coordination, lone pairs, vacancies, rings).
 
-March 2026 — Persistence Theory
+March 2026 — Théorie de la Persistance
 """
 from __future__ import annotations
 

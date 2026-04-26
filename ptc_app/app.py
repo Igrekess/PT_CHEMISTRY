@@ -22,9 +22,10 @@ st.markdown(
     f"{t('app_subtitle')}"
 )
 
-tab_pt, tab_atom, tab_mol, tab_rxn, tab_cat, tab_femo, tab_gap, tab_freq, tab_nmr, tab_explore, tab_solv, tab_electro, tab_dft, tab_bench, tab_pq = st.tabs(
+tab_pt, tab_atom, tab_mol, tab_rxn, tab_cat, tab_femo, tab_gap, tab_freq, tab_nmr, tab_aro, tab_explore, tab_solv, tab_electro, tab_dft, tab_bench, tab_pq = st.tabs(
     [t('tab_periodic'), t('tab_atom'), t('tab_molecule'), t('tab_reactions'),
      t('tab_catalysis'), 'Clusters Fe/Mn', t('tab_bandgap'), t('tab_freq'), t('tab_nmr'),
+     t('tab_aromaticity'),
      t('tab_explorer'), t('tab_solvation'), t('tab_electro'), t('tab_dft'),
      t('tab_benchmark'), t('tab_why')]
 )
@@ -271,6 +272,14 @@ with tab_nmr:
     try:
         from ptc_app.components.nmr_panel import render_nmr_tab
         render_nmr_tab()
+    except ImportError:
+        st.info(t('coming_soon'))
+
+# ── Aromaticity tab (NICS, σ/π split, full PT signature) ─────────
+with tab_aro:
+    try:
+        from ptc_app.components.aromaticity_panel import render_aromaticity_tab
+        render_aromaticity_tab()
     except ImportError:
         st.info(t('coming_soon'))
 

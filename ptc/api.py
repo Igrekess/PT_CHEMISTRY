@@ -226,7 +226,7 @@ class Molecule:
         self._geometry = None
         self._freq_result = None
 
-    # ── Core: D_at from cascade ──
+    # ── Core: D_at from cascade v5 ──
 
     def _ensure_cascade(self):
         if self._cascade_result is not None:
@@ -344,6 +344,97 @@ class Molecule:
         """Save geometry as MOL file."""
         with open(path, 'w') as f:
             f.write(self.mol_block)
+
+    # ── Aromaticity (NICS, σ/π split, full signature) ──
+
+    def aromaticity(self, ring_index: int = 0):
+        """Aromaticity diagnosis for a ring (default: first detected).
+
+        Returns the NICSResult dataclass:
+            .NICS_0 / .NICS_1   : ppm at z=0 / z=1 Å
+            .n_aromatic         : signed σ + π electron count
+            .R                  : ring radius (Å)
+            .f_coh              : T³ composition coherence ∈ [0,1]
+            .aromatic           : bool (NICS(0) < −5 ppm + diamagnetic)
+
+        PT-pure Pauling-London formula with signed Hückel rule
+        per channel — diamagnetic for 4n+2, paramagnetic for 4n.
+
+        Returns None if the molecule has no ring.
+        """
+        from ptc.nics import nics_for_ring
+        if not self._topo.rings:
+            return None
+        if ring_index >= len(self._topo.rings):
+            raise IndexError(
+                f"ring_index {ring_index} out of range "
+                f"({len(self._topo.rings)} rings)"
+            )
+        return nics_for_ring(self._topo, self._topo.rings[ring_index])
+
+    def nics(self, z: float = 0.0, ring_index: int = 0):
+        """NICS at probe distance z (Å) above the ring plane.
+
+        z=0 is the ring centroid (NICS(0)).
+        z=1 is 1 Å above the ring plane (NICS(1)).
+        """
+        from ptc.nics import nics_for_ring, _NICS_K, _huckel_sign
+        if not self._topo.rings:
+            return None
+        ring = self._topo.rings[ring_index]
+        # Direct formula: avoid building a separate NICSResult per z
+        r = nics_for_ring(self._topo, ring, z_probe=z)
+        if z == 0.0:
+            return r.NICS_0
+        return r.NICS_1
+
+    def nics_profile(self, zs=(0.0, 0.5, 1.0, 1.5, 2.0, 3.0),
+                     ring_index: int = 0):
+        """NICS(z) profile across multiple probe distances (Å).
+
+        Returns list of (z, NICS_ppm) tuples.
+        """
+        if not self._topo.rings:
+            return []
+        from ptc.nics import _NICS_K, _huckel_sign, _f_coh_T3, _ring_radius
+        from ptc.signature import _separate_sigma_pi
+        ring = self._topo.rings[ring_index]
+        Zs = [self._topo.Z_list[a] for a in ring]
+        R = _ring_radius(self._topo, ring)
+        n_sigma, n_pi = _separate_sigma_pi(self._topo, ring)
+        f_coh = _f_coh_T3(Zs)
+        n_eff = (_huckel_sign(n_sigma) * n_sigma
+                 + _huckel_sign(n_pi) * n_pi)
+        out = []
+        for z in zs:
+            if R > 0 and n_eff != 0:
+                v = -_NICS_K * n_eff * f_coh * R * R \
+                     / (R * R + z * z) ** 1.5
+            else:
+                v = 0.0
+            out.append((float(z), v))
+        return out
+
+    def signature(self, cap_idx: int = None):
+        """Full predicted experimental signature (FullSignature).
+
+        Aggregates D_at, geometry, fragmentation channels, σ/π split,
+        NICS(z) profile, vibrational modes (Morse-calibrated), IE/EA
+        estimates. Useful for generating experimental datasheets.
+
+        Args:
+            cap_idx: index of cap atom for capped clusters (e.g. 0
+                     for "[U][S]1[S][S]1"). Auto-detected as first
+                     non-ring atom if None.
+        """
+        from ptc.signature import predict_full_signature
+        if cap_idx is None and self._topo.rings:
+            ring_atoms = set(a for r in self._topo.rings for a in r)
+            non_ring = [k for k in range(self._topo.n_atoms)
+                        if k not in ring_atoms]
+            if non_ring and self._topo.n_atoms > len(ring_atoms):
+                cap_idx = non_ring[0]
+        return predict_full_signature(self._input, cap_idx=cap_idx)
 
     # ── String ──
 

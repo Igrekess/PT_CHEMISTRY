@@ -1,17 +1,17 @@
 """
 PTCS v3.0 — Parser SMILES minimal → MolGraph.
 
-Features:
+Fonctionnalités :
   - Atomes organiques implicites : C, N, O, S, P, B
   - Atomes entre crochets : [Si], [Fe], [Na], charges [NH4+]
   - Liaisons simples, doubles (=), triples (#)
-  - Branches: CC(C)C (isobutane), CC(=O)O (acetic acid)
-  - Rings: C1CC1 (cyclopropane), c1ccccc1 (benzene)
+  - Branches : CC(C)C (isobutane), CC(=O)O (acide acétique)
+  - Cycles : C1CC1 (cyclopropane), c1ccccc1 (benzène)
   - Aromatiques minuscules : c, n, o, s → bo=1.5 dans les cycles
 
-Falls back to _infer_bonds if no SMILES detected.
+Fallback sur _infer_bonds si pas de SMILES détecté.
 
-All from s = 1/2. 0 adjustable parameters.
+Tout depuis s = 1/2. 0 paramètre ajusté.
 """
 
 from __future__ import annotations
@@ -41,7 +41,11 @@ _SYM = ["", "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne",
         "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd",
         "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W",
         "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po",
-        "At", "Rn"]
+        "At", "Rn",
+        "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm",
+        "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg",
+        "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv",
+        "Ts", "Og"]
 for _z, _s in enumerate(_SYM):
     if _s:
         _Z_FROM_SYM[_s] = _z
@@ -79,17 +83,17 @@ class SmilesBond:
 # ============================================================
 
 def is_smiles(s: str) -> bool:
-    """Heuristic: is this SMILES (vs a molecular formula)?
+    """Heuristique : est-ce un SMILES (vs une formule brute) ?
 
     SMILES si contient : =, #, crochets, minuscules aromatic,
     ou pattern de branchement SMILES.
 
-    Molecular formula if: only [A-Z][a-z]?[0-9]* repeated,
-    with AT LEAST one digit serving as element counter,
-    or grouping parentheses (CH3)3N.
+    Formule brute si : uniquement [A-Z][a-z]?[0-9]* répété,
+    avec AU MOINS un chiffre servant de compteur d'élément,
+    ou parenthèses de groupement (CH3)3N.
 
-    Digit-free strings of organic atoms (C, CC, CO, CCl...)
-    are treated as SMILES.
+    Strings sans chiffres composés d'atomes organiques (C, CC, CO, CCl...)
+    sont traités comme SMILES.
     """
     # Unambiguous SMILES characters
     if any(c in s for c in '=#[]'):
