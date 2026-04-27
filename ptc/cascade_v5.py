@@ -1,25 +1,16 @@
 """
-PTC CASCADE — Moteur D_at unifié sur T³.
+PTC v5 — CASCADE SÉQUENTIELLE sur T³.
 
-Contient les DEUX phases de la convergence spectrale moléculaire :
+Architecture PT-native : le crible filtre p=3 → p=5 → p=7.
+Chaque face voit les SURVIVANTS de la précédente (Principe 1).
 
-  PHASE 1 (n ≤ P₃ = 7) : délègue à transfer_matrix.py (Perron λ₀)
-    + post-corrections LP→σ, charges formelles, VSEPR.
-
-  PHASE 2 (n > P₃) : cascade per-bond P₀→P₁→P₂→P₃
-    + 17 corrections NLO (coopérative, Dicke, T³ perturbatif,
-      LP→π, ring strain, halogen π-drain, etc.)
-
-La bifurcation à n = P₃ = 7 est la transition Phase 1 / Phase 2
-de la convergence de Mertens moléculaire [T4, D08] :
-  Phase 1 : le graphe moléculaire est dense → T⁴ Perron exact.
-  Phase 2 : le graphe est sparse → corrections NLO convergent.
-
-Architecture per-bond (Phase 2) :
    Face P₀ (Z/2Z) — parity/LP gate
    Face P₁ (Z/6Z) — σ+π bonding  ← DOMINANT
    Face P₂ (Z/10Z) — d/π² conditionné par P₁
    Face P₃ (Z/14Z) — ionique conditionné par P₁+P₂
+
+Pas de f_size gate. Pas de C1-C22 patchs post-hoc.
+Le contexte du voisinage et la cascade encodent la taille naturellement.
 
 0 paramètre ajusté. Tout depuis s = 1/2.
 """
@@ -1145,11 +1136,11 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
     if n_bonds == 0:
         return CascadeResult(0.0, 0.0, 0.0, 0.0, 0)
 
-    # ── ROUTING: Phase 1 / Phase 2 bifurcation ──
-    # n=2:   bilateral exact (diatomiques)
-    # n=3:   triatomic solver (Phase 1 seeds + 3×3 cooperation)
-    # n=4-7: PHASE 1 — Perron eigenvalue λ₀(T⁴) + post-corrections
-    # n≥8:   PHASE 2 — per-bond cascade (17 corrections NLO)
+    # ── SMALL MOLECULES: mixed engine ──
+    # n=2: v4 diatomic bilateral (exact)
+    # n=3: v5 triatomic (v4 seeds + 3×3 cooperation + v5 corrections)
+    # n=4-7: v4 polyatomic SCF
+    # n≥8: v5 cascade
     if n_atoms == P1 and n_bonds == 2:
         atom_data = _resolve_atom_data(topology, "v4")
         return _triatomic_v5(topology, atom_data)
@@ -1182,58 +1173,6 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
                 _delta -= D3 * q_abs / P1 * D_bond_avg
             D_at_base += _delta
             D_at_base = max(D_at_base, 0.0)
-        # ── LP→σ BACK-DONATION (per≤2, isolated LP reference mode) ──
-        # v4 captures LP screening but underestimates LP stabilization.
-        # PT mechanism: on Z/(2P₁)Z, a SINGLE LP at k=0 creates a
-        # reference mode that lifts the Fourier floor for bonding modes
-        # (k≥1).  This constructive DFT shift STRENGTHENS each bond.
-        #
-        # The shift is sin²(θ₃) per steric position (holonomic coupling
-        # on the hexagonal face), applied to the LP-vertex's share of
-        # the total bond energy.
-        #
-        # Gate: per ≤ 2 (compact LP, Bohr-localized).
-        #       lp = 1 exactly (O with lp=2 has mutual LP stabilization
-        #       already captured by v4's bilateral LP balance).
-        #       ALL bonding partners have lp = 0 (LP asymmetry is
-        #       UNCOMPENSATED — the missing mechanism).
-        #       Not for d-block (l ≥ 2).
-        #
-        # PT basis: sin²(θ₃) = holonomic weight on Z/3Z.  Division by
-        # steric = z + lp: the LP occupies 1/(z+lp) of the vertex
-        # polygon, so its back-donation is diluted by the steric count.
-        _lp_back_boost = 0.0
-        for _v_lb in range(n_atoms):
-            _Z_lb = topology.Z_list[_v_lb]
-            _lp_lb = topology.lp[_v_lb]
-            if _lp_lb != 1:
-                continue
-            _per_lb = period(_Z_lb)
-            _l_lb = l_of(_Z_lb)
-            if _per_lb > 2 or _l_lb >= 2:
-                continue
-            _z_lb = topology.z_count[_v_lb]
-            if _z_lb == 0:
-                continue
-            # Check: ALL bonding partners have lp = 0 (uncompensated LP)
-            _all_partners_no_lp = True
-            for _bk_lb in topology.vertex_bonds.get(_v_lb, []):
-                _a_lb, _b_lb, _ = topology.bonds[_bk_lb]
-                _p_lb = _b_lb if _a_lb == _v_lb else _a_lb
-                if topology.lp[_p_lb] > 0:
-                    _all_partners_no_lp = False
-                    break
-            if not _all_partners_no_lp:
-                continue
-            # Coupling: S₃ × n_LP / z_v.  The LP creates a k=0 reference
-            # on Z/(2P₁)Z with holonomic weight sin²(θ₃).  Each bond
-            # receives 1/z_v of the back-donation.  The /z_v (not /steric)
-            # is correct because the LP mode couples to BONDING modes only,
-            # and there are z_v of them on the vertex polygon.
-            _f_lb = S3 * float(_lp_lb) / _z_lb
-            _lp_back_boost += _f_lb * _z_lb / max(n_bonds, 1)
-        if _lp_back_boost > 0:
-            D_at_base *= (1.0 + _lp_back_boost)
         # ── VSEPR hypervalent axial attenuation ──────────────────────
         # [dim 0+2: simplicial complex, Phase 2]
         #
@@ -1328,28 +1267,6 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
 
         D_at_base = max(D_at_base, 0.0)
 
-        D_at_base = max(D_at_base, 0.0)
-
-        # ════════════════════════════════════════════════════════════
-        #  v5 CORRECTIONS PORTED TO v4 PATH — STATUS
-        #
-        #  ✅ LP→σ back-donation (above): VALIDATED, NH₃ -7.6→-0.9%
-        #
-        #  ❌ LP→π cross-channel: v4 already handles LP+π correctly
-        #     via bilateral screening balance. Adding boost = double-
-        #     counting → cyanamide +3→+14%, dicyanog +0.25→+14%.
-        #
-        #  ❌ π-drain, cooperative, ring strain: these are SCREENING
-        #     corrections. v4's Perron eigenvalue implicitly captures
-        #     the same screening via the spectral gap. Adding them
-        #     double-counts → COF₂ -6→-19%, CH₃NH₂ -12→-11%.
-        #
-        #  Conclusion: v4's transfer matrix is a COMPLETE screening
-        #  engine for n≤7. Only the LP→σ reference mode mechanism is
-        #  genuinely missing (uncompensated LP creates a k=0 boost
-        #  that T⁴ cannot represent).
-        # ════════════════════════════════════════════════════════════
-
         return CascadeResult(
             D_at=D_at_base,
             D_at_P1=r4.D_at_P1,
@@ -1368,19 +1285,6 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
 
     # ══════════════════════════════════════════════════════════════
     #  CASCADE: P₀ → P₁ → P₂ → P₃
-    # ══════════════════════════════════════════════════════════════
-    #
-    # ARCHITECTURE — Bifurcation Phase 1 / Phase 2 (avril 2026)
-    #
-    # Le code ci-dessus (n ≤ P₃) est PHASE 1 : Perron eigenvalue.
-    # Le code ci-dessous (n > P₃) est PHASE 2 : cascade per-bond.
-    #
-    # Le gap Perron entre Phase 1 (λ₀ exact) et Phase 2 (per-bond)
-    # est structurellement analogue à T4 Phase 1 (k ≤ 6) : les
-    # corrections NLO n'ont pas encore convergé.  Le vecteur propre
-    # de Perron EST la limite convergente pour les graphes denses.
-    # Aucune correction locale ne peut remplacer l'eigenvalue globale.
-    # n = P₃ = 7 est le seuil structurel [T4, Mertens moléculaire].
     # ══════════════════════════════════════════════════════════════
 
     D_P0 = {}
@@ -1434,7 +1338,6 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
             cap_P1 = (RY / P1) * f_bohr_P1 * (1.0 - D3 * D3 * _f_fill * _f_homo_cap)
         else:
             cap_P1 = (RY / P1) * f_bohr_P1
-
 
         if bi in huckel_caps:
             _D_P1_sigma[bi] = cap_P1 * math.exp(-S1 * D_FULL_P1)
@@ -1926,68 +1829,6 @@ def compute_D_at_cascade(topology: Topology) -> CascadeResult:
 
             if f_total < 1.0:
                 bond_energies[bi] = D_bi * f_total
-
-    # ── LP→π CROSS-CHANNEL RESONANCE (inclusion-exclusion P₁∪P₂) ──
-    # When an atom has LP (channel P₁) adjacent to LOCALIZED π bonds
-    # (channel P₂), LP→π resonance BOOSTS bond energy through the
-    # union of orthogonal CRT channels.
-    #
-    # PT basis (Principe 8, inclusion-exclusion) :
-    #   P(P₁ ∪ P₂) = S₃ + S₅ − S₃×S₅ = 1 − C₃×C₅ = 0.371
-    # This is the probability of coupling through EITHER channel.
-    # The LP on P₁ donates density into π* on P₂, creating additional
-    # bonding capacity not captured by either channel alone.
-    #
-    # Classic example: amide resonance N−C(=O) ↔ N⁺=C(−O⁻).
-    # The N lone pair delocalizes into the C=O π*, strengthening
-    # the C−N bond and weakening C=O.
-    #
-    # Gate: LOCALIZED π only (bo > 1 and NOT aromatic ring bond).
-    #       Aromatic rings already capture LP→π via Hückel eigenvalues.
-    #       LP from ring atoms excluded (σ-type LP, like pyridine N,
-    #       does NOT donate into ring π).
-    #
-    # Coefficient: (S₃+S₅−S₃S₅) × n_LP × n_π_adj / P₁ per bond.
-    # The /P₁ comes from sharing the hexagonal face Z/(2P₁)Z with
-    # P₁ bonding modes.
-    _UNION_P1P2 = S3 + S5 - S3 * S5
-    _ring_bonds_lpr = topology.ring_bonds or set()
-    _ring_atoms_lpr = topology.ring_atoms if hasattr(topology, 'ring_atoms') else set()
-    for v in range(n_atoms):
-        lp_v = topology.lp[v]
-        if lp_v == 0:
-            continue
-        # Gate: exclude ring atoms (σ-LP like pyridine N)
-        if v in _ring_atoms_lpr:
-            continue
-        z_v = topology.z_count[v]
-        if z_v < 2:
-            continue
-        # Count LOCALIZED π bonds at or adjacent to this vertex
-        v_bonds_lpr = topology.vertex_bonds.get(v, [])
-        n_pi_loc = 0.0
-        # (a) Direct: π bonds at this vertex (non-ring)
-        for bk in v_bonds_lpr:
-            _, _, bo_k = topology.bonds[bk]
-            if bo_k > 1.0 and bk not in _ring_bonds_lpr:
-                n_pi_loc += min(bo_k - 1.0, 1.0)
-        # (b) Neighbor: π bonds at adjacent vertices (cross-bond LP→π)
-        for bk in v_bonds_lpr:
-            a_k, b_k, _ = topology.bonds[bk]
-            nb_k = b_k if a_k == v else a_k
-            for bm in topology.vertex_bonds.get(nb_k, []):
-                if bm == bk:
-                    continue
-                _, _, bo_m = topology.bonds[bm]
-                if bo_m > 1.0 and bm not in _ring_bonds_lpr:
-                    n_pi_loc += min(bo_m - 1.0, 1.0) * S_HALF
-        if n_pi_loc <= 0:
-            continue
-        # LP→π boost: union coupling × LP × π_adj / P₁, per bond
-        f_lp_pi = _UNION_P1P2 * float(lp_v) * min(n_pi_loc, 2.0) / P1
-        for bk in v_bonds_lpr:
-            if bk in bond_energies:
-                bond_energies[bk] *= (1.0 + f_lp_pi / z_v)
 
     # ── RING STRAIN (small rings, angular deficit) ──────────────
     # In small rings (3-4 membered), bond angles deviate from the

@@ -189,27 +189,124 @@ def _tensor_analysis(sigma: np.ndarray) -> Tuple[float, float, np.ndarray, np.nd
 # ─────────────────────────────────────────────────────────────────────
 
 
+_PHASE5E_DEFAULTS = dict(
+    cphf_coupled=True,
+    use_giao_dia=True,
+    use_becke=True,
+    lebedev_order=50,
+)
+_LEGACY_DEFAULTS = dict(
+    cphf_coupled=False,
+    use_giao_dia=False,
+    use_becke=False,
+)
+
+
 def shielding_tensor_at_point(topology: Topology,
                                 P: np.ndarray,
                                 use_giao: bool = True,
+                                basis_type: str = "SZ",
+                                scf_density: str = "hueckel",
+                                include_core: bool = False,
+                                cphf_coupled: bool | None = None,
+                                use_giao_dia: bool | None = None,
+                                scf_kwargs: dict | None = None,
+                                legacy: bool = False,
+                                zeta_method: str = "pt",
                                 **quad_kwargs) -> GIAOShieldingTensor:
     """End-to-end GIAO shielding tensor at probe P.
+
+    Defaults (Phase 5e, since Phase 6.A):
+        cphf_coupled=True, use_giao_dia=True, use_becke=True,
+        lebedev_order=50.
+    These give benzene σ_iso ≈ +25 ppm at the SZ-Hückel level
+    (vs +156 ppm for the legacy Phase 1 pipeline).
+
+    Set ``legacy=True`` to revert all four flags to the Phase 1
+    pipeline (uncoupled paramagnetic, common-origin diamagnetic,
+    no Becke partition).
+
+    Parameters
+    ----------
+    basis_type    : 'SZ' / 'DZ' / 'DZP' / 'DZ2P' / 'DZPD' (Phase 2 axis 1).
+    scf_density   : 'hueckel' (default — Mulliken K=2 H_eff, fast)
+                    'hartree' (full Hartree, no exchange)
+                    'hf'      (full Hartree-Fock, J - K/2; Phase 3).
+                    The HF path uses density_matrix_PT_scf with DIIS.
+    include_core  : Phase 4 — add inner-shell (1s, 2s2p, …) core orbitals
+                    to the basis. Required for an all-electron HF.
+    cphf_coupled  : Phase 5c — use coupled CPHF for sigma^p instead of the
+                    uncoupled Ramsey sum. Recovers the correct negative
+                    sign on aromatic ring currents. Default True (Phase 5e),
+                    overridden to False if legacy=True.
+    use_giao_dia  : Phase 5d — use GIAO London-phase diamagnetic tensor.
+                    Default True (Phase 5e), overridden to False if legacy.
+    legacy        : Phase 6.A — revert to Phase 1 conservative defaults
+                    (uncoupled CPHF, common-origin sigma_d, no Becke).
+                    Use only for back-compatibility tests.
+    scf_kwargs    : optional extra keyword arguments forwarded to
+                    density_matrix_PT_scf (e.g. nuclear_charge, use_becke,
+                    lebedev_order, max_iter, tol, n_radial, …).
 
     Returns
     -------
     GIAOShieldingTensor with full sigma_d, sigma_p, sigma, eigenvalues
     and eigenvectors of the symmetric part, span and skew.
     """
+    if legacy:
+        defaults = _LEGACY_DEFAULTS
+    else:
+        defaults = _PHASE5E_DEFAULTS
+    if cphf_coupled is None:
+        cphf_coupled = defaults["cphf_coupled"]
+    if use_giao_dia is None:
+        use_giao_dia = defaults["use_giao_dia"]
+    if not legacy:
+        # Apply Becke / Lebedev defaults only if user didn't specify them.
+        quad_kwargs.setdefault("use_becke", _PHASE5E_DEFAULTS["use_becke"])
+        quad_kwargs.setdefault("lebedev_order",
+                                _PHASE5E_DEFAULTS["lebedev_order"])
+
     P = np.asarray(P, dtype=float)
-    basis = build_molecular_basis(topology)
-    rho, S, eigvals, c = density_matrix_PT(topology, basis=basis)
+    basis = build_molecular_basis(topology, basis_type=basis_type,
+                                   include_core=include_core,
+                                   zeta_method=zeta_method)
+
+    if scf_density == "hueckel":
+        rho, S, eigvals, c = density_matrix_PT(topology, basis=basis)
+    elif scf_density in ("hartree", "hf"):
+        from ptc.lcao.fock import density_matrix_PT_scf
+        scf_kw = dict(scf_kwargs) if scf_kwargs else {}
+        rho, S, eigvals, c, _conv, _resid = density_matrix_PT_scf(
+            topology, basis=basis, mode=scf_density, **scf_kw,
+        )
+    else:
+        raise ValueError(
+            f"scf_density must be 'hueckel'/'hartree'/'hf', got {scf_density!r}"
+        )
     n_e = int(round(basis.total_occ))
 
-    sigma_d = shielding_diamagnetic_tensor(rho, basis, P, **quad_kwargs)
-    sigma_p = paramagnetic_shielding_tensor(
-        basis, eigvals, c, n_e, P,
-        use_giao=use_giao, **quad_kwargs,
-    )
+    if use_giao_dia:
+        from ptc.lcao.giao import shielding_diamagnetic_tensor_GIAO
+        sigma_d = shielding_diamagnetic_tensor_GIAO(rho, basis, P, **quad_kwargs)
+    else:
+        sigma_d = shielding_diamagnetic_tensor(rho, basis, P, **quad_kwargs)
+
+    if cphf_coupled:
+        from ptc.lcao.fock import paramagnetic_shielding_tensor_coupled
+        # Forward only the quad params that the coupled routine accepts.
+        coupled_kw = {k: v for k, v in quad_kwargs.items()
+                      if k in ("n_radial", "n_theta", "n_phi",
+                               "use_becke", "lebedev_order")}
+        sigma_p = paramagnetic_shielding_tensor_coupled(
+            basis, eigvals, c, n_e, P,
+            use_giao=use_giao, **coupled_kw,
+        )
+    else:
+        sigma_p = paramagnetic_shielding_tensor(
+            basis, eigvals, c, n_e, P,
+            use_giao=use_giao, **quad_kwargs,
+        )
     sigma = sigma_d + sigma_p
 
     sigma_iso, sigma_zz, ev, evec, span, skew = _tensor_analysis(sigma)

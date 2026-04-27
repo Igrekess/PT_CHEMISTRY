@@ -60,57 +60,50 @@ def _Q_koide_excess(n_p: int) -> float:
     return max(0.0, min((Q - 2.0 / 3.0) / (1.0 - 2.0 / 3.0), 1.0))
 
 
+def _gamma_rel(Z: int) -> float:
+    """Dirac kinematic radial contraction γ_rel = √(1 − (Zα)²) for Z ≥ 72."""
+    if Z < 72:
+        return 1.0
+    from ptc.constants import ALPHA_PHYS as _A
+    Za2 = (Z * _A) ** 2
+    if Za2 >= 1.0:
+        return 0.5
+    return math.sqrt(1.0 - Za2)
+
+
 def r_equilibrium(per_A: int, per_B: int, bo: float,
                   S_bond: float = 0.0,
                   z_A: int = 1, z_B: int = 1,
-                  lp_A: int = 0, lp_B: int = 0) -> float:
-    """Equilibrium bond distance from Bianchi I metric + coordination (Å).
-
-    r_e = r_base × f_coord × exp(S × D₃ × s)
-
-    r_base: A_BOHR × per_eff / (2 × bo^(1/3) × γ_eff)
-    f_coord: coordination stretch — more bonds/LP at vertex → longer bond.
-      f_coord = (z_eff_A × z_eff_B)^(1/(2P₁))
-      where z_eff = z + lp × weight on polygon Z/(2P₁)Z.
-    """
+                  lp_A: int = 0, lp_B: int = 0,
+                  Z_A: int = 0, Z_B: int = 0) -> float:
+    """Equilibrium bond distance from Bianchi I metric + coordination (Å)."""
     import math
     from ptc.constants import P1 as _P1, S3 as _S3
-    # Metric inflation factor from bond order [T6, D10 Bianchi I]
     w_s = 1.0 / bo
     w_p = min(bo - 1, 2) / bo
     gamma_eff = GAMMA_3 ** w_s * GAMMA_5 ** w_p
 
-    # Period effective: geometric mean (asymmetric bonds)
     per_eff = 2.0 * math.sqrt(max(per_A, 1) * max(per_B, 1))
 
     r_base = A_BOHR * per_eff / (2.0 * bo ** (1.0 / 3.0) * gamma_eff)
 
-    # Coordination stretch [polygon Z/(2P₁)Z occupancy]
-    # More bonds at vertex → bond pushed outward.
-    # Only BONDS stretch (not LP — LP are perpendicular to bond axis).
-    # LP contribute only at polyatomic vertices (z≥2) where they compete
-    # for in-plane space, with S₃ weight.
+    # ── Relativistic Dirac contraction (both Z ≥ 72) ──
+    if Z_A >= 72 and Z_B >= 72:
+        r_base *= _gamma_rel(Z_A) * _gamma_rel(Z_B)
+
+    # ── 4f / 5f imperfect screening (per-atom, always applied) ──
+    from ptc.lcao.relativistic import lanthanide_factor, actinide_factor
+    r_base *= lanthanide_factor(Z_A) * lanthanide_factor(Z_B)
+    r_base *= actinide_factor(Z_A) * actinide_factor(Z_B)
+
     lp_w_A = lp_A * _S3 if z_A >= 2 else 0
     lp_w_B = lp_B * _S3 if z_B >= 2 else 0
     z_eff_A = max(z_A + lp_w_A, 1.0)
     z_eff_B = max(z_B + lp_w_B, 1.0)
-    # Stretch power 1/P₁²: very gentle, avoids overcorrection
     f_coord = (z_eff_A * z_eff_B) ** (1.0 / (_P1 * _P1))
 
     r_e = r_base * f_coord
 
-    # ── LP-LP PAULI REPULSION for terminal diatomics ──
-    # When BOTH atoms are terminal (z=1) with LP, their LP face each
-    # other head-on along the bond axis. The Pauli exclusion between
-    # the LP pairs on Z/(2P₁)Z stretches the bond.
-    # PT mechanism: δ₃ holonomic shift per mutual LP pair, normalized
-    # by the period effective radius (larger atoms → weaker repulsion).
-    # Only fires for z=1 (terminal); polyatomic LP handled by f_coord.
-    if z_A == 1 and z_B == 1 and lp_A > 0 and lp_B > 0:
-        lp_min = min(lp_A, lp_B)
-        r_e *= (1.0 + _D3 * lp_min / per_eff)
-
-    # Screening-geometry coupling [Principe 5: holonomic rotation]
     if S_bond > 0:
         r_e *= math.exp(S_bond * _D3 * _S_HALF)
     return r_e

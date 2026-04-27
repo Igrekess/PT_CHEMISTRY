@@ -60,13 +60,14 @@ def test_polarisation_orbital_count(Z, base_orbs, expected_orbs):
     assert b_p.n_orbitals == expected_orbs, f"Z={Z}: with-polar size mismatch"
 
 
-def test_polarisation_skipped_for_d_block():
-    """d-block atoms would need f-polarisation (l=3) which is not yet
-    supported by the STO evaluator -- silently skipped."""
+def test_polarisation_added_for_d_block():
+    """d-block atoms now receive f-polarisation (l=3) via the
+    cubic-harmonic STO evaluator. Fe gains 7 f-orbitals (m=-3..+3)
+    on top of its 6 valence (4s + 5*3d) shells."""
     b_no = build_atom_basis(26, polarisation=False)         # Fe
     b_p = build_atom_basis(26, polarisation=True)
-    # Should be the same (no f-polarisation added)
-    assert b_no.n_orbitals == b_p.n_orbitals == 6
+    assert b_no.n_orbitals == 6
+    assert b_p.n_orbitals == 6 + 7
 
 
 # ─────────────────────────────────────────────────────────────────────

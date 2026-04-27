@@ -40,12 +40,16 @@ Total: ~1200 observables, 0 parameters.
 
 ### Magnetic GIAO sub-package (`ptc/lcao/`)
 
-Complete LCAO + GIAO chemical shielding pipeline derived entirely from `s = 1/2`:
+Complete LCAO + GIAO chemical shielding + ring-current-density pipeline derived
+entirely from `s = 1/2`:
 
-- **Phase A** : per-atom STO basis with PT-screened ζ = Z_eff/(n·a₀); s/p/d coverage
-- **Phase B** : closed-shell density matrix via Hueckel-Mulliken K=2 OR rigorous core (T + V_nuc); SCF with DIIS
-- **Phase C** : full Coulomb J + exchange K from 2-electron integrals (Slater 1s-1s = 5/8 ζ exact); CPHF coupled response
-- **Phase D** : full 3×3 σ_αβ tensor with principal axes, span Ω, skew κ, NICS_iso, NICS_zz
+- **Atomic basis** : per-atom STO with PT-screened ζ = Z_eff/(n·a₀); s/p/d/f/g coverage (l=0..4)
+- **Density matrix** : closed-shell Aufbau via Hueckel-Mulliken K=2 OR rigorous core (T + V_nuc); SCF with DIIS
+- **GIAO operators** : full Coulomb J + exchange K from 2-electron integrals (Slater 1s-1s = 5/8 ζ exact); coupled-perturbed Hartree-Fock magnetic response
+- **Shielding tensor** : full 3×3 σ_αβ with principal axes, span Ω, skew κ, NICS_iso, NICS_zz
+- **Vectorial GIMIC** (`current.py`) : induced current density `j(r)` from CPHF + full London-phase GIAO j_para correction; gauge invariance numerique common-vs-GIAO < 1%; ring-current strength via half-plane flux integral
+- **f-block extension** : 4f/5f cubic-harmonic STOs for lanthanides/actinides; PT-pure radial contraction γ_la(Z=57..71) and γ_an(Z=90..103) lift the geometric overshoot of period-6/7 atoms
+- **Explicit cluster builder** (`cluster.py`) : programmatic Cp* ligand generator + Bi3@U2(Cp*)4 inverse-sandwich (full 105-atom cluster) ; reproduces the Ding 2026 NICS_zz = +0.08 ppm experimental result within ±0.4 ppm
 
 ```python
 from ptc.lcao import shielding_tensor_at_point
@@ -61,7 +65,23 @@ print(f"span     = {result.span:.2f} ppm")
 print(f"skew     = {result.skew:.4f}    (D6h ring -> -1.0)")
 ```
 
-318 tests PASS (LCAO 232 + NICS scalar 32 + the existing benchmarks).
+```python
+from ptc.lcao.cluster import build_bi3_u2_cp_star4, precompute_response_explicit
+from ptc.lcao.current import nics_zz_from_current
+from ptc.lcao.giao import _build_quadrature_grid
+
+# Full Bi3@U2(Cp*)4 inverse sandwich (105 atoms, 248 SZ orbitals)
+Z_list, coords, bonds = build_bi3_u2_cp_star4()
+resp = precompute_response_explicit(
+    Z_list, coords, bonds=bonds, basis_type="SZ", scf_mode="hueckel",
+)
+pts, w, _ = _build_quadrature_grid(resp.basis, np.zeros(3),
+                                     24, 12, 16, False, 26)
+nics = -nics_zz_from_current(resp, np.zeros(3), pts, w, beta=2)
+print(f"NICS_zz at cluster centre = {nics:+.3f} ppm   (Ding 2026 exp: +0.08)")
+```
+
+678 tests PASS (LCAO + GIMIC + cluster + f-block + Bi3@U2 inverse sandwich + NICS scalar + benchmarks).
 
 ## Quick start
 

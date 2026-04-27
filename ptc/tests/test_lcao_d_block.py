@@ -171,8 +171,9 @@ def test_Cu2_density_matrix_trace_and_idempotency():
 # ─────────────────────────────────────────────────────────────────────
 
 
-def test_f_block_still_gated():
-    """Cerium (Z=58) is f-block: should still raise NotImplementedError
-    until the next Phase A continuation."""
-    with pytest.raises(NotImplementedError, match="f-block"):
-        build_molecular_basis(build_topology("[Ce]"))
+def test_f_block_basis_builds():
+    """f-block atoms build their LCAO basis via the l=3 cubic-harmonic STO."""
+    from ptc.lcao.atomic_basis import build_atom_basis
+    for Z, expected in [(58, 8), (92, 8)]:   # Ce, U
+        basis = build_atom_basis(Z)
+        assert basis.n_orbitals == expected

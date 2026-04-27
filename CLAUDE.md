@@ -3,6 +3,11 @@
 Calculateur de chimie quantique basé sur la Théorie de la Persistance (PT).
 806 molécules, MAE 1.94%, 0 paramètre ajusté. Tout depuis s = 1/2.
 
+PT-LCAO+GIMIC sub-package : tenseur de blindage RMN + densité de courant
+induit (f-block γ_la/γ_an, GIMIC PT-pur, l=3/l=4 cubic harmonics, explicit
+cluster builder, Bi3@U2(Cp*)4 inverse sandwich) ;
+**NICS_zz Bi3@U2(Cp*)4 = +0.47 ppm vs exp +0.08 (Ding 2026, écart 0.39 ppm).
+
 ## Mission
 
 PTC est le **calculateur de chimie le plus physiquement fiable et PT-pur possible**.
@@ -252,15 +257,27 @@ SMILES or formula → Topology (auto-detect, PT solver for formulas)
 - `ptc/data/molecules.py` — primary benchmark (673 mol)
 - `ptc/data/molecules_extended.py` — extended NIST molecules (+27)
 - `ptc/data/molecules_atct.py` — ATcT 0K reference data
+- `ptc/lcao/atomic_basis.py` — STO basis (s/p/d/f/g, l=0..4)
+- `ptc/lcao/density_matrix.py` — Hueckel + overlap
+- `ptc/lcao/fock.py` — HF SCF with DIIS, CPHF coupled response
+- `ptc/lcao/giao.py` — STO eval/gradient + GIAO operators
+- `ptc/lcao/shielding.py` — full sigma_alpha,beta tensor pipeline
+- `ptc/lcao/current.py` — induced current density (CPHF + full GIAO j_para),
+  bond strength via half-plane flux, NICS via Biot-Savart
+- `ptc/lcao/cluster.py` — explicit-cluster builder, Cp* ligand generator,
+  build_bi3_u2_cp_star4 (full inverse sandwich)
+- `ptc/lcao/relativistic.py` — gamma_la/gamma_an PT-pure radial contraction
+  (lifts L5 verrou for Z=57..103)
 - `ptc/tests/test_transfer_matrix.py` — 263 tests
-- `ptc/tests/test_nics.py` — 32 tests aromaticity (PT prefactor, Hückel sign,
-  benchmarks, electron count, public API)
+- `ptc/tests/test_nics.py` — 32 tests aromaticity
+- `ptc/tests/test_lcao_*.py` + `test_geometry_fblock.py` + `test_bi3_u2_cluster.py`
+  — 678 PASS total (LCAO + GIMIC + cluster + Bi3@U2 inverse sandwich)
 
 ## Commands
 
 ```bash
-python -m pytest ptc/tests/ -x -q          # tests (must stay 263 PASS)
-# Benchmark: see PROMPT_NEXT_SESSION.md for full commands
+python -m pytest ptc/tests/ -x -q          # full suite
+python -m pytest ptc/tests/test_bi3_u2_cluster.py -v  # test ultime Bi3@U2
 ```
 
 ## Code Exploration Policy

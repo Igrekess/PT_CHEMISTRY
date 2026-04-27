@@ -52,22 +52,69 @@ from ptc.lcao.giao import _build_spherical_grid, _orbital_values_on_grid
 # ─────────────────────────────────────────────────────────────────────
 
 
+class _MolGrid:
+    """Lightweight grid holder: absolute points + matching weights.
+
+    Returned by `_build_molecular_grid` regardless of which backend
+    (spherical vs Becke) was used. Downstream consumers (J / K matrix
+    builds) only need `.points` (absolute coordinates) and `.weights`.
+    """
+    __slots__ = ("points", "weights")
+
+    def __init__(self, points: np.ndarray, weights: np.ndarray):
+        self.points = points
+        self.weights = weights
+
+
 def _build_molecular_grid(basis: PTMolecularBasis,
                             n_radial: int = 30,
                             n_theta: int = 14,
-                            n_phi: int = 18):
-    """Spherical Gauss grid centred on molecular centroid + orbital values."""
+                            n_phi: int = 18,
+                            use_becke: bool = False,
+                            lebedev_order: int = 50):
+    """Build a 3D quadrature grid + orbital values for the molecule.
+
+    Default backend (use_becke=False)
+    ---------------------------------
+    Single spherical Gauss grid centred on the molecular centroid. Cheap
+    but cannot resolve very tight inner-shell core orbitals (1s with
+    zeta ~ 10 / Angstrom on second-row atoms) — the radial spacing of
+    a centroid-centred grid is too coarse near each nucleus.
+
+    Becke + Lebedev backend (use_becke=True)
+    ----------------------------------------
+    Multi-centre adaptive grid: each atom contributes its own (Gauss
+    radial) x (Lebedev angular) sphere, weighted by the Becke fuzzy
+    partition. Required for all-electron SCF: the radial grid near each
+    atom is dense enough to resolve tight 1s orbitals. Phase 5a.
+
+    n_theta / n_phi are ignored when use_becke=True; lebedev_order
+    replaces them.
+    """
     centroid = basis.coords.mean(axis=0)
     max_dist = max(
         float(np.linalg.norm(centroid - basis.coords[i]))
         for i in range(basis.n_atoms)
     )
     min_zeta = min(float(o.zeta) for o in basis.orbitals)
-    R_max = max(max_dist + 8.0 / min_zeta, 12.0 / min_zeta)
 
-    grid = _build_spherical_grid(R_max, n_radial, n_theta, n_phi)
-    pts = grid.points + centroid[None, :]
-    psi = _orbital_values_on_grid(basis, pts)  # (N_orb, N_grid)
+    if use_becke:
+        from ptc.lcao.grid import build_becke_grid
+        # Each atomic sphere extends 8/zeta_min — covers diffuse valence;
+        # tight inner orbitals are well within this radius.
+        R_atom = 8.0 / min_zeta
+        bg = build_becke_grid(basis.coords, R_max=R_atom,
+                              n_radial=n_radial, lebedev_order=lebedev_order)
+        pts_abs = bg.points
+        weights = bg.weights
+    else:
+        R_max = max(max_dist + 8.0 / min_zeta, 12.0 / min_zeta)
+        sg = _build_spherical_grid(R_max, n_radial, n_theta, n_phi)
+        pts_abs = sg.points + centroid[None, :]
+        weights = sg.weights
+
+    psi = _orbital_values_on_grid(basis, pts_abs)  # (N_orb, N_grid)
+    grid = _MolGrid(points=pts_abs, weights=weights)
     return grid, psi
 
 
@@ -83,7 +130,9 @@ def coulomb_J_matrix(rho: np.ndarray,
                       chunk_size: int = 200,
                       n_radial: int = 30,
                       n_theta: int = 14,
-                      n_phi: int = 18) -> np.ndarray:
+                      n_phi: int = 18,
+                      use_becke: bool = False,
+                      lebedev_order: int = 50) -> np.ndarray:
     """J matrix in eV via shared molecular grid.
 
         J[mu, nu] = sum_{kl} rho[k, l] (mu nu | k l)
@@ -93,7 +142,9 @@ def coulomb_J_matrix(rho: np.ndarray,
                 = INT n(r') / |r-r'| dr'   with  n(r') = sum_{kl} rho_kl phi_k(r') phi_l(r').
     """
     if grid is None or psi is None:
-        grid, psi = _build_molecular_grid(basis, n_radial, n_theta, n_phi)
+        grid, psi = _build_molecular_grid(basis, n_radial, n_theta, n_phi,
+                                            use_becke=use_becke,
+                                            lebedev_order=lebedev_order)
 
     n_grid = grid.points.shape[0]
 
@@ -135,7 +186,9 @@ def exchange_K_matrix(rho: np.ndarray,
                         n_radial: int = 30,
                         n_theta: int = 14,
                         n_phi: int = 18,
-                        symmetry: str = "auto") -> np.ndarray:
+                        symmetry: str = "auto",
+                        use_becke: bool = False,
+                        lebedev_order: int = 50) -> np.ndarray:
     """K matrix in eV via shared molecular grid.
 
         K[mu, nu] = sum_{kl} rho[k, l] (mu k | nu l)
@@ -155,7 +208,9 @@ def exchange_K_matrix(rho: np.ndarray,
     output against numerical leakage.
     """
     if grid is None or psi is None:
-        grid, psi = _build_molecular_grid(basis, n_radial, n_theta, n_phi)
+        grid, psi = _build_molecular_grid(basis, n_radial, n_theta, n_phi,
+                                            use_becke=use_becke,
+                                            lebedev_order=lebedev_order)
 
     n_grid = grid.points.shape[0]
     n_orb = basis.n_orbitals
@@ -278,11 +333,20 @@ def density_matrix_PT_scf(
     n_theta: int = 12,
     n_phi: int = 16,
     verbose: bool = False,
+    nuclear_charge: str = "actual",
+    use_becke: bool = False,
+    lebedev_order: int = 50,
 ):
     """Self-consistent-field density matrix.
 
     mode='hf' (default) does full Hartree-Fock with both J and K.
     mode='hartree' is Hartree-only (test path; biased by self-interaction).
+
+    Phase 5a: when use_becke=True, the J/K integrals are evaluated on a
+    multi-centre Becke + Lebedev grid (Phase 3 grid module). This is
+    REQUIRED for all-electron HF: the centroid-centred spherical grid
+    cannot resolve tight 1s core orbitals (zeta ~ 10/Angstrom). With
+    Becke, each atom carries its own dense radial mesh.
 
     Returns (rho, S, eigvals, c, converged_iter, last_residual).
     """
@@ -295,6 +359,7 @@ def density_matrix_PT_scf(
     H_core = core_hamiltonian(
         basis, S,
         n_radial=n_radial, n_theta=n_theta, n_phi=n_phi,
+        nuclear_charge=nuclear_charge,
     )
 
     n_e = int(round(basis.total_occ))
@@ -314,7 +379,9 @@ def density_matrix_PT_scf(
 
     rho = build_rho(c)
 
-    grid, psi = _build_molecular_grid(basis, n_radial, n_theta, n_phi)
+    grid, psi = _build_molecular_grid(basis, n_radial, n_theta, n_phi,
+                                        use_becke=use_becke,
+                                        lebedev_order=lebedev_order)
 
     diis_solver = DIIS(max_size=8) if diis else None
 
@@ -380,6 +447,8 @@ def coupled_cphf_response(
     n_radial_op: int = 30,
     n_theta_op: int = 14,
     n_phi_op: int = 18,
+    use_becke: bool = False,
+    lebedev_order: int = 50,
     verbose: bool = False,
 ) -> np.ndarray:
     """Solve the coupled-perturbed HF equations for magnetic perturbation
@@ -417,6 +486,7 @@ def coupled_cphf_response(
     L_imag_AO = angular_momentum_matrices_GIAO(
         basis,
         n_radial=n_radial_op, n_theta=n_theta_op, n_phi=n_phi_op,
+        use_becke=use_becke, lebedev_order=lebedev_order,
     )
     L_imag_MO = np.array([
         mo_coeffs.T @ L_imag_AO[k] @ mo_coeffs for k in range(3)
@@ -429,7 +499,9 @@ def coupled_cphf_response(
     c_occ = mo_coeffs[:, :n_occ]
     c_virt = mo_coeffs[:, n_occ:]
 
-    grid, psi = _build_molecular_grid(basis, n_radial_grid, n_theta_grid, n_phi_grid)
+    grid, psi = _build_molecular_grid(basis, n_radial_grid, n_theta_grid, n_phi_grid,
+                                        use_becke=use_becke,
+                                        lebedev_order=lebedev_order)
 
     U_imag = np.zeros((3, n_virt, n_occ))
 
@@ -474,6 +546,89 @@ def coupled_cphf_response(
         U_imag[beta] = U
 
     return U_imag
+
+
+def paramagnetic_shielding_tensor_coupled(
+    basis: PTMolecularBasis,
+    mo_eigvals: np.ndarray,
+    mo_coeffs: np.ndarray,
+    n_e_total: int,
+    K_probe: np.ndarray,
+    *,
+    use_giao: bool = True,
+    max_iter: int = 30,
+    tol: float = 1.0e-5,
+    n_radial: int = 30,
+    n_theta: int = 14,
+    n_phi: int = 18,
+    use_becke: bool = False,
+    lebedev_order: int = 50,
+    verbose: bool = False,
+) -> np.ndarray:
+    """Coupled-CPHF paramagnetic shielding TENSOR sigma^p_alpha_beta(K) in ppm.
+
+    Phase 5c. Returns the full 3 x 3 paramagnetic tensor (not just isotropic).
+    The off-diagonal alpha != beta couplings are essential to recover the
+    correct sign of sigma^p on aromatic ring currents: the uncoupled CP-PT
+    drops them, leading to the documented benzene sign-flip artefact.
+
+    Formula in MO basis:
+        sigma^p_alpha,beta(K) = (4 alpha^2) sum_ai
+                                 U_imag[beta, a, i] * M_imag[alpha, i, a]
+        x A_BOHR^4 x HARTREE_eV    (unit conversions; see comment below)
+
+    where U_imag is the CPHF response amplitude for perturbation L_beta,
+    and M_imag[alpha] is the Ramsey magnetic-dipole operator at probe K.
+    """
+    from ptc.constants import A_BOHR, ALPHA_PHYS
+    from ptc.lcao.giao import magnetic_dipole_matrices
+
+    n_orb = mo_coeffs.shape[0]
+    n_occ = n_e_total // 2
+    n_virt = n_orb - n_occ
+    if n_occ == 0 or n_virt == 0:
+        return np.zeros((3, 3))
+
+    K_probe = np.asarray(K_probe, dtype=float)
+
+    # Solve CPHF for U (3, n_virt, n_occ)
+    U_imag = coupled_cphf_response(
+        basis, mo_eigvals, mo_coeffs, n_e_total,
+        use_giao=use_giao, max_iter=max_iter, tol=tol,
+        n_radial_op=n_radial, n_theta_op=n_theta, n_phi_op=n_phi,
+        use_becke=use_becke, lebedev_order=lebedev_order,
+        verbose=verbose,
+    )
+
+    # Magnetic-dipole operator at probe (3, n_orb, n_orb)
+    M_imag_AO = magnetic_dipole_matrices(
+        basis, K_probe,
+        n_radial=n_radial, n_theta=n_theta, n_phi=n_phi,
+        use_becke=use_becke, lebedev_order=lebedev_order,
+    )
+    M_imag_MO = np.array([
+        mo_coeffs.T @ M_imag_AO[k] @ mo_coeffs for k in range(3)
+    ])
+
+    # Unit conversions (see paramagnetic_shielding_iso_coupled for derivation):
+    # U has units 1/(A * eV); M has units 1/A^3. To atomic units:
+    # multiply by A_BOHR (for L unit in U) x A_BOHR^3 (for M) = A_BOHR^4
+    # times HARTREE_eV to convert eps^-1 from 1/eV to 1/Hartree.
+    HARTREE_eV = 27.211386245988
+    unit_factor = (A_BOHR ** 4) * HARTREE_eV
+
+    sigma_p = np.zeros((3, 3))
+    for alpha in range(3):
+        M_ia = M_imag_MO[alpha, :n_occ, n_occ:]   # (n_occ, n_virt)
+        for beta in range(3):
+            U_ai = U_imag[beta]                    # (n_virt, n_occ)
+            prod = U_ai.T * M_ia                   # element-wise (n_occ, n_virt)
+            # σ^p = -4α² Σ U·M (the minus comes from U = -L/Δ; equivalent
+            # to the uncoupled +4α² ΣL·M/Δ when U is the uncoupled response.)
+            sigma_p[alpha, beta] = (
+                -4.0 * (ALPHA_PHYS ** 2) * float(prod.sum()) * unit_factor
+            )
+    return sigma_p * 1.0e6   # ppm
 
 
 def paramagnetic_shielding_iso_coupled(
@@ -560,8 +715,11 @@ def paramagnetic_shielding_iso_coupled(
         M_ia = M_imag_MO[alpha, :n_occ, n_occ:]      # (n_occ, n_virt)
         U_ai = U_imag[alpha]                          # (n_virt, n_occ)
         prod = U_ai.T * M_ia                          # (n_occ, n_virt)
+        # σ^p_αα = -4α² Σ U·M (minus = U absorbed -L/Δ: identical magnitude
+        # to uncoupled +4α² ΣL·M/Δ but opposite sign in U-form, matching
+        # the documented coupled formula above).
         sigma_p_diag[alpha] = (
-            4.0 * (ALPHA_PHYS ** 2)
+            -4.0 * (ALPHA_PHYS ** 2)
             * float(prod.sum())
             * A_BOHR * A_BOHR_3 * HARTREE_eV
         )

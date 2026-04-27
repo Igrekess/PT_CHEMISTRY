@@ -51,7 +51,7 @@ from typing import List
 import numpy as np
 
 from ptc.atom import effective_charge
-from ptc.constants import A_BOHR, S_HALF
+from ptc.constants import A_BOHR, GAMMA_3, GAMMA_5, GAMMA_7, S_HALF
 from ptc.periodic import (
     block_of,
     capacity,
@@ -60,6 +60,16 @@ from ptc.periodic import (
     ns_config,
     period,
 )
+
+
+# Phase 2 (Axis 1) — PT-pure split-valence factors. Each occupied valence
+# shell of a DZ basis is split into two STOs: an inner "contracted" zeta
+# scaled by GAMMA_3 (PT cascade at p=3) and an outer "diffuse" zeta scaled
+# by GAMMA_5 (p=5). DZPD adds a very-diffuse function with GAMMA_7 (p=7).
+# Phase 3: DZ2P adds a second polarisation shell at l_val + 1, n_val + 2
+# (e.g. 4d on top of 3d for C/N/O). Nothing is fitted: 0.808/0.696/0.595
+# come straight from the PT cascade.
+_BASIS_TYPES = ("SZ", "DZ", "TZ", "DZP", "TZP", "DZ2P", "DZPD")
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -117,21 +127,206 @@ class PTAtomBasis:
 # ─────────────────────────────────────────────────────────────────────
 
 
-def Z_eff_shell(Z: int, n: int, l: int) -> float:
+def Z_eff_shell(Z: int, n: int, l: int, method: str = "pt") -> float:
     """PT effective nuclear charge for shell (n, l) of atom Z.
 
-    Phase A: every valence-shell orbital uses the same atomic
-    effective_charge(Z) from `ptc.atom`. This is consistent with PTC's
-    valence-only philosophy across atom/bond/transfer_matrix:
-    screening_action(Z) is the *valence* screening, and ζ = Z_eff/n
-    with n = period(Z) reproduces ε_val = -Ry (Z_eff/n)^2 = -IE.
+    The three available methods probe Z_eff at three different scales:
 
-    Inner-shell support (n < period(Z)) is reserved for Phase B; here
-    we accept any (n, l) but always return the same valence Z_eff to
-    keep the formula closed-form and PT-pure (no Slater-rule constants
-    introduced).
+    Phase A (``method='pt'``, default) : every valence-shell orbital
+    uses the atomic ``effective_charge(Z)`` from ``ptc.atom``, which is
+    calibrated to the **binding-energy scale** — i.e. ``ε_val = -Ry
+    (Z_eff/n)^2 = -IE``. This is correct for energetic observables but
+    leaves the orbital tail too diffuse for the chemical-shielding
+    integral ⟨1/r³⟩.
+
+    Phase 6.B.1 (``method='slater'``) returns the textbook Slater Z_eff
+    (Slater 1930, *Phys. Rev.* 36, 57) for benchmarking. Slater's rules
+    give about twice the effective charge of PT for second-row valence
+    (e.g. C 2p: 3.25 vs 1.82) because they target the **orbital-tail
+    scale**. Used as a non-PT reference.
+
+    Phase 6.C (``method='pt-shielding'``) returns a PT-pure
+    orbital-scale Z_eff that reproduces Slater within ~3% from first
+    principles, with NO empirical fit. The two screening coefficients
+    are derived from the cascade::
+
+        β_intra = γ₃ · γ₅ · γ₇            ≈ 0.335   (≈ Slater 0.35)
+        β_inner = exp(-S_HALF / P₁)       ≈ 0.846   (≈ Slater 0.85)
+        β_deep  = 1.0  (full screening for shells ≥ n - 2)
+
+    γ_p are the PT cascade anomalous dimensions at μ* = 15 (PT chap. 6
+    holonomy); S_HALF = 1/2 is the unique input; P₁ = 3 is the smallest
+    active prime. The 1s intrashell coefficient gets an extra γ₃ for the
+    innermost-circle:  β_1s_intra = γ₃ · β_intra ≈ 0.270 (≈ Slater 0.30).
+
+    This recovers the orbital-scale screening from the same s = 1/2
+    starting point that gives the binding-energy screening, but applied
+    to the wavefunction tail rather than to the eigenvalue.
     """
+    if method == "slater":
+        return _slater_z_eff(Z, n, l)
+    if method == "pt-shielding":
+        return _pt_shielding_z_eff(Z, n, l)
+    if method != "pt":
+        raise ValueError(
+            f"method must be 'pt' / 'slater' / 'pt-shielding', got {method!r}"
+        )
     return float(effective_charge(Z))
+
+
+# ─────────────────────────────────────────────────────────────────────
+# PT-shielding Z_eff (orbital-scale, Phase 6.C)
+# ─────────────────────────────────────────────────────────────────────
+
+
+_BETA_INTRA = GAMMA_3 * GAMMA_5 * GAMMA_7        # ≈ 0.3349 (≈ Slater 0.35)
+_BETA_INNER = math.exp(-S_HALF / 3.0)            # ≈ 0.8465 (≈ Slater 0.85)
+                                                  # P₁ = 3 hard-coded to avoid
+                                                  # circular import.
+_BETA_DEEP = 1.0                                  # full screening (n ≤ n_target-2)
+_BETA_1S_INTRA = GAMMA_3 * _BETA_INTRA           # ≈ 0.2704 (≈ Slater 0.30)
+
+
+def _pt_shielding_z_eff(Z: int, n: int, l: int) -> float:
+    """PT-pure orbital-scale Z_eff at shell (n, l).
+
+    Algorithm — exactly the Slater shell partition, but with PT-derived
+    coefficients (γ₃·γ₅·γ₇, exp(-S_HALF/P₁), 1, γ₃·γ₃·γ₅·γ₇) instead of
+    the empirical Slater (0.35, 0.85, 1.00, 0.30). All four constants
+    derive from the cascade at μ* = 15; nothing is fitted.
+    """
+    occ = _slater_shell_occupations(Z)
+    group = _slater_group_label(n, l)
+
+    if group == "1s":
+        n_1s = occ.get("1s", 1)
+        sigma = _BETA_1S_INTRA * max(n_1s - 1, 0)
+        return float(Z) - sigma
+
+    if group.endswith("sp"):
+        n_target = int(group[0])
+        n_in_group = occ.get(group, 0)
+        sigma = _BETA_INTRA * max(n_in_group - 1, 0)
+        for label, ne in occ.items():
+            if label == group:
+                continue
+            n_other = int(label[0])
+            if n_other == n_target - 1:
+                sigma += _BETA_INNER * ne
+            elif n_other < n_target - 1:
+                sigma += _BETA_DEEP * ne
+        return float(Z) - sigma
+
+    # d / f shells: in-shell at γ₃·γ₅·γ₇, all lower shells fully screen.
+    n_target = int(group[0])
+    n_in_group = occ.get(group, 0)
+    sigma = _BETA_INTRA * max(n_in_group - 1, 0)
+    for label, ne in occ.items():
+        if label == group:
+            continue
+        n_other = int(label[0])
+        l_other = label[1:]
+        if n_other < n_target:
+            sigma += _BETA_DEEP * ne
+        elif n_other == n_target and l_other in ("sp",):
+            sigma += _BETA_DEEP * ne
+    return float(Z) - sigma
+
+
+def _slater_shell_occupations(Z: int) -> dict:
+    """Slater shell occupations for atom Z.
+
+    Returns a dict keyed on the Slater group label
+    ('1s', '2sp', '3sp', '3d', '4sp', '4d', '4f', '5sp', '5d', ...) →
+    integer electron count in that group. This follows Slater's
+    grouping convention where (ns, np) share a screening group and
+    (nd) is its own group.
+    """
+    # Walk Aufbau order until total = Z, populating each Slater group.
+    aufbau = [
+        ("1s", 2), ("2sp", 8), ("3sp", 8), ("3d", 10),
+        ("4sp", 8), ("4d", 10), ("4f", 14),
+        ("5sp", 8), ("5d", 10), ("5f", 14),
+        ("6sp", 8), ("6d", 10), ("7sp", 8),
+    ]
+    out: dict = {}
+    remaining = Z
+    for label, cap in aufbau:
+        if remaining <= 0:
+            break
+        ne = min(remaining, cap)
+        out[label] = ne
+        remaining -= ne
+    return out
+
+
+def _slater_group_label(n: int, l: int) -> str:
+    """Map (n, l) to the Slater screening group label."""
+    if n == 1 and l == 0:
+        return "1s"
+    if l <= 1:
+        return f"{n}sp"
+    if l == 2:
+        return f"{n}d"
+    if l == 3:
+        return f"{n}f"
+    raise ValueError(f"unsupported (n, l) = ({n}, {l})")
+
+
+def _slater_z_eff(Z: int, n: int, l: int) -> float:
+    """Slater's screening Z_eff for shell (n, l) of atom Z.
+
+    Rules (Slater 1930):
+      - 1s: σ = 0.30 × (N(1s) - 1)
+      - ns / np target: σ = 0.35 × (N(nsp) - 1)
+                          + 0.85 × N(shell_at_n-1)
+                          + 1.00 × sum(N(shell_at_n-2_or_below))
+      - nd / nf target: σ = 0.35 × (N(group) - 1)
+                          + 1.00 × sum(N(all_lower_groups))
+
+    For C (Z=6, n=2, l=1): N(2sp)=4, N(1s)=2
+        σ = 0.35×3 + 0.85×2 = 1.05 + 1.70 = 2.75
+        Z_eff = 6 - 2.75 = 3.25  → ζ = 3.25 / 2 = 1.625 a.u. ✓
+    """
+    occ = _slater_shell_occupations(Z)
+    group = _slater_group_label(n, l)
+
+    if group == "1s":
+        n_1s = occ.get("1s", 1)
+        sigma = 0.30 * max(n_1s - 1, 0)
+        return float(Z) - sigma
+
+    if group.endswith("sp"):
+        n_target = int(group[0])
+        n_in_group = occ.get(group, 0)
+        sigma = 0.35 * max(n_in_group - 1, 0)
+        # 0.85 from each electron one shell below
+        for label, ne in occ.items():
+            if label == group:
+                continue
+            n_other = int(label[0])
+            if n_other == n_target - 1:
+                sigma += 0.85 * ne
+            elif n_other < n_target - 1:
+                sigma += 1.00 * ne
+        return float(Z) - sigma
+
+    # d or f shells
+    n_target = int(group[0])
+    n_in_group = occ.get(group, 0)
+    sigma = 0.35 * max(n_in_group - 1, 0)
+    for label, ne in occ.items():
+        if label == group:
+            continue
+        n_other = int(label[0])
+        l_other = label[1:]
+        # All electrons in groups *below* this d/f group screen by 1.0.
+        # Slater treats lower-n shells AND same-n s/p as fully screening.
+        if n_other < n_target:
+            sigma += 1.00 * ne
+        elif n_other == n_target and l_other in ("sp",):
+            sigma += 1.00 * ne
+    return float(Z) - sigma
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -139,18 +334,71 @@ def Z_eff_shell(Z: int, n: int, l: int) -> float:
 # ─────────────────────────────────────────────────────────────────────
 
 
-def occupied_shells(Z: int, charge: int = 0) -> List[tuple]:
+def core_shells(Z: int) -> List[tuple]:
+    """Enumerate INNER (noble-gas-core) shells for atom Z.
+
+    Returns a list of (n, l, n_electrons) for each filled core shell
+    below the valence period. Used by `build_atom_basis(include_core=True)`
+    to build an all-electron basis (Phase 4).
+
+    Currently supports periods 2-4 (cores up to [Ar]):
+        period 2 (Li-Ne): [He] = 1s²
+        period 3 (Na-Ar): [Ne] = 1s² 2s² 2p⁶
+        period 4 (K-Kr) : [Ar] = 1s² 2s² 2p⁶ 3s² 3p⁶
+    """
+    per = period(Z)
+    cores: List[tuple] = []
+    if per >= 2:
+        cores.append((1, 0, 2))                # 1s²
+    if per >= 3:
+        cores.append((2, 0, 2))                # 2s²
+        cores.append((2, 1, 6))                # 2p⁶
+    if per >= 4:
+        cores.append((3, 0, 2))                # 3s²
+        cores.append((3, 1, 6))                # 3p⁶
+    if per >= 5:
+        cores.append((3, 2, 10))               # 3d¹⁰ (filled in [Ar] core for Z>=29)
+        cores.append((4, 0, 2))                # 4s²
+        cores.append((4, 1, 6))                # 4p⁶
+    # Higher periods deliberately unsupported in Phase 4 — focus on
+    # second-row atoms (C, N, O, F) where benzene NICS lives.
+    return cores
+
+
+def _zeta_core_slater(Z: int, n: int, l: int) -> float:
+    """Slater-style exponent for an INNER-CORE shell.
+
+    Uses simplified Slater screening rules:
+      - 1s: zeta = (Z - 0.30) / n / a₀
+      - 2s, 2p: zeta = (Z - 2*0.85) / n / a₀
+      - 3s, 3p: zeta = (Z - 2*1.0 - 8*0.85) / n / a₀
+      - 3d (in core only when present): same n=3 prescription as 3s/3p
+    These are the standard chemistry-textbook values; they make the core
+    1s very tight (ζ ~ 5.7 / a₀ for C) and ensure the SCF pulls valence
+    electrons out of core states.
+    """
+    if n == 1 and l == 0:
+        screening = 0.30
+    elif n == 2 and l <= 1:
+        screening = 2.0 * 0.85
+    elif n == 3 and l <= 2:
+        screening = 2.0 * 1.0 + 8.0 * 0.85
+    else:
+        screening = 0.0  # fallback: bare nuclear charge
+    z_eff = max(Z - screening, 0.5 * Z)
+    return float(z_eff) / (float(n) * A_BOHR)
+
+
+def occupied_shells(Z: int, charge: int = 0,
+                     include_f_block_d_shell: bool = False) -> List[tuple]:
     """Enumerate occupied valence shells of atom Z with optional charge.
 
-    Returns
-    -------
-    List of (n, l, n_electrons) tuples for each occupied valence
-    sub-shell. n is the principal quantum number, l the orbital angular
-    momentum, and n_electrons the integer count (0 < n_electrons <=
-    2*(2l+1)) shared evenly across the (2l+1) magnetic sub-states.
-
-    The ground-state filling follows Aufbau + Madelung promotions
-    already encoded in `ptc.periodic`.
+    Parameters
+    ----------
+    include_f_block_d_shell : if True, allocate the (n-1)d shell on the
+        seven f-block atoms with NIST-confirmed d^1/d^2 promotion
+        (Ce, Gd, Th, Pa, U, Np, Cm). Default False to keep the Hueckel
+        path well-conditioned.
     """
     per = period(Z)
     block = block_of(Z)
@@ -182,11 +430,21 @@ def occupied_shells(Z: int, charge: int = 0) -> List[tuple]:
             shells.append((n_s_principal - 1, 2, n_val_block))
 
     elif block == "f":
-        # (n-2)f, plus possible (n-1)d entry, plus ns
+        # ns + (n-1)d? + (n-2)f
+        # NIST anomalous (n-1)d^1 promotion (opt-in only, Hueckel-safe default).
+        _F_BLOCK_D_OCCUPATION = {
+            58: 1, 64: 1, 90: 2, 91: 1, 92: 1, 93: 1, 96: 1,
+        }
+        d_count = (
+            _F_BLOCK_D_OCCUPATION.get(Z, 0) if include_f_block_d_shell else 0
+        )
         if n_s > 0:
             shells.append((n_s_principal, 0, n_s))
-        if n_val_block > 0:
-            shells.append((n_s_principal - 2, 3, n_val_block))
+        if d_count > 0:
+            shells.append((n_s_principal - 1, 2, d_count))
+        f_count = max(0, n_val_block - d_count)
+        if f_count > 0:
+            shells.append((n_s_principal - 2, 3, f_count))
 
     # apply charge by removing/adding electrons from the highest-l shell
     if charge != 0:
@@ -219,61 +477,210 @@ def _apply_charge(shells: List[tuple], charge: int, l_val: int, cap_val: int) ->
 
 
 def build_atom_basis(Z: int, charge: int = 0,
-                      polarisation: bool = False) -> PTAtomBasis:
+                      polarisation: bool = False,
+                      basis_type: str = "SZ",
+                      include_core: bool = False,
+                      zeta_method: str = "pt",
+                      include_f_block_d_shell: bool = False) -> PTAtomBasis:
     """Construct PT-LCAO valence basis for atom Z.
 
     For each occupied valence sub-shell (n, l, n_electrons), one
     PTAtomicOrbital is generated per magnetic quantum number m in
     {-l, ..., +l}, each carrying the equally distributed fractional
-    occupation n_electrons / (2l+1). The orbital exponent is
-        zeta = Z_eff_shell(Z, n, l) / n
+    occupation n_electrons / (2l+1). The orbital exponent for the
+    single-zeta (SZ) basis is
+        zeta = Z_eff_shell(Z, n, l, method=zeta_method) / n
 
     Parameters
     ----------
     Z, charge : standard
     polarisation : bool, default False
-        If True, add ONE shell of polarisation functions with angular
-        momentum  l_polar = l_valence + 1, principal quantum number
-        n_polar = n_valence + 1, and orbital exponent
+        Legacy boolean flag: equivalent to selecting basis_type='SZP' /
+        'DZP' depending on whether basis_type is 'SZ' or 'DZ'. If
+        basis_type already encodes polarisation ('DZP', 'DZPD') this
+        flag is redundant and ignored.
+
+        When polarisation is added, ONE shell of (l_val + 1) orbitals at
+        n = n_val + 1 is appended with exponent
             zeta_polar = Z_eff(Z) / (n_polar * a0)
-        which is one shell more diffuse than the valence (PT-pure rule:
-        no fitted constant). Polarisation orbitals carry zero ground-
-        state occupation; they enter the calculation only via the
-        coupled-perturbed magnetic response (CP-PT virtual space).
-        Standard chemistry analogue: 2p polarisation on H, 3d on C/N/O,
-        4d on Si/P/S/Cl, etc.
+        carrying zero ground-state occupation (virtual space).
+    basis_type : str, default 'SZ'
+        - 'SZ'   : single zeta per shell (legacy, SZ behaviour).
+        - 'DZ'   : split valence — each occupied valence shell becomes
+                   TWO STOs with PT-pure exponents
+                       zeta_inner = (Z_eff / n_a0) * GAMMA_3   (= 0.808 zeta)
+                       zeta_outer = (Z_eff / n_a0) * GAMMA_5   (= 0.696 zeta)
+                   The shell occupation is split equally between the two:
+                   ne / (2l+1) / 2 each.
+        - 'DZP'  : DZ + one polarisation shell at l_val + 1, n_val + 1.
+        - 'TZ'   : triple-zeta valence — three STOs per occupied shell
+                   with exponents scaled by GAMMA_3 / GAMMA_5 / GAMMA_7.
+                   Each occupation per (n, l, m) is split equally in
+                   thirds (Phase 6.B.2).
+        - 'TZP'  : TZ + one polarisation shell at l_val + 1 (GAMMA_7
+                   scaled exponent like DZP).
+        - 'DZPD' : DZP + one very-diffuse shell at l_val, n_val + 1 with
+                   exponent
+                       zeta_diffuse = (Z_eff / ((n+1)*a0)) * GAMMA_7
+                                    (= 0.595 / (n+1) shell-spread)
+                   Useful for anions and lone-pair-rich molecules.
+
+        All gamma factors (GAMMA_3, GAMMA_5, GAMMA_7) come from the PT
+        cascade at p = 3, 5, 7 (see ptc.constants). Nothing fitted.
+
+    zeta_method : str, default 'pt'
+        How to compute Z_eff for each valence shell.
+        'pt'    : PT-pure effective_charge(Z) (Phase A through 5).
+        'slater': textbook Slater rules (Phase 6.B.1 benchmark) — gives
+                  much tighter STOs (e.g. C 2p: ζ_Slater = 1.625 vs
+                  ζ_PT ≈ 0.91 a.u.). Used to test if PT density is too
+                  diffuse for chemical-shielding work.
     """
     if Z < 1:
         raise ValueError(f"Z must be >= 1, got {Z}")
+    if basis_type not in _BASIS_TYPES:
+        raise ValueError(
+            f"basis_type must be one of {_BASIS_TYPES}, got {basis_type!r}"
+        )
 
     basis = PTAtomBasis(Z=Z, charge=charge, orbitals=[])
-    for n, l, ne in occupied_shells(Z, charge=charge):
-        zeta = Z_eff_shell(Z, n, l) / (float(n) * A_BOHR)
-        per_m_occ = ne / float(2 * l + 1)
-        for m in range(-l, l + 1):
-            basis.orbitals.append(
-                PTAtomicOrbital(Z=Z, n=n, l=l, m=m, zeta=zeta, occ=per_m_occ)
-            )
 
-    if polarisation:
-        # Polarisation: one shell of (l_val + 1) orbitals at n = n_val + 1.
-        # Use the highest-l valence shell as reference.
+    # Phase 4: optionally include inner-shell (noble-gas) core orbitals.
+    # These are NEVER split for DZ — the valence-DZ split prescription is
+    # for the active outer shells only. Core uses Slater screening.
+    if include_core:
+        for n, l, ne in core_shells(Z):
+            zeta_core = _zeta_core_slater(Z, n, l)
+            per_m_occ = ne / float(2 * l + 1)
+            for m in range(-l, l + 1):
+                basis.orbitals.append(
+                    PTAtomicOrbital(Z=Z, n=n, l=l, m=m,
+                                    zeta=zeta_core, occ=per_m_occ)
+                )
+
+    # Occupied valence shells
+    for n, l, ne in occupied_shells(
+        Z, charge=charge,
+        include_f_block_d_shell=include_f_block_d_shell,
+    ):
+        z_base = Z_eff_shell(Z, n, l, method=zeta_method) / (float(n) * A_BOHR)
+        per_m_occ = ne / float(2 * l + 1)
+
+        if basis_type == "SZ":
+            for m in range(-l, l + 1):
+                basis.orbitals.append(
+                    PTAtomicOrbital(Z=Z, n=n, l=l, m=m, zeta=z_base, occ=per_m_occ)
+                )
+        elif basis_type in ("TZ", "TZP"):
+            # Triple-zeta valence: three STOs per (n,l,m) at exponents
+            # gamma_3, gamma_5, gamma_7 × z_base. Occupation split in
+            # thirds. Phase 6.B.2: third zeta widens the radial flexibility
+            # for chemical-shielding response.
+            zeta_inner = z_base * GAMMA_3
+            zeta_middle = z_base * GAMMA_5
+            zeta_outer = z_base * GAMMA_7
+            third_occ = per_m_occ / 3.0
+            for m in range(-l, l + 1):
+                basis.orbitals.append(
+                    PTAtomicOrbital(Z=Z, n=n, l=l, m=m,
+                                    zeta=zeta_inner, occ=third_occ)
+                )
+                basis.orbitals.append(
+                    PTAtomicOrbital(Z=Z, n=n, l=l, m=m,
+                                    zeta=zeta_middle, occ=third_occ)
+                )
+                basis.orbitals.append(
+                    PTAtomicOrbital(Z=Z, n=n, l=l, m=m,
+                                    zeta=zeta_outer, occ=third_occ)
+                )
+        else:
+            # DZ family: split each shell into inner (gamma_3) + outer (gamma_5).
+            # Occupation is split symmetrically — the SCF / density matrix sees
+            # the same total ne but with two basis functions per (n,l,m).
+            zeta_inner = z_base * GAMMA_3
+            zeta_outer = z_base * GAMMA_5
+            half_occ = 0.5 * per_m_occ
+            for m in range(-l, l + 1):
+                basis.orbitals.append(
+                    PTAtomicOrbital(Z=Z, n=n, l=l, m=m,
+                                    zeta=zeta_inner, occ=half_occ)
+                )
+                basis.orbitals.append(
+                    PTAtomicOrbital(Z=Z, n=n, l=l, m=m,
+                                    zeta=zeta_outer, occ=half_occ)
+                )
+
+    # Polarisation shell(s) at l = l_val + 1, principal quantum n_val + 1
+    # and (DZ2P only) also n_val + 2.
+    # Phase 2 axis 1: scale the (n+1) polarisation exponent by GAMMA_7
+    # (PT cascade at p=7 — the third active prime, naturally associated
+    # with the second-next-shell anomalous dimension).
+    # Phase 3: DZ2P adds a second polarisation shell at n_val + 2 with
+    # exponent scaled by GAMMA_7^2 (cumulative diffusion); this gives a
+    # 4d-on-C set well separated from the 3d set.
+    # The legacy SZ-with-polarisation path (basis_type='SZ' and
+    # polarisation=True) keeps the unscaled exponent for backwards
+    # compatibility with existing test_lcao_polarisation expectations.
+    needs_polar = polarisation or basis_type in ("DZP", "TZP", "DZ2P", "DZPD")
+    if needs_polar:
         l_val = l_of(Z)
         n_val = period(Z)
         l_polar = l_val + 1
-        if l_polar > 2:
-            # f-polarisation needs l=3 STO evaluator (pending Phase A
-            # continuation for f-block); skip silently for d-block atoms.
-            return basis
-        n_polar = n_val + 1
-        zeta_polar = Z_eff_shell(Z, n_polar, l_polar) / (float(n_polar) * A_BOHR)
-        for m in range(-l_polar, l_polar + 1):
-            basis.orbitals.append(
-                PTAtomicOrbital(
-                    Z=Z, n=n_polar, l=l_polar, m=m,
-                    zeta=zeta_polar, occ=0.0,
-                )
+        if l_polar <= 4:
+            # First polarisation shell
+            n_polar = n_val + 1
+            zeta_polar = (
+                Z_eff_shell(Z, n_polar, l_polar)
+                / (float(n_polar) * A_BOHR)
             )
+            if basis_type in ("DZP", "TZP", "DZ2P", "DZPD"):
+                # Without diffusing the polarisation, the (n+1) shell sits
+                # as tight as the valence outer DZ exponent, producing
+                # near-linear dependence and a sign flip in sigma^p of
+                # aromatic ring currents. GAMMA_7 (= 0.595) puts the
+                # polarisation l = l_val + 1 shell in the natural region
+                # of an angularly promoted virtual orbital.
+                zeta_polar *= GAMMA_7
+            for m in range(-l_polar, l_polar + 1):
+                basis.orbitals.append(
+                    PTAtomicOrbital(
+                        Z=Z, n=n_polar, l=l_polar, m=m,
+                        zeta=zeta_polar, occ=0.0,
+                    )
+                )
+            # Second polarisation shell (DZ2P only): n_val + 2 at l_val + 1
+            # with cumulative GAMMA_7 spread (a second cascade step).
+            if basis_type == "DZ2P":
+                n_polar2 = n_val + 2
+                zeta_polar2 = (
+                    Z_eff_shell(Z, n_polar2, l_polar)
+                    / (float(n_polar2) * A_BOHR)
+                ) * GAMMA_7 * GAMMA_7
+                for m in range(-l_polar, l_polar + 1):
+                    basis.orbitals.append(
+                        PTAtomicOrbital(
+                            Z=Z, n=n_polar2, l=l_polar, m=m,
+                            zeta=zeta_polar2, occ=0.0,
+                        )
+                    )
+        # f-polarisation requires l=3 STO evaluator (pending continuation);
+        # silently omitted for d-block atoms, matching legacy SZ behaviour.
+
+    # Very-diffuse shell at l_val, n+1 with GAMMA_7 spread
+    if basis_type == "DZPD":
+        l_val = l_of(Z)
+        n_val = period(Z)
+        n_diff = n_val + 1
+        zeta_diff = Z_eff_shell(Z, n_diff, l_val) / (float(n_diff) * A_BOHR) * GAMMA_7
+        if l_val <= 2:
+            for m in range(-l_val, l_val + 1):
+                basis.orbitals.append(
+                    PTAtomicOrbital(
+                        Z=Z, n=n_diff, l=l_val, m=m,
+                        zeta=zeta_diff, occ=0.0,
+                    )
+                )
+
     return basis
 
 
@@ -395,6 +802,22 @@ def overlap_atomic(orb_A: PTAtomicOrbital,
     if same_centre and (orb_A.l != orb_B.l or orb_A.m != orb_B.m):
         return 0.0
 
+    # Same-centre, same (l, m) but different (n, zeta) — purely radial
+    # overlap via < r^(n_a-1) | r^(n_b-1) > with normalised STO weights.
+    # This is the case hit by DZ split-valence (same nlm, two zetas).
+    if same_centre:
+        n_a, n_b = orb_A.n, orb_B.n
+        z_a, z_b = orb_A.zeta, orb_B.zeta
+        # N = (2 zeta)^n sqrt(2 zeta / (2n)!)
+        Na = (2.0 * z_a) ** n_a * math.sqrt(2.0 * z_a / math.factorial(2 * n_a))
+        Nb = (2.0 * z_b) ** n_b * math.sqrt(2.0 * z_b / math.factorial(2 * n_b))
+        # int_0^inf r^(n_a + n_b) exp(-(z_a + z_b) r) dr = (n_a+n_b)! / (z_a+z_b)^(n_a+n_b+1)
+        rad_integral = (
+            math.factorial(n_a + n_b)
+            / ((z_a + z_b) ** (n_a + n_b + 1))
+        )
+        return Na * Nb * rad_integral
+
     # 1s-1s (n=1, l=0, m=0) on different centres: keep the analytic
     # closed form as the reference path; the general numerical
     # quadrature in sto_overlap is validated to agree at 1e-10.
@@ -417,15 +840,14 @@ def overlap_atomic(orb_A: PTAtomicOrbital,
         from ptc.lcao.sto_overlap import overlap_sp_general
         return overlap_sp_general(orb_A, orb_B, r_vec)
 
-    # d-orbital (l = 2) and any pair involving it: fallback to 3D
-    # Gauss-quadrature overlap. Slower but universal; validated against
-    # analytic 1s-1s when both l = 0. Supports s-d, p-d, d-d.
-    if orb_A.l <= 2 and orb_B.l <= 2:
+    # d / f / g orbitals: 3D Gauss-quadrature overlap. Universal,
+    # dispatches to evaluate_sto for any (n, l, m). Supports s/p/d/f/g.
+    if orb_A.l <= 4 and orb_B.l <= 4:
         from ptc.lcao.sto_overlap import overlap_3d_numerical
         return overlap_3d_numerical(orb_A, orb_B, r_vec)
 
     raise NotImplementedError(
         f"overlap_atomic: (n_A,l_A,m_A,n_B,l_B,m_B) = "
         f"({orb_A.n},{orb_A.l},{orb_A.m},{orb_B.n},{orb_B.l},{orb_B.m}) "
-        f"not yet supported. s/p/d done; f-orbital pending Phase A continuation."
+        f"not yet supported. s/p/d/f/g done; h / higher pending."
     )

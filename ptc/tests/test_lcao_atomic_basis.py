@@ -268,9 +268,19 @@ def test_overlap_orientation_invariant():
     assert s_x == pytest.approx(s_diag, rel=1e-12)
 
 
-def test_unsupported_overlap_raises():
-    # f-orbitals not yet wired (s/p analytic + d numerical 3D done)
+def test_f_orbital_overlap_runs():
+    """f-orbital overlap (l=3) is supported via overlap_3d_numerical."""
     a = PTAtomicOrbital(Z=58, n=4, l=3, m=0, zeta=2.0, occ=1.0)
     b = PTAtomicOrbital(Z=58, n=4, l=3, m=0, zeta=2.0, occ=1.0)
+    s_self = overlap_atomic(a, b, np.zeros(3))
+    assert abs(s_self - 1.0) < 1.0e-12
+    s_off = overlap_atomic(a, b, np.array([2.0, 0.0, 0.0]))
+    assert -1.0 <= s_off <= 1.0
+
+
+def test_unsupported_overlap_raises_for_h():
+    """h-orbitals (l=5) and beyond still raise."""
+    a = PTAtomicOrbital(Z=58, n=6, l=5, m=0, zeta=2.0, occ=1.0)
+    b = PTAtomicOrbital(Z=58, n=6, l=5, m=0, zeta=2.0, occ=1.0)
     with pytest.raises(NotImplementedError):
         overlap_atomic(a, b, np.array([2.0, 0.0, 0.0]))

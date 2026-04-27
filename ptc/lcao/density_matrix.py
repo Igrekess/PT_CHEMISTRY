@@ -92,7 +92,11 @@ class PTMolecularBasis:
 
 
 def build_molecular_basis(topology: Topology,
-                            polarisation: bool = False) -> PTMolecularBasis:
+                            polarisation: bool = False,
+                            basis_type: str = "SZ",
+                            include_core: bool = False,
+                            zeta_method: str = "pt",
+                            include_f_block_d_shell: bool = False) -> PTMolecularBasis:
     """Construct the LCAO basis for a molecule.
 
     Steps
@@ -111,15 +115,12 @@ def build_molecular_basis(topology: Topology,
         Si/P/S/Cl, etc.). Polarisation orbitals are unoccupied in the
         ground state but provide variational flexibility for the GIAO
         response.
+    basis_type : str, default 'SZ'
+        Pass through to build_atom_basis. 'DZ' / 'DZP' / 'DZPD' enable
+        the PT-pure split-valence + diffuse extensions (Phase 2 axis 1).
     """
-    for Z in topology.Z_list:
-        if block_of(Z) == "f":
-            raise NotImplementedError(
-                f"build_molecular_basis: Z={Z} is in the f-block. "
-                "PT-LCAO f-orbital overlaps are pending Phase A continuation; "
-                "currently s, p, and d valence are supported."
-            )
-
+    # f-block atoms (Z=58..71 lanthanides, Z=90..103 actinides) supported
+    # via the l=3 STO branch in evaluate_sto + universal overlap_3d_numerical.
     geom = compute_geometry_3d(topology)
     n = geom.n_atoms
     coords_arr = np.array([geom.coords[i] for i in range(n)])
@@ -130,7 +131,12 @@ def build_molecular_basis(topology: Topology,
 
     for i, Z in enumerate(topology.Z_list):
         charge = topology.charges[i] if i < len(topology.charges) else 0
-        atom_basis = build_atom_basis(Z, charge=charge, polarisation=polarisation)
+        atom_basis = build_atom_basis(Z, charge=charge,
+                                       polarisation=polarisation,
+                                       basis_type=basis_type,
+                                       include_core=include_core,
+                                       zeta_method=zeta_method,
+                                       include_f_block_d_shell=include_f_block_d_shell)
         atoms.append(atom_basis)
         for orb in atom_basis.orbitals:
             flat_orbs.append(orb)
@@ -237,15 +243,23 @@ def _lowdin_orthogonalise(S: np.ndarray, eps: float = 1.0e-12) -> np.ndarray:
 def kinetic_matrix(basis: PTMolecularBasis,
                     n_radial: int = 50,
                     n_theta: int = 18,
-                    n_phi: int = 24) -> np.ndarray:
+                    n_phi: int = 24,
+                    use_becke: bool = False,
+                    lebedev_order: int = 50) -> np.ndarray:
     """Kinetic-energy matrix T[i, j] = <phi_i | -hbar^2/(2m) nabla^2 | phi_j> in eV.
 
     Uses Green's identity: <phi_i | -nabla^2 | phi_j> = <nabla phi_i | nabla phi_j>
-    (orbitals decay -> surface term zero). Numerical 3D Gauss quadrature
-    on a spherical grid centred on the molecular centroid.
+    (orbitals decay -> surface term zero). Numerical 3D Gauss quadrature.
 
-    Reuses evaluate_sto_gradient and the spherical-grid infrastructure
-    from giao.py.
+    Two grid backends are available:
+      * Default (use_becke=False): single spherical grid centred on the
+        molecular centroid (Gauss-Legendre × Gauss-Legendre × trapezoidal).
+        Cheap but suffers from atoms far from the centroid being under-
+        sampled in extended molecules.
+      * Becke + Lebedev (use_becke=True): multi-centre adaptive grid with
+        Lebedev angular quadrature, partitioned by Becke fuzzy cells.
+        n_theta / n_phi are ignored; lebedev_order replaces them. PT-pure
+        — no atom-size adjustment in the Becke partition.
     """
     from ptc.constants import HBAR_C_EV_A, ME_C2_EV
     from ptc.lcao.giao import _build_spherical_grid, evaluate_sto_gradient
@@ -260,49 +274,136 @@ def kinetic_matrix(basis: PTMolecularBasis,
     min_zeta = min(float(o.zeta) for o in basis.orbitals)
     R_max = max(max_dist + 8.0 / min_zeta, 12.0 / min_zeta)
 
-    grid = _build_spherical_grid(R_max, n_radial, n_theta, n_phi)
-    pts = grid.points + centroid[None, :]
-    n = basis.n_orbitals
+    if use_becke:
+        from ptc.lcao.grid import build_becke_grid
+        # For the Becke grid we fan out from each atom centre, so R_max
+        # does not need to cover the entire molecule from the centroid;
+        # 8/zeta_min gives full orbital decay coverage per atom.
+        R_atom = 8.0 / min_zeta
+        bg = build_becke_grid(basis.coords, R_max=R_atom,
+                              n_radial=n_radial, lebedev_order=lebedev_order)
+        pts = bg.points
+        weights = bg.weights
+    else:
+        grid = _build_spherical_grid(R_max, n_radial, n_theta, n_phi)
+        pts = grid.points + centroid[None, :]
+        weights = grid.weights
 
-    grad = np.zeros((n, grid.points.shape[0], 3))
+    n = basis.n_orbitals
+    grad = np.zeros((n, pts.shape[0], 3))
     for k, orb in enumerate(basis.orbitals):
         atom_pos = basis.coords[basis.atom_index[k]]
         grad[k] = evaluate_sto_gradient(orb, pts, atom_pos)
 
     T = np.zeros((n, n))
     for alpha in range(3):
-        T += (grad[:, :, alpha] * grid.weights[None, :]) @ grad[:, :, alpha].T
+        T += (grad[:, :, alpha] * weights[None, :]) @ grad[:, :, alpha].T
     T *= T_PREFAC
     T = 0.5 * (T + T.T)
     return T
 
 
+# Number of core (noble-gas) electrons by period; used by
+# nuclear_charge='valence' to subtract a frozen-core screen.
+_N_CORE_BY_PERIOD = {1: 0, 2: 2, 3: 10, 4: 18, 5: 36, 6: 54, 7: 86}
+
+
+def _n_core_electrons(Z: int) -> int:
+    """Number of noble-gas-core electrons below the valence shell."""
+    from ptc.periodic import period
+    return _N_CORE_BY_PERIOD[period(Z)]
+
+
 def nuclear_attraction_total(basis: PTMolecularBasis,
                                n_radial: int = 60,
                                n_theta: int = 24,
-                               n_phi: int = 32) -> np.ndarray:
-    """V[i, j] = -sum_K Z_eff(K) * <phi_i | 1/|r-R_K| | phi_j>  in eV.
+                               n_phi: int = 32,
+                               nuclear_charge: str = "pt",
+                               use_becke: bool = False,
+                               lebedev_order: int = 50) -> np.ndarray:
+    """V[i, j] = -sum_K Z_K * <phi_i | 1/|r-R_K| | phi_j>  in eV.
 
-    Sums the Coulomb-attraction integral over all atomic centres K with
-    PT-screened effective nuclear charges from atom.effective_charge.
-    Reuses giao.nuclear_attraction_matrix(basis, R_K).
+    Three prescriptions for the Coulomb attraction strength Z_K:
+
+    * 'pt' (default, legacy)
+        Uses ptc.atom.effective_charge(Z_K), the PT cascade-screened
+        valence charge. Calibrated so that the Hueckel diagonal H_ii =
+        -IE_eV(Z) reproduces the experimental IE. Best for Hueckel SCF.
+
+    * 'actual'
+        Uses Z_K directly (the real nuclear charge). Correct only for
+        an ALL-ELECTRON basis: each valence electron sees the full
+        nuclear pull and the core electrons screen explicitly through
+        their own density. With a valence-only basis this is too strong
+        — valence electrons collapse into deep core-like states.
+
+    * 'valence'  (Phase 4 — Slater valence convention)
+        Uses Z_K - n_core(Z_K), the screened valence charge. For a
+        valence-only basis the core electrons are absent but their
+        screening is folded into the effective nuclear charge. This is
+        the standard chemistry "frozen core" approximation. For C
+        (Z=6): Z_valence = 4. Combines correctly with HF SCF: the J-K
+        terms only act on the valence electrons present in the basis,
+        and the deep core levels are physically excluded.
     """
+    if nuclear_charge not in ("pt", "actual", "valence"):
+        raise ValueError(
+            f"nuclear_charge must be 'pt', 'actual', or 'valence', "
+            f"got {nuclear_charge!r}"
+        )
+
     from ptc.atom import effective_charge
     from ptc.constants import COULOMB_EV_A
-    from ptc.lcao.giao import nuclear_attraction_matrix
+    from ptc.lcao.giao import (
+        _build_spherical_grid, _orbital_values_on_grid, nuclear_attraction_matrix
+    )
 
     n = basis.n_orbitals
+
+    # Determine effective Z per atom once
+    Z_eff = np.empty(basis.n_atoms)
+    for K_idx in range(basis.n_atoms):
+        Z = basis.Z_list[K_idx]
+        if nuclear_charge == "pt":
+            Z_eff[K_idx] = float(effective_charge(Z))
+        elif nuclear_charge == "actual":
+            Z_eff[K_idx] = float(Z)
+        else:
+            Z_eff[K_idx] = float(Z - _n_core_electrons(Z))
+
+    if use_becke:
+        # Phase 5a optimisation: build the multi-centre Becke grid ONCE
+        # and reuse for all nuclei. The per-nucleus 1/|r-R_K| factor is
+        # applied via a single multiplication; psi(grid) is shared.
+        from ptc.lcao.grid import build_becke_grid
+        min_zeta = min(float(o.zeta) for o in basis.orbitals)
+        bg = build_becke_grid(basis.coords,
+                              R_max=8.0 / min_zeta,
+                              n_radial=n_radial,
+                              lebedev_order=lebedev_order)
+        psi = _orbital_values_on_grid(basis, bg.points)   # (N_orb, N_grid)
+        V = np.zeros((n, n))
+        for K_idx in range(basis.n_atoms):
+            r_to_K = np.linalg.norm(bg.points - basis.coords[K_idx][None, :],
+                                     axis=-1)
+            inv_r = np.where(r_to_K > 1e-15, 1.0 / r_to_K, 0.0)
+            W_eff = bg.weights * inv_r
+            M_K = (psi * W_eff[None, :]) @ psi.T
+            M_K = 0.5 * (M_K + M_K.T)
+            V -= Z_eff[K_idx] * COULOMB_EV_A * M_K
+        return V
+
+    # Legacy path: per-nucleus spherical-grid build (unchanged)
     V = np.zeros((n, n))
     for K_idx in range(basis.n_atoms):
         R_K = basis.coords[K_idx]
-        Z_eff_K = float(effective_charge(basis.Z_list[K_idx]))
         # nuclear_attraction_matrix returns the integral <phi|1/|r-K||phi>
         # in 1/Angstrom; multiply by COULOMB_EV_A (eV*A) for energy.
         M_K = nuclear_attraction_matrix(basis, R_K,
                                           n_radial=n_radial,
                                           n_theta=n_theta,
                                           n_phi=n_phi)
-        V -= Z_eff_K * COULOMB_EV_A * M_K
+        V -= Z_eff[K_idx] * COULOMB_EV_A * M_K
     return V
 
 
@@ -310,40 +411,83 @@ def core_hamiltonian(basis: PTMolecularBasis,
                       S: np.ndarray | None = None,
                       n_radial: int = 50,
                       n_theta: int = 18,
-                      n_phi: int = 24) -> np.ndarray:
+                      n_phi: int = 24,
+                      nuclear_charge: str = "pt",
+                      use_becke: bool = False,
+                      lebedev_order: int = 50) -> np.ndarray:
     """One-electron core Hamiltonian H = T + V_nuc, in eV.
 
     Replaces the Hueckel K=2 approximation with rigorous physical
-    integrals (kinetic energy + sum-over-nuclei Coulomb attraction
-    with PT-screened Z_eff). PT-pure: NO empirical K parameter.
-
-    Limitation #2 of BACKLOG_LCAO_PRECISION.md.
+    integrals (kinetic energy + sum-over-nuclei Coulomb attraction).
+    See nuclear_attraction_total for the meaning of nuclear_charge.
+    use_becke=True passes through to kinetic_matrix and the per-nucleus
+    nuclear_attraction_matrix builds inside nuclear_attraction_total.
     """
-    T = kinetic_matrix(basis, n_radial=n_radial, n_theta=n_theta, n_phi=n_phi)
+    T = kinetic_matrix(basis, n_radial=n_radial, n_theta=n_theta, n_phi=n_phi,
+                        use_becke=use_becke, lebedev_order=lebedev_order)
     # nuclear_attraction grid can be denser since 1/r decays slowly
     V = nuclear_attraction_total(basis,
                                    n_radial=max(n_radial, 60),
                                    n_theta=max(n_theta, 24),
-                                   n_phi=max(n_phi, 32))
+                                   n_phi=max(n_phi, 32),
+                                   nuclear_charge=nuclear_charge,
+                                   use_becke=use_becke,
+                                   lebedev_order=lebedev_order)
     H = T + V
     return 0.5 * (H + H.T)
 
 
-def solve_mo(H: np.ndarray, S: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+def solve_mo(H: np.ndarray, S: np.ndarray,
+             canonical_threshold: float = 1.0e-6) -> Tuple[np.ndarray, np.ndarray]:
     """Solve H c = epsilon S c, returning (eigvals_sorted, c_columns).
 
-    `c` columns are S-orthonormal: c.T @ S @ c = I.
+    Falls back to canonical orthogonalisation when S is near-singular:
+    eigenvectors of S with eigenvalue < canonical_threshold are dropped
+    (the "linearly dependent" modes of the AO basis), and the reduced
+    eigenvalue problem is solved in the orthogonalised subspace. This
+    handles the PT DZ2P / DZPD basis sets where the second polarisation
+    or diffuse shell creates near-linear-dependence on extended molecules.
+
+    `c` columns are S-orthonormal: c.T @ S @ c = I (over kept modes).
+    For dropped modes, the corresponding column is filled with zeros and
+    the eigenvalue placed at +inf so it never enters the occupied space.
     """
+    # Try the standard generalised eigenvalue solver first.
     try:
         from scipy.linalg import eigh as _eigh   # type: ignore
-        eigvals, eigvecs = _eigh(H, S)
-        return np.asarray(eigvals), np.asarray(eigvecs)
+        try:
+            eigvals, eigvecs = _eigh(H, S)
+            return np.asarray(eigvals), np.asarray(eigvecs)
+        except (np.linalg.LinAlgError, ValueError):
+            # S is not positive definite — fall through to canonical.
+            pass
     except ImportError:
-        S_inv_sqrt = _lowdin_orthogonalise(S)
-        Hp = S_inv_sqrt @ H @ S_inv_sqrt
-        eigvals, u = np.linalg.eigh(Hp)
-        c = S_inv_sqrt @ u
-        return eigvals, c
+        pass
+
+    # Canonical orthogonalisation: diagonalise S, drop tiny eigenvalues,
+    # rotate H into the kept subspace, diagonalise there.
+    s_eigvals, s_eigvecs = np.linalg.eigh(S)
+    keep = s_eigvals > canonical_threshold
+    n = S.shape[0]
+    n_keep = int(keep.sum())
+    if n_keep == 0:
+        raise np.linalg.LinAlgError(
+            f"solve_mo: S has no eigenvalue above {canonical_threshold}; "
+            "basis is degenerate."
+        )
+    X = s_eigvecs[:, keep] / np.sqrt(s_eigvals[keep])    # (n, n_keep)
+    Hp = X.T @ H @ X                                     # (n_keep, n_keep)
+    eps_kept, u = np.linalg.eigh(Hp)
+    c_kept = X @ u                                       # (n, n_keep)
+
+    # Pad to (n,) eigenvalues / (n, n) eigvecs so the caller can index
+    # by occupation number unchanged. Dropped modes get +inf eigenvalues
+    # and zero eigenvectors.
+    eigvals = np.full(n, np.inf)
+    eigvals[:n_keep] = eps_kept
+    eigvecs = np.zeros((n, n))
+    eigvecs[:, :n_keep] = c_kept
+    return eigvals, eigvecs
 
 
 # ─────────────────────────────────────────────────────────────────────

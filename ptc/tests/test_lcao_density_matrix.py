@@ -81,9 +81,11 @@ def test_build_molecular_basis_accepts_d_block():
     assert basis.n_orbitals == 6
 
 
-def test_build_molecular_basis_rejects_f_block():
-    with pytest.raises(NotImplementedError, match="f-block"):
-        build_molecular_basis(build_topology("[U]"))
+def test_build_atom_basis_accepts_f_block():
+    """f-block atoms now build via l=3 cubic-harmonic STO at the atom level."""
+    from ptc.lcao.atomic_basis import build_atom_basis
+    basis = build_atom_basis(92)   # U
+    assert basis.n_orbitals == 8
 
 
 # ─────────────────────────────────────────────────────────────────────
