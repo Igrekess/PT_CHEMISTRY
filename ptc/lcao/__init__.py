@@ -66,6 +66,16 @@ from .fock import (
     DIIS,
     coupled_cphf_response,
     paramagnetic_shielding_iso_coupled,
+    paramagnetic_shielding_tensor_coupled,
+)
+from .mp2 import (
+    MP2Result,
+    mp2_amplitudes,
+    mp2_energy,
+    mp2_density_correction,
+    mp2_density_correction_AO,
+    mp2_at_hf,
+    mo_eri_iajb,
 )
 
 __all__ = [
@@ -109,4 +119,12 @@ __all__ = [
     "DIIS",
     "coupled_cphf_response",
     "paramagnetic_shielding_iso_coupled",
+    "paramagnetic_shielding_tensor_coupled",
+    "MP2Result",
+    "mp2_amplitudes",
+    "mp2_energy",
+    "mp2_density_correction",
+    "mp2_density_correction_AO",
+    "mp2_at_hf",
+    "mo_eri_iajb",
 ]
