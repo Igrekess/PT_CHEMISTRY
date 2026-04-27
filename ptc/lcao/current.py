@@ -63,6 +63,7 @@ class _ResponseData:
     mo_coeffs: np.ndarray       # (N_orb, N_orb) MOs
     U_imag: np.ndarray          # (3, n_virt, n_occ) CPHF response
     n_occ: int
+    eigvals: Optional[np.ndarray] = None   # MO energies (a.u.)
 
 
 def precompute_response(topology: Topology,
@@ -96,7 +97,7 @@ def precompute_response(topology: Topology,
     U_imag = coupled_cphf_response(basis, eigvals, c, n_e, **cphf_kw)
     return _ResponseData(
         basis=basis, rho=rho, mo_coeffs=c,
-        U_imag=U_imag, n_occ=n_occ,
+        U_imag=U_imag, n_occ=n_occ, eigvals=eigvals,
     )
 
 
@@ -342,6 +343,80 @@ def ring_current_strength(resp: _ResponseData,
 # ─────────────────────────────────────────────────────────────────────
 # NICS via Biot-Savart
 # ─────────────────────────────────────────────────────────────────────
+
+
+def nics_profile_cluster(resp: _ResponseData,
+                          z_max: float = 4.0,
+                          n_z: int = 11,
+                          axis: str = "z",
+                          beta: int = 2,
+                          gauge: str = "common",
+                          ring_centroid: Optional[np.ndarray] = None,
+                          grid_radial: int = 15,
+                          grid_lebedev: int = 30,
+                          grid_R_max: float = 6.0,
+                          ) -> list:
+    """NICS_zz(z) profile along an axis through the ring centroid.
+
+    Distinguishes three regimes :
+      - Aromatic ring (no caps)     → NICS_zz minimum at z=0
+      - Cap-screened ring (Bi₃@U₂)  → NICS_zz ≈ 0 at z=0, dip near
+                                       z = ±z_cap (current re-emerges
+                                       outside the cap layer)
+      - Antiaromatic ring           → NICS_zz > 0 throughout
+
+    Parameters
+    ----------
+    resp : pre-computed CPHF response.
+    z_max : maximum |axial offset| from centroid (Å).
+    n_z : number of probe points along the axis (typically 11 → step
+        ``z_max/((n_z-1)/2)``, symmetric around 0).
+    axis : ``"x"``, ``"y"``, or ``"z"`` — direction of the probe path.
+    beta : magnetic-field axis (default 2 = z).
+    gauge : current-density gauge — passed to ``nics_zz_from_current``.
+    ring_centroid : if None, taken as the geometric mean of the first
+        ``n_ring`` atoms (assumed to be the ring per the cluster
+        builder convention).  Otherwise an explicit (3,) array.
+    grid_radial, grid_lebedev, grid_R_max : Becke quadrature parameters
+        for Biot-Savart (per-probe; identical across probes).
+
+    Returns
+    -------
+    List of ``(offset_Å, sigma_zz_ppm)`` tuples, len = ``n_z``.
+    """
+    from ptc.lcao.grid import build_becke_grid
+
+    if axis not in ("x", "y", "z"):
+        raise ValueError(f"axis must be 'x'/'y'/'z', got {axis!r}")
+    if n_z < 1:
+        raise ValueError(f"n_z must be >= 1, got {n_z}")
+
+    if ring_centroid is None:
+        ring_centroid = resp.basis.coords[:3].mean(axis=0)
+    ring_centroid = np.asarray(ring_centroid, dtype=float)
+
+    axis_hat = np.zeros(3)
+    axis_hat["xyz".index(axis)] = 1.0
+
+    if n_z == 1:
+        offsets = np.array([0.0])
+    else:
+        offsets = np.linspace(-z_max, +z_max, n_z)
+
+    profile: list = []
+    for dz in offsets:
+        probe = ring_centroid + dz * axis_hat
+        grid = build_becke_grid(
+            resp.basis.coords, R_max=grid_R_max,
+            n_radial=grid_radial, lebedev_order=grid_lebedev,
+            probe=probe,
+        )
+        sigma = nics_zz_from_current(
+            resp, probe, grid.points, grid.weights,
+            beta=beta, gauge=gauge,
+        )
+        profile.append((float(dz), float(sigma)))
+    return profile
 
 
 def nics_zz_from_current(resp: _ResponseData,

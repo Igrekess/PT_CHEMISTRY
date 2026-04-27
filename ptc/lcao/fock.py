@@ -441,6 +441,7 @@ def coupled_cphf_response(
     max_iter: int = 30,
     tol: float = 1.0e-5,
     damping: float = 0.5,
+    level_shift: float = 0.0,
     n_radial_grid: int = 24,
     n_theta_grid: int = 12,
     n_phi_grid: int = 16,
@@ -495,6 +496,9 @@ def coupled_cphf_response(
     eps_a = mo_eigvals[n_occ:]
     eps_i = mo_eigvals[:n_occ]
     diff = eps_a[None, :] - eps_i[:, None]   # (n_occ, n_virt)
+    if level_shift > 0.0:
+        # Avoid 1/0 in U = -L/diff when frontier MOs are (near-)degenerate.
+        diff = np.maximum(diff, level_shift)
 
     c_occ = mo_coeffs[:, :n_occ]
     c_virt = mo_coeffs[:, n_occ:]

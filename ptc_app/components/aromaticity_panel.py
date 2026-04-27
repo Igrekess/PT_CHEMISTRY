@@ -253,6 +253,122 @@ def _scan_capped_X3(cap_Z_list, X_group_Z):
     return out
 
 
+_SCAN_X_INV = [15, 33, 51, 83, 14, 32, 50, 82, 16, 34, 52]   # P As Sb Bi Si Ge Sn Pb S Se Te
+_SCAN_M_INV = [58, 60, 90, 91, 92, 93]                       # Ce Nd Th Pa U Np
+
+
+def _scan_inverse_sandwich(n_ring_options=(3, 4),
+                            X_ring_pool=None, M_cap_pool=None,
+                            max_candidates=80,
+                            nics_grid_radial=15,
+                            nics_grid_lebedev=30):
+    """Scan X_n@M_2 stripped inverse sandwiches via PT-LCAO+CPHF (SZ Hueckel).
+
+    For each (X_ring_Z, n_ring, M_cap_Z):
+      - build cluster geometry via build_inverse_sandwich(ligands='none')
+      - auto-charge to even-electron count (charge=-1 if odd)
+      - precompute response (uncoupled CPHF + level shift to avoid degeneracies)
+      - reject candidates with HOMO-LUMO gap < 0.1 eV (open-shell)
+      - compute J_avg (ring current, nA/T) and NICS_zz at centroid (ppm)
+      - score = (|J_avg|/12) × max(0, 1 - |NICS_zz|/2) × gap_eV
+    """
+    from ptc.lcao.cluster import build_inverse_sandwich, precompute_response_explicit
+    from ptc.lcao.current import nics_zz_from_current, ring_current_strength
+    from ptc.lcao.grid import build_becke_grid
+    from ptc.lcao.cluster import build_explicit_cluster
+    from ptc.data.experimental import SYMBOLS as _ELEM_SYMS
+
+    HA_TO_EV = 27.211386
+
+    if X_ring_pool is None:
+        X_ring_pool = _SCAN_X_INV
+    if M_cap_pool is None:
+        M_cap_pool = _SCAN_M_INV
+
+    rows = []
+    count = 0
+    for n_ring in n_ring_options:
+        for X_Z in X_ring_pool:
+            for M_Z in M_cap_pool:
+                if count >= max_candidates:
+                    return rows
+                count += 1
+                X_sym = _ELEM_SYMS[X_Z]
+                M_sym = _ELEM_SYMS[M_Z]
+                name = f"{X_sym}{n_ring}@{M_sym}2"
+                try:
+                    Z_list, coords, bonds = build_inverse_sandwich(
+                        X_ring_Z=X_Z, n_ring=n_ring, M_cap_Z=M_Z,
+                        ligands="none",
+                    )
+                    basis_probe, _ = build_explicit_cluster(
+                        Z_list=Z_list, coords=coords, bonds=bonds,
+                        basis_type="SZ", include_f_block_d_shell=True,
+                    )
+                    n_e = int(round(basis_probe.total_occ))
+                    if n_e % 2 == 1:
+                        charges = [-1] + [0] * (len(Z_list) - 1)
+                    else:
+                        charges = None
+
+                    resp = precompute_response_explicit(
+                        Z_list=Z_list, coords=coords, bonds=bonds,
+                        charges=charges,
+                        basis_type="SZ", scf_mode="hueckel",
+                        include_f_block_d_shell=True,
+                        cphf_kwargs={"max_iter": 0, "level_shift": 5.0e-3},
+                    )
+                    gap_eV = float(
+                        (resp.eigvals[resp.n_occ]
+                         - resp.eigvals[resp.n_occ - 1]) * HA_TO_EV
+                    )
+                    if gap_eV < 0.1:
+                        continue
+                    ring = list(range(n_ring))
+                    J_avg, _ = ring_current_strength(
+                        resp, ring, beta=2, gauge="common",
+                    )
+                    if not np.isfinite(J_avg) or abs(J_avg) > 200.0:
+                        continue
+                    probe = np.array([0.0, 0.0, 0.0])
+                    grid = build_becke_grid(
+                        coords, R_max=6.0,
+                        n_radial=nics_grid_radial,
+                        lebedev_order=nics_grid_lebedev,
+                        probe=probe,
+                    )
+                    nics_zz = nics_zz_from_current(
+                        resp, probe, grid.points, grid.weights,
+                        gauge="common",
+                    )
+                    if not np.isfinite(nics_zz) or abs(nics_zz) > 1000.0:
+                        continue
+                    score = (
+                        (abs(J_avg) / 12.0)
+                        * max(0.0, 1.0 - abs(nics_zz) / 2.0)
+                        * gap_eV
+                    )
+                    rows.append({
+                        "name": name,
+                        "smiles": f"@@cluster:{X_sym}{n_ring}_{M_sym}2",
+                        "n_atoms": n_ring + 2,
+                        "n_sigma": n_ring,
+                        "n_pi": 0,
+                        "NICS_0": float(nics_zz),
+                        "NICS_1": float(nics_zz),
+                        "R": float(abs(J_avg) / 12.0),
+                        "f_coh": float(min(1.0, abs(J_avg) / 12.0)),
+                        "class": "inverse-sandwich",
+                        "score": float(max(0.0, score)),
+                        "J_avg_nA_per_T": float(J_avg),
+                        "gap_eV": float(gap_eV),
+                        "charge": -1 if n_e % 2 == 1 else 0,
+                    })
+                except Exception:
+                    continue
+    return rows
+
+
 def _run_aromatic_scan(scan_classes, top_n=15):
     """Run the requested scan classes, return top_n records by score."""
     all_rows = []
@@ -270,6 +386,8 @@ def _run_aromatic_scan(scan_classes, top_n=15):
         all_rows += _scan_capped_X3(_SCAN_G13 + _SCAN_G14 + _SCAN_F, _SCAN_G16)
     if "Capped X₃ (cap-G15)" in scan_classes:
         all_rows += _scan_capped_X3(_SCAN_G13 + _SCAN_G14 + _SCAN_F, _SCAN_G15)
+    if "Inverse sandwich X_n@M_2" in scan_classes:
+        all_rows += _scan_inverse_sandwich()
     # Filter to diamagnetic (score > 0) and sort
     diam = [r for r in all_rows if r["score"] > 0]
     diam.sort(key=lambda r: r["score"], reverse=True)
@@ -399,6 +517,7 @@ def _compute_cluster_nics(cluster_key: str,
         "Z_list": list(Z_list),
         "ring": ring,
         "coords": coords,
+        "_resp": resp,   # kept for NICS(z) profile button
     }
     st.session_state[cache_key] = result
     return result
@@ -577,6 +696,50 @@ def _render_cluster_panel(cluster_key: str, nics_exp, descriptor: str,
         f"**Cible |NICS_zz| < 2 ppm** : "
         f"{'✓ atteint' if in_window else '✗ hors fenêtre'}"
     )
+
+    # ── NICS(z) profile ────────────────────────────────────────────
+    profile_button_key = f"aro_nics_profile_{cluster_key}"
+    profile_cache_key = f"_cluster_profile::{cluster_key}"
+    if st.button("📈 Profil NICS_zz(z) le long de l'axe principal",
+                  key=profile_button_key):
+        from ptc.lcao.current import nics_profile_cluster
+        with st.spinner("Calcul du profil NICS(z) (~10 s)…"):
+            try:
+                profile = nics_profile_cluster(
+                    res["_resp"], z_max=4.0, n_z=11, axis="z",
+                    grid_radial=12, grid_lebedev=26,
+                )
+                st.session_state[profile_cache_key] = profile
+            except Exception as e:
+                st.error(f"Erreur profil: {type(e).__name__}: {e}")
+                profile = None
+    profile = st.session_state.get(profile_cache_key)
+    if profile is not None:
+        zs = [p[0] for p in profile]
+        ys = [p[1] for p in profile]
+        fig_p = go.Figure()
+        fig_p.add_trace(go.Scatter(
+            x=zs, y=ys, mode="lines+markers",
+            marker=dict(size=8, color="#2ca02c"),
+            line=dict(width=2.5, color="#2ca02c"),
+            name="NICS_zz(z) PT-LCAO",
+            hovertemplate="z = %{x:.2f} Å<br>"
+                           "NICS_zz = %{y:+.3f} ppm<extra></extra>",
+        ))
+        fig_p.add_hline(y=0.0, line_dash="dash", line_color="gray")
+        fig_p.update_layout(
+            xaxis_title="z (Å, along sandwich axis)",
+            yaxis_title="NICS_zz (ppm)",
+            height=320, margin=dict(l=40, r=20, t=10, b=40),
+            legend=dict(orientation="h", x=0.0, y=-0.20),
+        )
+        st.plotly_chart(fig_p, use_container_width=True)
+        st.caption(
+            "Pour un cluster *cap-screened* le profil passe par 0 au centre "
+            "(ring + caps se compensent) puis dévie vers z = ±z_cap "
+            "lorsque le probe traverse la couche métallique. Pour un "
+            "aromatique pur (sans caps) il a un minimum unique à z = 0."
+        )
 
     with st.expander("📐 Géométrie du cluster"):
         sym_map = {83: "Bi", 92: "U", 6: "C", 1: "H"}
@@ -820,6 +983,40 @@ def render_aromaticity_tab():
         if sig.cap_height > 0:
             st.markdown(f"- **Cap height** above ring plane: {sig.cap_height:.3f} Å")
 
+    # ── X-ray validation expander ──────────────────────────────────
+    with st.expander("📚 Inverse sandwich X-ray reference set "
+                      "(Étape 4 Chantier 8)", expanded=False):
+        from ptc.data.inverse_sandwich_xray import INVERSE_SANDWICHES_XRAY
+        import pandas as pd
+        st.caption(
+            "Famille X-ray inverse-sandwich actinide / lanthanide. "
+            "Seul Bi₃@U₂(Cp*)₄ a un NICS_zz publié à ce jour ; les autres "
+            "entrées fournissent une géométrie X-ray à partir de laquelle "
+            "PT-LCAO produit une prédiction."
+        )
+        df_xray = pd.DataFrame([{
+            "Cluster": e.name,
+            "X_n": f"{e.n_ring}× Z={e.X_ring_Z}",
+            "M_cap": f"Z={e.M_cap_Z}",
+            "d_xx (Å)": f"{e.d_xx:.2f}",
+            "z_cap (Å)": f"{e.z_cap:.2f}",
+            "Ligand": (
+                f"{e.ligand}/{e.n_ligands_per_cap}" if e.ligand != "none"
+                else "none"
+            ),
+            "exp NICS_zz (ppm)": (
+                f"{e.exp_NICS_zz:+.2f}"
+                if e.exp_NICS_zz is not None else "—"
+            ),
+            "Reference": e.reference,
+        } for e in INVERSE_SANDWICHES_XRAY])
+        st.dataframe(df_xray, use_container_width=True, hide_index=True)
+        st.markdown(
+            "**Cible étendue** : MAE < 1.5 ppm sur le sous-ensemble avec "
+            "NICS_zz expérimental. État courant : Bi₃@U₂(Cp*)₄ validé "
+            "(+0.474 vs +0.08 ppm exp, |Δ| = 0.39 ppm)."
+        )
+
     # ── Predictive aromaticity scan ────────────────────────────────
     st.markdown("---")
     st.markdown("### 🔍 Scan prédictif d'aromaticité PT")
@@ -842,6 +1039,7 @@ def render_aromaticity_tab():
                 "Bridges hétéro (B-A-B)",
                 "Capped X₃ (cap-G16)",
                 "Capped X₃ (cap-G15)",
+                "Inverse sandwich X_n@M_2",
             ],
             default=[
                 "Triangles homonucléaires",
@@ -852,14 +1050,15 @@ def render_aromaticity_tab():
             help="Les classes 'Capped X₃' énumèrent des systèmes "
                   "atome+anneau avec cap_binding pour la classification "
                   "synthétique ; le NICS du ring lui-même est identique "
-                  "pour tous les caps de même ring (cap = info "
-                  "synthèse, pas info NICS).",
+                  "pour tous les caps de même ring. La classe 'Inverse "
+                  "sandwich X_n@M_2' utilise le pipeline LCAO+CPHF "
+                  "complet (stripped Hueckel SZ, ~2 s/candidat).",
         )
         top_n = st.slider("Top N à afficher", 5, 30, 15, key="aro_scan_topn")
         run_scan = st.button("🚀 Lancer le scan", key="aro_scan_run")
         st.caption(
-            "_~50 ms par candidat. Cocher une seule classe pour aller "
-            "plus vite._"
+            "_~50 ms par candidat (SMILES) / ~2 s par candidat (cluster "
+            "LCAO). Cocher une seule classe pour aller plus vite._"
         )
 
     with sc_col_right:
@@ -882,20 +1081,41 @@ def render_aromaticity_tab():
                         f"(top {top_n}, sur {n_total} évalués)."
                     )
                     import pandas as pd
-                    df = pd.DataFrame([{
-                        "Rank": i + 1,
-                        "SMILES": r["smiles"],
-                        "Name": r["name"],
-                        "n_atoms": r["n_atoms"],
-                        "n_σ": r["n_sigma"],
-                        "n_π": r["n_pi"],
-                        "NICS(0) ppm": f"{r['NICS_0']:+.2f}",
-                        "NICS(1) ppm": f"{r['NICS_1']:+.2f}",
-                        "R (Å)": f"{r['R']:.2f}",
-                        "f_coh": f"{r['f_coh']:.3f}",
-                        "Class": r["class"],
-                        "Score": f"{r['score']:.2f}",
-                    } for i, r in enumerate(top)])
+                    has_cluster = any(
+                        r.get("class") == "inverse-sandwich" for r in top
+                    )
+                    rows_df = []
+                    for i, r in enumerate(top):
+                        is_cluster = r.get("class") == "inverse-sandwich"
+                        row = {
+                            "Rank": i + 1,
+                            "SMILES": r["smiles"],
+                            "Name": r["name"],
+                            "n_atoms": r["n_atoms"],
+                            "n_σ": r["n_sigma"],
+                            "n_π": r["n_pi"],
+                            "NICS(0) ppm": f"{r['NICS_0']:+.2f}",
+                            "NICS(1) ppm": f"{r['NICS_1']:+.2f}",
+                            "R (Å)": f"{r['R']:.2f}",
+                            "f_coh": f"{r['f_coh']:.3f}",
+                            "Class": r["class"],
+                            "Score": f"{r['score']:.2f}",
+                        }
+                        if has_cluster:
+                            row["J_avg (nA/T)"] = (
+                                f"{r['J_avg_nA_per_T']:+.2f}"
+                                if "J_avg_nA_per_T" in r else "—"
+                            )
+                            row["Gap (eV)"] = (
+                                f"{r['gap_eV']:.2f}"
+                                if "gap_eV" in r else "—"
+                            )
+                            row["Charge"] = (
+                                f"{r['charge']:+d}"
+                                if "charge" in r else "—"
+                            )
+                        rows_df.append(row)
+                    df = pd.DataFrame(rows_df)
                     st.dataframe(df, use_container_width=True, hide_index=True)
 
                     # Quick re-pick: copy a SMILES into the main input

@@ -151,6 +151,7 @@ def precompute_response_explicit(
     U_imag = coupled_cphf_response(basis, eigvals, c, n_e, **cphf_kw)
     return _ResponseData(
         basis=basis, rho=rho, mo_coeffs=c, U_imag=U_imag, n_occ=n_occ,
+        eigvals=eigvals,
     )
 
 
@@ -233,6 +234,155 @@ def cp_star_atoms(centroid: np.ndarray,
                 bonds.append((5 + k, base_idx + hidx, 1.0))
 
     return Z_local, np.array(coord_list), bonds, ring_indices
+
+
+def build_inverse_sandwich(
+    X_ring_Z: int,
+    n_ring: int,
+    M_cap_Z: int,
+    d_xx: Optional[float] = None,
+    z_cap: float = 2.1,
+    ligands: str = "Cp*",
+    n_ligands_per_cap: int = 2,
+    cp_cp_angle_deg: float = 134.0,
+    d_m_cp_centroid: float = 2.5,
+    include_methyl_h: bool = True,
+    rotation_deg_per_cp: Optional[Sequence[float]] = None,
+    ring_rotation_offset_deg: float = 0.0,
+) -> Tuple[list, np.ndarray, list]:
+    """Generic inverse sandwich (X_n)@(M_2)(L_p) cluster geometry.
+
+    Reproduces ``build_bi3_u2_cp_star4`` for X=Bi, n_ring=3, M=U,
+    ligands="Cp*", n_ligands_per_cap=2.
+
+    Parameters
+    ----------
+    X_ring_Z : Z of the homonuclear ring atoms.
+    n_ring : ring size, ≥ 3.
+    M_cap_Z : Z of the two axial cap atoms (typically lanthanide / actinide).
+    d_xx : ring X-X distance in Å. If None, derived from ``r_equilibrium``.
+    z_cap : axial height of the caps above the ring plane (Å).
+    ligands : ``"none"`` or ``"Cp*"``.
+    n_ligands_per_cap : 0, 1 (axial half-sandwich) or 2 (bent metallocene).
+    cp_cp_angle_deg : Cp-M-Cp bend (only for n_ligands_per_cap=2).
+    d_m_cp_centroid : M-Cp* centroid distance.
+    include_methyl_h : include CH3 hydrogens on Cp*.
+    rotation_deg_per_cp : rotation in degrees for each ligand (length =
+        n_ligands_per_cap × 2). Defaults to staggered (0, 36, 0, 36)
+        for matching ``build_bi3_u2_cp_star4``.
+    ring_rotation_offset_deg : rigid in-plane rotation of the ring.
+
+    Returns
+    -------
+    (Z_list, coords (N x 3), bonds list)
+    """
+    if n_ring < 3:
+        raise ValueError(f"n_ring must be >= 3, got {n_ring}")
+    if ligands not in ("none", "Cp*"):
+        raise ValueError(
+            f"ligands must be 'none' or 'Cp*', got {ligands!r}"
+        )
+    if n_ligands_per_cap not in (0, 1, 2):
+        raise ValueError(
+            f"n_ligands_per_cap must be 0/1/2, got {n_ligands_per_cap}"
+        )
+
+    if d_xx is None:
+        from ptc.bond import r_equilibrium
+        from ptc.periodic import period
+        per_x = period(X_ring_Z)
+        d_xx = r_equilibrium(
+            per_x, per_x, bo=1.0, Z_A=X_ring_Z, Z_B=X_ring_Z,
+        )
+
+    R_x = float(d_xx) / (2.0 * np.sin(np.pi / n_ring))
+    rot0 = np.radians(ring_rotation_offset_deg)
+    ring_coords = []
+    for k in range(n_ring):
+        angle = rot0 + 2.0 * np.pi * k / n_ring
+        ring_coords.append(
+            [R_x * np.cos(angle), R_x * np.sin(angle), 0.0]
+        )
+
+    Z_list: list = [int(X_ring_Z)] * n_ring + [int(M_cap_Z), int(M_cap_Z)]
+    all_coords: list = list(np.asarray(ring_coords)) + [
+        np.array([0.0, 0.0, float(z_cap)]),
+        np.array([0.0, 0.0, -float(z_cap)]),
+    ]
+    bonds: list = [(k, (k + 1) % n_ring, 1.0) for k in range(n_ring)]
+    cap_top_idx = n_ring
+    cap_bot_idx = n_ring + 1
+    for cap in (cap_top_idx, cap_bot_idx):
+        for ring in range(n_ring):
+            bonds.append((ring, cap, 1.0))
+
+    if ligands == "none" or n_ligands_per_cap == 0:
+        return Z_list, np.array(all_coords), bonds
+
+    # Cp* attachment
+    if n_ligands_per_cap == 2:
+        if rotation_deg_per_cp is None:
+            rotation_deg_per_cp = (0.0, 36.0, 0.0, 36.0)
+        if len(rotation_deg_per_cp) != 4:
+            raise ValueError(
+                "rotation_deg_per_cp must have 4 entries for "
+                "n_ligands_per_cap=2"
+            )
+        half_angle = np.radians(cp_cp_angle_deg / 2.0)
+        cp_orientations = [
+            (cap_top_idx, +1, +1),
+            (cap_top_idx, -1, +1),
+            (cap_bot_idx, +1, -1),
+            (cap_bot_idx, -1, -1),
+        ]
+        for cp_idx, (cap_atom, sx, sz) in enumerate(cp_orientations):
+            cap_pos = all_coords[cap_atom]
+            z_outer_hat = np.array([0.0, 0.0, float(sz)])
+            direction = (
+                sx * np.sin(half_angle) * np.array([1.0, 0.0, 0.0])
+                + np.cos(half_angle) * z_outer_hat
+            )
+            cp_centroid = cap_pos + d_m_cp_centroid * direction
+            Z_cp, coords_cp, bonds_cp, ring_idx = cp_star_atoms(
+                cp_centroid, direction,
+                rotation_deg=rotation_deg_per_cp[cp_idx],
+                include_h=include_methyl_h,
+            )
+            offset = len(Z_list)
+            Z_list.extend(Z_cp)
+            all_coords.extend(coords_cp)
+            for (a, b, bo) in bonds_cp:
+                bonds.append((a + offset, b + offset, bo))
+            for r in ring_idx:
+                bonds.append((cap_atom, offset + r, 0.5))
+    else:  # n_ligands_per_cap == 1 (axial half-sandwich)
+        if rotation_deg_per_cp is None:
+            rotation_deg_per_cp = (0.0, 0.0)
+        if len(rotation_deg_per_cp) != 2:
+            raise ValueError(
+                "rotation_deg_per_cp must have 2 entries for "
+                "n_ligands_per_cap=1"
+            )
+        for cp_idx, (cap_atom, sz) in enumerate(
+            [(cap_top_idx, +1), (cap_bot_idx, -1)]
+        ):
+            cap_pos = all_coords[cap_atom]
+            direction = np.array([0.0, 0.0, float(sz)])
+            cp_centroid = cap_pos + d_m_cp_centroid * direction
+            Z_cp, coords_cp, bonds_cp, ring_idx = cp_star_atoms(
+                cp_centroid, direction,
+                rotation_deg=rotation_deg_per_cp[cp_idx],
+                include_h=include_methyl_h,
+            )
+            offset = len(Z_list)
+            Z_list.extend(Z_cp)
+            all_coords.extend(coords_cp)
+            for (a, b, bo) in bonds_cp:
+                bonds.append((a + offset, b + offset, bo))
+            for r in ring_idx:
+                bonds.append((cap_atom, offset + r, 0.5))
+
+    return Z_list, np.array(all_coords), bonds
 
 
 def build_bi3_u2_cp_star4(
