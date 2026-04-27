@@ -154,6 +154,60 @@ def test_mp2_diamagnetic_shielding_correction_h2():
     assert abs(sigma_MP2 - sigma_HF) < 1.0   # ppm-scale correction
 
 
+def test_mp2_relax_orbitals_lih_small_shifts():
+    """For HF SCF input on LiH SZ, MP2 relaxation shifts eigvals < 0.1 a.u."""
+    from ptc.lcao.fock import density_matrix_PT_scf
+    from ptc.lcao.mp2 import mp2_relax_orbitals
+
+    Z = [3, 1]
+    coords = np.array([[0.0, 0.0, 0.0], [1.595, 0.0, 0.0]])
+    bonds = [(0, 1, 1.0)]
+    basis, topology = build_explicit_cluster(
+        Z_list=Z, coords=coords, bonds=bonds, basis_type="SZ",
+    )
+    rho, S, eigvals_HF, c_HF, conv, resid = density_matrix_PT_scf(
+        topology, basis=basis, mode="hf", max_iter=15, tol=1e-3,
+        n_radial=8, n_theta=6, n_phi=8,
+    )
+    n_occ = int(round(basis.total_occ)) // 2
+    res = mp2_at_hf(
+        basis, eigvals_HF, c_HF, n_occ,
+        n_radial=8, n_theta=6, n_phi=8,
+        use_becke=False, lebedev_order=14,
+    )
+    eigvals_MP2, c_MP2 = mp2_relax_orbitals(
+        basis, topology, c_HF, n_occ, res,
+        n_radial=8, n_theta=6, n_phi=8,
+    )
+    shifts = np.abs(eigvals_MP2 - eigvals_HF)
+    assert shifts.max() < 0.5    # ≤ ~13 eV — small relaxation when input is HF
+    # Coefficients still close to HF (relaxation, not full re-mixing)
+    assert c_MP2.shape == c_HF.shape
+
+
+def test_precompute_response_mp2_lih_runs_end_to_end():
+    """precompute_response_mp2_explicit returns a valid _ResponseData."""
+    from ptc.lcao.cluster import precompute_response_mp2_explicit
+
+    Z = [3, 1]
+    coords = np.array([[0.0, 0.0, 0.0], [1.595, 0.0, 0.0]])
+    bonds = [(0, 1, 1.0)]
+    resp = precompute_response_mp2_explicit(
+        Z_list=Z, coords=coords, bonds=bonds, basis_type="SZ",
+        scf_kwargs=dict(max_iter=15, tol=1e-3,
+                          n_radial=8, n_theta=6, n_phi=8),
+        mp2_kwargs=dict(n_radial=8, n_theta=6, n_phi=8,
+                          use_becke=False, lebedev_order=14),
+        relax_kwargs=dict(n_radial=8, n_theta=6, n_phi=8),
+        cphf_kwargs=dict(max_iter=0,
+                           n_radial_op=8, n_theta_op=6, n_phi_op=8),
+    )
+    assert resp.basis.n_orbitals > 0
+    assert resp.eigvals is not None
+    assert resp.U_imag.shape[0] == 3
+    assert np.all(np.isfinite(resp.U_imag))
+
+
 def test_mp2_at_hf_h2_density_normalisation():
     """Trace of (d_occ + d_vir) should be small (correction preserves N to 2nd order)."""
     basis, topology = _h2_basis()

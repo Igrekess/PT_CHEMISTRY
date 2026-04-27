@@ -190,6 +190,82 @@ def mp2_density_correction_AO(c: np.ndarray,
             + c_vir @ mp2_result.d_vir @ c_vir.T)
 
 
+def mp2_relax_orbitals(basis: PTMolecularBasis,
+                         topology,
+                         c_HF: np.ndarray,
+                         n_occ: int,
+                         mp2_result: "MP2Result",
+                         *,
+                         n_radial: int = 16,
+                         n_theta: int = 10,
+                         n_phi: int = 12,
+                         use_becke: bool = False,
+                         lebedev_order: int = 26,
+                         nuclear_charge: str = "actual",
+                         ) -> tuple:
+    """One-shot MP2 orbital relaxation : re-diagonalise F[ρ_MP2].
+
+    Pipeline
+    --------
+    1. ρ_MP2 = ρ_HF + correction_AO  (from MP2 1-RDM blocks d_occ, d_vir)
+    2. F_MP2 = H_core + J[ρ_MP2] - ½ K[ρ_MP2]   (HF Fock built from ρ_MP2)
+    3. Diagonalise F_MP2 in AO basis → (eigvals_MP2, c_MP2)
+
+    The output orbitals carry the dominant *occupation-relaxation* effect
+    of MP2 (the d_occ/d_vir 1-RDM blocks).  They do NOT include the
+    Z-vector off-diagonal contribution (full Stanton/Gauss MP2-GIAO is
+    a continuation, Phase 6.B.4).  In practice the resulting MO energies
+    and eigenvectors capture the leading-order MP2 correction to σ_p
+    when fed into ``coupled_cphf_response``.
+
+    Parameters
+    ----------
+    basis, topology : usual PT-LCAO inputs.
+    c_HF            : HF MO coefficients (n_orb, n_orb).
+    n_occ           : number of doubly-occupied orbitals.
+    mp2_result      : output of ``mp2_at_hf`` for this (basis, c_HF).
+    quadrature args : forwarded to the J / K builders.
+
+    Returns
+    -------
+    (eigvals_MP2, c_MP2) : MO energies and coefficients after one round
+    of orbital relaxation.
+    """
+    from ptc.lcao.density_matrix import (
+        core_hamiltonian, overlap_matrix, solve_mo,
+    )
+    from ptc.lcao.fock import (
+        coulomb_J_matrix, exchange_K_matrix, _build_molecular_grid,
+    )
+
+    # 1. AO-basis MP2 density
+    rho_corr = mp2_density_correction_AO(c_HF, n_occ, mp2_result)
+    rho_HF = 2.0 * c_HF[:, :n_occ] @ c_HF[:, :n_occ].T
+    rho_MP2 = rho_HF + rho_corr
+
+    # 2. H_core + J - K/2 with rho_MP2
+    S = overlap_matrix(basis)
+    H_core = core_hamiltonian(
+        basis, S,
+        n_radial=n_radial, n_theta=n_theta, n_phi=n_phi,
+        nuclear_charge=nuclear_charge,
+    )
+    grid, psi = _build_molecular_grid(
+        basis, n_radial, n_theta, n_phi,
+        use_becke=use_becke, lebedev_order=lebedev_order,
+    )
+    J = coulomb_J_matrix(rho_MP2, basis, grid=grid, psi=psi)
+    K = exchange_K_matrix(
+        rho_MP2, basis, grid=grid, psi=psi, symmetry="sym",
+    )
+    F_MP2 = H_core + J - 0.5 * K
+    F_MP2 = 0.5 * (F_MP2 + F_MP2.T)
+
+    # 3. Diagonalise
+    eigvals_MP2, c_MP2 = solve_mo(F_MP2, S)
+    return eigvals_MP2, c_MP2
+
+
 def mp2_at_hf(basis: PTMolecularBasis,
                 eps: np.ndarray,
                 c: np.ndarray,

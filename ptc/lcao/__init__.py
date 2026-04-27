@@ -75,6 +75,7 @@ from .mp2 import (
     mp2_density_correction,
     mp2_density_correction_AO,
     mp2_at_hf,
+    mp2_relax_orbitals,
     mo_eri_iajb,
 )
 
@@ -126,5 +127,6 @@ __all__ = [
     "mp2_density_correction",
     "mp2_density_correction_AO",
     "mp2_at_hf",
+    "mp2_relax_orbitals",
     "mo_eri_iajb",
 ]

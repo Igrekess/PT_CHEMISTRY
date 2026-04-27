@@ -107,6 +107,77 @@ def build_explicit_cluster(
     return basis, topology
 
 
+def precompute_response_mp2_explicit(
+    Z_list: Sequence[int],
+    coords: np.ndarray,
+    bonds: Optional[Sequence[Tuple[int, int, float]]] = None,
+    charges: Optional[Sequence[int]] = None,
+    basis_type: str = "SZ",
+    scf_kwargs: Optional[dict] = None,
+    mp2_kwargs: Optional[dict] = None,
+    relax_kwargs: Optional[dict] = None,
+    cphf_kwargs: Optional[dict] = None,
+    include_f_block_d_shell: bool = False,
+):
+    """End-to-end MP2-relaxed response on explicit coordinates.
+
+    Pipeline
+    --------
+    1. HF SCF on the explicit-coord cluster.
+    2. MP2 amplitudes from the converged HF orbitals.
+    3. ``mp2_relax_orbitals`` : one round of orbital relaxation using
+       ρ_MP2 in the Fock build → (eigvals_MP2, c_MP2).
+    4. CPHF with the MP2-relaxed orbitals → U_imag carrying MP2-quality
+       paramagnetic response.
+
+    Returns ``_ResponseData`` with the relaxed orbitals + MP2 ground-state
+    density.  A subsequent ``current_density_at_points`` /
+    ``nics_zz_from_current`` call uses the MP2 σ_p path.
+
+    Caveats
+    -------
+    The orbital relaxation captures only the *occupation-shift* effect of
+    MP2 (d_occ / d_vir 1-RDM blocks).  The full Stanton-Gauss MP2-GIAO
+    Z-vector contribution (off-diagonal ρ^{(2)}_{ai}) is a continuation
+    (Phase 6.B.4).
+    """
+    from ptc.lcao.current import _ResponseData
+    from ptc.lcao.fock import density_matrix_PT_scf, coupled_cphf_response
+    from ptc.lcao.mp2 import mp2_at_hf, mp2_relax_orbitals
+
+    basis, topology = build_explicit_cluster(
+        Z_list, coords, bonds=bonds, charges=charges,
+        basis_type=basis_type,
+        include_f_block_d_shell=include_f_block_d_shell,
+    )
+
+    scf_kw = dict(scf_kwargs) if scf_kwargs else {}
+    rho_HF, _S, eigvals_HF, c_HF, _conv, _resid = density_matrix_PT_scf(
+        topology, basis=basis, mode="hf", **scf_kw,
+    )
+    n_e = int(round(basis.total_occ))
+    n_occ = n_e // 2
+
+    mp2_kw = dict(mp2_kwargs) if mp2_kwargs else {}
+    mp2 = mp2_at_hf(basis, eigvals_HF, c_HF, n_occ, **mp2_kw)
+
+    relax_kw = dict(relax_kwargs) if relax_kwargs else {}
+    eigvals_MP2, c_MP2 = mp2_relax_orbitals(
+        basis, topology, c_HF, n_occ, mp2, **relax_kw,
+    )
+
+    rho_MP2 = 2.0 * c_MP2[:, :n_occ] @ c_MP2[:, :n_occ].T
+
+    cphf_kw = dict(cphf_kwargs) if cphf_kwargs else {}
+    U_imag = coupled_cphf_response(
+        basis, eigvals_MP2, c_MP2, n_e, **cphf_kw,
+    )
+    return _ResponseData(
+        basis=basis, rho=rho_MP2, mo_coeffs=c_MP2,
+        U_imag=U_imag, n_occ=n_occ, eigvals=eigvals_MP2,
+    )
+
+
 def precompute_response_explicit(
     Z_list: Sequence[int],
     coords: np.ndarray,
