@@ -42,6 +42,110 @@ STRINGS = {
     "tab_solvation": {"fr": "Solution", "en": "Solvation"},
     "tab_electro": {"fr": "Electrochimie", "en": "Electrochemistry"},
     "tab_dft": {"fr": "PTC vs DFT", "en": "PTC vs DFT"},
+    "tab_wfn_nmr": {"fr": "RMN ondulatoire", "en": "Wavefunction NMR"},
+
+    # ── Wavefunction NMR panel (Phase 6.B.10/11 cascade) ──
+    "wfn_title": {
+        "fr": "RMN ondulatoire — cascade post-HF",
+        "en": "Wavefunction NMR — post-HF cascade",
+    },
+    "wfn_subtitle": {
+        "fr": "Pipeline HF → MP2 → MP3 → LCCD → CCD → CCSD → Λ → σ_p^CCSD-Λ-GIAO. "
+              "Tout dérivé de s = 1/2, 0 paramètre ajusté.",
+        "en": "Pipeline HF → MP2 → MP3 → LCCD → CCD → CCSD → Λ → σ_p^CCSD-Λ-GIAO. "
+              "All derived from s = 1/2, 0 fitted parameters.",
+    },
+    "wfn_molecule": {"fr": "Molécule", "en": "Molecule"},
+    "wfn_molecule_help": {
+        "fr": "Diatomiques sélectionnées pour la cascade complète en quelques secondes.",
+        "en": "Diatomics chosen so the full cascade completes in seconds.",
+    },
+    "wfn_basis": {"fr": "Base", "en": "Basis"},
+    "wfn_basis_help": {
+        "fr": "SZ : minimal STO PT-pur (rapide). DZ/DZP : split-valence + polarisation.",
+        "en": "SZ : minimal PT-pure STO (fast). DZ/DZP : split-valence + polarisation.",
+    },
+    "wfn_grid": {"fr": "Grille radiale", "en": "Radial grid"},
+    "wfn_grid_help": {
+        "fr": "Nombre de points radiaux pour les intégrales 3D (plus = plus précis, plus lent).",
+        "en": "Number of radial points for 3D integrals (more = more precise, slower).",
+    },
+    "wfn_run": {"fr": "Lancer la cascade", "en": "Run cascade"},
+    "wfn_press_run": {
+        "fr": "Choisis molécule + base + grille puis clique sur **Lancer la cascade**.",
+        "en": "Pick molecule + basis + grid, then click **Run cascade**.",
+    },
+    "wfn_running": {
+        "fr": "Cascade en cours (HF → MP2 → MP3 → CCSD → Λ → σ_p)…",
+        "en": "Cascade running (HF → MP2 → MP3 → CCSD → Λ → σ_p)…",
+    },
+    "wfn_done": {"fr": "Cascade complète ✓", "en": "Cascade complete ✓"},
+    "wfn_n_orb":  {"fr": "n orbitales", "en": "n orbitals"},
+    "wfn_n_occ":  {"fr": "n occupées",  "en": "n occupied"},
+    "wfn_n_virt": {"fr": "n virtuelles", "en": "n virtual"},
+    "wfn_t1_norm":{"fr": "‖T1‖ CCSD",   "en": "‖T1‖ CCSD"},
+    "wfn_energies": {
+        "fr": "Hiérarchie d'énergie de corrélation",
+        "en": "Correlation-energy hierarchy",
+    },
+    "wfn_method":   {"fr": "Méthode",  "en": "Method"},
+    "wfn_e_corr":   {"fr": "E_corr (eV)", "en": "E_corr (eV)"},
+    "wfn_delta_pct":{"fr": "Δ vs MP2 (%)", "en": "Δ vs MP2 (%)"},
+    "wfn_detail":   {"fr": "Détail",   "en": "Detail"},
+    "wfn_lambda":   {"fr": "Λ-équations (multiplicateurs CCSD)",
+                     "en": "Λ-equations (CCSD multipliers)"},
+    "wfn_lambda_iters":  {"fr": "Itérations Λ",   "en": "Λ iterations"},
+    "wfn_lambda_drift":  {"fr": "‖Λ − T‖",        "en": "‖Λ − T‖"},
+    "wfn_lambda_drift_help": {
+        "fr": "Mesure de la non-trivialité Λ ≠ T (B-diagram λ-T cross-coupling).",
+        "en": "Measures the Λ ≠ T non-triviality (B-diagram λ-T cross-coupling).",
+    },
+    "wfn_sigma_p":  {"fr": "Blindage paramagnétique σ_p (sonde 0.1 Å au-dessus du 1er noyau)",
+                     "en": "Paramagnetic shielding σ_p (probe 0.1 Å above 1st nucleus)"},
+    "wfn_sigma_p_delta": {"fr": "Effet de corrélation total",
+                          "en": "Total correlation effect"},
+    "wfn_timings":  {"fr": "Temps de calcul (étape par étape)",
+                     "en": "Timings (step by step)"},
+    "wfn_theory_note": {"fr": "Note théorique — cascade PT post-HF",
+                        "en": "Theory note — post-HF PT cascade"},
+    "wfn_theory_body": {
+        "fr": (
+            "**MP2** : 2nd ordre Møller-Plesset, amplitudes "
+            "$t_{ij}^{ab} = (ia|jb)/\\Delta\\varepsilon$.\n\n"
+            "**MP3** : ajoute la correction d'ordre 3 — pp ladder, "
+            "hh ladder, et le ring (Phase 6.B.10).\n\n"
+            "**LCCD** : itération infinie linéaire des termes ladder + ring "
+            "(Phase 6.B.11a/b avec DIIS).\n\n"
+            "**CCD** : ajoute les termes T2² (intermédiaires Fock-like F_oo, F_vv, "
+            "Phase 6.B.11c) — renormalise l'over-correlation de LCCD.\n\n"
+            "**CCSD** : ajoute T1 (singles) avec sources 1a/1e/1f/F_kc "
+            "(Phase 6.B.11d-d-bis-bis). Sur HF canonique, ‖T1‖ ~ 10⁻⁴ "
+            "(théorème de Brillouin → singles d'ordre 2 en α).\n\n"
+            "**Λ** : multiplicateurs de réponse pour les propriétés. "
+            "À canonical CCSD, Λ ≠ T via le B-diagram λ-T (Phase 6.B.11e-bis-bis).\n\n"
+            "**σ_p^CCSD-Λ-GIAO** : blindage paramagnétique calculé sur orbitales "
+            "Λ-relaxées (Phase 6.B.11f). Approximation Λ-uncoupled : "
+            "diagonale T-Λ symétrique, off-diagonal Z-block deferred."
+        ),
+        "en": (
+            "**MP2** : 2nd-order Møller-Plesset, amplitudes "
+            "$t_{ij}^{ab} = (ia|jb)/\\Delta\\varepsilon$.\n\n"
+            "**MP3** : adds the 3rd-order amplitude correction — pp ladder, "
+            "hh ladder, ring (Phase 6.B.10).\n\n"
+            "**LCCD** : infinite-order linear iteration of ladder + ring "
+            "(Phase 6.B.11a/b with Pulay DIIS).\n\n"
+            "**CCD** : adds the T2² terms (Fock-like intermediates F_oo, F_vv, "
+            "Phase 6.B.11c) — renormalises the LCCD over-correlation.\n\n"
+            "**CCSD** : adds T1 (singles) with sources 1a/1e/1f/F_kc "
+            "(Phase 6.B.11d-d-bis-bis). On canonical HF, ‖T1‖ ~ 10⁻⁴ "
+            "(Brillouin's theorem → singles emerge at 2nd order in α).\n\n"
+            "**Λ** : response multipliers for properties. At canonical CCSD, "
+            "Λ ≠ T via the B-diagram λ-T cross-coupling (Phase 6.B.11e-bis-bis).\n\n"
+            "**σ_p^CCSD-Λ-GIAO** : paramagnetic shielding computed on "
+            "Λ-relaxed orbitals (Phase 6.B.11f). Λ-uncoupled approximation : "
+            "T-Λ symmetric diagonal blocks, off-diagonal Z-block deferred."
+        ),
+    },
 
     # ── Molecule panel ──
     "category": {"fr": "Categorie", "en": "Category"},
