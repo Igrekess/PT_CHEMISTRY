@@ -35,7 +35,11 @@ from typing import List
 import numpy as np
 
 from ptc.constants import ALPHA_PHYS, A_BOHR
-from ptc.lcao.atomic_basis import PTAtomicOrbital
+from ptc.lcao.atomic_basis import (
+    PTAtomicOrbital,
+    PTContractedOrbital,
+    iter_primitives,
+)
 from ptc.lcao.density_matrix import (
     PTMolecularBasis,
     build_molecular_basis,
@@ -49,15 +53,16 @@ from ptc.topology import Topology, build_topology
 # ─────────────────────────────────────────────────────────────────────
 
 
-def evaluate_sto(orb: PTAtomicOrbital,
+def evaluate_sto(orb,
                  points: np.ndarray,
                  atom_pos: np.ndarray) -> np.ndarray:
     """Evaluate normalised real-spherical STO at one or many 3D points.
 
     Parameters
     ----------
-    orb       : PTAtomicOrbital with quantum numbers (n, l, m) and zeta
-                (in Angstrom^-1, see atomic_basis.build_atom_basis).
+    orb       : PTAtomicOrbital (single zeta) or PTContractedOrbital
+                (sum of N primitives sharing (n,l,m), each with its own
+                zeta and contraction coefficient c_i).
     points    : ndarray of shape (..., 3), Angstrom.
     atom_pos  : ndarray of shape (3,), the orbital centre.
 
@@ -66,7 +71,20 @@ def evaluate_sto(orb: PTAtomicOrbital,
         l = 1, m = -1  : p_y  (sin phi)
         l = 1, m =  0  : p_z  (cos theta)
         l = 1, m = +1  : p_x  (cos phi)
+
+    For a contracted orbital, returns Sum_i c_i * g_i(r; zeta_i).
     """
+    # Phase 6.B.8: dispatch on contracted orbitals
+    if isinstance(orb, PTContractedOrbital):
+        out = None
+        for c_i, prim in iter_primitives(orb):
+            v = evaluate_sto(prim, points, atom_pos)
+            if out is None:
+                out = c_i * v
+            else:
+                out = out + c_i * v
+        return out
+
     rel = points - atom_pos
     r = np.linalg.norm(rel, axis=-1)
 
@@ -438,10 +456,14 @@ def H_atom_lamb_ppm(**quad_kwargs) -> float:
 # ─────────────────────────────────────────────────────────────────────
 
 
-def evaluate_sto_gradient_analytic(orb: PTAtomicOrbital,
+def evaluate_sto_gradient_analytic(orb,
                                     points: np.ndarray,
                                     atom_pos: np.ndarray) -> np.ndarray:
     """Closed-form gradient of a normalised real-spherical STO.
+
+    Phase 6.B.8 — also dispatches on PTContractedOrbital, in which
+    case the gradient is the contraction-weighted sum of primitive
+    gradients (linearity of the derivative).
 
     The STO has the factored form
         phi(r) = N_rad * Y_lm(rel) * f(r),
@@ -459,6 +481,17 @@ def evaluate_sto_gradient_analytic(orb: PTAtomicOrbital,
     Replaces the previous central-difference implementation: T matrix
     elements are now precise to ~1e-12 (vs ~1e-3 with eps = 1e-5).
     """
+    # Phase 6.B.8: dispatch contracted orbital -> sum of primitive gradients
+    if isinstance(orb, PTContractedOrbital):
+        out = None
+        for c_i, prim in iter_primitives(orb):
+            g = evaluate_sto_gradient_analytic(prim, points, atom_pos)
+            if out is None:
+                out = c_i * g
+            else:
+                out = out + c_i * g
+        return out
+
     rel = points - atom_pos
     r = np.linalg.norm(rel, axis=-1)
     n, l, m, zeta = orb.n, orb.l, orb.m, orb.zeta

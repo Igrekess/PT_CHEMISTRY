@@ -83,6 +83,29 @@ print(f"NICS_zz at cluster centre = {nics:+.3f} ppm   (Ding 2026 exp: +0.08)")
 
 678 tests PASS (LCAO + GIMIC + cluster + f-block + Bi3@U2 inverse sandwich + NICS scalar + benchmarks).
 
+### Post-HF coupled-cluster cascade (`ptc/lcao/`, Phase 6.B.4 → 6.B.11f)
+
+The closed-shell post-HF NMR pipeline is now complete : MP2 → MP3 → LCCD → CCD → CCSD → Λ-equations → σ_p^CCSD-Λ-GIAO. Every contraction is derived from `s = 1/2` ; no fitted parameter, no empirical input.
+
+**Hierarchy of correlation energy** (N₂ DZP, illustrative)
+```
+E_MP2   = -0.367 eV
+E_MP3   = -0.443 eV  (+21 %, pp + hh + ring amplitude correction)
+E_LCCD  = -0.481 eV  (+31 %, infinite-order linear ladders)
+E_CCD   = -0.473 eV  (+29 %, T2² Fock-like renormalisation)
+E_CCSD  = -0.473 eV  (T1 emerges at 2nd order, ~10⁻⁴ on canonical HF)
+E_CCSD-Λ = -0.473 eV  (Λ contribution at 4th order)
+```
+
+**Modules** (each commit is a self-contained Phase 6.B.x deliverable):
+- [`mp3.py`](ptc/lcao/mp3.py) — pp + hh ladders + ring (Phase 6.B.10)
+- [`ccd.py`](ptc/lcao/ccd.py) — LCCD/CCD with Pulay DIIS (17× speedup) and T2² Fock-like intermediates (Phase 6.B.11a/b/c)
+- [`ccsd.py`](ptc/lcao/ccsd.py) — closed-shell CCSD T1+T2 with all closed-shell T1 source terms (1a/1e/1f/F_kc) (Phase 6.B.11d/d-bis/d-bis-bis) — Brillouin's theorem rigorously verified at canonical HF
+- [`ccsd_lambda.py`](ptc/lcao/ccsd_lambda.py) — Λ-equations with B-diagram λ-T cross-coupling (Phase 6.B.11e/e-bis/e-bis-bis) — Λ ≠ T at canonical-CCSD level
+- [`ccsd_property.py`](ptc/lcao/ccsd_property.py) — σ_p^CCSD-Λ-GIAO via Λ-relaxed orbital response (Phase 6.B.11f)
+
+**57 dedicated CC tests** + the existing 678 → ~735 tests total.
+
 ## Quick start
 
 ```python

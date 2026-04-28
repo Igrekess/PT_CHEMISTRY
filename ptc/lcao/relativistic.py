@@ -51,6 +51,30 @@ def relativistic_factor(Z: int) -> float:
     return math.sqrt(1.0 - Za2)
 
 
+def scalar_rel_factor(Z: int) -> float:
+    """Scalar relativistic kinematic contraction for ALL Z (Phase 6.B.5).
+
+    Returns sqrt(1 - (Z*alpha)^2) — the Dirac kinematic factor without
+    the Z >= 72 threshold of ``relativistic_factor``. PT-natural with
+    zero parameters: alpha = 1/137.036 from PT q_stat sin² product.
+
+    Use this for chemical-shielding corrections on moderate-Z atoms
+    (Cl Z=17 gives γ=0.992 → 0.8% contraction ; Br Z=35 → γ=0.967 ;
+    I Z=53 → γ=0.911) where the conventional ``relativistic_factor``
+    returns 1.0 because the threshold is set for Pyykkö-style heavy-
+    element NMR work.
+
+    For NMR shielding the kinematic contraction renormalises σ_p by
+    roughly the same factor at the heavy nucleus.
+    """
+    if Z < 1:
+        return 1.0
+    Za2 = (Z * ALPHA_PHYS) ** 2
+    if Za2 >= 1.0:
+        return 0.5
+    return math.sqrt(1.0 - Za2)
+
+
 def actinide_factor(Z: int) -> float:
     """5f imperfect screening contraction (Z = 90..103)."""
     if Z < ACTINIDE_Z_MIN:

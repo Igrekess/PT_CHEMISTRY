@@ -1,249 +1,227 @@
-# PROMPT_PT_LCAO_QUANT — Mission : Z-vector MP2-GIAO (Phase 6.B.4)
+# PROMPT_PT_LCAO_QUANT — Chantier 3 : contracted polarisation PT-pure (à la Dunning)
 
-## Statut hérité (livré 2026-04-27, 284 tests PASS, 0 régression)
+## État actuel — Phase 6.B.4 → 6.B.7 livrées (10+ commits, 174/174 tests PASS)
 
-PT_LCAO+GIMIC est une stack PT-pure end-to-end. Le pipeline reproduit le
-NICS_zz expérimental de Bi₃@U₂(Cp*)₄ (Ding 2026, +0.08 ppm) à 0.39 ppm
-près sur 105 atomes / 248 orbitales SZ — bien dans le critère cible
-±2 ppm.
+Le pipeline σ_p^MP2-GIAO Stanton-Gauss est complet, vectorisé, validé contre la
+littérature 1996, et progressivement raffiné :
 
-Composants déjà en place (ne pas refaire) :
+| Phase | Livrable | Commit |
+|---|---|---|
+| 6.B.4   | Z-vector closure (Lagrangien analytique FD-validé)        | `358197b` |
+| 6.B.4b  | Full Stanton-Gauss σ_p coupled (HF/LO/full retournés)     | `776cadc` |
+| 6.B.4c  | Validation DZP+ multi-system (4 molécules)                | `5977ff9` |
+| 6.B.4d  | Vectorisation BLAS mo_eri_block (×2)                      | `ed62d67` |
+| 6.B.4e  | scipy.cdist (×3-4 sur grid distances)                     | `0c44bcd` |
+| 6.B.4f  | TZ2P basis (DZ + d-polar + f-polar)                       | `89fa257` |
+| 6.B.5   | Chemical shifts pipeline + scalar_relativistic flag γ_rel | `2190eb6` |
+| 6.B.6   | pt-shielding zeta_method propagé + Cowan-Griffin module   | `7da6ff4` |
+| 6.B.7a  | Treutler-Ahlrichs M4 log grid (Cl 1s converge à n=18)     | `0e6cfc0` |
+| 6.B.7b  | TZ cumulative cascade (cond ×200 mieux)                   | `688edc5` |
 
-| Module | Capacité |
-|---|---|
-| `lcao/relativistic.py` | γ_la (4f, Z=57..71), γ_an (5f, Z=90..103), γ_rel Dirac. PT-pur depuis γ₅, γ₇. |
-| `lcao/giao.py` | STO + gradient analytique pour l=0..3, l=4 via FD. GIAO L matrices per-pair midpoint. |
-| `lcao/atomic_basis.py` | Cubic harmonics réelles l=3 (7 fonctions), l=4 (9 fonctions). DZP étendu d-block (f-polar) et f-block (g-polar). `(n-1)d` shell opt-in. |
-| `lcao/density_matrix.py` | f-block accepté sans gate. Hueckel-Mulliken K=2. |
-| `lcao/fock.py` | HF SCF avec DIIS, CPHF coupled response, level_shift pour clusters frontier-degenerate. |
-| `lcao/current.py` | j_para CPHF + j_dia (common, ipsocentric, full GIAO London-phase TERM2). NICS via Biot-Savart. **`nics_profile_cluster(z)` profil le long d'un axe.** |
-| `lcao/cluster.py` | `build_explicit_cluster`, **`build_inverse_sandwich(X, n, M, ligands)` générique**, `build_bi3_u2_cp_star4`, `precompute_response_explicit`, **`precompute_response_mp2_explicit`** (HF SCF + MP2 + relax + CPHF). |
-| **`lcao/mp2.py`** | **MP2 amplitudes + énergie + 1-RDM blocs occ/vir + pont MO→AO + `mp2_relax_orbitals` (one-shot Fock rebuild via ρ_MP2). Captures occupation-shift (d_occ, d_vir) seulement.** |
-| `data/inverse_sandwich_xray.py` | Référence X-ray famille (Ding 2026 + Arnold 2019 + Liddle 2020 + Long 2018 + 2 PT predictions). |
-| `ptc_app/components/aromaticity_panel.py` | Panel UI : 3 presets cluster, scan combinatoire 7 classes (`Inverse sandwich X_n@M_2`), profil NICS(z) bouton, expander X-ray. |
+### Stack progression N₂ σ_p^HF (validation Stanton-Gauss 1996 cc-pVDZ -440 ppm)
 
----
+| Configuration | σ_p^HF (ppm) | % de cc-pVDZ |
+|---|---|---|
+| Initial (pt zeta, valence-only)        | -114 | 26 % |
+| + zeta_method='pt-shielding'           | -137 | 31 % |
+| + include_core=True                     | -157 | 36 % |
+| + TZ cumulative cascade                 | -165 | 38 % |
+| **Cible Dunning cc-pVDZ**              | **-440** | **100 %** |
 
-## Mission de cette session — Z-vector pour MP2-GIAO complet
-
-Le pipeline MP2 actuel intègre l'effet d'**occupation-shift** (blocs
-`d_occ` et `d_vir` de la 1-RDM MP2) dans CPHF via `mp2_relax_orbitals`.
-La contribution restante — la **rotation orbitale** capturée par le
-**Z-vector** — est la *vraie* limite résiduelle pour MP2-GIAO.
-
-Sans Z-vector, la 1-RDM MP2 manque le bloc off-diagonal occ-virt :
-
-```
-D_MP2 = D_HF + d_occ ⊕ d_vir + 2·Z       (le 2·Z manque actuellement)
-```
-
-Le Z-vector est l'amplitude `Z_ai` qui résout
-
-```
-A·Z = -L            (équation Z-vector, Stanton-Gauss 1992)
-```
-
-où :
-- `A` est le hessien orbital (le MÊME que dans CPHF — réutilisable)
-- `L_ai` est le Lagrangien MP2 (gradient de E_MP2 par rapport à la
-  rotation orbitale virtuelle-occupée)
-
-Une fois Z connu, la 1-RDM MP2 *relaxée* est complète, et la formule
-classique de shielding la prend en argument :
-
-```
-σ_p^MP2 = -2 Σ_β Tr[ M_β · (D_HF + d_occ ⊕ d_vir + 2·Z) ]
-```
-
-C'est l'achèvement de Phase 6.B.4 (Stanton-Gauss MP2-GIAO).
+Reste 62 % d'écart. La trajectoire est claire : à chaque levier débloqué, on gagne
+5-15 points. Le prochain levier physique est la **contraction des polarisations**.
 
 ---
 
-## Lecture obligatoire avant de coder
+## Mission Chantier 3 — Contracted polarisation PT-pure
 
-1. `ptc/lcao/mp2.py` — particulièrement `mp2_density_correction`,
-   `mp2_density_correction_AO`, `mp2_relax_orbitals`. La structure
-   d_occ/d_vir est déjà construite ; Z s'ajoute en bloc off-diagonal.
-2. `ptc/lcao/fock.py::coupled_cphf_response` — le solveur CPHF
-   itératif. La structure du Z-vector est rigoureusement la même
-   (orbital Hessian, K^(1) iteration). Réutiliser cette infrastructure.
-3. `ptc/lcao/__init__.py` — re-exports MP2 ; ajouter ce qu'il faut.
-4. `ptc/tests/test_lcao_mp2.py` — 12 tests existants pour MP2 + 2 pour
-   MP2-CPHF. Étendre pour Z-vector.
-5. Référence : Stanton & Gauss, J. Chem. Phys. 97 (1992) 6602 ; ou
-   Helgaker & Jørgensen, *Molecular Electronic-Structure Theory* §13.7.
+### Le problème actuel
+
+Notre PT-DZP a 2 zetas par valence-shell (avec ratio cumulatif 0.808 → 0.563),
+plus 1 polarisation (l_val+1) avec un seul zeta. Pour résoudre la queue
+intermédiaire d'une orbitale 2p de carbone, on a 2 fonctions ; Dunning cc-pVDZ
+en a 4-6 primitives **contractées** en 1-2 fonctions de base, ce qui :
+- augmente la flexibilité radiale (les 4-6 primitives couvrent plus d'échelles)
+- garde le nombre de DoF moléculaire raisonnable (1-2 fonctions de base par contracted)
+- évite la dépendance linéaire (les coefficients de contraction figent une combinaison stable)
+
+### Ce qu'il faut implémenter
+
+Une **fonction de base contractée** :
+
+```
+χ_contracted(r) = Σ_i c_i × g_i(r ; ζ_i)
+```
+
+où `g_i` sont des STOs primitifs avec ζ_i différents et `c_i` les coefficients
+de contraction. La fonction de base est UNE seule entité du point de vue
+moléculaire (un seul indice μ, une seule colonne dans la matrice MO), mais elle
+intègre N primitives.
+
+### Voie PT-pure pour les coefficients c_i
+
+Dunning utilise des coefficients dérivés du SCF atomique (pour minimiser
+l'énergie atomique en présence de la base étendue). En PT, on a deux options :
+
+**Option A — Coefficients depuis l'atom PT spectral**
+Notre `ptc/atom.py` calcule l'énergie atomique IE(Z) avec MAE 0.057% via le
+cascade PT depuis s=1/2. Pour chaque shell (n, l), il existe une enveloppe
+radiale ψ_n_l(r) résultant du cascade. On pourrait extraire ses coefficients
+de Fourier sur la base de primitives STO γ_3^k z_base (k = 0, 1, 2, 3) :
+
+```
+c_i = ⟨ψ_n_l_PT | g_i⟩
+```
+
+avec ψ_n_l_PT calculé via `atom.py` (potentiel PT-screening + diagonalisation
+radiale 1D). Cette extraction se fait UNE fois par atome+shell, stockée
+comme constante PT.
+
+**Option B — Coefficients analytiques de la cascade**
+Plus PT-natural : les coefficients SUIVENT la cascade spectrale.
+Pour 4 primitives à ζ_k = z_base × γ_3^k :
+
+```
+c_k = γ_3^(k(k-1)/2) × N_norm
+```
+
+Ou un autre arrangement où l'enveloppe contractée reproduit Σ_k γ_3^k de
+manière "PT-spectrale". À tester.
+
+**Option C — Régression Slater-équivalente (référence)**
+Pour chaque shell (n, l) de chaque atome, fit les c_i de manière à ce que
+χ_contracted(r) = N × r^(n-1) × e^(-ζ_Slater × r) (la STO Slater de
+référence). Pas PT-natural mais utile comme garde-fou.
+
+### Architecture minimale
+
+1. **Nouveau type `PTContractedOrbital`** dans `ptc/lcao/atomic_basis.py` :
+   ```python
+   @dataclass
+   class PTContractedOrbital:
+       Z: int
+       n: int
+       l: int
+       m: int
+       primitives: list[tuple[float, float]]   # [(ζ_i, c_i), ...]
+       occ: float
+   ```
+
+2. **Évaluation et gradients** dans `ptc/lcao/giao.py` :
+   - `evaluate_sto_contracted(orb, points, atom_pos)` :
+     somme pondérée des évaluations primitives.
+   - `evaluate_sto_gradient_contracted(orb, points, atom_pos)` :
+     même chose pour le gradient.
+   - Reuse maximal du code STO existant (les primitives sont des STO standards).
+
+3. **Builder** dans `atomic_basis.py` :
+   - Nouveau `basis_type='pVDZ-PT'` ou `'CDZP'` (contracted DZP) :
+     - Valence : 4 primitives par (n, l) à ζ_k = z_base × γ_3^k, contractées avec coefficients PT.
+     - Polarisation : 2 primitives à ζ_polar1 et ζ_polar2 = γ_3 × ζ_polar1, contractées en 1 fonction.
+   - Fallback : si options Option A ou B ne convergent pas, utiliser DZP non-contracté.
+
+4. **Adaptation downstream** :
+   - `overlap_matrix`, `kinetic_matrix`, `nuclear_attraction_total`,
+     `coulomb_J_matrix`, `exchange_K_matrix` : aucun changement nécessaire si
+     l'orbital contractée est traitée comme une "STO élargie".
+   - `evaluate_sto_*` doit dispatcher sur le type d'orbital (single zeta vs contracted).
+
+### Critères de succès Chantier 3
+
+1. **Conditioning** : cond(S) reste sous 1e5 sur N₂ et benzène DZP.
+2. **σ_p^HF magnitude** sur N₂ doit franchir 50 % de cc-pVDZ
+   (i.e., |σ_p^HF| > 220 ppm). Sinon, la flexibilité radiale est encore trop
+   limitée et il faut passer à QZP / pVDZ-PT à 6 primitives.
+3. **MP2 correction** Δ% sur N₂ doit augmenter (actuellement -3.6 %, S-G donne +18 %).
+   Si on franchit -10 %, on est à mi-chemin de Stanton-Gauss.
+4. **Tests** : ≥ 12 nouveaux tests sur la contraction (shape, normalisation, gradient
+   cohérent, équivalence avec STO single-zeta dans le cas N=1, intégrales
+   matricielles cohérentes avec versions analytiques).
+5. **Performance** : pas de régression sur les benchmarks existants.
+
+### Décisions à prendre en début de session
+
+1. **Option PT-pure pour les coefficients** : A (depuis atom.py spectral),
+   B (analytique cascade), ou C (fit Slater-équivalent) ? Recommandation :
+   commencer par C pour valider la machinerie, puis remplacer par A.
+
+2. **Nombre de primitives par shell** : 3 ou 4 ? Plus = plus flexible mais
+   plus de compute. Recommandation : 4 primitives (z_base × γ_3^k, k=0..3) pour
+   couvrir les régimes core/inner-valence/valence/diffuse.
+
+3. **Polarisation contractée ou découplée** : la 2ème shell de polarisation
+   (l_val+2 = f) doit-elle être contractée avec la 1ère (l_val+1 = d) ?
+   Recommandation : non, garder f découplé (1 primitive) pour Phase 1 ; passer
+   à p+f contracté en Phase 2.
+
+4. **Naming** : `'pVDZ-PT'` (Pople-Hehre style) ou `'CDZP'` (Contracted DZP) ?
+   Recommandation : `'pVDZ-PT'` pour clarté avec littérature.
+
+### Plan d'implémentation (3 étapes, ~1-2 jours)
+
+**Étape 1 — Infrastructure orbital contractée (4-6 h)**
+- `PTContractedOrbital` dataclass.
+- `evaluate_sto_contracted` + `evaluate_sto_gradient_contracted` (boucle sur primitives).
+- Tests : norme, gradient FD, équivalence STO single-zeta pour N=1.
+
+**Étape 2 — Builder pVDZ-PT (4 h)**
+- Coefficients option B (cascade analytique) en première itération.
+- `basis_type='pVDZ-PT'` ajouté à `_BASIS_TYPES` et `build_atom_basis`.
+- Tests sur conditioning N₂ + H₂O.
+
+**Étape 3 — Validation N₂ benchmark + pivot vers option A si nécessaire (4 h)**
+- Re-run la validation N₂ DZP Becke avec `basis_type='pVDZ-PT'`.
+- Si σ_p^HF ne franchit pas 50 % de cc-pVDZ, switch vers option A
+  (extraire coefficients depuis ψ_PT_atom).
+- Memory + commit Phase 6.B.8.
+
+### Limites résiduelles à NE PAS attaquer en cette session
+
+- **CCSD au-delà de MP2** : reste hors scope. Continuation à la suite de
+  Phase 6.B.8 si la basis est satisfaisante.
+- **Implémentation analytique du STO kinetic** : suffit pour les chantiers
+  actuels grâce au log grid.
+- **GPU** : si toute la stack atteint 50 % de cc-pVDZ, performance n'est plus
+  le bottleneck. Différé.
+
+### Mémoires à mettre à jour en fin de session
+
+- `project_pt_lcao_quant.md` : ajouter section Phase 6.B.8 (Contracted polar PT).
+- `MEMORY.md` : entry one-line.
+- Si σ_p^HF franchit 50 % cc-pVDZ : reformuler la conclusion comme
+  "PT-NMR validé quantitativement vs Stanton-Gauss à mieux que 50 %, prêt pour
+  rédaction d'article PT_NMR_VALIDATION".
 
 ---
 
-## Plan d'attaque
+## Annexes — Référence pour le sprint
 
-### Étape 1 — Lagrangien MP2
+### A. Comparaison Dunning cc-pVDZ vs notre PT-DZP
 
-Construire `L_ai` (RHS du Z-vector) à partir des amplitudes MP2 et des
-ERIs. Formule fermée pour MP2 closed-shell :
+| Atom | Dunning cc-pVDZ | PT-DZP (current) |
+|---|---|---|
+| H | (4s, 1p) → (2s, 1p) [3 primitives s contractées] | (2s, 1p) — 1 primitive each |
+| C | (9s4p1d) → (3s2p1d) | (4s2p1d) — 1 primitive each |
 
+Le facteur ~3 entre primitives Dunning et nos primitives est ce qui manque.
+
+### B. Formules clés
+
+Coefficient cascade PT (option B) :
 ```
-L_ai = -2 Σ_jbk t_ij^bk [2(ja|bk) - (jb|ak)]
-       + 2 Σ_jbc t_ij^bc [2(ab|jc) - (ac|jb)]
-       + ... (occ-vir mixing)
-```
-
-Plus exactement (Helgaker §13.7.3) :
-
-```
-L_ai = X_ai^o - X_ai^v
-```
-
-où X^o et X^v sont les contributions "orbital relaxation" sur les
-blocs occupé et virtuel.
-
-Implémentation dans `mp2.py` :
-
-```python
-def mp2_lagrangian(basis, c, n_occ, mp2_result, eri_full=None):
-    """MP2 Lagrangian L_ai (n_virt, n_occ) for the Z-vector RHS."""
+c_k = γ_3^k × γ_5^k(k-1)/2   pour k = 0, 1, 2, 3
+ζ_k = z_base × γ_3^k
 ```
 
-Tests : ≥ 4 tests sur H₂, LiH, BH (formes, signes, magnitude).
-
-### Étape 2 — Solveur Z-vector
-
-L'équation `A·Z = -L` se résout itérativement avec exactement la même
-infrastructure que CPHF (orbital Hessian construit via le K^(1)) :
-
+Normalisation après contraction :
 ```
-Z^(k+1) = Z^(k) - α · [A·Z^(k) + L]
+Σ_ij c_i c_j S_ij(ζ_i, ζ_j) = 1
 ```
 
-avec damping et tolérance comme CPHF.
+où S_ij est l'overlap entre primitives.
 
-Réutiliser `coupled_cphf_response` en factorisant la boucle interne :
+### C. Tests de référence
 
-```python
-def solve_z_vector(basis, mo_eigvals, mo_coeffs, n_occ, lagrangian,
-                    *, max_iter=30, tol=1e-5, damping=0.5,
-                    level_shift=0.0, ...):
-    """Solve A·Z = -L via the same iterative scheme as CPHF.
-
-    Returns Z (n_virt, n_occ).
-    """
-```
-
-Tests : convergence sur H₂ → Z ≈ 0 (no virtual mixing for s-only),
-LiH → Z fini, BH → Z fini avec norme < |t-amplitude|.
-
-### Étape 3 — 1-RDM MP2 relaxée complète
-
-La 1-RDM MP2 *relaxée* combine d_occ, d_vir, Z dans une seule
-matrice MO :
-
-```
-D_MP2_MO[i, j]   = δ_ij ·2 + d_occ[i, j]      (occ-occ block)
-D_MP2_MO[a, b]   = d_vir[a, b]                (vir-vir block)
-D_MP2_MO[i, a]   = Z[a, i]                    (occ-vir block)
-D_MP2_MO[a, i]   = Z[a, i]                    (vir-occ block, sym)
-```
-
-AO transform :
-
-```python
-def mp2_density_relaxed_AO(c, n_occ, mp2_result, z_vector):
-    """Full MP2-relaxed 1-RDM in AO basis (with Z-vector contribution)."""
-```
-
-Tests : symétrie, trace = nombre d'électrons, comparaison à
-`mp2_density_correction_AO` (même résultat moins le bloc Z).
-
-### Étape 4 — σ_p MP2-GIAO complet
-
-Wrapper haut-niveau `mp2_paramagnetic_shielding(...)` qui :
-
-1. HF SCF (ou Hueckel pour SZ)
-2. MP2 amplitudes
-3. Lagrangien
-4. Z-vector
-5. 1-RDM MP2 relaxée
-6. σ_p via la formule standard avec D_MP2_relaxed
-
-Validation :
-- **Benzène SZ** : NICS_zz HF vs NICS_zz MP2-GIAO. La littérature donne
-  ~5-10 % de correction MP2 sur NICS de benzène.
-- **N₂ SZ** : σ_p à mid-bond. Stanton & Gauss 1996 donnent une
-  correction MP2 spécifique reproductible.
-- **Bi₃@U₂(Cp*)₄** : si tractable, comparer NICS_zz HF=+0.474 ppm vs
-  MP2-GIAO. Cible : rester dans la fenêtre exp ±0.5 ppm.
-
-### Étape 5 — Intégration current.py
-
-`current_density_at_points` n'a pas besoin de modification : si
-`_ResponseData.U_imag` est construit à partir d'une CPHF avec le
-Z-vector intégré, `j_para` capte automatiquement la contribution.
-
-Vérifier que `precompute_response_mp2_explicit` accepte un mode
-`use_z_vector=True` qui inclut l'étape Z-vector dans la pipeline.
-
-### Étape 6 — Tests + benchmark + UI
-
-- ≥ 25 nouveaux tests (Lagrangien, Z-vector, 1-RDM relaxée,
-  σ_p MP2-GIAO end-to-end)
-- 0 régression sur les 284 existants
-- UI : option "MP2-CPHF (Z-vector)" dans le panel cluster
-- Mise à jour du tableau de comparaison NICS_zz pour Bi₃@U₂
-
----
-
-## Décisions à prendre en début de session
-
-1. **Convention ERI** : continuer avec (ia|jb) chemist, ou basculer
-   vers (ij||ab) physicist pour la formulation Helgaker plus directe ?
-2. **Solveur Z-vector** : factoriser depuis CPHF (réutilisation max) ou
-   solveur séparé (clarté max) ?
-3. **Validation expérimentale** : reproduire un cas littérature
-   (Stanton-Gauss 1996 N₂, ou Wilson 1996 benzène) ou se contenter
-   de signe + ordre de grandeur ?
-4. **Performance** : MP2 + Z-vector + CPHF sur Bi₃@U₂(Cp*)₄ va prendre
-   plusieurs minutes. Viser une démonstration sur benzène SZ d'abord
-   (1-2 min), puis un test ultime Bi₃@U₂ stripped (éventuellement) ?
-
-Recommandation par défaut :
-- (1) ERI chemist (compat. existant)
-- (2) Factorisation : extraire `_iterative_orbital_response_solver`
-  depuis CPHF, le réutiliser pour Z-vector
-- (3) Reproduire N₂ SZ comme cas-test propre
-- (4) Benzène SZ d'abord, Bi₃@U₂ stripped en stretch
-
----
-
-## Critères de succès
-
-1. **Lagrangien implémenté** : `mp2_lagrangian` retourne (n_virt, n_occ),
-   passe ≥ 4 tests de forme/signe.
-2. **Z-vector convergent** : `solve_z_vector` converge < tol=1e-4 en
-   < 30 itérations sur H₂, LiH, BH, N₂. Pour H₂ s-only → Z = 0.
-3. **1-RDM MP2 relaxée** : trace = N_électrons à 1e-4 près, symétrique,
-   diffère de la 1-RDM "MP2 sans relaxation" par le bloc Z.
-4. **σ_p MP2-GIAO** : pipeline end-to-end produit un nombre fini, signe
-   et ordre de grandeur correct vs HF.
-5. **Validation littérature** : N₂ ou benzène reproduit la correction
-   MP2-NICS dans une marge documentée.
-6. **Tests** : ≥ 25 nouveaux tests, 0 régression sur 284.
-7. **UI** : option MP2-CPHF Z-vector dans le panel cluster, comparaison
-   HF / MP2 / MP2-Z affichée.
-
-## Limites résiduelles à NE PAS attaquer en cette session
-
-- **Gradient g-orbital analytique** (l=4) : FD reste suffisant pour
-  DZP+ ; ce n'est pas le bottleneck NICS. Continuation séparée.
-- **f-block Hueckel + d-shell** : conflit irréductible. Utiliser HF
-  pour ces cas, ce qu'on fait déjà via `precompute_response_mp2_explicit`.
-- **HF SCF parallèle sur cluster 105+ atomes** : Bi₃@U₂(Cp*)₄ HF prend
-  >10 min. Parallélisation = session dédiée infrastructure.
-- **Coupled-cluster** (CCSD, CCSD(T)) : très loin du scope. C'est la
-  *suivante* limite après Z-vector si on veut pousser plus loin.
-
-## Mémoires à mettre à jour en fin de session
-
-- `project_pt_lcao_quant.md` : ajouter section Z-vector / MP2-GIAO
-- `MEMORY.md` : entry one-line
-- Si N₂ ou benzène reproduit la correction MP2 littérature : reformuler
-  conclusion PT_AROMATICITY pour annoncer "MP2-GIAO complet implémenté".
+- ψ_C_2p_PT(r) doit reproduire ⟨r⟩_C_2p ≈ 1.59 Bohr (expérimental).
+- σ_p(C dans CH4)/σ_p(C dans CO) ratio expérimental = -184/-2.3 ≈ +80
+  (ratio adimensionné, validable même avec σ_p sous-évalué en absolu).

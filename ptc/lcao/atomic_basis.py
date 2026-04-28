@@ -69,7 +69,11 @@ from ptc.periodic import (
 # Phase 3: DZ2P adds a second polarisation shell at l_val + 1, n_val + 2
 # (e.g. 4d on top of 3d for C/N/O). Nothing is fitted: 0.808/0.696/0.595
 # come straight from the PT cascade.
-_BASIS_TYPES = ("SZ", "DZ", "TZ", "DZP", "TZP", "DZ2P", "DZPD")
+_BASIS_TYPES = (
+    "SZ", "DZ", "TZ", "DZP", "TZP", "TZ2P", "DZ2P", "DZPD",
+    "pVDZ-PT",  # Phase 6.B.8c — split-valence contracted DZP a la Dunning
+    "pVTZ-PT",  # Phase 6.B.8e — split-valence contracted TZP, 3 BFs / shell
+)
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -103,6 +107,338 @@ class PTAtomicOrbital:
     def label(self) -> str:
         sym = "spdfgh"[self.l] if self.l < 6 else f"l{self.l}"
         return f"Z{self.Z}_{self.n}{sym}_m{self.m:+d}"
+
+
+@dataclass(frozen=True)
+class PTContractedOrbital:
+    """Phase 6.B.8 — single basis function built from N normalised STO
+    primitives sharing the same (Z, n, l, m) but different orbital
+    exponents.
+
+        chi(r) = Sum_i c_i * g_i(r ; zeta_i, n, l, m)
+
+    where each g_i is a normalised PTAtomicOrbital (the same machinery
+    as Phase A). The contraction acts as ONE molecular basis function
+    (one column in the MO matrix); flexibility comes from N primitives
+    spanning core / inner-valence / valence / diffuse simultaneously.
+
+    Coefficients c_i come from:
+      * Option A — projection of the PT atomic radial wavefunction
+                   psi_{n,l}(r) on the primitive basis (atom.py spectral),
+      * Option B — analytic PT cascade c_k = GAMMA_3^k * GAMMA_5^(k(k-1)/2)
+                   with zeta_k = z_base * GAMMA_3^k,
+      * Option C — fit to Slater STO (calibration).
+
+    The contracted orbital is normalised to <chi|chi> = 1 at the same
+    centre via the closed-form same-(n,l,m) overlap.
+    """
+
+    Z: int
+    n: int
+    l: int
+    m: int
+    primitives: tuple = ()   # tuple[tuple[zeta, c]]
+    occ: float = 0.0
+
+    @property
+    def zeta(self) -> float:
+        """Effective zeta = smallest primitive zeta (most diffuse).
+
+        Used by grid-extent heuristics that want a length scale for the
+        outer tail of the contracted orbital (R_max ~ 1/min_zeta).
+        """
+        if not self.primitives:
+            raise ValueError("PTContractedOrbital has no primitives")
+        return min(float(z) for (z, _c) in self.primitives)
+
+    @property
+    def label(self) -> str:
+        sym = "spdfgh"[self.l] if self.l < 6 else f"l{self.l}"
+        return f"Z{self.Z}_{self.n}{sym}_m{self.m:+d}_C{len(self.primitives)}"
+
+
+def iter_primitives(orb):
+    """Yield (coefficient, single_zeta_orbital) pairs for any orbital.
+
+    Uniform dispatch helper: for a PTAtomicOrbital the iteration yields
+    a single (1.0, orb); for a PTContractedOrbital it yields N pairs
+    (c_i, primitive_i) where primitive_i is a synthetic PTAtomicOrbital
+    sharing (Z, n, l, m, occ) but with primitive zeta_i.
+    """
+    if isinstance(orb, PTContractedOrbital):
+        for zeta_i, c_i in orb.primitives:
+            prim = PTAtomicOrbital(
+                Z=orb.Z, n=orb.n, l=orb.l, m=orb.m,
+                zeta=float(zeta_i), occ=orb.occ,
+            )
+            yield float(c_i), prim
+    else:
+        yield 1.0, orb
+
+
+def _primitive_pair_overlap_same_centre(n: int, z_a: float, z_b: float) -> float:
+    """Closed-form same-centre <g_a|g_b> for two normalised STO primitives
+    sharing (n, l, m). Independent of l, m (radial integral).
+
+    N_x = (2 z_x)^n * sqrt(2 z_x / (2n)!)
+    <g_a|g_b> = N_a * N_b * (2n)! / (z_a + z_b)^(2n+1)
+    """
+    Na = (2.0 * z_a) ** n * math.sqrt(2.0 * z_a / math.factorial(2 * n))
+    Nb = (2.0 * z_b) ** n * math.sqrt(2.0 * z_b / math.factorial(2 * n))
+    rad_integral = math.factorial(2 * n) / ((z_a + z_b) ** (2 * n + 1))
+    return Na * Nb * rad_integral
+
+
+def _normalise_contraction(primitives: list[tuple[float, float]],
+                            n: int) -> list[tuple[float, float]]:
+    """Rescale c_i so that Sum_ij c_i c_j S_ij = 1, with S_ij the same-
+    centre overlap of normalised STO primitives sharing principal n.
+    """
+    if not primitives:
+        return primitives
+    norm_sq = 0.0
+    for z_i, c_i in primitives:
+        for z_j, c_j in primitives:
+            norm_sq += c_i * c_j * _primitive_pair_overlap_same_centre(n, z_i, z_j)
+    if norm_sq <= 0.0:
+        raise ValueError(
+            f"Contraction has non-positive norm^2 = {norm_sq:.3e}; "
+            "check coefficient signs / zeta spacing."
+        )
+    scale = 1.0 / math.sqrt(norm_sq)
+    return [(z_i, c_i * scale) for (z_i, c_i) in primitives]
+
+
+def _hydrogenic_radial_terms(n: int, l: int, Z: float) -> list[tuple[float, int, float]]:
+    """Return the analytic radial wavefunction R_nl(r; Z) as a list of
+    monomials.
+
+    R_nl(r; Z) = sum_term (a_p * r^p_term * exp(-alpha r))
+    with all terms sharing the same exponential decay alpha = Z/n. The
+    polynomial coefficients come from the associated Laguerre formula
+
+        R_nl(r) = N_nl (2 Z r / n)^l L_{n-l-1}^{2l+1}(2 Z r / n) e^{-Z r / n}
+
+    Hard-coded for (n, l) up to (4, 3) — covers all chemistry through
+    f-block valence shells. Z is the PT effective nuclear charge in the
+    same length-unit as r (1/Angstrom or 1/Bohr).
+
+    Returned tuples are (coefficient, power_of_r, decay_alpha).
+    """
+    if n < 1 or l < 0 or l >= n:
+        raise ValueError(f"hydrogenic R_nl needs 0 <= l < n, got n={n}, l={l}")
+
+    alpha = Z / n
+    Z32 = Z ** 1.5
+
+    # Format: list of (coeff, power_in_r, alpha)
+    if (n, l) == (1, 0):
+        return [(2.0 * Z32, 0, alpha)]
+    if (n, l) == (2, 0):
+        c = (1.0 / (2.0 * math.sqrt(2.0))) * Z32
+        return [(c * 2.0, 0, alpha), (-c * Z, 1, alpha)]
+    if (n, l) == (2, 1):
+        c = (1.0 / (2.0 * math.sqrt(6.0))) * Z32 * Z
+        return [(c, 1, alpha)]
+    if (n, l) == (3, 0):
+        c = (2.0 / (81.0 * math.sqrt(3.0))) * Z32
+        return [
+            (c * 27.0, 0, alpha),
+            (-c * 18.0 * Z, 1, alpha),
+            (c * 2.0 * Z * Z, 2, alpha),
+        ]
+    if (n, l) == (3, 1):
+        c = (4.0 / (81.0 * math.sqrt(6.0))) * Z32 * Z
+        return [
+            (c * 6.0, 1, alpha),
+            (-c * Z, 2, alpha),
+        ]
+    if (n, l) == (3, 2):
+        c = (4.0 / (81.0 * math.sqrt(30.0))) * Z32 * Z * Z
+        return [(c, 2, alpha)]
+    if (n, l) == (4, 0):
+        # R_40(r;Z) = (1/96) Z^{3/2} (24 - 36 Zr + 12 (Zr)^2 - (Zr)^3) exp(-Zr/4)
+        c = (1.0 / 96.0) * Z32
+        return [
+            (c * 24.0, 0, alpha),
+            (-c * 36.0 * Z, 1, alpha),
+            (c * 12.0 * Z * Z, 2, alpha),
+            (-c * Z * Z * Z, 3, alpha),
+        ]
+    if (n, l) == (4, 1):
+        # R_41(r;Z) = (1/(96 sqrt(15))) Z^{3/2} Z r (80 - 20 Z r + (Z r)^2) exp(-Zr/4)
+        c = (1.0 / (96.0 * math.sqrt(15.0))) * Z32 * Z
+        return [
+            (c * 80.0, 1, alpha),
+            (-c * 20.0 * Z, 2, alpha),
+            (c * Z * Z, 3, alpha),
+        ]
+    if (n, l) == (4, 2):
+        # R_42(r;Z) = (1/(96 sqrt(5))) Z^{3/2} (Zr)^2 (12 - Z r) exp(-Zr/4)
+        c = (1.0 / (96.0 * math.sqrt(5.0))) * Z32 * Z * Z
+        return [
+            (c * 12.0, 2, alpha),
+            (-c * Z, 3, alpha),
+        ]
+    if (n, l) == (4, 3):
+        # R_43(r;Z) = (1/(96 sqrt(35))) Z^{3/2} (Zr)^3 exp(-Zr/4)
+        c = (1.0 / (96.0 * math.sqrt(35.0))) * Z32 * Z * Z * Z
+        return [(c, 3, alpha)]
+
+    raise NotImplementedError(
+        f"hydrogenic R_nl not tabulated for (n={n}, l={l}); "
+        "extend _hydrogenic_radial_terms or use option='B'."
+    )
+
+
+def _project_hydrogenic_on_primitives(n: int,
+                                       l: int,
+                                       Z_hydro: float,
+                                       zetas: list[float]) -> list[float]:
+    """Compute f_i = <R_nl | g_i> for each primitive g_i (same n, l).
+
+    g_i(r) = N_i * r^{n-1} * exp(-zeta_i r),
+        N_i = (2 zeta_i)^n * sqrt(2 zeta_i / (2n)!)
+    R_nl(r) = sum_term coeff * r^p * exp(-alpha r)
+
+    Radial integration measure r^2 dr gives
+        <R_nl | g_i> = N_i sum_term coeff * (n-1+p+2)! / (alpha + zeta_i)^{n-1+p+2+1}
+                     = N_i sum_term coeff * (n+p+1)! / (alpha + zeta_i)^{n+p+2}
+    """
+    R_terms = _hydrogenic_radial_terms(n, l, Z_hydro)
+    f = []
+    for zeta_i in zetas:
+        Ni = (2.0 * zeta_i) ** n * math.sqrt(2.0 * zeta_i / math.factorial(2 * n))
+        s = 0.0
+        for coeff, p, alpha in R_terms:
+            q = n + p + 1                              # total power before measure r^2
+            denom = (alpha + zeta_i) ** (q + 1)
+            s += coeff * math.factorial(q) / denom
+        f.append(Ni * s)
+    return f
+
+
+def _option_B_weight_profile(n_prim: int, profile: str = "forward") -> list[float]:
+    """Return the Option-B coefficient sequence for a cascade contraction.
+
+    'forward' : c_k = GAMMA_3^k * GAMMA_5^(k(k-1)/2), peaks at k=0
+                (concentrated on the tightest primitive — inner BF).
+    'reversed': sequence of 'forward' reversed, peaks at k=n_prim-1
+                (concentrated on the most diffuse primitive — outer BF).
+    'centered': c_k = GAMMA_3^((k - (n_prim-1)/2)^2), symmetric peak at
+                the middle k (pVTZ-PT middle BF). Uses GAMMA_3 only —
+                traceable to s = 1/2 via the PT cascade.
+    """
+    forward = [
+        (GAMMA_3 ** k) * (GAMMA_5 ** (k * (k - 1) // 2))
+        for k in range(n_prim)
+    ]
+    if profile == "forward":
+        return forward
+    if profile == "reversed":
+        return list(reversed(forward))
+    if profile == "centered":
+        center = (n_prim - 1) / 2.0
+        return [GAMMA_3 ** ((k - center) ** 2) for k in range(n_prim)]
+    raise ValueError(
+        f"profile must be 'forward', 'reversed' or 'centered', got {profile!r}"
+    )
+
+
+def _cumulative_cascade_zetas(z_base: float, n_prim: int) -> list[float]:
+    """PT cumulative-cascade zeta sequence (Phase 6.B.7b convention).
+
+    zeta_k = z_base * prod_{j=0..k-1} GAMMA_{3+2j}
+        k=0 : z_base                          (1.000)
+        k=1 : z_base * GAMMA_3                (0.808)
+        k=2 : z_base * GAMMA_3 * GAMMA_5      (0.563)
+        k=3 : z_base * GAMMA_3 * GAMMA_5 * GAMMA_7  (0.335)
+
+    Wider span (10×) than the geometric cascade z_base * GAMMA_3^k
+    (3×), matching the radial-flexibility scale needed to reproduce
+    Dunning-style cc-pVDZ exponent ratios ~ 0.3.
+    """
+    cascade = [GAMMA_3, GAMMA_5, GAMMA_7]
+    zetas = [z_base]
+    cum = 1.0
+    for k in range(1, n_prim):
+        cum *= cascade[(k - 1) % len(cascade)]
+        zetas.append(z_base * cum)
+    return zetas
+
+
+def cascade_pt_contraction(z_base: float,
+                            n: int,
+                            n_prim: int = 4,
+                            option: str = "B",
+                            l: int = 0,
+                            reverse: bool = False) -> list[tuple[float, float]]:
+    """Build a PT-pure contraction for one shell.
+
+    The primitive zetas now follow the **cumulative** PT cascade
+        zeta_k = z_base * prod_{j<k} GAMMA_{3+2j}
+    spanning z_base × {1, 0.808, 0.563, 0.335} for n_prim=4 (10× span).
+    This replaces the geometric cascade z_base × GAMMA_3^k from Phase
+    6.B.8a, whose 3× span was too tight to reproduce the cc-pVDZ
+    exponent ratios (~ 0.3).
+
+    Option B (analytic cascade): coefficients
+        c_k = GAMMA_3^k * GAMMA_5^(k(k-1)/2)
+    renormalised to <chi|chi> = 1.
+
+    Option A (psi_PT_atom spectral): projects the hydrogenic radial
+    wavefunction R_nl(r; Z_hydro = z_base*n) on the primitives by
+    solving S c = f with
+        S_ij = <g_i | g_j>      (primitive overlap, same centre, same n, l)
+        f_i  = <R_nl | g_i>
+    The hydrogenic node structure (1 node for 2s, 2 nodes for 3s)
+    feeds the multi-zeta flexibility that Option B's analytic
+    coefficients under-represent. Requires l (0..3 for s/p/d/f).
+
+    Phase 6.B.8c — `reverse=True` flips the coefficient profile so the
+    contraction is weighted toward the diffuse end (k = n_prim-1) rather
+    than the tight end (k = 0). Used to build the outer split-valence
+    contracted basis function: pVDZ-PT then has TWO BFs per shell
+    (forward + reversed) sharing the same cumulative cascade primitives,
+    linearly independent by weight profile.
+
+    Option C (Slater-equivalent fit) is deferred.
+    """
+    if option not in ("A", "B"):
+        raise NotImplementedError(
+            f"cascade_pt_contraction: option {option!r} not yet wired; "
+            "only 'A' (hydrogenic projection) and 'B' (analytic cascade) "
+            "are available in Phase 6.B.8."
+        )
+    if n_prim < 1:
+        raise ValueError("n_prim must be >= 1")
+
+    zetas = _cumulative_cascade_zetas(z_base, n_prim)
+
+    if option == "B":
+        # Default profile is 'forward'; legacy reverse=True flag maps to
+        # the 'reversed' profile (Phase 6.B.8c outer BF).  pVTZ-PT
+        # introduces 'centered' for the middle BF (Phase 6.B.8e).
+        profile = "reversed" if reverse else "forward"
+        coefs = _option_B_weight_profile(n_prim, profile=profile)
+        raw = list(zip(zetas, coefs))
+        return _normalise_contraction(raw, n=n)
+
+    # Option A: hydrogenic projection
+    Z_hydro = z_base * n
+    f = _project_hydrogenic_on_primitives(n=n, l=l, Z_hydro=Z_hydro, zetas=zetas)
+
+    # Build primitive overlap matrix (same centre, same n,l: pure radial)
+    S_mat = np.zeros((n_prim, n_prim))
+    for i in range(n_prim):
+        for j in range(n_prim):
+            S_mat[i, j] = _primitive_pair_overlap_same_centre(n, zetas[i], zetas[j])
+
+    # Solve S c = f for the contraction coefficients minimising
+    # ||R_nl - sum_i c_i g_i||^2 in the radial L^2 inner product.
+    c = np.linalg.solve(S_mat, np.array(f))
+    raw = list(zip(zetas, [float(ci) for ci in c]))
+    return _normalise_contraction(raw, n=n)
 
 
 @dataclass
@@ -481,7 +817,8 @@ def build_atom_basis(Z: int, charge: int = 0,
                       basis_type: str = "SZ",
                       include_core: bool = False,
                       zeta_method: str = "pt",
-                      include_f_block_d_shell: bool = False) -> PTAtomBasis:
+                      include_f_block_d_shell: bool = False,
+                      scalar_relativistic: bool = False) -> PTAtomBasis:
     """Construct PT-LCAO valence basis for atom Z.
 
     For each occupied valence sub-shell (n, l, n_electrons), one
@@ -558,12 +895,26 @@ def build_atom_basis(Z: int, charge: int = 0,
                                     zeta=zeta_core, occ=per_m_occ)
                 )
 
+    # Phase 6.B.5b — scalar relativistic Dirac kinematic contraction.
+    # When enabled, multiply Z_eff by sqrt(1-(Z·α)²) for ALL Z, treating
+    # all occupied shells equally. PT-natural with zero parameters
+    # (α from PT q_stat product). Effect is small for first-row atoms
+    # (Z<10 → γ_rel > 0.999) but becomes visible for Cl (Z=17, γ=0.992),
+    # Br (Z=35, γ=0.967), I (Z=53, γ=0.911) — exactly the regime where
+    # scalar relativistic NMR corrections matter (3-30 ppm shifts).
+    if scalar_relativistic:
+        from ptc.lcao.relativistic import scalar_rel_factor
+        sr_factor = scalar_rel_factor(Z)
+    else:
+        sr_factor = 1.0
+
     # Occupied valence shells
     for n, l, ne in occupied_shells(
         Z, charge=charge,
         include_f_block_d_shell=include_f_block_d_shell,
     ):
-        z_base = Z_eff_shell(Z, n, l, method=zeta_method) / (float(n) * A_BOHR)
+        z_base = (Z_eff_shell(Z, n, l, method=zeta_method)
+                  / (float(n) * A_BOHR)) * sr_factor
         per_m_occ = ne / float(2 * l + 1)
 
         if basis_type == "SZ":
@@ -571,14 +922,90 @@ def build_atom_basis(Z: int, charge: int = 0,
                 basis.orbitals.append(
                     PTAtomicOrbital(Z=Z, n=n, l=l, m=m, zeta=z_base, occ=per_m_occ)
                 )
+        elif basis_type == "pVTZ-PT":
+            # Phase 6.B.8e — split-valence Dunning-style contracted TZ.
+            # Each occupied valence shell becomes THREE PTContractedOrbitals
+            # per m (inner / middle / outer) sharing 6 cumulative-cascade
+            # primitives:
+            #   zetas = z_base * {1, GAMMA_3, GAMMA_3*GAMMA_5,
+            #                     GAMMA_3*GAMMA_5*GAMMA_7,
+            #                     GAMMA_3^2*GAMMA_5*GAMMA_7,
+            #                     GAMMA_3^2*GAMMA_5^2*GAMMA_7}
+            # with three lin-indep weight profiles (forward / centered /
+            # reversed) all built from GAMMA_3 / GAMMA_5 — traceable to
+            # s = 1/2.  Matches Dunning cc-pVDZ (3s2p1d) primitive count
+            # for s shells.
+            n_prim = 6
+            zetas_full = _cumulative_cascade_zetas(z_base, n_prim)
+
+            def _make_contraction(profile: str) -> tuple:
+                coefs = _option_B_weight_profile(n_prim, profile=profile)
+                raw = list(zip(zetas_full, coefs))
+                return tuple(_normalise_contraction(raw, n=n))
+
+            inner_prims = _make_contraction("forward")
+            mid_prims = _make_contraction("centered")
+            outer_prims = _make_contraction("reversed")
+            third_occ = per_m_occ / 3.0
+            for m in range(-l, l + 1):
+                for prims in (inner_prims, mid_prims, outer_prims):
+                    basis.orbitals.append(
+                        PTContractedOrbital(
+                            Z=Z, n=n, l=l, m=m,
+                            primitives=prims,
+                            occ=third_occ,
+                        )
+                    )
+        elif basis_type == "pVDZ-PT":
+            # Phase 6.B.8c — split-valence Dunning-style contracted DZ.
+            # Each occupied valence shell becomes TWO PTContractedOrbitals
+            # per m (inner + outer) sharing the same cumulative-cascade
+            # primitives but with forward / reversed coefficient profiles:
+            #   inner: c_k = GAMMA_3^k * GAMMA_5^(k(k-1)/2)
+            #          (concentrated on the tight zeta_0 end)
+            #   outer: c_k = above sequence reversed
+            #          (concentrated on the diffuse zeta_{N-1} end)
+            # Both contractions are normalised to <chi|chi>=1; their
+            # different weight profiles guarantee linear independence so
+            # the SCF sees genuine extra variational freedom (n_orb
+            # matches DZP). Phase 6.B.8a/b's single-BF-per-shell variant
+            # had n_orb under-counted, choking the virtual space and
+            # capping |sigma_p^HF| at ~55 ppm; the split restores DOF
+            # while keeping cond(S) under 1e3.
+            inner = cascade_pt_contraction(
+                z_base, n=n, n_prim=4, option="B", l=l, reverse=False,
+            )
+            outer = cascade_pt_contraction(
+                z_base, n=n, n_prim=4, option="B", l=l, reverse=True,
+            )
+            half_occ = 0.5 * per_m_occ
+            for m in range(-l, l + 1):
+                basis.orbitals.append(
+                    PTContractedOrbital(
+                        Z=Z, n=n, l=l, m=m,
+                        primitives=tuple(inner),
+                        occ=half_occ,
+                    )
+                )
+                basis.orbitals.append(
+                    PTContractedOrbital(
+                        Z=Z, n=n, l=l, m=m,
+                        primitives=tuple(outer),
+                        occ=half_occ,
+                    )
+                )
         elif basis_type in ("TZ", "TZP"):
-            # Triple-zeta valence: three STOs per (n,l,m) at exponents
-            # gamma_3, gamma_5, gamma_7 × z_base. Occupation split in
-            # thirds. Phase 6.B.2: third zeta widens the radial flexibility
-            # for chemical-shielding response.
+            # Triple-zeta valence (Phase 6.B.7) : *cumulative* cascade
+            # exponents to widen the consecutive zeta ratios from ~0.86
+            # (degenerate, cond ~1e7 ; previous Phase 6.B.2 form) to
+            # ~0.6 (well-conditioned). PT-pure : the three zetas mark
+            # the cascade depths through p = 3, 5, 7 :
+            #   ζ_inner  = z_base × γ_3                 (depth 1, ≈ 0.808)
+            #   ζ_middle = z_base × γ_3 · γ_5            (depth 2, ≈ 0.563)
+            #   ζ_outer  = z_base × γ_3 · γ_5 · γ_7      (depth 3, ≈ 0.335)
             zeta_inner = z_base * GAMMA_3
-            zeta_middle = z_base * GAMMA_5
-            zeta_outer = z_base * GAMMA_7
+            zeta_middle = z_base * GAMMA_3 * GAMMA_5
+            zeta_outer = z_base * GAMMA_3 * GAMMA_5 * GAMMA_7
             third_occ = per_m_occ / 3.0
             for m in range(-l, l + 1):
                 basis.orbitals.append(
@@ -621,7 +1048,9 @@ def build_atom_basis(Z: int, charge: int = 0,
     # The legacy SZ-with-polarisation path (basis_type='SZ' and
     # polarisation=True) keeps the unscaled exponent for backwards
     # compatibility with existing test_lcao_polarisation expectations.
-    needs_polar = polarisation or basis_type in ("DZP", "TZP", "DZ2P", "DZPD")
+    needs_polar = polarisation or basis_type in (
+        "DZP", "TZP", "TZ2P", "DZ2P", "DZPD", "pVDZ-PT", "pVTZ-PT",
+    )
     if needs_polar:
         l_val = l_of(Z)
         n_val = period(Z)
@@ -633,7 +1062,7 @@ def build_atom_basis(Z: int, charge: int = 0,
                 Z_eff_shell(Z, n_polar, l_polar)
                 / (float(n_polar) * A_BOHR)
             )
-            if basis_type in ("DZP", "TZP", "DZ2P", "DZPD"):
+            if basis_type in ("DZP", "TZP", "TZ2P", "DZ2P", "DZPD", "pVDZ-PT", "pVTZ-PT"):
                 # Without diffusing the polarisation, the (n+1) shell sits
                 # as tight as the valence outer DZ exponent, producing
                 # near-linear dependence and a sign flip in sigma^p of
@@ -641,13 +1070,48 @@ def build_atom_basis(Z: int, charge: int = 0,
                 # polarisation l = l_val + 1 shell in the natural region
                 # of an angularly promoted virtual orbital.
                 zeta_polar *= GAMMA_7
-            for m in range(-l_polar, l_polar + 1):
-                basis.orbitals.append(
-                    PTAtomicOrbital(
-                        Z=Z, n=n_polar, l=l_polar, m=m,
-                        zeta=zeta_polar, occ=0.0,
-                    )
+            if basis_type == "pVTZ-PT":
+                # Phase 6.B.8e — TZ polarisation: 3 primitives in the
+                # cumulative cascade from zeta_polar; single contracted
+                # BF per m (matches cc-pVDZ d-polar single-zeta convention).
+                pol_prims = cascade_pt_contraction(
+                    zeta_polar, n=n_polar, n_prim=3, option="B", l=l_polar,
                 )
+                for m in range(-l_polar, l_polar + 1):
+                    basis.orbitals.append(
+                        PTContractedOrbital(
+                            Z=Z, n=n_polar, l=l_polar, m=m,
+                            primitives=tuple(pol_prims),
+                            occ=0.0,
+                        )
+                    )
+            elif basis_type == "pVDZ-PT":
+                # Phase 6.B.8 — contracted polarisation: 2 primitives
+                # at zeta_polar and zeta_polar*GAMMA_3 (cascade-step),
+                # one contracted basis function per m. Polarisation
+                # uses Option A (hydrogenic projection) at the polar
+                # angular momentum l_polar so the radial profile of the
+                # virtual shell is reproduced rather than the energetic
+                # cascade alone.
+                pol_prims = cascade_pt_contraction(
+                    zeta_polar, n=n_polar, n_prim=2, option="A", l=l_polar,
+                )
+                for m in range(-l_polar, l_polar + 1):
+                    basis.orbitals.append(
+                        PTContractedOrbital(
+                            Z=Z, n=n_polar, l=l_polar, m=m,
+                            primitives=tuple(pol_prims),
+                            occ=0.0,
+                        )
+                    )
+            else:
+                for m in range(-l_polar, l_polar + 1):
+                    basis.orbitals.append(
+                        PTAtomicOrbital(
+                            Z=Z, n=n_polar, l=l_polar, m=m,
+                            zeta=zeta_polar, occ=0.0,
+                        )
+                    )
             # Second polarisation shell (DZ2P only): n_val + 2 at l_val + 1
             # with cumulative GAMMA_7 spread (a second cascade step).
             if basis_type == "DZ2P":
@@ -663,8 +1127,30 @@ def build_atom_basis(Z: int, charge: int = 0,
                             zeta=zeta_polar2, occ=0.0,
                         )
                     )
-        # f-polarisation requires l=3 STO evaluator (pending continuation);
-        # silently omitted for d-block atoms, matching legacy SZ behaviour.
+            # Phase 6.B.4f — TZ2P: DZ valence + d polar + f polar.
+            # Despite the name (legacy), this is "DZ valence with two
+            # polarisation shells at increasing angular momentum"
+            # (cf. PT-DZP plus f for p-block / g for d-block).  Going to
+            # actual triple-zeta valence (γ_3, γ_5, γ_7 ratios) is
+            # numerically unstable: those exponents are too close
+            # (~0.86 ratio between consecutive zetas) and produce a
+            # near-singular overlap matrix (cond ~ 1e7). Pure DZ valence
+            # is well-conditioned and the f polarisation shell delivers
+            # the precision improvement targeted in Phase 6.B.4f.
+            if basis_type == "TZ2P":
+                l_polar2 = l_val + 2
+                if l_polar2 <= 4:
+                    zeta_polar2 = (
+                        Z_eff_shell(Z, n_polar, l_polar2)
+                        / (float(n_polar) * A_BOHR)
+                    ) * GAMMA_7
+                    for m in range(-l_polar2, l_polar2 + 1):
+                        basis.orbitals.append(
+                            PTAtomicOrbital(
+                                Z=Z, n=n_polar, l=l_polar2, m=m,
+                                zeta=zeta_polar2, occ=0.0,
+                            )
+                        )
 
     # Very-diffuse shell at l_val, n+1 with GAMMA_7 spread
     if basis_type == "DZPD":
@@ -758,10 +1244,15 @@ def _overlap_1s_1s(zeta_a: float, zeta_b: float, R: float) -> float:
     return pre * bracket
 
 
-def overlap_atomic(orb_A: PTAtomicOrbital,
-                   orb_B: PTAtomicOrbital,
+def overlap_atomic(orb_A,
+                   orb_B,
                    r_AB: np.ndarray | float = 0.0) -> float:
     """Real overlap < phi_A | phi_B > between two PT atomic orbitals.
+
+    Phase 6.B.8: accepts both PTAtomicOrbital and PTContractedOrbital.
+    For contracted operands the result is the bilinear sum
+        Sum_i Sum_j c_i^A c_j^B < g_i^A | g_j^B >
+    over primitives g_i^A and g_j^B.
 
     Parameters
     ----------
@@ -781,6 +1272,16 @@ def overlap_atomic(orb_A: PTAtomicOrbital,
     The tests in test_lcao_atomic_basis only exercise the implemented
     cases; full coverage lands in Phase A continuation commits.
     """
+    # Phase 6.B.8: contracted orbital dispatch — bilinear sum over primitive
+    # pairs. Recursion terminates after at most one level (primitives are
+    # always single-zeta PTAtomicOrbitals).
+    if isinstance(orb_A, PTContractedOrbital) or isinstance(orb_B, PTContractedOrbital):
+        total = 0.0
+        for c_i, prim_A in iter_primitives(orb_A):
+            for c_j, prim_B in iter_primitives(orb_B):
+                total += c_i * c_j * overlap_atomic(prim_A, prim_B, r_AB)
+        return total
+
     if isinstance(r_AB, np.ndarray):
         R = float(np.linalg.norm(r_AB))
     else:

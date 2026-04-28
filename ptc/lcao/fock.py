@@ -71,7 +71,8 @@ def _build_molecular_grid(basis: PTMolecularBasis,
                             n_theta: int = 14,
                             n_phi: int = 18,
                             use_becke: bool = False,
-                            lebedev_order: int = 50):
+                            lebedev_order: int = 50,
+                            radial_method: str = "linear"):
     """Build a 3D quadrature grid + orbital values for the molecule.
 
     Default backend (use_becke=False)
@@ -103,8 +104,28 @@ def _build_molecular_grid(basis: PTMolecularBasis,
         # Each atomic sphere extends 8/zeta_min — covers diffuse valence;
         # tight inner orbitals are well within this radius.
         R_atom = 8.0 / min_zeta
-        bg = build_becke_grid(basis.coords, R_max=R_atom,
-                              n_radial=n_radial, lebedev_order=lebedev_order)
+        if radial_method == "log":
+            # Per-atom Bragg-like scale ξ_A = 1/ζ_outer(A). When orbitals
+            # span multiple shells per atom we use the median valence zeta
+            # of each atom (~ζ_outer). Defaults to 1.0 Å if undeterminable.
+            R_atom_per_atom = np.full(basis.n_atoms, 1.0)
+            for A in range(basis.n_atoms):
+                zetas_A = [
+                    float(o.zeta)
+                    for k, o in enumerate(basis.orbitals)
+                    if basis.atom_index[k] == A and o.occ > 0.0
+                ]
+                if zetas_A:
+                    R_atom_per_atom[A] = 1.0 / float(np.median(zetas_A))
+            bg = build_becke_grid(basis.coords, R_max=R_atom,
+                                    n_radial=n_radial,
+                                    lebedev_order=lebedev_order,
+                                    radial_method="log",
+                                    R_atom_per_atom=R_atom_per_atom)
+        else:
+            bg = build_becke_grid(basis.coords, R_max=R_atom,
+                                    n_radial=n_radial,
+                                    lebedev_order=lebedev_order)
         pts_abs = bg.points
         weights = bg.weights
     else:
@@ -153,12 +174,15 @@ def coulomb_J_matrix(rho: np.ndarray,
     n_at_grid = np.sum(psi * rho_psi, axis=0)        # (N_grid,)
     nW = n_at_grid * grid.weights                    # density * volume weight
 
+    # scipy.cdist replaces the broadcast `(chunk, N, 3) - reduce` pattern :
+    # ~2-3× faster (BLAS-bound) and 3× lower peak memory.
+    from scipy.spatial.distance import cdist
+
     pos = grid.points
     V = np.zeros(n_grid)
     for i_start in range(0, n_grid, chunk_size):
         i_end = min(i_start + chunk_size, n_grid)
-        diff = pos[i_start:i_end, None, :] - pos[None, :, :]   # (chunk, N, 3)
-        dist = np.linalg.norm(diff, axis=2)                    # (chunk, N)
+        dist = cdist(pos[i_start:i_end], pos)                    # (chunk, N)
         # Self contribution -> 0 (singular integrand approximation)
         rng = np.arange(i_start, i_end)
         dist[np.arange(i_end - i_start), rng] = 1.0
@@ -219,11 +243,13 @@ def exchange_K_matrix(rho: np.ndarray,
     W = grid.weights
     rho_psi = rho @ psi
 
+    # scipy.cdist replaces the explicit (chunk, N, 3) `diff` array.
+    from scipy.spatial.distance import cdist
+
     K = np.zeros((n_orb, n_orb))
     for i_start in range(0, n_grid, chunk_size):
         i_end = min(i_start + chunk_size, n_grid)
-        diff = pos[i_start:i_end, None, :] - pos[None, :, :]
-        dist = np.linalg.norm(diff, axis=2)
+        dist = cdist(pos[i_start:i_end], pos)
         rng = np.arange(i_start, i_end)
         dist[np.arange(i_end - i_start), rng] = 1.0
         kernel = (W[i_start:i_end, None] * W[None, :]) / dist

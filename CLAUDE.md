@@ -268,10 +268,27 @@ SMILES or formula → Topology (auto-detect, PT solver for formulas)
   build_bi3_u2_cp_star4 (full inverse sandwich)
 - `ptc/lcao/relativistic.py` — gamma_la/gamma_an PT-pure radial contraction
   (lifts L5 verrou for Z=57..103)
+- `ptc/lcao/scalar_relativistic.py` — Cowan-Griffin scalar-relativistic
+  H_core (Phase 6.B.5b/6.B.6 — V_MV mass-velocity, Cl 1s ΔE = +40 eV)
+- `ptc/lcao/mp3.py` — closed-shell MP3 amplitude correction (pp+hh ladders
+  + ring), Phase 6.B.10
+- `ptc/lcao/ccd.py` — LCCD/CCD iteration with Pulay DIIS (Phase 6.B.11a/b)
+  + T2² Fock-like intermediates (Phase 6.B.11c)
+- `ptc/lcao/ccsd.py` — closed-shell CCSD T1+T2 with all 4 T1 source terms
+  (1a/1e/1f/F_kc); Brillouin verified on canonical HF (Phase 6.B.11d/d-bis/
+  d-bis-bis)
+- `ptc/lcao/ccsd_lambda.py` — Λ-equations skeleton + linearised Λ2
+  iteration + B-diagram λ-T cross-coupling (Phase 6.B.11e/e-bis/e-bis-bis);
+  Λ ≠ T at canonical-CCSD level
+- `ptc/lcao/ccsd_property.py` — σ_p^CCSD-Λ-GIAO via Λ-relaxed orbital
+  response, end-to-end pipeline (Phase 6.B.11f)
 - `ptc/tests/test_transfer_matrix.py` — 263 tests
 - `ptc/tests/test_nics.py` — 32 tests aromaticity
 - `ptc/tests/test_lcao_*.py` + `test_geometry_fblock.py` + `test_bi3_u2_cluster.py`
   — 678 PASS total (LCAO + GIMIC + cluster + Bi3@U2 inverse sandwich)
+- `ptc/tests/test_lcao_mp3.py` (12), `test_lcao_ccd.py` (19), `test_lcao_ccsd.py`
+  (10), `test_lcao_ccsd_lambda.py` (9), `test_lcao_ccsd_property.py` (7) —
+  57 PASS for the post-HF coupled-cluster cascade (Phase 6.B.10/11)
 
 ## Commands
 

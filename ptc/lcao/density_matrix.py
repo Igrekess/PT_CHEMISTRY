@@ -96,7 +96,8 @@ def build_molecular_basis(topology: Topology,
                             basis_type: str = "SZ",
                             include_core: bool = False,
                             zeta_method: str = "pt",
-                            include_f_block_d_shell: bool = False) -> PTMolecularBasis:
+                            include_f_block_d_shell: bool = False,
+                            scalar_relativistic: bool = False) -> PTMolecularBasis:
     """Construct the LCAO basis for a molecule.
 
     Steps
@@ -136,7 +137,8 @@ def build_molecular_basis(topology: Topology,
                                        basis_type=basis_type,
                                        include_core=include_core,
                                        zeta_method=zeta_method,
-                                       include_f_block_d_shell=include_f_block_d_shell)
+                                       include_f_block_d_shell=include_f_block_d_shell,
+                                       scalar_relativistic=scalar_relativistic)
         atoms.append(atom_basis)
         for orb in atom_basis.orbitals:
             flat_orbs.append(orb)
@@ -245,7 +247,8 @@ def kinetic_matrix(basis: PTMolecularBasis,
                     n_theta: int = 18,
                     n_phi: int = 24,
                     use_becke: bool = False,
-                    lebedev_order: int = 50) -> np.ndarray:
+                    lebedev_order: int = 50,
+                    radial_method: str = "linear") -> np.ndarray:
     """Kinetic-energy matrix T[i, j] = <phi_i | -hbar^2/(2m) nabla^2 | phi_j> in eV.
 
     Uses Green's identity: <phi_i | -nabla^2 | phi_j> = <nabla phi_i | nabla phi_j>
@@ -280,8 +283,25 @@ def kinetic_matrix(basis: PTMolecularBasis,
         # does not need to cover the entire molecule from the centroid;
         # 8/zeta_min gives full orbital decay coverage per atom.
         R_atom = 8.0 / min_zeta
-        bg = build_becke_grid(basis.coords, R_max=R_atom,
-                              n_radial=n_radial, lebedev_order=lebedev_order)
+        if radial_method == "log":
+            R_atom_per_atom = np.full(basis.n_atoms, 1.0)
+            for A in range(basis.n_atoms):
+                zetas_A = [
+                    float(o.zeta)
+                    for k, o in enumerate(basis.orbitals)
+                    if basis.atom_index[k] == A and o.occ > 0.0
+                ]
+                if zetas_A:
+                    R_atom_per_atom[A] = 1.0 / float(np.median(zetas_A))
+            bg = build_becke_grid(basis.coords, R_max=R_atom,
+                                    n_radial=n_radial,
+                                    lebedev_order=lebedev_order,
+                                    radial_method="log",
+                                    R_atom_per_atom=R_atom_per_atom)
+        else:
+            bg = build_becke_grid(basis.coords, R_max=R_atom,
+                                    n_radial=n_radial,
+                                    lebedev_order=lebedev_order)
         pts = bg.points
         weights = bg.weights
     else:
@@ -320,7 +340,8 @@ def nuclear_attraction_total(basis: PTMolecularBasis,
                                n_phi: int = 32,
                                nuclear_charge: str = "pt",
                                use_becke: bool = False,
-                               lebedev_order: int = 50) -> np.ndarray:
+                               lebedev_order: int = 50,
+                               radial_method: str = "linear") -> np.ndarray:
     """V[i, j] = -sum_K Z_K * <phi_i | 1/|r-R_K| | phi_j>  in eV.
 
     Three prescriptions for the Coulomb attraction strength Z_K:
@@ -377,10 +398,27 @@ def nuclear_attraction_total(basis: PTMolecularBasis,
         # applied via a single multiplication; psi(grid) is shared.
         from ptc.lcao.grid import build_becke_grid
         min_zeta = min(float(o.zeta) for o in basis.orbitals)
-        bg = build_becke_grid(basis.coords,
-                              R_max=8.0 / min_zeta,
-                              n_radial=n_radial,
-                              lebedev_order=lebedev_order)
+        if radial_method == "log":
+            R_atom_per_atom = np.full(basis.n_atoms, 1.0)
+            for A in range(basis.n_atoms):
+                zetas_A = [
+                    float(o.zeta)
+                    for k, o in enumerate(basis.orbitals)
+                    if basis.atom_index[k] == A and o.occ > 0.0
+                ]
+                if zetas_A:
+                    R_atom_per_atom[A] = 1.0 / float(np.median(zetas_A))
+            bg = build_becke_grid(basis.coords,
+                                    R_max=8.0 / min_zeta,
+                                    n_radial=n_radial,
+                                    lebedev_order=lebedev_order,
+                                    radial_method="log",
+                                    R_atom_per_atom=R_atom_per_atom)
+        else:
+            bg = build_becke_grid(basis.coords,
+                                    R_max=8.0 / min_zeta,
+                                    n_radial=n_radial,
+                                    lebedev_order=lebedev_order)
         psi = _orbital_values_on_grid(basis, bg.points)   # (N_orb, N_grid)
         V = np.zeros((n, n))
         for K_idx in range(basis.n_atoms):

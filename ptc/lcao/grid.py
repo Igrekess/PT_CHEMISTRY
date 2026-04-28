@@ -85,26 +85,110 @@ def _angular_grid(lebedev_order: int = 50) -> tuple:
     return np.array(pts), np.array(ws)
 
 
+def _radial_grid_linear(R_max: float, n_radial: int):
+    """Standard Gauss-Legendre on [0, R_max] (linear in r). Phase 5a default."""
+    leg_r, w_r_raw = np.polynomial.legendre.leggauss(n_radial)
+    r_nodes = R_max / 2.0 * (leg_r + 1.0)
+    r_weights = R_max / 2.0 * w_r_raw * (r_nodes ** 2)
+    return r_nodes, r_weights
+
+
+def _radial_grid_log(R_atom: float, n_radial: int):
+    """Treutler-Ahlrichs M4 logarithmic radial grid (Phase 6.B.7).
+
+    From J. Chem. Phys. 102, 346 (1995). Maps Gauss-Legendre nodes
+    x ∈ (-1, 1) to r ∈ (0, ∞) via::
+
+        r(x) = (R_atom / ln 2) · (1+x)^0.6 · ln(2/(1-x))
+
+    This puts ~half the radial nodes in the inner region r < R_atom
+    (whereas the linear mapping spreads them uniformly), which is
+    essential for resolving tight inner-shell orbitals (1s of Z>10
+    has size ~ a₀/Z ≈ 0.06 Å for Cl, beneath the resolution of any
+    feasible linear grid). Standard mapping in modern QM codes
+    (NWChem, ORCA, Q-Chem default).
+
+    Parameters
+    ----------
+    R_atom : per-atom Bragg-like scale (Å). Suggest 1/ζ_outer.
+    n_radial : number of radial nodes.
+
+    Returns (r_nodes, r_weights) — already includes the r² spherical
+    Jacobian and the dr/dx mapping Jacobian.
+    """
+    x_nodes, x_weights = np.polynomial.legendre.leggauss(n_radial)
+    # Avoid x = ±1 singularities
+    x_safe = np.clip(x_nodes, -0.99999, 0.99999)
+    one_plus_x = 1.0 + x_safe
+    one_minus_x = 1.0 - x_safe
+    log2 = math.log(2.0)
+    log_term = np.log(2.0 / one_minus_x)
+    pow_term = one_plus_x ** 0.6
+
+    r_nodes = (R_atom / log2) * pow_term * log_term
+    # dr/dx = (R_atom / ln 2) · [0.6·(1+x)^(-0.4)·ln(2/(1-x)) + (1+x)^0.6 / (1-x)]
+    dr_dx = (R_atom / log2) * (
+        0.6 * (one_plus_x ** (-0.4)) * log_term
+        + pow_term / one_minus_x
+    )
+    r_weights = x_weights * dr_dx * (r_nodes ** 2)
+    return r_nodes, r_weights
+
+
 def build_becke_grid(coords: np.ndarray,
                        R_max: float = 8.0,
                        n_radial: int = 30,
                        lebedev_order: int = 50,
                        probe: Optional[np.ndarray] = None,
+                       radial_method: str = "linear",
+                       R_atom_per_atom: Optional[np.ndarray] = None,
                        ) -> BeckeGrid:
     """Multi-centre Becke + angular grid for molecular integration.
 
-    Each atom carries a Gauss-Legendre radial × angular sub-grid,
+    Each atom carries a radial × angular sub-grid (per-atom radial map),
     reweighted by the Becke fuzzy-cell partition. If ``probe`` is given,
     a probe-centred sub-grid is added (treats probe as a virtual atom
     so the partition sees it as a centre with weight 1 there).
+
+    Parameters
+    ----------
+    radial_method : 'linear' (default, Gauss-Legendre on [0, R_max]) or
+        'log' (Treutler-Ahlrichs M4 logarithmic mapping). The log mapping
+        puts ~half the radial nodes in r < R_atom, essential for
+        resolving tight inner-shell orbitals (1s of Z > 10).
+    R_atom_per_atom : optional (N_atoms,) array of per-atom Bragg-like
+        scales for the log mapping. Defaults to 1.0 Å each (Slater-Bragg
+        average) — pass per-atom values for better resolution on
+        elements with very tight inner shells.
     """
     coords = np.asarray(coords, dtype=float)
     N = coords.shape[0]
 
-    # Radial grid (per atom): Gauss-Legendre on [0, R_max], r² weight
-    leg_r, w_r_raw = np.polynomial.legendre.leggauss(n_radial)
-    r_nodes = R_max / 2.0 * (leg_r + 1.0)
-    r_weights = R_max / 2.0 * w_r_raw * (r_nodes ** 2)
+    # Radial grid (per atom)
+    if radial_method == "linear":
+        r_nodes, r_weights = _radial_grid_linear(R_max, n_radial)
+        radial_nodes_per_atom = [r_nodes] * N
+        radial_weights_per_atom = [r_weights] * N
+    elif radial_method == "log":
+        if R_atom_per_atom is None:
+            R_atom_per_atom = np.full(N, 1.0)
+        else:
+            R_atom_per_atom = np.asarray(R_atom_per_atom, dtype=float)
+            if R_atom_per_atom.shape != (N,):
+                raise ValueError(
+                    f"R_atom_per_atom must have shape ({N},), got "
+                    f"{R_atom_per_atom.shape}"
+                )
+        radial_nodes_per_atom = []
+        radial_weights_per_atom = []
+        for A in range(N):
+            r_n, r_w = _radial_grid_log(R_atom_per_atom[A], n_radial)
+            radial_nodes_per_atom.append(r_n)
+            radial_weights_per_atom.append(r_w)
+    else:
+        raise ValueError(
+            f"radial_method must be 'linear' or 'log', got {radial_method!r}"
+        )
 
     ang_pts, ang_w = _angular_grid(lebedev_order)
 
@@ -121,7 +205,12 @@ def build_becke_grid(coords: np.ndarray,
     centre_indices = []
     for atom_idx in range(n_centres):
         centre = coords_aug[atom_idx]
-        for r, wr in zip(r_nodes, r_weights):
+        # Use per-atom radial grid (probe gets the last entry, i.e. atom 0
+        # if probe is appended ; for safety re-use the first atom's grid).
+        a_idx = atom_idx if atom_idx < len(radial_nodes_per_atom) else 0
+        r_n_atom = radial_nodes_per_atom[a_idx]
+        r_w_atom = radial_weights_per_atom[a_idx]
+        for r, wr in zip(r_n_atom, r_w_atom):
             for ap, aw in zip(ang_pts, ang_w):
                 all_pts.append(centre + r * ap)
                 all_w.append(wr * aw)

@@ -44,6 +44,9 @@ def build_explicit_cluster(
     basis_type: str = "SZ",   # accepted, only 'SZ' currently wired
     polarisation: bool = False,
     include_f_block_d_shell: bool = False,
+    scalar_relativistic: bool = False,
+    zeta_method: str = "pt",
+    include_core: bool = False,
 ) -> Tuple[PTMolecularBasis, Topology]:
     """Build a PTMolecularBasis from explicit (Z, coords, bonds).
 
@@ -91,6 +94,9 @@ def build_explicit_cluster(
             polarisation=polarisation,
             basis_type=basis_type,
             include_f_block_d_shell=include_f_block_d_shell,
+            scalar_relativistic=scalar_relativistic,
+            zeta_method=zeta_method,
+            include_core=include_core,
         )
         atoms.append(ab)
         for orb in ab.orbitals:
