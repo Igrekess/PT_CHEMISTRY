@@ -1,6 +1,16 @@
 """Tests for Atom class and PT IE/EA engines."""
 
-from ptc.atom import Atom, EA_eV, benchmark_atom_ea_models_against_nist, compare_ea_channels
+from ptc.atom import (
+    Atom,
+    EA_eV,
+    IE_cpr_eV,
+    IE_eV,
+    S_cpr_continuum,
+    S_cpr_interchannel,
+    S_jj2_p_superheavy,
+    benchmark_atom_ea_models_against_nist,
+    compare_ea_channels,
+)
 
 
 def test_atom_hydrogen():
@@ -158,3 +168,80 @@ def test_ie_mae_period3():
         errors.append(err)
     mae = sum(errors) / len(errors)
     assert mae < 5.0, f"Period 3 MAE = {mae:.1f}%"
+
+
+def test_jj2_superheavy_p_block_profile():
+    """The jj2 echo activates only in the period-7 p-block."""
+    assert S_jj2_p_superheavy(86) == 0.0
+    assert S_jj2_p_superheavy(112) == 0.0
+    assert S_jj2_p_superheavy(113) < 0.0
+    assert S_jj2_p_superheavy(114) < 0.0
+    assert S_jj2_p_superheavy(115) > 0.0
+    assert S_jj2_p_superheavy(116) > S_jj2_p_superheavy(115)
+    assert S_jj2_p_superheavy(117) > 0.0
+    assert S_jj2_p_superheavy(118) > 0.0
+
+
+def test_ie_mae_superheavy_after_jj2_cpr():
+    """The canonical superheavy IE residual stays below 0.08% after CPR."""
+    from ptc.data.experimental import IE_NIST
+
+    errors = [
+        abs(IE_eV(Z) - IE_NIST[Z]) / IE_NIST[Z] * 100.0
+        for Z in range(104, 119)
+    ]
+    mae = sum(errors) / len(errors)
+    assert mae < 0.08, f"Superheavy MAE = {mae:.3f}%"
+
+
+def test_cpr_interchannel_profile_is_localized():
+    """The CPR research channel only touches the residual superheavy pockets."""
+    assert S_cpr_interchannel(103) == 0.0
+    assert S_cpr_interchannel(104) < 0.0
+    assert S_cpr_interchannel(105) < S_cpr_interchannel(104)
+    assert S_cpr_interchannel(106) < S_cpr_interchannel(105)
+    assert S_cpr_interchannel(107) == 0.0
+    assert S_cpr_interchannel(114) == 0.0
+    assert S_cpr_interchannel(115) < 0.0
+    assert S_cpr_interchannel(116) < S_cpr_interchannel(115)
+    assert S_cpr_interchannel(117) == 0.0
+    assert S_cpr_interchannel(118) == 0.0
+
+
+def test_cpr_continuum_profile_is_channel_projected():
+    """The continuum CPR branch acts on geometric channel projectors."""
+    assert S_cpr_continuum(36) == 0.0
+    assert S_cpr_continuum(37) < 0.0
+    assert S_cpr_continuum(55) < S_cpr_continuum(37)
+    assert S_cpr_continuum(71) > 0.0
+    assert S_cpr_continuum(72) < 0.0
+    assert S_cpr_continuum(83) > 0.0
+    assert S_cpr_continuum(84) < 0.0
+    assert S_cpr_continuum(87) == 0.0
+    assert S_cpr_continuum(104) == 0.0
+
+
+def test_ie_mae_global_after_cpr_continuum():
+    """Canonical CPR-continuum lowers the full IE residual below 0.05%."""
+    from ptc.data.experimental import IE_NIST
+
+    errors_118 = [
+        abs(IE_eV(Z) - IE_NIST[Z]) / IE_NIST[Z] * 100.0
+        for Z in range(1, 119)
+    ]
+    errors_86 = errors_118[:86]
+    assert sum(errors_86) / len(errors_86) < 0.043
+    assert sum(errors_118) / len(errors_118) < 0.046
+
+
+def test_ie_cpr_mae_superheavy_exploratory():
+    """The CPR alias matches the now-canonical IE engine."""
+    from ptc.data.experimental import IE_NIST
+
+    errors = []
+    for Z in range(104, 119):
+        assert abs(IE_cpr_eV(Z) - IE_eV(Z)) < 1e-12
+        errors.append(abs(IE_cpr_eV(Z) - IE_NIST[Z]) / IE_NIST[Z] * 100.0)
+
+    mae = sum(errors) / len(errors)
+    assert mae < 0.08, f"Superheavy CPR MAE = {mae:.3f}%"

@@ -1202,6 +1202,143 @@ def S_rel(Z):
     return S
 
 
+def S_jj2_p_superheavy(Z: int) -> float:
+    """Secondary jj echo for the period-7 p-block.
+
+    Once (Z*alpha)^2 crosses the spin threshold s=1/2, the p hexagon
+    is read as p_1/2 + p_3/2 = 2 + 4.  The correction is an action term:
+    p_1/2 contracts (negative S), while p_3/2 expands (positive S).
+
+    See docs/research/PT_IE_SUPERHEAVY_JJ2_DERIVATION.md.
+    """
+    if l_of(Z) != 1 or period(Z) != 7:
+        return 0.0
+
+    rho = max(0.0, (Z * AEM) ** 2 - S_HALF)
+    if rho <= 0.0:
+        return 0.0
+
+    n_p = n_fill(Z)
+    if n_p == 1:
+        phi = -D3
+    elif n_p == 2:
+        phi = -S5
+    elif n_p == 3:
+        phi = S5
+    elif n_p == 4:
+        phi = S_HALF
+    elif n_p in (5, 6):
+        phi = S_HALF * D3
+    else:
+        return 0.0
+
+    return rho * S3 * phi
+
+
+def S_cpr_interchannel(Z: int) -> float:
+    """Canonical contraction-penetration resonance for superheavy IE.
+
+    This models a negative action correction when a relativistically
+    contracted source channel increases penetration into a still-open receiver
+    channel.
+
+    See docs/research/PT_IE_CONTRACTION_PENETRATION_RESONANCE.md.
+    """
+    if period(Z) != 7:
+        return 0.0
+
+    rho = max(0.0, (Z * AEM) ** 2 - S_HALF)
+    if rho <= 0.0:
+        return 0.0
+
+    l = l_of(Z)
+    n = n_fill(Z)
+    ns = ns_config(Z)
+    amp = rho * S3 * D3
+    S = 0.0
+
+    # 7s -> 6d penetration before the d5 Hund symmetry point.
+    if l == 2 and ns == 2 and 2 <= n < P2:
+        S -= amp * (1.0 + D5)
+
+    # p1/2 -> p3/2 penetration during the active p3/2 pair.
+    if l == 1 and 3 <= n <= 4:
+        S -= amp * S_HALF * (1.0 + D7) * (n - 2) / 2.0
+
+    return S
+
+
+def _cpr_vertex_projector(n: int, N: int, targets: tuple[int, ...]) -> float:
+    """Exact real idempotent projector on selected vertices of Z/NZ."""
+    total = 0.0
+    for a in targets:
+        val = 1.0
+        for k in range(1, N // 2 + 1):
+            coeff = 1.0 if (N % 2 == 0 and k == N // 2) else 2.0
+            val += coeff * math.cos(2.0 * math.pi * k * (n - a) / N)
+        total += val / N
+    return 0.0 if abs(total) < 1e-12 else total
+
+
+def S_cpr_continuum(Z: int) -> float:
+    """Continuous contraction-penetration resonance by channel projectors.
+
+    This is the perturbative branch of the CPR mechanism.  The continuous
+    envelope is u_Z = (Z alpha_EM)^2; the discrete selection is carried by
+    exact vertex projectors on the active s/p/d/f channel polygons.
+
+    See docs/research/PT_IE_CPR_CONTINUUM.md.
+    """
+    u_z = (Z * AEM) ** 2
+    per = period(Z)
+    l = l_of(Z)
+    n = n_fill(Z)
+    ns = ns_config(Z)
+    S = 0.0
+
+    # Heavy s penetration after compact d cores, before the spinor threshold.
+    if l == 0 and per in (5, 6):
+        S -= (
+            u_z * S3 * D3 * C3 / float(per - 2)
+            * _cpr_vertex_projector(n, 2, (1, 2))
+        )
+
+    # Pre-spinor p resonance in the period-6 hexagon.
+    if l == 1 and per == 6:
+        S += (
+            u_z * S3 * D3 * D5
+            * (
+                _cpr_vertex_projector(n, 6, (3,))
+                - S_HALF * _cpr_vertex_projector(n, 6, (4,))
+                + S_HALF * _cpr_vertex_projector(n, 6, (6,))
+            )
+        )
+
+    # Lanthanide-contracted d receiver with ns2 support.
+    if l == 2 and per == 6 and ns == 2:
+        S += (
+            u_z * S3 * D5 * D7
+            * (
+                _cpr_vertex_projector(n, 10, (1,))
+                - _cpr_vertex_projector(n, 10, (2,))
+                - S_HALF * _cpr_vertex_projector(n, 10, (4, 5))
+                + S_HALF * _cpr_vertex_projector(n, 10, (7,))
+            )
+        )
+
+    # Lanthanide f resonance on the heptagonal double-spin channel.
+    if l == 3 and per == 6:
+        S += (
+            u_z * S3 * D7 * D3 * S_HALF
+            * (
+                -_cpr_vertex_projector(n, 14, (2, 5, 12, 13))
+                + _cpr_vertex_projector(n, 14, (4, 6))
+            )
+        )
+
+    return S
+
+
 # ╔════════════════════════════════════════════════════════════════════╗
 # ║  IE_eV — the ionization energy                                  ║
 # ╚════════════════════════════════════════════════════════════════════╝
@@ -1229,13 +1366,24 @@ def IE_eV(Z: int, continuous: bool = False) -> float:
     return IE_inf * m_nuc / (m_nuc + _ME_AMU)
 
 
+def IE_cpr_eV(Z: int, continuous: bool = False) -> float:
+    """Compatibility alias for the canonical CPR-enabled IE engine."""
+    return IE_eV(Z, continuous=continuous)
+
+
 def screening_action(Z: int, continuous: bool = False) -> float:
     """Total PT screening action entering the IE engine."""
     per = period(Z)
     S_c = S_core(per)
     S_intra = S_polygon(Z, continuous=continuous)
     S = S_c + S_intra * D_FULL
-    return S + S_rel(Z)
+    return (
+        S
+        + S_rel(Z)
+        + S_jj2_p_superheavy(Z)
+        + S_cpr_interchannel(Z)
+        + S_cpr_continuum(Z)
+    )
 
 
 def effective_charge(Z: int) -> float:
@@ -1299,23 +1447,29 @@ def _ea_open_shell_generic(ie: float, per: int, n_fill_val: int, cap: int) -> fl
 
 
 def EA_eV(Z: int, ie: float | None = None) -> float:
-    """PT electron affinity from polygon geometry (ea_geo engine).
+    """Canonical PT electron affinity from the contact-depth capture channel.
 
-    Delegates to EA_geo_eV which uses ShellPolygon capture/ejection
-    amplitudes with dedicated Madelung channels for d-block promotions.
-    The geometric engine gives MAE ~1.5% vs 68% for the basic fallback.
+    The canonical EA engine starts from the polygonal ``EA_geo`` capture
+    amplitude, applies the capture-side CPR surface transmission, then the
+    threshold/core/closure, continuous-channel, and contact-depth residual
+    fields.  No fitted coefficient enters; all amplitudes are fixed PT
+    constants.
     """
-    from ptc.ea_geo import EA_geo_eV
-    return EA_geo_eV(Z)
+    from ptc.ea_residual_fields import EA_residual_eV
+    return EA_residual_eV(Z, mode="contact_depth_operator")
 
 
 def _normalize_ea_model(model: str) -> str:
     """Normalize supported PT EA model names."""
     aliases = {
         "classic": "classic",
+        "canonical": "classic",
+        "continuous": "classic",
+        "continuous_channel": "classic",
         "legacy": "classic",
+        "geo": "geo",
+        "ea_geo": "geo",
         "operator": "operator",
-        "canonical": "operator",
         "ea_operator": "operator",
     }
     try:
@@ -1360,6 +1514,7 @@ class Atom:
         "_ie_pt",
         "_ea_pt",
         "_ea_classic_pt",
+        "_ea_geo_pt",
         "_ea_operator_pt",
     )
 
@@ -1375,6 +1530,7 @@ class Atom:
         self._ie_pt = None
         self._ea_pt = None
         self._ea_classic_pt = None
+        self._ea_geo_pt = None
         self._ea_operator_pt = None
 
     # ── Basic properties ──
@@ -1464,16 +1620,26 @@ class Atom:
         if self._ea_pt is None:
             if self._ea_model == "operator":
                 self._ea_pt = self.EA_operator_pt
+            elif self._ea_model == "geo":
+                self._ea_pt = self.EA_geo_pt
             else:
                 self._ea_pt = self.EA_classic_pt
         return self._ea_pt
 
     @property
     def EA_classic_pt(self) -> float:
-        """Legacy/classic PT electron affinity channel."""
+        """Canonical contact-depth PT electron affinity."""
         if self._ea_classic_pt is None:
             self._ea_classic_pt = EA_eV(self.Z, ie=self.IE_pt)
         return self._ea_classic_pt
+
+    @property
+    def EA_geo_pt(self) -> float:
+        """Legacy polygon-geometry PT electron affinity channel."""
+        if self._ea_geo_pt is None:
+            from ptc.ea_geo import EA_geo_eV
+            self._ea_geo_pt = EA_geo_eV(self.Z)
+        return self._ea_geo_pt
 
     @property
     def EA_operator_pt(self) -> float:
@@ -1509,6 +1675,7 @@ def compare_ea_channels(Z: int) -> dict[str, object]:
     embedded table, the error fields are set to ``None``.
     """
     classic = Atom(Z, ea_model="classic")
+    geo = Atom(Z, ea_model="geo")
     operator = Atom(Z, ea_model="operator")
     exp_val = EA_NIST.get(Z)
     out: dict[str, object] = {
@@ -1519,27 +1686,35 @@ def compare_ea_channels(Z: int) -> dict[str, object]:
         "IE_pt": classic.IE_pt,
         "EA_nist": exp_val,
         "EA_classic_pt": classic.EA_classic_pt,
+        "EA_geo_pt": geo.EA_geo_pt,
         "EA_operator_pt": operator.EA_operator_pt,
         "classic_error_percent": None,
+        "geo_error_percent": None,
         "operator_error_percent": None,
     }
     if exp_val is not None and exp_val > 0.0:
         out["classic_error_percent"] = abs(classic.EA_classic_pt - exp_val) / exp_val * 100.0
+        out["geo_error_percent"] = abs(geo.EA_geo_pt - exp_val) / exp_val * 100.0
         out["operator_error_percent"] = abs(operator.EA_operator_pt - exp_val) / exp_val * 100.0
     return out
 
 
 def benchmark_atom_ea_models_against_nist() -> dict[str, object]:
-    """Benchmark the classic and operator PT EA channels against embedded NIST.
+    """Benchmark the canonical, geo, and operator PT EA channels against NIST.
 
     The benchmark follows the same rule as the research operator audit:
     only strictly positive ``EA_NIST`` rows are included, because the current
     embedded table encodes negative or negligible affinities as ``0.000``.
     """
     rows: list[dict[str, object]] = []
-    by_model_errors: dict[str, list[float]] = {"classic": [], "operator": []}
+    by_model_errors: dict[str, list[float]] = {
+        "classic": [],
+        "geo": [],
+        "operator": [],
+    }
     by_model_block: dict[str, defaultdict[str, list[float]]] = {
         "classic": defaultdict(list),
+        "geo": defaultdict(list),
         "operator": defaultdict(list),
     }
 
@@ -1553,18 +1728,22 @@ def benchmark_atom_ea_models_against_nist() -> dict[str, object]:
 
         block = row["block"]
         classic_err = row["classic_error_percent"]
+        geo_err = row["geo_error_percent"]
         operator_err = row["operator_error_percent"]
         assert isinstance(block, str)
         assert isinstance(classic_err, float)
+        assert isinstance(geo_err, float)
         assert isinstance(operator_err, float)
 
         by_model_errors["classic"].append(classic_err)
+        by_model_errors["geo"].append(geo_err)
         by_model_errors["operator"].append(operator_err)
         by_model_block["classic"][block].append(classic_err)
+        by_model_block["geo"][block].append(geo_err)
         by_model_block["operator"][block].append(operator_err)
 
     models: dict[str, dict[str, object]] = {}
-    for name in ("classic", "operator"):
+    for name in ("classic", "geo", "operator"):
         mae = sum(by_model_errors[name]) / len(by_model_errors[name]) if by_model_errors[name] else 0.0
         models[name] = {
             "mae_percent": mae,

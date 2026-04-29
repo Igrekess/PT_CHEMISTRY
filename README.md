@@ -23,7 +23,7 @@ PTC computes molecular and atomic properties from a single arithmetic identity (
 |-----------|-------|-----|-------|
 | Ionisation energies (Z=1-103) | 103 | 0.056% | A+ |
 | Atomisation energies D_at | 806 | 2.17% | A |
-| Electron affinities | 73 | 1.37% | A |
+| Electron affinities | 73 | 0.984% (6.86 meV) | A+ |
 | Standard potentials E (SHE) | 41 | 0.097 V | B+ |
 | Dielectric constants | 6 | 2.4% | A |
 | UV-Vis wavelengths | 9 | 4.1% | A |
@@ -123,6 +123,12 @@ from ptc.atom import IE_eV, EA_eV
 print(f"IE(Fe) = {IE_eV(26):.3f} eV")  # 7.903 (exp 7.902)
 print(f"EA(Cl) = {EA_eV(17):.3f} eV")  # 3.615 (exp 3.613)
 ```
+
+The canonical electron-affinity engine now includes the PT contact-depth
+operator: a continuous radial-depth kernel on `tau = period - 4` for the
+d channel, plus fixed PT contact projections on p/f channels.  It improves
+the 73 positive atomic EA benchmark from the previous continuous-channel
+MAE of 1.125% to 0.984%, with zero fitted coefficients.
 
 ```python
 from ptc.electrochemistry import standard_potential_SHE
