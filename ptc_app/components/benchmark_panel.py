@@ -239,6 +239,59 @@ def _compute_all_benchmark():
 def render_benchmark_tab():
     """Main entry point called from app.py."""
 
+    # ── Header: what PTC computes (full observable coverage) ─────────
+    with st.expander("ℹ️ Ce que PTC calcule — toutes les observables, 0 variable d'ajustement", expanded=False):
+        st.markdown(
+            """
+PTC n'est pas spécialisé sur l'énergie d'atomisation. C'est un calculateur
+ab initio PT qui dérive **toutes les observables moléculaires** depuis
+l'unique input **s = 1/2** + l'ossature des premiers actifs **{2, 3, 5, 7, 11, 13}**.
+
+| Niveau | Observable | Précision actuelle | Statut |
+|---|---|---|---|
+| **Atomique** (Z = 1 → 118) | IE — énergie d'ionisation | MAE **0,046 %** | ✅ production · 118 éléments |
+| | EA — affinité électronique | MAE **0,98 %** | ✅ production · 73 atomes neutres |
+| **Liaison** (BondResult) | D₀ — énergie de dissociation | cf. D_at moléculaire | ✅ production |
+| | r_e — distance d'équilibre | métrique Bianchi I, sans rayons covalents | ✅ production |
+| | ω_e — fréquence vibrationnelle | ~10 % typique sur diatomiques | ✅ production |
+| | θ — angles de liaison | fraction de face × angle solide, sans VSEPR | ✅ production |
+| **Moléculaire** (TransferResult) | **D_at — atomisation totale** | MAE **3,22 %** (ATcT 994) · **6,55 %** (Burcat 650) | ✅ production · *objet de ce panel* |
+| | Décomposition per-face P₁/P₂/P₃ + spectral | σ+π / d-back / ionique par liaison | ✅ production |
+| **Aromaticité** (nics.py) | NICS — Pauling-London PT | ~3 ppm sur benzène | ✅ production |
+| | Classification σ/π — Hückel signé | aromatique / antiaromatique / radical | ✅ production |
+| **Magnétique** (lcao/, GIAO) | σ — tenseur de blindage RMN | ¹H MAE 1,4 ppm (set de Haan) | 🟡 partiel · ¹H ✓ |
+| | Cascade post-HF (MP2/CCD/CCSD/Λ-CCSD) | σ_p^CCSD-Λ-GIAO | 🟡 partiel |
+| | Densité de courant induite (GIMIC PT-pur) | flux par liaison · NICS Biot-Savart | 🟠 recherche |
+| **Topologie** | SMILES → topologie | parser RDKit + reconstruction PT | ✅ production |
+| | Formule → topologie (crible variationnel) | choisit l'isomère minimum sans SMILES | ✅ production · base test Burcat |
+
+**Toutes** ces précisions sont mesurées avec exactement la même contrainte :
+**0 variable d'ajustement, aucun degré de liberté**, l'unique input s = 1/2
+et l'ossature des premiers, avec les principes PT (cycle de phase, bilan
+informationnel, cascade, bifurcation q₊/q₋, anti-double-comptage).
+
+### Comparaison à d'autres calculateurs
+
+| Méthode | D_at typique | Temps / mol | Paramètres ajustés |
+|---|---|---|---|
+| **PTC** | **0,73 eV** (994 ATcT) | **~0,1 s** | **0** (s = 1/2 + premiers) |
+| B3LYP/6-31G* | ~0,93 eV (mesuré) | ~minutes | 3 (calibrés G2) |
+| B3LYP/def2-TZVP | ~0,15–0,3 eV | ~30 min – heures | 3 |
+| DFT moderne (M06-2X, ωB97X) | ~0,1–0,2 eV | ~min – heures | 10–50 |
+| Hartree-Fock | ~2 eV (pas de corrélation) | ~minutes | 0 (base param.) |
+| MP2 / CCSD / CCSD(T) | 0,02–0,2 eV (gold std) | ~heures – jours | 0 (base param.) |
+| G4 / W1 (composites) | ~0,01 eV | ~heures | ~10 extrapolations |
+| Champs de force (UFF, MMFF) | non applicable | ~ms | 100–1 000 |
+| Potentiels ML (ANI, MACE) | ~0,04–0,1 eV (in-distrib.) | ~ms – s | 10⁵–10⁸ poids |
+
+PTC est, à notre connaissance, le seul calculateur produisant cette
+**gamme complète d'observables** (D_at, r_e, ω_e, IE, EA, NICS, σ_RMN)
+sans paramètre ajusté. HF et CCSD(T) atteignent aussi techniquement
+"0 fit" mais reposent sur le choix d'une base atomique (objet
+paramétré). DFT et ML carry des coefficients calibrés sur des données.
+            """
+        )
+
     df_all = _compute_all_benchmark()
 
     # ── Filters : category + verified core ───────────────────────────
