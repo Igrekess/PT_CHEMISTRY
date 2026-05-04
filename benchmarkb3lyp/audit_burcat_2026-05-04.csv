@@ -1,0 +1,995 @@
+name,smiles,cas,source,D_exp_eV,burcat_hf298_kjmol,D_at_burcat_eV,diff_pct,status,reason,burcat_desc
+acetophenone,CC(=O)C1=CC=CC=C1,98-86-2,NIST,80.979,-86.7,80.9792,,ok_<1%,,C8H8O   Acetophe
+quinoline,c1ccc2ncccc2c1,91-22-5,NIST,85.488,200.52,85.4873,-0.001,ok_<1%,,C9H7N QUINOLINE
+IF,FI,13873-84-2,HH,2.88,-94.76,2.9122,1.116,warn_1-2%,,IF
+oxazole,C1=COC=N1,288-42-6,NIST,36.704,-15.468,36.7036,-0.001,ok_<1%,,C3H3ON (Cy) Oxaz
+2-chlorotoluene,CC1=CC=CC=C1Cl,95-49-8,NIST,69.047,,,,n/a,not_in_burcat,
+DMSO,CS(=O)C,67-68-5,NIST,35.428,,,,n/a,not_in_burcat,
+tert-butylbenzene,CC(C)(C)c1ccccc1,98-06-6,NIST,106.149,,,,n/a,not_in_burcat,
+Acetyl_chloride,CC(=O)Cl,75-36-5,ATcT_0K,27.6716,-241.459,27.9762,1.101,warn_1-2%,,CH3COCL Acetyl C
+isobutyraldehyde,CC(C)C=O,78-84-2,NIST,52.606,,,,n/a,not_in_burcat,
+B2,[B]=[B],14452-61-0,HH,3.02,857.371,2.8256,-6.437,fail_>2%,,B2
+methylhydrazine,CNN,60-34-4,NIST,31.18,276.31136000000004,27.9184,-10.461,fail_>2%,,CH3-NH-NH2
+2-methylthiophene,CC1=CC=CS1,554-14-3,NIST,52.703,,,,n/a,not_in_burcat,
+2-methylthiophene,Cc1cccs1,554-14-3,NIST,54.963,,,,n/a,not_in_burcat,
+SiS,[Si]#[S],,HH,6.39,,,,n/a,no_cas,
+2-phenylethanol,OCCC1=CC=CC=C1,60-12-8,NIST,85.865,,,,n/a,not_in_burcat,
+CuCl,[Cu]Cl,7758-89-6,Luo2007,3.83,91.08568,3.8101,-0.521,ok_<1%,,CuCL
+cytosine,NC1=NC(=O)NC=C1,71-30-7,NIST,58.898,-69.5,59.0082,0.187,ok_<1%,,C4H5N3O  Cytosine
+pyrrolidine,C1CCNC1,123-75-1,NIST,55.66,-3.59,54.9822,-1.218,warn_1-2%,,C4H9N PYRROLIDINE
+NO,[N]=O,,ATcT,6.5,,,,n/a,no_cas,
+thiophenol,Sc1ccccc1,108-98-5,NIST,59.832,107.654,59.8804,0.081,ok_<1%,,C6H6S  Phenyl-SH
+NH,[N][H],,ATcT,3.47,,,,n/a,no_cas,
+furfuryl_alcohol,OCC1=CC=CO1,98-00-0,NIST,58.056,-216.990608,58.1098,0.093,ok_<1%,,C5H6O2 Furfuril
+isoquinoline,c1ccc2ccncc2c1,119-65-3,NIST,85.445,204.61,85.4449,,ok_<1%,,C9H7N ISOQUINOLI
+Methanediol,C(O)O,463-57-0,ATcT_0K,25.2706,,,,n/a,not_in_burcat,
+Aziridine,C1CN1,151-56-4,ATcT_0K,29.3328,129.81906,29.7062,1.273,warn_1-2%,,C2H5N Aziridine
+cis_1_2_Dichloroethene,C(=C\Cl)\Cl,156-59-2,ATcT_0K,21.6646,,,,n/a,not_in_burcat,
+1_2_Dichloroethene,C(=CCl)Cl,540-59-0,ATcT_0K,21.6646,3.41,21.8536,0.872,ok_<1%,,C2H2CL2
+MTBE,CC(C)(C)OC,1634-04-4,NIST,69.772,,,,n/a,not_in_burcat,
+LiF,[Li]F,7789-24-4,CCCBDB,5.97,-340.944,6.0074,0.626,ok_<1%,,LiF
+di-n-propyl_ether,CCCOCCC,111-43-3,NIST,81.818,-292.54528,81.8132,-0.006,ok_<1%,,C6H14O PropylEther
+PS,[P]=S,,HH,4.5,,,,n/a,no_cas,
+PO,[P]=O,,HH,5.69,,,,n/a,no_cas,
+1-bromopropane,CCCBr,106-94-5,NIST,40.161,,,,n/a,not_in_burcat,
+1-chloropropane,CCCCl,540-54-5,NIST,40.724,-131.2,40.7163,-0.019,ok_<1%,,C3H7Cl n-C3H7Cl
+SiH,[Si][H],13774-94-2,HH,3.06,376.56,3.0205,-1.289,warn_1-2%,,SiH  Radical HF2
+propyne,CC#C,74-99-7,NIST,29.4,44.319,30.8618,4.972,fail_>2%,,H4C3 PROPYNE
+MTBE,COC(C)(C)C,1634-04-4,NIST,69.775,,,,n/a,not_in_burcat,
+C2H6,CC,74-84-0,ATcT,28.89,-83.863,29.2812,1.354,warn_1-2%,,C2H6
+2_Chloroethanol,C(CCl)O,107-07-3,ATcT_0K,32.3289,-257.6,32.6623,1.031,warn_1-2%,,ClC2H4OH  ATcT C
+propanethiol,CCCS,107-03-9,NIST,43.93,-16.22,43.3995,-1.208,warn_1-2%,,C3H8S PropneThiol
+Cl2,ClCl,7782-50-5,ATcT,2.51,,2.5144,0.175,ok_<1%,,CL2  REF ELEMENT
+2-pyrrolidone,O=C1CCCN1,616-45-5,NIST,55.445,,,,n/a,not_in_burcat,
+Ag2,[Ag][Ag],7230-74-2,HH,1.66,,,,n/a,not_in_burcat,
+butanal,CCCC=O,123-72-8,NIST,52.52,-206.6896,52.5113,-0.016,ok_<1%,,C4H8O n-Butanal
+VF3,F[V](F)F,,JANAF,17.737,,,,n/a,no_cas,
+nicotinic_acid,OC(=O)c1cccnc1,59-67-6,NIST,68.224,,,,n/a,not_in_burcat,
+isopropyl_mercaptan,CC(C)S,75-33-2,NIST,44.021,-72.50872,43.9829,-0.087,ok_<1%,,C3H8S Prop2thiol
+ClNO,ClN=O,2696-92-6,NIST,8.203,52.524,8.1944,-0.105,ok_<1%,,NOCL
+2-hexanone,CCCCC(=O)C,591-78-6,NIST,77.164,,,,n/a,not_in_burcat,
+MIBK,CC(C)CC(=O)C,108-10-1,NIST,77.235,,,,n/a,not_in_burcat,
+THP,C1CCOCC1,142-68-7,NIST,64.63,-224.28332,64.6403,0.016,ok_<1%,,C5H10O CYCLO   T
+N2,N#N,7727-37-9,ATcT,9.759,,,,n/a,not_in_burcat,
+pinacol,CC(O)(C)C(O)(C)C,76-09-5,NIST,86.453,,,,n/a,not_in_burcat,
+1-butyne,CCC#C,107-00-6,NIST,41.556,165.2,41.5556,-0.001,ok_<1%,,C4H6 1 butyne
+PH,[P][H],,HH,2.95,,,,n/a,no_cas,
+benzofuran,C1=CC=C2C(=C1)C=CO2,271-89-6,NIST,75.601,,,,n/a,not_in_burcat,
+succinimide,O=C1CCC(=O)N1,123-56-8,NIST,54.965,,,,n/a,not_in_burcat,
+SO3mol,O=S(=O)=O,7446-11-9,NIST,14.31,-377.338,14.5312,1.546,warn_1-2%,,SO3
+thioanisole,CSC1=CC=CC=C1,100-68-5,NIST,72.383,,,,n/a,not_in_burcat,
+1PeOH,CCCCCO,71-41-0,NIST,69.89,-297.282,69.9157,0.037,ok_<1%,,C5H11OH  1-penta
+isopropylamine,CC(C)N,75-31-0,NIST,48.385,,,,n/a,not_in_burcat,
+NaF,[Na]F,7681-49-4,CCCBDB,4.91,,,,n/a,not_in_burcat,
+Benzoyl_fluoride,C1=CC=C(C=C1)C(=O)F,455-32-3,ATcT_0K,69.1569,,,,n/a,not_in_burcat,
+cyclohexanone,O=C1CCCCC1,108-94-1,NIST,72.555,,,,n/a,not_in_burcat,
+butane,CCCC,106-97-8,NIST,53.61,-125.79,53.6091,-0.002,ok_<1%,,C4H10 n-butane
+trans_1_2_Dichloroethene,C(=C/Cl)\Cl,,ATcT_0K,21.6457,,,,n/a,no_cas,
+1-hexanol,CCCCCCO,111-27-3,NIST,82.056,-317.1,82.0677,0.014,ok_<1%,,C6H14O 1-hexanol
+sulfolane,C1CCS(=O)(=O)C1,126-33-0,NIST,60.711,,,,n/a,not_in_burcat,
+isobutan,CC(C)C,75-28-5,NIST,53.7,-135.363,53.7083,0.015,ok_<1%,,C4H10 isobutane
+fluorobenzene,C1=CC=C(C=C1)F,462-06-6,NIST,57.888,-115.8968,57.888,,ok_<1%,,C6H5F Fluorobenz
+H2,[H][H],1333-74-0,ATcT,4.478,,4.5188,0.911,ok_<1%,,H2 REF ELEMENT
+N-methylpiperidine,CN1CCCCC1,626-67-5,NIST,80.131,,,,n/a,not_in_burcat,
+phenyl_isocyanate,O=C=NC1=CC=CC=C1,103-71-9,NIST,71.344,,,,n/a,not_in_burcat,
+CO2,O=C=O,124-38-9,ATcT,16.56,-393.51,16.6714,0.673,ok_<1%,,CO2
+dimethyl_sulfone,CS(=O)(=O)C,67-71-0,NIST,40.317,,,,n/a,not_in_burcat,
+BeCl2,Cl[Be]Cl,7787-47-5,CCCBDB,9.55,,,,n/a,not_in_burcat,
+2-furaldehyde,O=Cc1ccco1,98-01-1,NIST,52.907,-149.6,52.8925,-0.027,ok_<1%,,C5H4O2  Furfural
+CHCl3,C(Cl)(Cl)Cl,67-66-3,NIST,14.53,-102.928,14.5256,-0.03,ok_<1%,,CHCL3 Chloroform
+EtBr,CCBr,74-96-4,NIST,27.88,-61.9,27.9537,0.264,ok_<1%,,C2H5Br  Ethyl Br
+Benzoyl_chloride,C1=CC=C(C=C1)C(=O)Cl,98-88-4,ATcT_0K,67.5394,,,,n/a,not_in_burcat,
+thiophene_2_carboxaldehyde,O=CC1=CC=CS1,98-03-3,NIST,51.726,,,,n/a,not_in_burcat,
+indane,C1Cc2ccccc2C1,496-11-7,NIST,88.816,60.9,88.8135,-0.003,ok_<1%,,C9H10  INDANE
+diisopropyl_ether,CC(C)OC(C)C,108-20-3,NIST,82.09,,,,n/a,not_in_burcat,
+benzyl_chloride,ClCC1=CC=CC=C1,100-44-7,NIST,69.037,,,,n/a,not_in_burcat,
+EtNH2,CCN,75-04-7,NIST,36.06,-47.831488,36.0662,0.017,ok_<1%,,C2H5NH2  Ethyl a
+xylene_m,CC1=CC(=CC=C1)C,108-38-3,NIST,81.838,,,,n/a,not_in_burcat,
+xylene_p,CC1=CC=C(C=C1)C,106-42-3,NIST,81.831,18.03,81.83,-0.001,ok_<1%,,"C8H10 1,4-dimeth"
+2_Bromoethanol,C(CBr)O,540-51-2,ATcT_0K,31.694,-217.6,32.15,1.439,warn_1-2%,,BrC2H4OH  ATcT C
+Carbon_dioxide_124389,C(=O)=O,124-38-9,ATcT_0K,16.5642,-393.51,16.6714,0.647,ok_<1%,,CO2
+imidazole,c1cnc[nH]1,288-32-4,NIST,39.742,128.0,39.7925,0.127,ok_<1%,,C3H4N2  Imidogen
+HFC_152a,CC(F)F,75-37-6,NIST,30.69,-497.0,30.6898,-0.001,ok_<1%,,C2H4F2  HFC-152a
+2-methyltetrahydrofuran,CC1CCCO1,96-47-9,NIST,64.653,-225.061544,64.6484,-0.007,ok_<1%,,C5H10O 2-Me-THF
+2-bromopropane,CC(Br)C,75-26-3,NIST,40.289,,,,n/a,not_in_burcat,
+methyl_isopropyl_ketone,CC(C)C(=O)C,563-80-4,NIST,65.038,,,,n/a,not_in_burcat,
+2-methylbutane,CCC(C)C,78-78-4,NIST,65.845,-153.7,65.845,,ok_<1%,,"C5H12,i-pentane"
+pentane,CCCCC,109-66-0,NIST,65.77,-152.310152,65.8306,0.092,ok_<1%,,C5H12 n-pentane
+THF,C1CCOC1,109-99-9,NIST,52.28,-182.497712,52.2606,-0.037,ok_<1%,,C4H8O T.H.Furan
+"1,1-dichloroethane",CC(Cl)Cl,75-34-3,NIST,27.731,-132.5,27.7809,0.18,ok_<1%,,"C2H4Cl2 1,1-Dich"
+isopent,CC(C)CC,78-78-4,NIST,65.84,-153.7,65.845,0.008,ok_<1%,,"C5H12,i-pentane"
+LiBr,[Li]Br,7550-35-8,JANAF,4.34,151.162,1.2438,-71.341,fail_>2%,,LiBr
+AgCl,[Ag]Cl,7783-90-6,Luo2007,3.24,,,,n/a,not_in_burcat,
+cresol_m,CC1=CC(=CC=C1)O,108-39-4,NIST,74.024,,,,n/a,not_in_burcat,
+phenyl_methanol,C1=CC=C(C=C1)CO,100-51-6,NIST,73.694,-94.6,73.6332,-0.082,ok_<1%,,C7H8O  C6H5CH2OH
+xylene_o,CC1=CC=CC=C1C,95-47-6,NIST,81.819,19.0,81.8199,0.001,ok_<1%,,C8H10   o-Di-Met
+2pentanon,CC(=O)CCC,107-87-9,NIST,65.0,,,,n/a,not_in_burcat,
+mesitylene,CC1=CC(=CC(=C1)C)C,108-67-8,NIST,94.131,-17.1544,94.1413,0.011,ok_<1%,,C9H12  1-3-5-TMB
+Ethyl,C[CH2],2025-56-1,ATcT_0K,24.5794,119.9,24.91,1.345,warn_1-2%,,C2H5 ethyl radic
+morpholine,C1COCCN1,110-91-8,NIST,59.232,,,,n/a,not_in_burcat,
+"1,2,4-triazole",C1=NNC=N1,288-88-0,NIST,35.201,195.02460800000003,34.3096,-2.532,fail_>2%,,"C2H3N3  1H-1,2,4"
+N-methylpyrrole,Cn1cccc1,96-54-8,NIST,59.045,,,,n/a,not_in_burcat,
+benzene,c1ccccc1,71-43-2,NIST,56.42,,,,n/a,not_in_burcat,
+3-methylthiophene,Cc1ccsc1,616-44-4,NIST,54.973,,,,n/a,not_in_burcat,
+CH3SH,CS,74-93-1,NIST,19.58,-22.50992,19.5714,-0.044,ok_<1%,,CH3SH methyl mer
+CuH,[Cu][H],13517-00-5,HH,2.64,,,,n/a,not_in_burcat,
+FeI2,I[Fe]I,,Gurvich,5.823,,,,n/a,no_cas,
+cresol_o,CC1=CC=CC=C1O,95-48-7,NIST,73.986,,,,n/a,not_in_burcat,
+TiBr2,Br[Ti]Br,13783-04-5,JANAF,8.848,,,,n/a,not_in_burcat,
+HSO3F,OS(=O)(=O)F,7789-21-1,JANAF,21.507,,,,n/a,not_in_burcat,
+urea,NC(=O)N,57-13-6,NIST,31.287,-235.5,31.2867,-0.001,ok_<1%,,CH4N2O Urea (NH2
+H2O,O,7732-18-5,ATcT,9.511,-241.826,9.6077,1.017,warn_1-2%,,H2O
+neopent,CC(C)(C)C,463-82-1,NIST,65.99,-168.255376,65.9958,0.009,ok_<1%,,CH3C(CH3)2CH3
+3-pentanone,CCC(=O)CC,96-22-0,NIST,64.998,,,,n/a,not_in_burcat,
+VinylF,FC=C,75-02-5,NIST,23.9,-136.0,23.8662,-0.142,ok_<1%,,C2H3F
+Li2,[Li][Li],14452-59-6,ATcT,1.046,215.9,1.0644,1.76,warn_1-2%,,Li2
+p-diethylbenzene,CCc1ccc(CC)cc1,105-05-5,NIST,106.142,,,,n/a,not_in_burcat,
+PN,[P]#N,17739-47-8,HH,6.39,171.487,6.4019,0.187,ok_<1%,,PN
+1-chlorobutane,CCCCCl,109-69-3,NIST,52.906,,,,n/a,not_in_burcat,
+Iodine_monochloride,ClI,7790-99-0,ATcT_0K,2.1491,,,,n/a,not_in_burcat,
+VF5,[V](F)(F)(F)(F)F,,JANAF,24.29,,,,n/a,no_cas,
+2-chloropropane,CC(Cl)C,75-29-6,NIST,40.858,-145.227,40.8617,0.009,ok_<1%,,C3H7Cl i-C3H7Cl
+Methyl_nitrite,CON=O,624-91-9,ATcT_0K,24.6271,67.755696,23.5679,-4.301,fail_>2%,,CH3ONO
+"N,N-diethylformamide",CCN(CC)C=O,617-84-5,NIST,71.951,,,,n/a,not_in_burcat,
+Diazirine,C1N=N1,157-22-2,ATcT_0K,18.2849,310.0344,18.5313,1.348,warn_1-2%,,CH2N2 cyc(-CH2-N
+chlorobenzene,C1=CC=C(C=C1)Cl,108-90-7,NIST,56.583,54.4,56.5575,-0.045,ok_<1%,,C6H5Cl chloroben
+CrF6,F[Cr](F)(F)(F)(F)F,13843-28-2,Gurvich,23.35,,,,n/a,not_in_burcat,
+CHClF,ClCF,593-70-4,NIST,16.73,-270.0,16.8249,0.567,ok_<1%,,CH2CLF  GC-31
+cyclohexanol,OC1CCCCC1,108-93-0,NIST,77.229,293.097568,71.2247,-7.775,fail_>2%,,C6H12O Cyclohexa
+DIPK,CC(C)C(=O)C(C)C,565-80-0,NIST,89.436,,,,n/a,not_in_burcat,
+CHF3,C(F)(F)F,75-46-7,ATcT,19.52,-693.2887999999999,19.3408,-0.918,ok_<1%,,CHF3  FLUOROFORM
+diethyl_sulfide,CCSCC,352-93-2,NIST,56.044,-81.659128,56.0244,-0.035,ok_<1%,,C4H10S (C2H5)2S
+LiI,[Li]I,10377-51-2,JANAF,3.54,-85.269,3.6421,2.884,fail_>2%,,LiI
+toluene,Cc1ccccc1,108-88-3,NIST,68.69,,,,n/a,not_in_burcat,
+Hypoiodous_acid,OI,14332-21-9,ATcT_0K,6.4646,-61.3,6.5846,1.856,warn_1-2%,,HOI Hypoiodous a
+ICl,Cl[I],7790-99-0,NIST-derived,2.15,,,,n/a,not_in_burcat,
+TiO,[Ti]=O,12137-20-1,JANAF,6.87,,,,n/a,not_in_burcat,
+ethylbenzene,CCC1=CC=CC=C1,100-41-4,NIST,81.708,29.9156,81.7068,-0.002,ok_<1%,,C8H10  C6H5C2H5
+CN,[C]#[N],,ATcT,7.72,,,,n/a,no_cas,
+SiCl,[Si]Cl,,HH,4.02,,,,n/a,no_cas,
+"N,N-dimethylacetamide",CC(=O)N(C)C,127-19-5,NIST,59.86,,,,n/a,not_in_burcat,
+BeF,[Be]F,,JANAF,5.85,,,,n/a,no_cas,
+benzaldehyde,C1=CC=C(C=C1)C=O,100-52-7,NIST,68.515,-39.18,68.54,0.037,ok_<1%,,C7H6O   C6H5-CHO
+allene,C=C=C,463-49-0,NIST,29.35,190.92,29.3424,-0.026,ok_<1%,,C3H4 ALLENE
+ethyl_propyl_ether,CCCOCC,628-32-0,NIST,69.654,,,,n/a,not_in_burcat,
+cresol_p,CC1=CC=C(C=C1)O,106-44-5,NIST,73.953,,,,n/a,not_in_burcat,
+cyclohexanol,C1CCC(CC1)O,108-93-0,NIST,77.229,293.097568,71.2247,-7.775,fail_>2%,,C6H12O Cyclohexa
+2-pentanol,CCCC(C)O,6032-29-7,NIST,70.099,-316.68696,70.1168,0.025,ok_<1%,,C5H12O 2-Pentanol
+1-bromobutane,CCCCBr,109-65-9,NIST,52.316,,,,n/a,not_in_burcat,
+N-methylpyrrolidine,CN1CCCC1,120-94-5,NIST,67.499,,,,n/a,not_in_burcat,
+2-methyl-2-butanol,CCC(C)(C)O,75-85-4,NIST,70.25,,,,n/a,not_in_burcat,
+1-amino-2-propanol,CC(O)CN,78-96-6,NIST,52.463,,,,n/a,not_in_burcat,
+Isocyanoacetylene,C#C[N+]#[C-],66723-45-3,ATcT_0K,24.2115,,,,n/a,not_in_burcat,
+CuO,[Cu]=O,163686-95-1,CRC,2.75,,,,n/a,not_in_burcat,
+Bromochloromethane,C(Cl)Br,74-97-5,ATcT_0K,14.5438,-46.0,14.84,2.037,fail_>2%,,CH2ClBr
+thiophene_blind,C1=CSC=C1,110-02-1,NIST,40.43,115.0,40.4298,-0.001,ok_<1%,,C4H4S Thiophene
+piperazine,C1CNCCN1,110-85-0,NIST,62.155,25.0,61.8442,-0.5,ok_<1%,,"C4H10N2 1,4-PIPE"
+propylbenzene,CCCc1ccccc1,103-65-1,NIST,93.882,7.82,93.8824,,ok_<1%,,C9H12 Propyl-Ben
+bromobenzene,C1=CC=C(C=C1)Br,108-86-1,NIST,55.931,105.4368,55.9308,,ok_<1%,,C6H5Br Bromobenz
+propanal,CCC=O,123-38-6,NIST,40.35,-188.69840000000002,40.3782,0.07,ok_<1%,,C3H6O Propionald
+BrCl,ClBr,13863-41-7,ATcT_0K,2.173,14.79,2.2634,4.158,fail_>2%,,BrCL
+sec-butylamine,CCC(C)N,13952-84-6,NIST,60.548,,,,n/a,not_in_burcat,
+3-acetylpyridine,CC(=O)c1cccnc1,350-03-8,NIST,75.978,,,,n/a,not_in_burcat,
+resorcinol,OC1=CC(=CC=C1)O,108-46-3,NIST,66.149,,,,n/a,not_in_burcat,
+4-acetylpyridine,CC(=O)c1ccncc1,1122-54-9,NIST,75.982,,,,n/a,not_in_burcat,
+NMP,CN1CCCC1=O,872-50-4,NIST,67.671,,,,n/a,not_in_burcat,
+indane,C1CC2=CC=CC=C2C1,496-11-7,NIST,89.326,60.9,88.8135,-0.574,ok_<1%,,C9H10  INDANE
+AlCl,[Al]Cl,13595-81-8,JANAF,5.13,-51.007,5.2061,1.483,warn_1-2%,,ALCL
+iPrOH,CC(C)O,67-63-0,NIST,45.05,-274.5,45.7863,1.634,warn_1-2%,,C3H8O 2propanol
+Hypofluorous_acid,OF,14034-79-8,ATcT_0K,6.4728,-87.262,6.5691,1.487,warn_1-2%,,HOF
+"2,5-dimethylfuran",Cc1ccc(C)o1,625-86-5,NIST,66.305,,,,n/a,not_in_burcat,
+2-methylfuran,CC1=CC=CO1,534-22-5,NIST,53.924,-78.316,54.0899,0.308,ok_<1%,,C5H6O 2-Me Furan
+4-fluorotoluene,CC1=CC=C(F)C=C1,352-32-9,NIST,70.403,,,,n/a,not_in_burcat,
+ScF,[Sc]F,,CRC,5.99,,,,n/a,no_cas,
+Cu2,[Cu][Cu],,Gong2014,1.886,,,,n/a,no_cas,
+I2,II,7553-56-2,ATcT,1.542,62.417,1.5677,1.669,warn_1-2%,,I2 gas
+methyl_propyl_sulfide,CCCSC,3877-15-4,NIST,56.031,,,,n/a,not_in_burcat,
+anisole,COc1ccccc1,100-66-3,NIST,73.357,-75.1,73.4311,0.101,ok_<1%,,C7H8O C6H5O-CH3
+CFCl3,FC(Cl)(Cl)Cl,75-69-4,NIST,14.81,-290.67,15.0348,1.518,warn_1-2%,,CCL3F   FC-11
+n-butylamine,CCCCN,109-73-9,NIST,60.416,,,,n/a,not_in_burcat,
+methyl_propyl_ether,CCCOC,557-17-5,NIST,57.355,,,,n/a,not_in_burcat,
+barbituric_acid,O=C1CC(=O)NC(=O)N1,67-52-7,NIST,61.892,,,,n/a,not_in_burcat,
+DMSO,CS(C)=O,67-68-5,NIST,35.29,,,,n/a,not_in_burcat,
+pentanal,CCCCC=O,110-62-3,NIST,64.66,,,,n/a,not_in_burcat,
+cumene,CC(C)c1ccccc1,98-82-8,NIST,94.004,3.9,93.923,-0.086,ok_<1%,,C9H12 IsoPropBenz
+propionamide,CCC(=O)N,79-05-0,NIST,48.224,,,,n/a,not_in_burcat,
+BeO,[Be]=O,1304-56-9,HH,4.54,,,,n/a,not_in_burcat,
+BeH,[Be][H],,HH,2.034,,,,n/a,no_cas,
+2-methylpentane,CCCC(C)C,107-83-5,NIST,78.011,-171.677888,77.978,-0.042,ok_<1%,,C6H14 2-MePentan
+phenylacetylene,C#CC1=CC=CC=C1,536-74-3,NIST,69.802,328.15112000000005,69.5782,-0.321,ok_<1%,,C8H6  C6H5CCH
+PCl,[P]Cl,,HH,3.19,,,,n/a,no_cas,
+piperidine,C1CCNCC1,110-89-4,NIST,67.67,-47.15368,67.3803,-0.428,ok_<1%,,C5H11N Piperidine
+hexane,CCCCCC,110-54-3,NIST,77.93,-166.92,77.9287,-0.002,ok_<1%,,"C6H14,n-hexane"
+N-methylmorpholine,CN1CCOCC1,109-02-4,NIST,71.464,,,,n/a,not_in_burcat,
+SF,[S]F,,HH,3.36,,,,n/a,no_cas,
+Chlorodifluoromethane,C(F)(F)Cl,75-45-6,ATcT_0K,17.3838,-475.0,17.5129,0.743,ok_<1%,,CHCLF2  HCFC-22
+CH4,C,74-82-8,ATcT,17.04,-74.6,17.2386,1.165,warn_1-2%,,CH4   ANHARMONIC
+3-methylpentane,CCC(C)CC,96-14-0,NIST,77.983,-170.02520800000002,77.9608,-0.028,ok_<1%,,C6H14 3-MethylPe
+1-pentyne,CCCC#C,627-19-0,NIST,53.719,144.30616,53.7188,,ok_<1%,,C5H8 1-Pentyne
+"1,2-dichloropropane",CC(CCl)Cl,78-87-5,NIST,40.05,,,,n/a,not_in_burcat,
+"1,2-dichloroethane",C(CCl)Cl,107-06-2,NIST,27.753,-125.4,27.7074,-0.164,ok_<1%,,"1,2-DiChloroethan"
+"1,2-dichloroethane",ClCCCl,107-06-2,NIST,27.753,-125.4,27.7074,-0.164,ok_<1%,,"1,2-DiChloroethan"
+CHF3,FC(F)F,75-46-7,NIST,19.341,-693.2887999999999,19.3408,-0.001,ok_<1%,,CHF3  FLUOROFORM
+indene,C1=Cc2ccccc2C1,95-13-6,NIST,83.233,164.13832,83.2247,-0.01,ok_<1%,,C9H8 INDENE
+CF3Me,CC(F)(F)F,420-46-2,NIST,31.54,-745.5888,31.8295,0.918,ok_<1%,,C2H3F3  FC-143A
+acetal,CCOC(OCC)C,105-57-7,NIST,86.028,,,,n/a,not_in_burcat,
+NS,[N]=S,,HH,4.85,,,,n/a,no_cas,
+tert-butylamine,CC(C)(C)N,75-64-9,NIST,60.717,,,,n/a,not_in_burcat,
+allyl_alcohol,OCC=C,107-18-6,NIST,39.713,-123.645568,39.704,-0.023,ok_<1%,,C3H5OH  Propenol
+NF3,FN(F)F,7783-54-2,ATcT,8.59,-131.7,8.7321,1.654,warn_1-2%,,NF3
+isoxazole,C1=NOC=C1,288-14-2,NIST,35.729,78.58,35.7289,,ok_<1%,,C3H3ON Isozazole
+2-ethylhexanol,CCCCC(CC)CO,104-76-7,NIST,106.46,,,,n/a,not_in_burcat,
+allyl_alcohol,C=CCO,107-18-6,NIST,39.713,-123.645568,39.704,-0.023,ok_<1%,,C3H5OH  Propenol
+"2,2-dimethylbutane",CCC(C)(C)C,75-83-2,NIST,78.126,-184.125288,78.107,-0.024,ok_<1%,,"C6H14 2,2-DMButan"
+BrF,FBr,13863-59-7,JANAF,2.55,-58.85,2.5921,1.651,warn_1-2%,,BrF
+CH3F,CF,593-53-3,ATcT,18.1,-236.577,17.4807,-3.422,fail_>2%,,CH3F   FC-41
+mesityl_oxide,CC(=CC(=O)C)C,141-79-7,NIST,71.625,,,,n/a,not_in_burcat,
+cumene,CC(C)C1=CC=CC=C1,98-82-8,NIST,93.922,3.9,93.923,0.001,ok_<1%,,C9H12 IsoPropBenz
+diacetyl,CC(=O)C(=O)C,431-03-8,NIST,51.804,-323.724,51.7881,-0.031,ok_<1%,,C4H6O2 Diacetyl
+Dihydrogen,[HH],1333-74-0,ATcT_0K,4.4634,,4.5188,1.241,warn_1-2%,,H2 REF ELEMENT
+methyl_salicylate,COC(=O)C1=CC=CC=C1O,119-36-8,NIST,89.77,,,,n/a,not_in_burcat,
+C2F6,FC(F)(F)C(F)(F)F,76-16-4,NIST,33.722,-1351.52,33.7995,0.23,ok_<1%,,C2F6    FC-116
+diisopropylamine,CC(C)NC(C)C,108-18-9,NIST,84.852,,,,n/a,not_in_burcat,
+2-acetylpyridine,CC(=O)c1ccccn1,1122-62-9,NIST,75.92,-47.4,75.7836,-0.18,ok_<1%,,C7H7ON AcetylPyrid
+1-butanol,CCCCO,71-36-3,NIST,57.734,-275.981,57.7483,0.025,ok_<1%,,C4H10O n-butanol
+diglyme,COCCOC,110-71-4,NIST,60.99,,,,n/a,not_in_burcat,
+pyrazine,C1=CN=CC=N1,290-37-9,NIST,46.515,195.81119999999999,46.5175,0.005,ok_<1%,,C4H4N2 PYRAZINE
+23DMbut,CC(C)C(C)C,79-29-8,NIST,78.03,-175.94138400000003,78.0222,-0.01,ok_<1%,,"C6H14 2,3-DiMeth"
+cyclopentanol,OC1CCCC1,96-41-3,NIST,64.824,-243.0,64.8343,0.016,ok_<1%,,C5H9OH  Cyclopen
+CP,[C]=[P],,HH,5.33,,,,n/a,no_cas,
+catechol,C1=CC=C(C(=C1)O)O,120-80-9,NIST,66.114,-277.8,66.1679,0.081,ok_<1%,,"C6H6O2  1,2-Cate"
+ScO,[Sc]=O,,CRC,6.96,,,,n/a,no_cas,
+cyclohexanone,C1CCC(=O)CC1,108-94-1,NIST,72.087,,,,n/a,not_in_burcat,
+VF2,F[V]F,,JANAF,12.945,,,,n/a,no_cas,
+OCl,[O]Cl,,HH,2.75,,,,n/a,no_cas,
+ClO,[Cl][O],,HH,2.75,,,,n/a,no_cas,
+benzonitrile,C1=CC=C(C=C1)C#N,100-47-0,NIST,65.956,213.06601600000002,65.9827,0.041,ok_<1%,,C7H5N   PhenylCN
+triethylamine,CCN(CC)CC,121-44-8,NIST,84.315,-96.7,84.3592,0.052,ok_<1%,,C6H15N (C2H5)3N
+phenol,Oc1ccccc1,108-95-2,NIST,60.83,-96.4,61.7052,1.439,warn_1-2%,,C6H6O  Phenol
+CH3CHO,CC=O,75-07-0,ATcT,28.02,-170.7,28.245,0.803,ok_<1%,,CH3CHO
+isobutanol,CC(C)CO,78-83-1,NIST,57.83,-285.529,57.8472,0.03,ok_<1%,,C4H10O Isobutanol
+delta_valerolactone,O=C1CCCCO1,542-28-9,NIST,64.349,,,,n/a,not_in_burcat,
+BH,[B][H],,HH,3.42,,,,n/a,no_cas,
+hydroquinone,C1=CC(=CC=C1O)O,123-31-9,NIST,66.039,,,,n/a,not_in_burcat,
+Fluorotrichloromethane,C(F)(Cl)(Cl)Cl,75-69-4,ATcT_0K,14.83,-290.67,15.0348,1.381,warn_1-2%,,CCL3F   FC-11
+"1,2,3-trimethylbenzene",Cc1cccc(C)c1C,526-73-8,NIST,94.062,,,,n/a,not_in_burcat,
+styrene_oxide,C1(CO1)C2=CC=CC=C2,96-09-3,NIST,79.843,,,,n/a,not_in_burcat,
+EtSH,CCS,75-08-1,NIST,31.76,-43.513600000000004,31.7357,-0.076,ok_<1%,,C2H6S ethane thi
+cis_1_2_Dibromoethene,C(=C\Br)\Br,590-11-4,ATcT_0K,20.2872,,,,n/a,not_in_burcat,
+1_2_Dibromoethene,C(=CBr)Br,540-49-8,ATcT_0K,20.2872,,,,n/a,not_in_burcat,
+Nitrous_acid,N(=O)O,7782-77-6,ATcT_0K,12.9725,-77.608,13.1279,1.198,warn_1-2%,,HNO2 equil  ATcT
+furan,c1ccoc1,110-00-9,NIST,41.09,-34.158176,41.6856,1.45,warn_1-2%,,C4H4O Furan  HF2
+pyrimidine,C1=CN=CN=C1,289-95-2,NIST,46.518,196.648,46.5089,-0.02,ok_<1%,,C4H4N2 PYRIMIDINE
+trans_1_2_Dibromoethene,C(=C/Br)\Br,,ATcT_0K,20.2851,,,,n/a,no_cas,
+"1,2-dibromoethane",BrCCBr,106-93-4,NIST,26.616,-37.5,26.6009,-0.057,ok_<1%,,"1,2-DiBROMOETHAN"
+NOBr,BrN=O,13444-87-6,JANAF,7.791,,,,n/a,not_in_burcat,
+diallyl_sulfide,C=CCSCC=C,592-88-1,Pedley1986,69.34,,,,n/a,not_in_burcat,
+biphenyl,C1=CC=C(C=C1)C2=CC=CC=C2,92-52-4,NIST,109.842,,,,n/a,not_in_burcat,
+anisole,COC1=CC=CC=C1,100-66-3,NIST,73.357,-75.1,73.4311,0.101,ok_<1%,,C7H8O C6H5O-CH3
+MeCN,CC#N,75-05-8,NIST,25.77,74.04,25.7655,-0.017,ok_<1%,,CH3CN Methyl-Cya
+Br2,BrBr,7726-95-6,ATcT,1.971,30.88,1.9989,1.413,warn_1-2%,,Br2 Dibromine
+Au2,[Au][Au],,Morse2019,2.29,,,,n/a,no_cas,
+"1,2,4-trimethylbenzene",Cc1ccc(C)c(C)c1,95-63-6,NIST,94.107,-13.932720000000002,94.1079,0.001,ok_<1%,,C9H12  1-2-4-TMB
+propane,CCC,74-98-6,NIST,41.44,-104.68368,41.4437,0.009,ok_<1%,,C3H8
+SiO,[Si]#[O],10097-28-6,ATcT,8.26,-102.223488,,,n/a,smiles_parse_failed,SiO gas
+NaI,[Na]I,7681-82-5,JANAF,3.04,,,,n/a,not_in_burcat,
+S2,[S]=[S],23550-45-0,ATcT,4.369,128.6,4.4125,0.995,ok_<1%,,S2
+Difluorobromomethane,C(F)(F)Br,1511-62-2,ATcT_0K,16.6348,-422.0,16.8659,1.389,warn_1-2%,,CHBRF2  HBFC-22B1
+hexanal,CCCCCC=O,66-25-1,NIST,76.83,,,,n/a,not_in_burcat,
+heptane,CCCCCCC,142-82-5,NIST,90.09,-187.78,90.0915,0.002,ok_<1%,,C7H16 n-heptane
+spiropentane,C1CC11CC1,157-40-4,NIST,53.295,,,,n/a,not_in_burcat,
+"2,4-dimethylpentane",CC(C)CC(C)C,108-08-7,NIST,90.236,,,,n/a,not_in_burcat,
+2-butene_trans,CC=CC,107-01-7,NIST,47.903,,,,n/a,not_in_burcat,
+"1,1,1-trifluoroacetone",CC(=O)C(F)(F)F,421-50-1,NIST,42.632,,,,n/a,not_in_burcat,
+2-methylhexane,CCCCC(C)C,591-76-4,NIST,90.162,,,,n/a,not_in_burcat,
+C2H2,C#C,74-86-2,ATcT,17.07,228.2,17.0094,-0.355,ok_<1%,,"C2H2,acetylene"
+cyclopentanone,O=C1CCCC1,120-92-3,NIST,59.788,-194.8,59.816,0.047,ok_<1%,,C5H8O
+"1,3,5-trimethylbenzene",Cc1cc(C)cc(C)c1,108-67-8,NIST,94.131,-17.1544,94.1413,0.011,ok_<1%,,C9H12  1-3-5-TMB
+CHFCl2,FC(Cl)Cl,75-43-4,NIST,15.977,-284.93039999999996,15.9775,0.003,ok_<1%,,CHFCL2   FC-21
+ethylbenzene,CCc1ccccc1,100-41-4,NIST,81.708,29.9156,81.7068,-0.002,ok_<1%,,C8H10  C6H5C2H5
+3-methylhexane,CCCC(C)CC,589-34-4,NIST,90.128,,,,n/a,not_in_burcat,
+glyoxylic_acid,OC(=O)C=O,298-12-4,NIST,32.025,-112.7,28.2903,-11.662,fail_>2%,,O=COH-CH=O Glyox
+chloroform,ClC(Cl)Cl,67-66-3,NIST,14.527,-102.928,14.5256,-0.01,ok_<1%,,CHCL3 Chloroform
+MEK,CC(=O)CC,78-93-3,NIST,52.84,-239.793408,52.8544,0.027,ok_<1%,,C4H8O 2-Butanone
+"1,4-dioxane",C1COCCO1,123-91-1,NIST,56.22,-318.0,56.2476,0.049,ok_<1%,,C4H8O2  Dioxane
+C2,[C]#[C],,Bao2021,6.248,,,,n/a,no_cas,
+EtCl,CCCl,75-00-3,NIST,28.57,-109.62,28.546,-0.084,ok_<1%,,C2H5CL
+ClF,FCl,7790-89-8,JANAF,2.62,-50.292,2.6012,-0.719,ok_<1%,,CLF
+LiCl,[Li]Cl,7447-41-8,CCCBDB,4.9,-193.779,4.9166,0.339,ok_<1%,,LiCL
+HOCl,ClO,7790-92-3,ATcT,6.871,-74.51,6.8714,0.006,ok_<1%,,HOCL
+NF,[N]F,,HH,3.47,,,,n/a,no_cas,
+2-butanone,CCC(=O)C,78-93-3,NIST,52.846,-239.793408,52.8544,0.016,ok_<1%,,C4H8O 2-Butanone
+3-cyanopyridine,N#Cc1cccnc1,100-54-9,NIST,60.523,,,,n/a,not_in_burcat,
+3-ethylpentane,CCC(CC)CC,617-78-7,NIST,90.11,,,,n/a,not_in_burcat,
+naphthalene,c1ccc2ccccc2c1,91-20-3,NIST,89.15,,,,n/a,not_in_burcat,
+diethyl_sulfoxide,CCS(=O)CC,70-29-1,NIST,59.885,,,,n/a,not_in_burcat,
+furfural,O=CC1=CC=CO1,98-01-1,NIST,52.907,-149.6,52.8925,-0.027,ok_<1%,,C5H4O2  Furfural
+THT,C1CCSC1,110-01-0,NIST,50.83,-30.702,50.9774,0.29,ok_<1%,,C4H8S T.H.Thiophen
+Hydrogen_fluoride,F,7664-39-3,ATcT_0K,5.8661,-272.71,5.9085,0.724,ok_<1%,,HF Hydrogen fluo
+"2,3-dimethylpentane",CC(C)C(C)CC,565-59-3,NIST,90.157,,,,n/a,not_in_burcat,
+Et2O,CCOCC,60-29-7,NIST,57.5,-252.7,57.507,0.012,ok_<1%,,C4H10O DEE DiEth
+"3,3-dimethylpentane",CCC(C)(C)CC,562-49-2,NIST,90.231,-199.28392000000002,90.2107,-0.022,ok_<1%,,C7H16 NeoHeptane
+O2,O=O,7782-44-7,ATcT,5.116,,5.1651,0.96,ok_<1%,,O2 REF ELEMENT
+SOBr2,BrS(Br)=O,507-16-4,Gurvich,8.707,,,,n/a,not_in_burcat,
+2-butanol,CCC(O)C,78-92-2,NIST,57.922,-295.332,57.9488,0.046,ok_<1%,,2-C4H10O 2-Butan
+dimethyl_disulfide,CSSC,624-92-0,NIST,34.408,-24.14168,34.4076,-0.001,ok_<1%,,C2H6S2 (CH3SSCH3)
+N-methylformamide,CNC=O,123-39-7,NIST,35.614,,,,n/a,not_in_burcat,
+2-butanol,CCC(C)O,78-92-2,NIST,57.923,-295.332,57.9488,0.045,ok_<1%,,2-C4H10O 2-Butan
+Tetrachloromethane,C(Cl)(Cl)(Cl)Cl,56-23-5,ATcT_0K,13.2588,,,,n/a,not_in_burcat,
+"1,2-epoxybutane",CCC1CO1,106-88-7,NIST,51.323,-115.93864,51.5708,0.483,ok_<1%,,C4H8O  Ethyl OXY
+BS,[B]#[S],,HH,5.8,,,,n/a,no_cas,
+2-methylfuran,Cc1ccco1,534-22-5,NIST,54.07,-78.316,54.0899,0.037,ok_<1%,,C5H6O 2-Me Furan
+anthracene,C1=CC2=CC3=CC=CC=C3C=C2C=C1,120-12-7,NIST,124.191,208.3,124.4251,0.189,ok_<1%,,C14H10  Anthrace
+BeF2,F[Be]F,7787-49-7,CCCBDB,13.17,,,,n/a,not_in_burcat,
+diethylamine,CCNCC,109-89-7,NIST,60.74,,,,n/a,not_in_burcat,
+2-methyl-2-butene,CC=C(C)C,513-35-9,NIST,60.166,-39.794024,60.1457,-0.034,ok_<1%,,C5H10  2-MB-2ene
+Dibromofluorochloromethane,C(F)(Cl)(Br)Br,353-55-9,ATcT_0K,13.4937,-187.44,13.7694,2.043,fail_>2%,,CFCLBr2
+BN,[B]=[N],,CRC/Luo,3.9,,,,n/a,no_cas,
+Dibromomethane,C(Br)Br,74-95-3,ATcT_0K,13.8914,3.2,14.2324,2.455,fail_>2%,,CH2Br2
+HF,[H]F,7664-39-3,ATcT,5.869,-272.71,5.9085,0.674,ok_<1%,,HF Hydrogen fluo
+acetylacetone,CC(=O)CC(=O)C,123-54-6,NIST,64.327,,,,n/a,not_in_burcat,
+tBuOH,CC(C)(C)O,75-65-0,NIST,58.13,,,,n/a,not_in_burcat,
+fluorene,C1=CC=C2C(=C1)CC3=CC=CC=C32,86-73-7,NIST,117.312,177.5,117.3165,0.004,ok_<1%,,C13H10  Fluorene
+TMP,CP(C)C,594-09-2,NIST,46.01,-101.1,46.9462,2.035,fail_>2%,,C3H9P  TriMethyl
+octane,CCCCCCCC,111-65-9,NIST,102.25,-208.75,102.2555,0.005,ok_<1%,,"C8H18,n-octane"
+Dichloromethane,C(Cl)Cl,75-09-2,ATcT_0K,15.2319,-90.67,15.4008,1.109,warn_1-2%,,CH2CL2
+o-xylene,Cc1ccccc1C,95-47-6,NIST,81.819,19.0,81.8199,0.001,ok_<1%,,C8H10   o-Di-Met
+CrO,[Cr]=O,196696-65-8,CRC,4.649,,,,n/a,not_in_burcat,
+"2,2,3-trimethylbutane",CC(C)C(C)(C)C,464-06-2,NIST,90.264,,,,n/a,not_in_burcat,
+CoO,[Co]=O,791121-04-5,CRC,3.94,296.3,3.9133,-0.677,ok_<1%,,COO  Dioxymethyl
+cHex,C1CCCCC1,110-82-7,NIST,72.96,-122.083,72.9452,-0.02,ok_<1%,,"C6H12,cyclo-"
+4-cyanopyridine,N#Cc1ccncc1,100-48-1,NIST,60.465,,,,n/a,not_in_burcat,
+Tribromofluoromethane,C(F)(Br)(Br)Br,353-54-8,ATcT_0K,12.6796,-132.3,13.1001,3.317,fail_>2%,,CBr3F
+p-xylene,Cc1ccc(C)cc1,106-42-3,NIST,81.831,18.03,81.83,-0.001,ok_<1%,,"C8H10 1,4-dimeth"
+Bromotrichloromethane,C(Cl)(Cl)(Cl)Br,75-62-7,ATcT_0K,12.5603,-46.74,12.8433,2.253,fail_>2%,,CBRCL3 Bromotric
+valeronitrile,CCCCC#N,110-59-8,NIST,62.269,,,,n/a,not_in_burcat,
+m-xylene,Cc1cccc(C)c1,108-38-3,NIST,81.839,,,,n/a,not_in_burcat,
+m-cresol,Cc1cccc(O)c1,108-39-4,NIST,74.024,,,,n/a,not_in_burcat,
+benzaldehyde,O=Cc1ccccc1,100-52-7,NIST,68.52,-39.18,68.54,0.029,ok_<1%,,C7H6O   C6H5-CHO
+di-n-butylamine,CCCCNCCCC,111-92-2,NIST,108.874,,,,n/a,not_in_burcat,
+thioanisole,CSc1ccccc1,100-68-5,NIST,72.207,,,,n/a,not_in_burcat,
+isobuten,C=C(C)C,115-11-7,NIST,47.96,-17.1,47.9638,0.008,ok_<1%,,C4H8  Isobuten
+Si2,[Si]=[Si],12597-35-2,HH,3.21,,,,n/a,not_in_burcat,
+EtSMe,CCSC,624-89-5,NIST,43.85,,,,n/a,not_in_burcat,
+ethanolamine,NCCO,141-43-5,NIST,40.216,,,,n/a,not_in_burcat,
+Cr2,[Cr][Cr],,Casey1993,1.53,,,,n/a,no_cas,
+isooctane,CC(C)CC(C)(C)C,85404-20-2,NIST,102.5,,,,n/a,not_in_burcat,
+crotonaldehyde,CC=CC=O,4170-30-3,NIST,46.915,,,,n/a,not_in_burcat,
+"1,1,1-trichloroethane",CC(Cl)(Cl)Cl,71-55-6,NIST,26.902,-140.42,26.8608,-0.153,ok_<1%,,CH3CCl3
+ScCl,[Sc]Cl,,CRC,4.62,,,,n/a,no_cas,
+"2,3-dimethylhexane",CCC(C)C(C)CC,583-48-2,NIST,102.309,,,,n/a,not_in_burcat,
+thioacetone,CC(=S)C,4756-05-2,NIST,38.96,,,,n/a,not_in_burcat,
+methylcyclohexane,CC1CCCCC1,108-87-2,NIST,85.23,,,,n/a,not_in_burcat,
+2-cyanopyridine,N#Cc1ccccn1,100-70-9,NIST,60.494,,,,n/a,not_in_burcat,
+"1,2-dichlorobenzene",C1=CC=C(C(=C1)Cl)Cl,95-50-1,NIST,55.806,26.5,55.8445,0.069,ok_<1%,,C6H4Cl2 o-Dichlo
+EtOMe,CCOC,540-67-0,NIST,45.18,-220.64324000000002,45.2281,0.106,ok_<1%,,C3H8O  CH3OC2H5
+"3,3-dimethylhexane",CCC(C)(C)CCC,563-16-6,NIST,102.372,,,,n/a,not_in_burcat,
+thiazole,C1=CSC=N1,288-47-1,NIST,35.511,151.494272,35.2633,-0.698,ok_<1%,,C3H3NS Thiazole
+acetaldehyde_dimethyl_acetal,CC(OC)OC,534-15-6,NIST,61.51,,,,n/a,not_in_burcat,
+bromobenzene,Brc1ccccc1,108-86-1,NIST,55.931,105.4368,55.9308,,ok_<1%,,C6H5Br Bromobenz
+iodoethane,CCI,75-03-6,NIST,27.343,-7.047,27.333,-0.036,ok_<1%,,C2H5I
+"1,3-butanediol",CC(O)CCO,107-88-0,NIST,61.959,,,,n/a,not_in_burcat,
+vinyl_acetate,CC(=O)OC=C,108-05-4,NIST,52.052,,,,n/a,not_in_burcat,
+"2,6-dimethylpyridine",Cc1cccc(C)n1,108-48-5,NIST,76.623,,,,n/a,not_in_burcat,
+CBr4,BrC(Br)(Br)Br,558-13-4,NIST,10.88,79.0776,11.2461,3.365,fail_>2%,,CBr4
+"2,4-dimethylhexane",CC(C)CCC(C)C,592-13-2,NIST,102.295,,,,n/a,not_in_burcat,
+TiCl4,[Ti](Cl)(Cl)(Cl)Cl,7550-45-0,JANAF,17.84,,,,n/a,not_in_burcat,
+"1,4-butanediol",OCCCCO,110-63-4,NIST,61.893,-491.91288,62.5688,1.092,warn_1-2%,,"C4H10O2 1,4 b.diol"
+nonane,CCCCCCCCC,111-84-2,NIST,114.4,-228.3,114.4047,0.004,ok_<1%,,C9H20 n-Nonane
+ZnF2,F[Zn]F,573640-07-0,JANAF,8.53,,,,n/a,not_in_burcat,
+cis-2-pentene,CCC=CC,109-68-2,NIST,60.012,,,,n/a,not_in_burcat,
+"2,3-dimethyl-2-butene",CC(=C(C)C)C,563-79-1,NIST,72.386,,,,n/a,not_in_burcat,
+2butyne,CC#CC,503-17-3,NIST,41.44,145.767,41.757,0.765,ok_<1%,,C4H6 Dimethyl Ac
+AlO,[Al]=O,14457-64-8,HH,5.27,66.9,5.3094,0.748,ok_<1%,,ALO
+propene,CC=C,115-07-1,NIST,35.63,20.41792,35.6283,-0.005,ok_<1%,,C3H6 propylene
+methyl_methacrylate,COC(=O)C(=C)C,80-62-6,NIST,64.028,-336.1,63.863,-0.258,ok_<1%,,C5H8O2 MeMeAcrilat
+FeCl2,Cl[Fe]Cl,7758-94-3,JANAF,8.29,,,,n/a,not_in_burcat,
+isoxazole,c1conc1,288-14-2,NIST,35.729,78.58,35.7289,,ok_<1%,,C3H3ON Isozazole
+TiF2,F[Ti]F,13814-20-5,JANAF,13.678,,,,n/a,not_in_burcat,
+AlCl2,Cl[Al]Cl,,JANAF,8.837,,,,n/a,no_cas,
+biphenyl,c1ccc(-c2ccccc2)cc1,92-52-4,NIST,109.843,,,,n/a,not_in_burcat,
+decane,CCCCCCCCCC,124-18-5,NIST,126.62,-249.53376,126.5715,-0.038,ok_<1%,,N-C10H22 DECANE
+methyl_vinyl_ketone,C=CC(=O)C,78-94-4,NIST,46.887,-109.20240000000001,46.9822,0.203,ok_<1%,,C4H6O cis MVK
+TiH,[Ti][H],,3dMLBE20,2.08,,,,n/a,no_cas,
+acetophenone,CC(=O)c1ccccc1,98-86-2,NIST,80.98,-86.7,80.9792,-0.001,ok_<1%,,C8H8O   Acetophe
+1-iodopropane,CCCI,107-08-4,NIST,39.517,,,,n/a,not_in_burcat,
+ethyl_acrylate,CCOC(=O)C=C,140-88-5,NIST,64.049,,,,n/a,not_in_burcat,
+pyrazole,C1=CNN=C1,288-13-1,NIST,40.027,181.0,39.2432,-1.958,warn_1-2%,,"1,2-C3H4N2 Pyrazol"
+CH3I,CI,74-88-4,NIST,15.1,14.3,15.1651,0.431,ok_<1%,,CH3I
+ethylene_oxide,C1CO1,75-21-8,NIST,26.95,-52.681,27.0219,0.267,ok_<1%,,C2H4O OXYRANE
+MgO,[Mg]=O,1309-48-4,HH,3.53,32.25,3.7729,6.881,fail_>2%,,MgO
+"1,1,2-trichloroethane",ClCC(Cl)Cl,79-00-5,NIST,26.877,,,,n/a,not_in_burcat,
+CH2Br2,BrCBr,74-95-3,NIST,14.09,3.2,14.2324,1.011,warn_1-2%,,CH2Br2
+aniline,Nc1ccccc1,62-53-3,NIST,63.91,87.04,64.3798,0.735,ok_<1%,,C6H7N Aniline
+2-methyl-1-butene,CCC(=C)C,563-46-2,NIST,60.098,-33.923872,60.0848,-0.022,ok_<1%,,C5H10  2MB-1ene
+crotonic_acid,CC=CC(=O)O,503-64-0,NIST,51.967,,,,n/a,not_in_burcat,
+CH2Cl2,ClCCl,75-09-2,NIST,15.45,-90.67,15.4008,-0.319,ok_<1%,,CH2CL2
+DMF,CN(C)C=O,68-12-2,NIST,47.84,,,,n/a,not_in_burcat,
+KF,[K]F,7789-23-3,ATcT,5.144,,,,n/a,not_in_burcat,
+acetone,CC(C)=O,67-64-1,NIST,40.57,-217.1496,40.6731,0.254,ok_<1%,,C3H6O Acetone
+Na2,[Na][Na],25681-79-2,HH,0.735,,,,n/a,not_in_burcat,
+MgF2,F[Mg]F,7783-40-6,JANAF,10.85,-735.5,10.7929,-0.526,ok_<1%,,MgF2
+chlorobenzene,Clc1ccccc1,108-90-7,NIST,56.583,54.4,56.5575,-0.045,ok_<1%,,C6H5Cl chloroben
+formamide,C(=O)N,75-12-7,NIST,23.615,-189.6398,23.6531,0.161,ok_<1%,,CH3NO     O=CH-N
+Dichlorofluorobromomethane,C(F)(Cl)(Cl)Br,353-58-2,ATcT_0K,14.1793,-239.97,14.4115,1.638,warn_1-2%,,CBrCL2F
+BCl,[B]Cl,20583-55-5,HH,5.17,183.17,5.2146,0.862,ok_<1%,,BCL
+CS,[C]#[S],,HH,7.36,,,,n/a,no_cas,
+diethyl_disulfide,CCSSCC,110-81-6,NIST,58.827,,,,n/a,not_in_burcat,
+HBr,[H]Br,10035-10-6,ATcT,3.76,-36.29,3.795,0.93,ok_<1%,,HBr Hydrogen bro
+gamma-butyrolactone,O=C1CCCO1,96-48-0,NIST,52.216,,,,n/a,not_in_burcat,
+methyl_benzoate,COC(=O)C1=CC=CC=C1,93-58-3,NIST,85.647,-273.45,85.4973,-0.175,ok_<1%,,C8H8O2 MeBenzoate
+formamid,NC=O,75-12-7,NIST,23.62,-189.6398,23.6531,0.14,ok_<1%,,CH3NO     O=CH-N
+acrylN,C=CC#N,107-13-1,NIST,32.04,183.6776,32.0571,0.053,ok_<1%,,C3H3N  CH2=CHCN
+N-ethylaniline,CCNC1=CC=CC=C1,103-69-5,NIST,88.605,,,,n/a,not_in_burcat,
+1butene,C=CCC,106-98-9,NIST,47.79,-0.544,47.7922,0.005,ok_<1%,,1-C4H8  1-buten
+SiCl4,Cl[Si](Cl)(Cl)Cl,10026-04-7,NIST-derived,16.5,-662.2,16.5559,0.339,ok_<1%,,SiCL4
+OH,[O][H],,ATcT,4.392,,,,n/a,no_cas,
+undecane,CCCCCCCCCCC,1120-21-4,NIST,138.734,-270.2864,138.7332,-0.001,ok_<1%,,N-UNDECANE
+2-ethylpyridine,CCc1ccccn1,100-71-0,NIST,76.448,,,,n/a,not_in_burcat,
+Hydrogen_bromide,Br,10035-10-6,ATcT_0K,3.6871,-36.29,3.795,2.925,fail_>2%,,HBr Hydrogen bro
+cyclohexylamine,NC1CCCCC1,108-91-8,NIST,79.917,,,,n/a,not_in_burcat,
+butyl_acetate,CCCCOC(=O)C,123-86-4,NIST,81.875,,,,n/a,not_in_burcat,
+"2-methyl-1,3-propanediol",OCC(C)CO,2163-42-0,NIST,62.043,,,,n/a,not_in_burcat,
+1-PrOH,CCCO,71-23-8,NIST,45.59,-255.2,45.5862,-0.008,ok_<1%,,C3H8O 1propanol
+Mn2O3_frag,O=[Mn]O[Mn]=O,1317-34-6,Gurvich,18.956,,,,n/a,not_in_burcat,
+HOBr,BrO,13517-11-8,ATcT,6.582,-58.283120000000004,6.6055,0.357,ok_<1%,,HOBr Hypobromous
+acenaphthene,C1CC2=CC=CC3=C2C1=CC=C3,83-32-9,NIST,110.112,,,,n/a,not_in_burcat,
+gamma-butyrolactone,C1CC(=O)OC1,96-48-0,NIST,52.216,,,,n/a,not_in_burcat,
+SiH4,[SiH4],7803-62-5,ATcT,12.94,34.27,13.3463,3.14,fail_>2%,,SiH4  Silane
+2-methylpyridine,Cc1ccccn1,109-06-8,NIST,64.254,,,,n/a,not_in_burcat,
+caprolactam,C1CCC(=O)NCC1,105-60-2,NIST,79.182,,,,n/a,not_in_burcat,
+Fluorochlorobromomethane,C(F)(Cl)Br,593-98-6,ATcT_0K,15.0749,-229.95,15.3099,1.559,warn_1-2%,,CHFCLBr
+Cyclopropanone,C1CC1=O,5009-27-8,ATcT_0K,33.3172,,,,n/a,not_in_burcat,
+pyruvic_acid,CC(=O)C(=O)O,127-17-3,NIST,43.049,,,,n/a,not_in_burcat,
+NMA2,CC(=O)NC,79-16-3,NIST,48.15,,,,n/a,not_in_burcat,
+trimethylacetic_acid,CC(C)(C)C(=O)O,75-98-9,NIST,69.99,-507.1,70.1541,0.234,ok_<1%,,C5H10O2 Pivalic ac
+thiophenol,C1=CC=C(C=C1)S,108-98-5,NIST,59.843,107.654,59.8804,0.063,ok_<1%,,C6H6S  Phenyl-SH
+4-methylpyridine,Cc1ccncc1,108-89-4,NIST,64.203,,,,n/a,not_in_burcat,
+dodecane,CCCCCCCCCCCC,112-40-3,NIST,150.894,-290.87167999999997,150.8932,-0.001,ok_<1%,,N-DODECANE
+SCl,[S]Cl,,HH,2.68,,,,n/a,no_cas,
+HCFC_141b,CC(F)(Cl)Cl,1717-00-6,NIST,28.484,,,,n/a,not_in_burcat,
+Trimethylsilyl,C[Si](C)C,16571-41-8,ATcT_0K,46.4011,136.3984,45.8684,-1.148,warn_1-2%,,C3H9Si (CH3)3Si
+tetrahydrofurfuryl_alcohol,OCC1CCCO1,97-99-4,NIST,69.414,,,,n/a,not_in_burcat,
+dimethoxymethane,COCOC,109-87-5,NIST,49.136,-349.48952,49.1461,0.02,ok_<1%,,CH3-O-CH2-O-CH3
+CrF2,F[Cr]F,10049-10-2,JANAF,11.36,,,,n/a,not_in_burcat,
+methylcycloheptane,CC1CCCCCC1,4126-78-7,NIST,97.178,,,,n/a,not_in_burcat,
+3-methyl-1-butene,CC(C)C=C,563-45-1,NIST,60.019,-28.141584,60.0249,0.01,ok_<1%,,C5H10  2MB-3ene
+3-methylpyridine,Cc1cccnc1,108-99-6,NIST,64.18,,,,n/a,not_in_burcat,
+Dichlorodibromomethane,C(Cl)(Cl)(Br)Br,594-18-3,ATcT_0K,11.8866,3.39,12.226,2.856,fail_>2%,,CBr2Cl2  DiBromo
+VH,[V][H],,3dMLBE20,2.13,,,,n/a,no_cas,
+acrylamide,C=CC(=O)N,79-06-1,NIST,42.382,,,,n/a,not_in_burcat,
+VO,[V]=O,12035-98-2,JANAF,6.545,,,,n/a,not_in_burcat,
+1penten,C=CCCC,109-67-1,NIST,59.95,-21.28,59.9538,0.006,ok_<1%,,"C5H10,1-pentene"
+p-chlorotoluene,Cc1ccc(Cl)cc1,106-43-4,NIST,69.143,,,,n/a,not_in_burcat,
+1-pentene,CCCC=C,109-67-1,NIST,59.954,-21.28,59.9538,,ok_<1%,,"C5H10,1-pentene"
+ScH,[Sc][H],,3dMLBE20,2.06,,,,n/a,no_cas,
+methylcyclopentane,CC1CCCC1,96-37-7,NIST,72.781,-105.855,72.777,-0.006,ok_<1%,,C6H12 MeCyPentane
+EtF,CCF,353-36-6,NIST,29.7,-261.5,29.6857,-0.048,ok_<1%,,C2H5F
+IBr,Br[I],7789-33-5,HH,1.817,40.768,1.8442,1.499,warn_1-2%,,BrI
+cycloheptane,C1CCCCCC1,291-64-5,NIST,84.851,-115.60392,84.8247,-0.031,ok_<1%,,C7H14 CycloHeptan
+cC4H8,C1CCC1,287-23-0,NIST,47.49,28.4,47.4922,0.005,ok_<1%,,C4H8 Cyclobutan
+"N,N-dimethylaniline",CN(C)C1=CC=CC=C1,121-69-7,NIST,88.134,,,,n/a,not_in_burcat,
+ethyl_vinyl_ether,CCOC=C,109-92-2,NIST,51.822,,,,n/a,not_in_burcat,
+benzoic_acid,C1=CC=C(C=C1)C(=O)O,65-85-0,NIST,73.764,-299.34428,73.819,0.075,ok_<1%,,C7H6O2  C6H5-COOH
+quinazoline,c1ccc2ncncc2c1,253-82-7,NIST,80.258,,,,n/a,not_in_burcat,
+2_Cyclopropen_1_imine,C1=CC1=N,31589-17-0,ATcT_0K,29.5484,,,,n/a,not_in_burcat,
+POBr3,BrP(Br)(Br)=O,7789-59-5,Gurvich,13.083,,,,n/a,not_in_burcat,
+quinoxaline,c1ccc2nccnc2c1,91-19-0,NIST,80.287,,,,n/a,not_in_burcat,
+Bromodichloromethane,C(Cl)(Cl)Br,75-27-4,ATcT_0K,13.614,-51.48,13.8947,2.061,fail_>2%,,CHBrCL2  FC-20B1
+Nitric_acid,[N+](=O)(O)[O-],7697-37-2,ATcT_0K,16.0815,134.3,13.5142,-15.965,fail_>2%,,HNO3
+Benzene,C1=CC=CC=C1,71-43-2,ATcT_0K,56.6295,,,,n/a,not_in_burcat,
+acetone,CC(=O)C,67-64-1,NIST,40.673,-217.1496,40.6731,,ok_<1%,,C3H6O Acetone
+BrF3,F[Br](F)F,7787-71-5,JANAF,6.277,-255.6,,,n/a,smiles_parse_failed,BrF3
+PF,[P]F,,HH,4.47,,,,n/a,no_cas,
+indene,C1C=CC2=CC=CC=C21,95-13-6,NIST,83.261,164.13832,83.2247,-0.044,ok_<1%,,C9H8 INDENE
+CH2NH,C=N,27770-42-9,ATcT,18.11,316.0,15.8299,-12.59,fail_>2%,,CH3N Methyl-N Rad
+NaCl,[Na]Cl,7647-14-5,ATcT,4.23,-181.545,4.2529,0.542,ok_<1%,,NaCL
+dicyanog,N#CC#N,460-19-5,NIST,21.45,,,,n/a,not_in_burcat,
+DME,COC,115-10-6,NIST,32.9,-184.05,32.9022,0.007,ok_<1%,,C2H6O  CH3OCH3 A
+1-hexene,CCCCC=C,592-41-6,NIST,72.112,-39.409096000000005,72.0883,-0.033,ok_<1%,,C6H12 1-Hexene
+HCN,C#N,74-90-8,ATcT,13.39,132.0,13.2182,-1.283,warn_1-2%,,HCN
+2-PrOH,CC(O)C,67-63-0,NIST,45.77,-274.5,45.7863,0.036,ok_<1%,,C3H8O 2propanol
+K2,[K][K],,HH,0.514,,,,n/a,no_cas,
+1-methylcyclohexene,CC1=CCCCC1,591-49-1,NIST,79.471,,,,n/a,not_in_burcat,
+HCl,[H]Cl,7647-01-0,ATcT,4.43,-92.31,4.4733,0.978,ok_<1%,,HCL
+NCl,[N]Cl,,Peterson1997,2.75,,,,n/a,no_cas,
+Nitrosyl_chloride,N(=O)Cl,2696-92-6,ATcT_0K,8.1107,52.524,8.1944,1.032,warn_1-2%,,NOCL
+cyclopentane,C1CCCC1,287-92-3,NIST,60.44,-77.1,60.5323,0.153,ok_<1%,,"C5H10,cyclo-"
+malononitrile,C(C#N)C#N,109-77-3,NIST,34.671,,,,n/a,not_in_burcat,
+KI,[K]I,7681-11-0,JANAF,3.31,,,,n/a,not_in_burcat,
+"N,N-dimethylurea",CN(C)C(=O)N,598-94-7,NIST,55.859,,,,n/a,not_in_burcat,
+PCl3,ClP(Cl)Cl,7719-12-2,NIST-derived,9.94,-283.2,9.987,0.473,ok_<1%,,CL3P
+salicylic_acid,OC1=CC=CC=C1C(=O)O,69-72-7,NIST,78.428,,,,n/a,not_in_burcat,
+cyclohexene,C1CCC=CC1,110-83-8,NIST,67.206,-4.6,67.2088,0.004,ok_<1%,,"C6H10,cyclo-"
+Fluorodichloromethane,C(F)(Cl)Cl,75-43-4,ATcT_0K,15.771,-284.93039999999996,15.9775,1.309,warn_1-2%,,CHFCL2   FC-21
+phthalazine,c1ccc2cnncc2c1,253-52-1,NIST,79.358,,,,n/a,not_in_burcat,
+maleimide,O=C1C=CC(=O)N1,541-59-3,NIST,48.938,,,,n/a,not_in_burcat,
+butyrN,CCCC#N,109-74-0,NIST,50.08,31.2,50.1028,0.046,ok_<1%,,C4H7N   PropylCN
+Hydrogen_chloride,Cl,7647-01-0,ATcT_0K,4.4322,-92.31,4.4733,0.928,ok_<1%,,HCL
+valeric_acid,CCCCC(=O)O,109-52-4,NIST,69.997,-493.71200000000005,70.0153,0.026,ok_<1%,,C5H10O2 Valeric ac
+guaiacol,COC1=CC=CC=C1O,90-05-1,NIST,77.378,-249.6,77.8222,0.574,ok_<1%,,C7H8O2  Guaiacol
+Pentatetraene,C=C=C=C=C,21986-03-8,ATcT_0K,41.1301,444.466,41.5703,1.07,warn_1-2%,,C5H4 TETRAENE
+dimethylphosphine,CPC,676-59-5,NIST,34.377,-55.0,34.5218,0.421,ok_<1%,,C2H7P  (CH3)2PH
+1-heptene,CCCCCC=C,25339-56-4,NIST,84.273,,,,n/a,not_in_burcat,
+Cyclobutene,C1CC=C1,822-35-5,ATcT_0K,41.0822,156.7,41.6437,1.367,warn_1-2%,,C4H6 cyclo-
+propyl_formate,CCCOC=O,110-74-7,NIST,57.177,,,,n/a,not_in_burcat,
+acenaphthylene,C1=CC2=C3C(=C1)C=CC3=CC=C2,208-96-8,NIST,104.505,,,,n/a,not_in_burcat,
+iodobenzene,IC1=CC=CC=C1,591-50-4,NIST,55.262,148.1136,55.4364,0.316,ok_<1%,,C6H5I Iodobenzen
+thioacetic_acid,CC(=O)S,507-09-5,NIST,31.162,,,,n/a,not_in_burcat,
+fluorobenzene,Fc1ccccc1,462-06-6,NIST,57.888,-115.8968,57.888,,ok_<1%,,C6H5F Fluorobenz
+pyridazine,C1=CC=NN=C1,289-80-5,NIST,45.663,,,,n/a,not_in_burcat,
+2_Fluoroethanol,C(CF)O,371-62-0,ATcT_0K,33.5057,-407.8,33.7845,0.832,ok_<1%,,FC2H4OH  ATcT C
+cyclooctane,C1CCCCCCC1,292-64-8,NIST,96.863,-124.4,96.8625,-0.001,ok_<1%,,C8H16 CyOctane
+N_Methylethanamine,CCNC,624-78-2,ATcT_0K,47.3295,,,,n/a,not_in_burcat,
+DMDSch,CSCSC,1618-26-4,NIST,46.73,,,,n/a,not_in_burcat,
+Chlorodibromomethane,C(Cl)(Br)Br,124-48-1,ATcT_0K,12.9481,-2.95,13.2939,2.671,fail_>2%,,CHCLBr2
+ClO2_rad,O=[Cl]=O,,JANAF,5.338,,,,n/a,no_cas,
+acrolein,O=CC=C,107-02-8,NIST,34.582,-68.065,34.6092,0.079,ok_<1%,,C3H4O  Acrolein
+AlBr3,Br[Al](Br)Br,7727-15-3,JANAF,11.304,-410.477,11.1529,-1.337,warn_1-2%,,ALBr3
+acrolein,C=CC=O,107-02-8,NIST,34.58,-68.065,34.6092,0.084,ok_<1%,,C3H4O  Acrolein
+3-hydroxypyridine,Oc1cccnc1,109-00-2,NIST,56.371,,,,n/a,not_in_burcat,
+p-dichlorobenzene,Clc1ccc(Cl)cc1,106-46-7,NIST,56.302,21.2,55.8994,-0.715,ok_<1%,,C6H4Cl2 p-Dichlo
+cyclopropene,C1C=C1,2781-85-3,NIST,28.449,277.19,28.4483,-0.003,ok_<1%,,C3H4  cyPropene
+methyl_butyrate,CCCC(=O)OC,623-42-7,NIST,69.625,-457.884,69.644,0.027,ok_<1%,,C5H10O2 Butyrate
+perfluoropropane,FC(F)(F)C(F)(F)C(F)(F)F,76-19-7,NIST,47.345,-1784.7,47.3624,0.037,ok_<1%,,C3F8 FC-218
+azetidine,C1CNC1,503-29-7,NIST,42.175,98.19848,41.9806,-0.461,ok_<1%,,C3H7N  AZETIDINE
+Hydrogen_isocyanide,[C-]#[NH+],6914-07-4,ATcT_0K,12.4988,192.39,12.5923,0.748,ok_<1%,,HNC
+methyl_acrylate,COC(=O)C=C,96-33-3,NIST,51.884,-333.0,51.8842,,ok_<1%,,C4H6O2 Metacrylat
+HI,[H]I,10034-85-2,ATcT,3.05,26.359,3.0935,1.427,warn_1-2%,,HI
+cyclodecane,C1CCCCCCCCC1,293-96-9,NIST,121.063,154.4,117.8662,-2.641,fail_>2%,,C10H20 CycloDecan
+"1,3-dioxolane",C1COCO1,646-06-0,NIST,44.462,,,,n/a,not_in_burcat,
+CHF2Cl,FC(F)Cl,75-45-6,NIST,17.603,-475.0,17.5129,-0.512,ok_<1%,,CHCLF2  HCFC-22
+Benzyl,[CH2]C1=CC=CC=C1,2154-56-5,ATcT_0K,64.8993,,,,n/a,not_in_burcat,
+m-dichlorobenzene,Clc1cccc(Cl)c1,541-73-1,NIST,56.334,20.9,55.9025,-0.766,ok_<1%,,C6H4Cl2 m-Dichlo
+"1,3-dioxane",C1COCOC1,505-22-6,NIST,56.887,,,,n/a,not_in_burcat,
+"1,3-propanediol",OCCCO,504-63-2,NIST,49.757,-407.94,49.7519,-0.01,ok_<1%,,"C3H8O2 1,3 p.diol"
+salicylaldehyde,OC1=CC=CC=C1C=O,90-02-8,NIST,72.22,,,,n/a,not_in_burcat,
+P2,[P]#[P],12185-09-0,ATcT,5.033,143.65,5.0718,0.77,ok_<1%,,P2
+2_Iodoethanol,C(CI)O,624-76-0,ATcT_0K,30.9735,-150.2,31.3993,1.375,warn_1-2%,,C2H5IO 2-Iodoeth
+NMA,CC(=O)N,60-35-5,NIST,36.26,,,,n/a,not_in_burcat,
+Fluorodibromomethane,C(F)(Br)Br,1868-53-7,ATcT_0K,14.3873,-179.5,14.6893,2.099,fail_>2%,,CHFBr2  FC-23
+hexafluorobenzene,C1(=C(C(=C(C(=C1F)F)F)F)F)F,392-56-3,NIST,59.778,-231.506,51.9029,-13.174,fail_>2%,,C6F6
+ZnO,[Zn]=O,174846-84-5,NIST,1.61,,,,n/a,not_in_burcat,
+TMA,CN(C)C,75-50-3,NIST,48.32,-23.6,47.7617,-1.155,warn_1-2%,,C3H9N  (CH3)3N
+Hydrogen_iodide,I,10034-85-2,ATcT_0K,3.0487,26.359,3.0935,1.47,warn_1-2%,,HI
+Naphthalene,C1=CC=C2C=CC=CC2=C1,91-20-3,ATcT_0K,89.8714,,,,n/a,not_in_burcat,
+diethyl_oxalate,CCOC(=O)C(=O)OCC,95-92-1,NIST,85.182,,,,n/a,not_in_burcat,
+diketene,C=CC(=O)OC=C,2177-18-6,NIST,57.934,,,,n/a,not_in_burcat,
+2-methoxyethanol,COCCO,109-86-4,NIST,49.43,,,,n/a,not_in_burcat,
+acrylic_acid,OC(=O)C=C,79-10-7,NIST,39.83,-326.051,39.8656,0.089,ok_<1%,,C3H4O2  CH2=CH-C
+AgF,[Ag]F,,Luo2007,3.54,,,,n/a,no_cas,
+H2S,S,7783-06-4,ATcT,7.45,20.5,7.179,-3.638,fail_>2%,,H2S anharmonic
+CaF,[Ca]F,,HH,5.29,,,,n/a,no_cas,
+Phenanthrene,C1=CC=C2C(=C1)C=CC3=CC=CC=C32,85-01-8,ATcT_0K,123.2118,,,,n/a,not_in_burcat,
+SiOCl2,Cl[Si](=O)Cl,73551-05-0,Gurvich,15.395,,,,n/a,not_in_burcat,
+CH,[C][H],,ATcT,3.465,,,,n/a,no_cas,
+paraldehyde,CC1OC(C)OC(C)O1,123-63-7,NIST,86.095,,,,n/a,not_in_burcat,
+CrF,[Cr]F,,CRC,4.56,,,,n/a,no_cas,
+methyl_vinyl_ether,COC=C,107-25-5,NIST,39.501,,,,n/a,not_in_burcat,
+12butadiene,C=C=CC,590-19-2,NIST,41.27,,,,n/a,not_in_burcat,
+propyl_acetate,CCCOC(=O)C,109-60-4,NIST,69.739,,,,n/a,not_in_burcat,
+12-crown-4,C1COCCOCCOCCO1,294-93-9,NIST,113.739,,,,n/a,not_in_burcat,
+difluorobromomethane,FC(F)Br,1511-62-2,NIST,16.887,-422.0,16.8659,-0.125,ok_<1%,,CHBRF2  HBFC-22B1
+Chlorofluoromethane,C(F)Cl,593-70-4,ATcT_0K,16.5502,-270.0,16.8249,1.66,warn_1-2%,,CH2CLF  GC-31
+SiH2F2,F[SiH2]F,39384-00-4,NIST,17.244,,,,n/a,not_in_burcat,
+p-fluorotoluene,Cc1ccc(F)cc1,352-32-9,NIST,70.521,,,,n/a,not_in_burcat,
+TiI4,[Ti](I)(I)(I)I,7720-83-4,JANAF,12.199,,,,n/a,not_in_burcat,
+ScOH,O[Sc],,Gurvich,11.369,,,,n/a,no_cas,
+styrene,C=Cc1ccccc1,100-42-5,NIST,74.85,147.9,75.9652,1.49,warn_1-2%,,C8H8  Styrene
+MePH2,PC,593-54-4,NIST,22.21,-14.104264,22.1513,-0.264,ok_<1%,,CH3PH2 MePhosphine
+"1,2-propanediol",CC(O)CO,57-55-6,NIST,49.89,,,,n/a,not_in_burcat,
+3_Dioxiranone,C1(=O)OO1,94660-13-6,ATcT_0K,16.7055,,,,n/a,not_in_burcat,
+KCl,[K]Cl,7447-40-7,NIST,4.43,,,,n/a,not_in_burcat,
+Ethoxy,CC[O],2154-50-9,ATcT_0K,28.4427,-11.47,28.8541,1.447,warn_1-2%,,C2H5O  CH3CH2O*
+Carbonic_acid,C(=O)(O)O,463-79-6,ATcT_0K,25.3439,-570.55,25.6077,1.041,warn_1-2%,,CH2O3  Carbonic
+MecPr,C1CC1C,594-11-6,NIST,47.8,,,,n/a,not_in_burcat,
+Propadienone,C=C=C=O,61244-93-7,ATcT_0K,27.7867,,,,n/a,not_in_burcat,
+methacrylonitrile,CC(=C)C#N,126-98-7,NIST,44.995,,,,n/a,not_in_burcat,
+benzonitrile,N#Cc1ccccc1,100-47-0,NIST,65.956,213.06601600000002,65.9827,0.041,ok_<1%,,C7H5N   PhenylCN
+pentafluoroethane,FC(F)C(F)(F)F,354-33-6,NIST,32.671,-1120.0,32.8367,0.507,ok_<1%,,C2HF5
+"1,3-dioxolane",C1OCOC1,646-06-0,NIST,44.529,,,,n/a,not_in_burcat,
+VinylCl,C=CCl,75-01-4,NIST,22.66,23.1,22.6517,-0.037,ok_<1%,,C2H3CL
+BO,[B]#[O],12505-77-0,HH,8.28,20.406,,,n/a,smiles_parse_failed,BO
+CCl,[C]Cl,,HH,3.96,,,,n/a,no_cas,
+cyclopentene,C1CC=CC1,142-29-0,NIST,54.863,33.9,54.8631,,ok_<1%,,C5H8  CycloPente
+Difluorodibromomethane,C(F)(F)(Br)Br,75-61-6,ATcT_0K,15.0293,-384.5,15.3773,2.315,fail_>2%,,CBr2F2  FC-12B2
+pentafluoroethane,FC(F)(F)C(F)F,354-33-6,NIST,32.671,-1120.0,32.8367,0.507,ok_<1%,,C2HF5
+isopropyl_acetate,CC(C)OC(=O)C,108-21-4,NIST,69.887,,,,n/a,not_in_burcat,
+4-hydroxypyridine,Oc1ccncc1,626-64-2,NIST,56.232,,,,n/a,not_in_burcat,
+isopropyl_acetate,CC(=O)OC(C)C,108-21-4,NIST,69.89,,,,n/a,not_in_burcat,
+HBF4_frag,FB(F)(F)F,,JANAF,24.766,,,,n/a,no_cas,
+Bromofluoromethane,C(F)Br,373-52-4,ATcT_0K,15.8576,-212.42,16.1304,1.72,warn_1-2%,,CH2FBr
+1-fluorobutane,CCCCF,2366-52-1,NIST,53.844,,,,n/a,not_in_burcat,
+benzoxazole,c1ccc2ocnc2c1,273-53-0,NIST,70.306,45.1,70.3061,,ok_<1%,,C7H5ON Benzoxazole
+Fulvenone,C1=CC(=C=O)C=C1,4727-22-4,ATcT_0K,54.5389,,,,n/a,not_in_burcat,
+FeCl3,Cl[Fe](Cl)Cl,7705-08-0,JANAF,10.71,-253.13,10.7097,-0.002,ok_<1%,,FeCL3
+SiC,[Si]#[C],,HH,4.64,,,,n/a,no_cas,
+ZnH,[Zn][H],,CRC,0.85,,,,n/a,no_cas,
+ethyl_formate,CCOC=O,109-94-4,NIST,44.855,-398.3168,45.1333,0.621,ok_<1%,,C3H6O2 EthylForm
+"2,3-dimethyl-1,3-butadiene",CC(=C)C(=C)C,513-81-5,NIST,66.664,,,,n/a,not_in_burcat,
+Hypochlorous_acid,OCl,7790-92-3,ATcT_0K,6.8025,-74.51,6.8714,1.013,warn_1-2%,,HOCL
+acrylic_acid,C=CC(=O)O,79-10-7,NIST,39.907,-326.051,39.8656,-0.104,ok_<1%,,C3H4O2  CH2=CH-C
+2-azetidinone,O=C1CCN1,930-21-2,NIST,42.057,,,,n/a,not_in_burcat,
+NiH,[Ni][H],14332-32-2,3dMLBE20,2.54,,,,n/a,not_in_burcat,
+2_Butynyl,CC#C[CH2],,ATcT_0K,37.3914,,,,n/a,no_cas,
+dimethylurea,CNC(=O)NC,96-31-1,NIST,55.974,,,,n/a,not_in_burcat,
+methylenecyclopropane,C=C1CC1,6142-73-0,NIST,41.133,2001.0,22.5289,-45.229,fail_>2%,,C4H6 CH2=(CCH2CH2)
+DMS,CSC,75-18-3,NIST,31.67,-35.37572,31.6514,-0.059,ok_<1%,,C2H6S CH3SCH3
+MnCl2,Cl[Mn]Cl,,JANAF,8.67,,,,n/a,no_cas,
+alanine,CC(N)C(=O)O,1222-66-8,NIST,52.558,,,,n/a,not_in_burcat,
+2-methylimidazole,CC1=NC=CN1,693-98-1,NIST,52.237,,,,n/a,not_in_burcat,
+1_1_Ethenediol,C=C(O)O,10375-04-9,ATcT_0K,31.8881,,,,n/a,not_in_burcat,
+LiOH,[Li]O,1310-65-2,JANAF,8.921,-229.0,8.8664,-0.612,ok_<1%,,LiOH
+trioxane,C1OCOCO1,110-88-3,NIST,48.412,460.24,38.8176,-19.818,fail_>2%,,C3H6O3 Trioxane
+S2F2,FSSF,13709-35-8,Gurvich,11.412,-322.2,10.7301,-5.975,fail_>2%,,FSSF Difluorodis
+SiF,[Si]F,11128-24-8,HH,5.57,-25.838,5.7544,3.311,fail_>2%,,SiF Fluoro Silico
+allyl_chloride,C=CCCl,107-05-1,NIST,34.886,-26.777600000000003,35.1153,0.657,ok_<1%,,C3H5Cl CH2=CHCH2Cl
+propylene_oxide,CC1CO1,75-56-9,NIST,39.31,-92.76,39.3839,0.188,ok_<1%,,C3H6O Me-Oxyrane
+VO2,O=[V]=O,12036-21-4,JANAF,13.448,,,,n/a,not_in_burcat,
+"1,4-cyclohexadiene",C1C=CCC=C1,628-41-1,NIST,61.565,109.0,61.5126,-0.085,ok_<1%,,"C6H8  1,4-Cycloh"
+glycolal,OCC=O,141-46-8,NIST,32.44,-317.1472,32.3454,-0.292,ok_<1%,,C2H4O2 acetaldeh
+4-aminophenol,NC1=CC=C(O)C=C1,123-30-8,NIST,68.559,,,,n/a,not_in_burcat,
+benzimidazole,C1=CC=C2C(=C1)N=CN2,51-17-2,NIST,73.468,,,,n/a,not_in_burcat,
+Peroxynitrous_acid,N(=O)OO,14691-52-2,ATcT_0K,14.7104,-12.62,15.0369,2.219,fail_>2%,,HOONO Peroxynitr
+"2,6-dimethylpyridine",CC1=CC=CC(=N1)C,108-48-5,NIST,76.62,,,,n/a,not_in_burcat,
+AlH,[Al][H],13967-22-1,HH,2.98,259.4,2.9911,0.373,ok_<1%,,ALH
+trifluoroethanol,C(C(F)(F)F)O,75-89-8,NIST,35.892,-891.192,35.9212,0.081,ok_<1%,,CF3CH2OH
+Butatriene,C=C=C=C,2873-50-9,ATcT_0K,35.0462,,,,n/a,not_in_burcat,
+Tribromochloromethane,C(Cl)(Br)(Br)Br,594-15-0,ATcT_0K,11.2062,53.03,11.6138,3.637,fail_>2%,,CBR3CL  TriBromo
+NO2,O=[N]=O,,ATcT,9.62,,,,n/a,no_cas,
+isoprene,CC(=C)C=C,78-79-5,NIST,54.43,76.161352,54.4251,-0.009,ok_<1%,,C5H8  Isoprene
+FeCl,[Fe]Cl,,CRC,3.52,,,,n/a,no_cas,
+NaO,[Na][O],,HH,2.6,,,,n/a,no_cas,
+"1,3-cyclohexadiene",C1CC=CC=C1,592-57-4,NIST,61.544,109.2,61.5105,-0.054,ok_<1%,,"C6H8 1,3-Cyclohex"
+N2H4,NN,302-01-2,ATcT,17.96,95.417,17.8466,-0.631,ok_<1%,,N2H4 HYDRAZINE
+NaBr,[Na]Br,7647-15-6,JANAF,3.79,,,,n/a,not_in_burcat,
+adamantane,C1C2CC3CC1CC(C2)C3,281-23-2,NIST,111.824,-134.7,111.825,0.001,ok_<1%,,C10H16 Adamantane
+SH,[S][H],,ATcT,3.56,,,,n/a,no_cas,
+ethanol,CCO,64-17-5,NIST,33.43,-234.95,33.4297,-0.001,ok_<1%,,C2H5OH
+2-aminophenol,NC1=CC=CC=C1O,95-55-6,NIST,68.549,,,,n/a,not_in_burcat,
+BF,[B]F,13768-60-0,HH,7.81,,,,n/a,not_in_burcat,
+3_Buten_2_one,CC(=O)C=C,78-94-4,ATcT_0K,46.4575,-109.20240000000001,46.9822,1.129,warn_1-2%,,C4H6O cis MVK
+CaF2,F[Ca]F,7789-75-5,JANAF,11.684,,,,n/a,not_in_burcat,
+cC3H6,C1CC1,75-19-4,NIST,35.29,53.3,35.2875,-0.007,ok_<1%,,C3H6 cyclo-
+C2H4,C=C,74-85-1,ATcT,23.09,52.5,23.3492,1.122,warn_1-2%,,C2H4
+CBrCl3,ClC(Cl)(Cl)Br,75-62-7,NIST,12.867,-46.74,12.8433,-0.184,ok_<1%,,CBRCL3 Bromotric
+1-methylimidazole,CN1C=CN=C1,616-47-7,NIST,51.755,,,,n/a,not_in_burcat,
+Si2Cl6,Cl[Si](Cl)(Cl)[Si](Cl)(Cl)Cl,13465-77-5,JANAF,27.372,,,,n/a,not_in_burcat,
+TiO2,O=[Ti]=O,13463-67-7,JANAF,13.23,,,,n/a,not_in_burcat,
+CuBr2,Br[Cu]Br,7789-45-9,Gurvich,5.267,,,,n/a,not_in_burcat,
+NiO,[Ni]=O,34492-97-2,CRC,3.91,,,,n/a,not_in_burcat,
+1_2_Butadiene,CC=C=C,590-19-2,ATcT_0K,41.1027,,,,n/a,not_in_burcat,
+HFC_134a,FCC(F)(F)F,811-97-2,NIST,31.864,-913.3,32.1311,0.838,ok_<1%,,C2H2F4 HFC-134a
+biuret,NC(=O)NC(=O)N,108-19-0,NIST,51.641,,,,n/a,not_in_burcat,
+butyric_acid,CCCC(=O)O,107-92-6,NIST,57.883,-475.3024,57.8779,-0.009,ok_<1%,,C4H8O2 Butyric
+isoquinoline,C1=CC=C2C=NC=CC2=C1,119-65-3,NIST,85.445,204.61,85.4449,,ok_<1%,,C9H7N ISOQUINOLI
+EtSSH,CCSS,74004-30-1,NIST,34.46,,,,n/a,not_in_burcat,
+methyl_thiocyanate,CSC#N,556-64-9,NIST,28.053,,,,n/a,not_in_burcat,
+quinoline,C1=CC=C2C(=C1)C=CC=N2,91-22-5,NIST,85.488,200.52,85.4873,-0.001,ok_<1%,,C9H7N QUINOLINE
+methyl_propanoate,CCC(=O)OC,554-12-1,NIST,57.471,-437.29076000000003,57.4839,0.022,ok_<1%,,C4H8O2 MePropionat
+glycerol,OCC(O)CO,56-81-5,NIST,54.096,-580.6,54.1239,0.052,ok_<1%,,C3H8O3 Glycerol
+diethyl_carbonate,CCOC(=O)OCC,105-58-8,NIST,74.093,-633.022464,74.0417,-0.069,ok_<1%,,C5H10O3 (C2H5)2CO3
+Ethylperoxy,CCO[O],3170-61-4,ATcT_0K,31.115,-16.736,31.4913,1.209,warn_1-2%,,C2H5O2  C2H5OO
+Bromoform,C(Br)(Br)Br,75-25-2,ATcT_0K,12.2645,47.38,12.6745,3.343,fail_>2%,,CHBr3 Bromoform
+MnBr2,Br[Mn]Br,12738-03-3,JANAF,7.613,,,,n/a,not_in_burcat,
+CF,[C]F,,HH,5.56,,,,n/a,no_cas,
+Isobutene,CC(=C)C,115-11-7,ATcT_0K,47.3619,-17.1,47.9638,1.271,warn_1-2%,,C4H8  Isobuten
+isobutyric_acid,CC(C)C(=O)O,79-31-2,NIST,57.968,,,,n/a,not_in_burcat,
+DMA,CNC,124-40-3,NIST,36.34,-20.92,35.7873,-1.521,warn_1-2%,,CH3-NH-CH3
+MnF2,F[Mn]F,,JANAF,11.11,,,,n/a,no_cas,
+VF,[V]F,,CRC,5.45,,,,n/a,no_cas,
+CuCl2,Cl[Cu]Cl,7447-39-4,JANAF,6.46,,,,n/a,not_in_burcat,
+succinic_anhydride,O=C1OC(=O)CC1,108-30-5,NIST,51.962,,,,n/a,not_in_burcat,
+adiponitrile,N#CCCCCC#N,111-69-3,NIST,71.555,,,,n/a,not_in_burcat,
+CH3OH,CO,67-56-1,ATcT,21.29,-201.0,21.1312,-0.746,ok_<1%,,CH3OH Methyl alc
+ethyl_propanoate,CCOC(=O)CC,105-37-3,NIST,70.109,-466.516,69.7335,-0.536,ok_<1%,,C5H10O2 EtPropanoa
+NiBr2,Br[Ni]Br,,Gurvich,6.71,,,,n/a,no_cas,
+ClF3,F[Cl](F)F,7790-91-2,JANAF,5.417,-164.6,,,n/a,smiles_parse_failed,CLF3
+cyclopentadiene,C1C=CC=C1,542-92-7,NIST,49.304,134.3,49.3037,-0.001,ok_<1%,,C5H6 Cyclopentad
+CuCl,Cl[Cu],7758-89-6,HH,3.75,91.08568,3.8101,1.602,warn_1-2%,,CuCL
+Phenylethene,C=CC1=CC=CC=C1,100-42-5,ATcT_0K,75.1377,147.9,75.9652,1.101,warn_1-2%,,C8H8  Styrene
+1_Phenylethenol,C=C(C1=CC=CC=C1)O,4383-15-7,ATcT_0K,79.5546,,,,n/a,not_in_burcat,
+CH2O,C=O,50-00-0,ATcT,15.46,-109.164,15.6606,1.298,warn_1-2%,,HCHO Formaldehyde
+EtOAc,CCOC(=O)C,141-78-6,NIST,57.56,-445.42864,57.5683,0.014,ok_<1%,,C4H8O2 EtAcetate
+ethyl_acetate,CC(=O)OCC,141-78-6,NIST,57.559,-445.42864,57.5683,0.016,ok_<1%,,C4H8O2 EtAcetate
+2-aminopyridine,Nc1ccccn1,504-29-0,NIST,59.27,118.61640000000001,59.2643,-0.01,ok_<1%,,C5H6N2 Cyclo 2-A
+FeBr2,Br[Fe]Br,,JANAF,7.297,,,,n/a,no_cas,
+AuH,[Au][H],,Luo2007,3.11,,,,n/a,no_cas,
+epichlorohydrin,ClCC1CO1,106-89-8,NIST,38.959,,,,n/a,not_in_burcat,
+2-methylpyridine,CC1=CC=CC=N1,109-06-8,NIST,64.254,,,,n/a,not_in_burcat,
+BH3,[BH3],13283-31-3,JANAF,11.535,104.747,11.5484,0.116,ok_<1%,,BH3
+oxetane,C1COC1,503-30-0,NIST,39.26,-80.5,39.2568,-0.008,ok_<1%,,C3H6O  OXETANE
+benzoic_acid,OC(=O)c1ccccc1,65-85-0,NIST,73.764,-299.34428,73.819,0.075,ok_<1%,,C7H6O2  C6H5-COOH
+pyridine,c1ccncc1,110-86-1,NIST,51.43,586.09472,47.2608,-8.107,fail_>2%,,C5H5N Cyclo Pyri
+butad,C=CC=C,106-99-0,NIST,42.13,110.83416,42.1191,-0.026,ok_<1%,,"C4H6  1,3-butadi"
+4-methylpyridine,CC1=CC=NC=C1,108-89-4,NIST,64.203,,,,n/a,not_in_burcat,
+indole,C1=CC=C2C(=C1)C=CN2,120-72-9,NIST,78.208,156.5,78.5156,0.393,ok_<1%,,C8H7N  Indole
+EtCN,CCC#N,107-12-0,NIST,37.93,50.626400000000004,37.9548,0.065,ok_<1%,,C3H5N  Propionit
+Acetone_enol,CC(=C)O,29456-04-0,ATcT_0K,39.6181,,,,n/a,not_in_burcat,
+Dichlorodifluoromethane,C(F)(F)(Cl)Cl,75-71-8,ATcT_0K,16.5227,-495.81,16.7264,1.233,warn_1-2%,,CF2CL2 FREON-12
+2_Methylallyl,CC(=C)[CH2],,ATcT_0K,43.551,,,,n/a,no_cas,
+HOSO2,OS(=O)=O,,JANAF,20.871,,,,n/a,no_cas,
+MgH,[Mg][H],,HH,1.28,,,,n/a,no_cas,
+Iodotrifluoromethane,C(F)(F)(F)I,2314-97-8,ATcT_0K,16.9281,-590.5,17.1234,1.154,warn_1-2%,,CF3I TrifluoroIo
+3-methylpyridine,CC1=CN=CC=C1,108-99-6,NIST,64.179,,,,n/a,not_in_burcat,
+SO,O=S,2243010-16-2,ATcT_0K,5.343,,,,n/a,not_in_burcat,
+PFCl2,ClP(Cl)F,15597-63-4,JANAF,11.188,-511.925,11.9231,6.571,fail_>2%,,PFCL2
+triethylborane,CCB(CC)CC,97-94-9,NIST,86.331,,,,n/a,not_in_burcat,
+Isocyanobenzene,[C-]#[N+]C1=CC=CC=C1,931-54-4,ATcT_0K,64.3577,,,,n/a,not_in_burcat,
+F2,FF,7782-41-4,ATcT,1.602,,1.6454,2.711,fail_>2%,,F2  REF ELEMENT
+Allyl,C=C[CH2],1981-80-2,ATcT_0K,31.4505,166.9416,31.8503,1.271,warn_1-2%,,C3H5  Allyl Symet
+Tetrafluoroethylene,C(=C(F)F)(F)F,116-14-3,ATcT_0K,24.9024,-658.6,24.9725,0.282,ok_<1%,,C2F4   FC-1114
+4-aminopyridine,Nc1ccncc1,504-24-5,NIST,59.148,,,,n/a,not_in_burcat,
+CFC12,FC(F)(Cl)Cl,75-71-8,NIST,16.54,-495.81,16.7264,1.127,warn_1-2%,,CF2CL2 FREON-12
+thymine,CC1=CNC(=O)NC1=O,65-71-4,NIST,69.066,-338.0,69.1619,0.139,ok_<1%,,C5H6N2O2 Thymine
+"1,4-pentadiene",C=CCC=C,591-93-5,NIST,54.127,,,,n/a,not_in_burcat,
+n_Propyl,CC[CH2],,ATcT_0K,36.5658,,,,n/a,no_cas,
+oxazole,c1cocn1,288-42-6,NIST,36.704,-15.468,36.7036,-0.001,ok_<1%,,C3H3ON (Cy) Oxaz
+glyoxal,O=CC=O,107-22-2,NIST,26.74,-193.249,26.5425,-0.738,ok_<1%,,O(CH)2O Glyoxal
+lactic_acid,CC(C(=O)O)O,50-21-5,NIST,49.635,-610.2782400000001,49.9127,0.56,ok_<1%,,C3H6O3 Lactic Acid
+Iodobenzene,C1=CC=C(C=C1)I,591-50-4,ATcT_0K,54.6916,148.1136,55.4364,1.362,warn_1-2%,,C6H5I Iodobenzen
+diethanolamine,OCCNCCO,111-42-2,NIST,69.718,,,,n/a,not_in_burcat,
+N-methylimidazole,Cn1ccnc1,616-47-7,NIST,54.134,,,,n/a,not_in_burcat,
+urea,NC(N)=O,57-13-6,NIST,31.97,-235.5,31.2867,-2.137,fail_>2%,,CH4N2O Urea (NH2
+Difluorochlorobromomethane,C(F)(F)(Cl)Br,353-59-3,ATcT_0K,15.8196,-442.19,16.0729,1.601,warn_1-2%,,CBrCLF2
+CCl4mol,ClC(Cl)(Cl)Cl,56-23-5,NIST,13.01,,,,n/a,not_in_burcat,
+iso_Butyl,CC(C)[CH2],,ATcT_0K,48.6367,,,,n/a,no_cas,
+n_Butyl,CCC[CH2],,ATcT_0K,48.5768,,,,n/a,no_cas,
+imidazole,C1=CN=CN1,288-32-4,NIST,39.742,128.0,39.7925,0.127,ok_<1%,,C3H4N2  Imidogen
+EG,OCCO,107-21-1,NIST,37.64,388.0,29.5559,-21.477,fail_>2%,,"C2H6O2 1,2-diOl"
+135hextr,C=CC=CC=C,2235-12-3,NIST,60.93,,,,n/a,not_in_burcat,
+AlF,[Al]F,13595-82-9,JANAF,6.88,-264.06,6.9797,1.449,warn_1-2%,,ALF
+Hypobromous_acid,OBr,13517-11-8,ATcT_0K,6.4892,-58.283120000000004,6.6055,1.792,warn_1-2%,,HOBr Hypobromous
+Hydrazino,N[NH],13598-46-4,ATcT_0K,14.0383,228.53008,14.2076,1.206,warn_1-2%,,N2H3
+CH3Cl,CCl,74-87-3,NIST,16.31,-81.966,16.3127,0.017,ok_<1%,,CH3CL
+methyl_cyanoacetate,COC(=O)CC#N,105-34-0,NIST,53.612,,,,n/a,not_in_burcat,
+ZnCl,[Zn]Cl,,CRC,2.29,,,,n/a,no_cas,
+KBr,[K]Br,7758-02-3,JANAF,3.93,,,,n/a,not_in_burcat,
+Cl2O,ClOCl,7791-21-1,NIST,4.265,83.596,4.2305,-0.808,ok_<1%,,CL2O
+NH2OH,NO,7803-49-8,NIST,14.706,-50.0,14.7779,0.489,ok_<1%,,NH2OH
+IBr,BrI,7789-33-5,JANAF,1.843,40.768,1.8442,0.067,ok_<1%,,BrI
+3-aminopyridine,Nc1cccnc1,462-08-8,NIST,58.999,,,,n/a,not_in_burcat,
+vinylOH,OC=C,557-75-5,NIST,27.76,-124.68320000000001,27.7681,0.029,ok_<1%,,C2H3OH Vinyl alc
+AgH,[Ag][H],13967-01-6,HH,2.29,,,,n/a,not_in_burcat,
+NiCl2,Cl[Ni]Cl,7718-54-9,JANAF,7.74,,,,n/a,not_in_burcat,
+CuF,[Cu]F,13478-41-6,HH,4.42,-3.0,4.3507,-1.568,warn_1-2%,,CuF
+CaCl,[Ca]Cl,,HH,4.13,,,,n/a,no_cas,
+Ac2O,CC(=O)OC(=O)C,108-24-7,NIST,56.99,,,,n/a,not_in_burcat,
+BF2Cl,FB(F)Cl,14720-30-0,JANAF,17.071,-888.0,17.9619,5.219,fail_>2%,,BF2CL
+S2F10,FS(F)(F)(F)(F)S(F)(F)(F)(F)F,5714-22-7,Gurvich,35.375,-2064.386,35.3683,-0.019,ok_<1%,,S2F10
+Dibromophosgene,C(=O)(Br)Br,593-95-3,ATcT_0K,13.2659,-121.336,13.5869,2.42,fail_>2%,,CBr2O
+SiHCl3,Cl[SiH](Cl)Cl,10025-78-2,NIST,15.838,496.22,5.5519,-64.945,fail_>2%,,SiHCL3
+nitrobenzene,[O-][N+](=O)c1ccccc1,98-95-3,NIST,65.229,68.53392,65.218,-0.017,ok_<1%,,C6H5NO2 NitroBen
+Tetrabromomethane,C(Br)(Br)(Br)Br,558-13-4,ATcT_0K,10.5299,79.0776,11.2461,6.801,fail_>2%,,CBr4
+CrO3,O=[Cr](=O)=O,1333-82-0,JANAF,14.9,-322.037,15.1959,1.986,warn_1-2%,,CrO3
+"1,1,2-trifluoroethane",FCC(F)F,430-66-0,NIST,30.979,,,,n/a,not_in_burcat,
+DMC,COC(=O)OC,616-38-6,NIST,49.33,-581.576,49.6153,0.578,ok_<1%,,C3H6O3 DiMeCarbona
+pyrrole,c1cc[nH]c1,109-97-7,NIST,44.59,108.3,44.7849,0.437,ok_<1%,,C4H5N  Pyrole cy
+MnOH,O[Mn],,Gurvich,8.58,,,,n/a,no_cas,
+OF,[O]F,,HH,2.24,,,,n/a,no_cas,
+methyl_acetate,CC(=O)OC,79-20-9,NIST,45.289,-442.91824,45.5956,0.677,ok_<1%,,C3H6O2 Methyl ac
+MeOCHO,COC=O,107-31-3,NIST,32.74,-371.5,32.9088,0.515,ok_<1%,,C2H4O2 methylfor
+MgF,[Mg]F,,HH,4.59,,,,n/a,no_cas,
+LiO,[Li][O],,HH,3.44,,,,n/a,no_cas,
+trifluoroacetic_acid,OC(=O)C(F)(F)F,76-05-1,NIST,35.837,,,,n/a,not_in_burcat,
+norbornene,C1CC2CC1C=C2,498-66-8,NIST,73.735,79.80561600000001,73.7618,0.036,ok_<1%,,C7H10  Norbornen
+SiF3Br,F[Si](F)(F)Br,14049-39-9,Gurvich,19.305,,,,n/a,not_in_burcat,
+BeCl,[Be]Cl,,JANAF,3.85,,,,n/a,no_cas,
+Vinyl_bromide,C=CBr,593-60-2,ATcT_0K,21.7036,72.21584000000001,22.0449,1.572,warn_1-2%,,C2H3Br Bromoethy
+PH3,P,7803-51-2,ATcT,9.89,5.439,10.0021,1.133,warn_1-2%,,PH3 RRHO
+BF3,FB(F)F,7637-07-2,ATcT,20.01,-1136.0,20.0978,0.439,ok_<1%,,BF3
+benzothiophene,c1ccc2sccc2c1,95-15-8,NIST,76.391,165.703136,74.1345,-2.954,fail_>2%,,C8H6S  Benzothyo
+Pentachloroethane,C(C(Cl)(Cl)Cl)(Cl)Cl,76-01-7,ATcT_0K,24.7442,-155.9,25.0169,1.102,warn_1-2%,,C2HCl5
+Al2,[Al]=[Al],32752-94-6,HH,1.55,501.3,1.6448,6.117,fail_>2%,,AL2
+CF4,FC(F)(F)F,75-73-0,ATcT,20.2,-933.2,20.3907,0.944,ok_<1%,,CF4    FC-14
+NaOH,[Na]O,1310-73-2,JANAF,8.006,-191.0,7.9357,-0.878,ok_<1%,,NaOH  gas Sodium
+uracil,O=C1NC=CC(=O)N1,66-22-8,NIST,56.854,,,,n/a,not_in_burcat,
+Sulfuric_acid,OS(=O)(=O)O,7664-93-9,ATcT_0K,24.9695,-732.7,25.3156,1.386,warn_1-2%,,H2SO4
+CH3Br,CBr,74-83-9,NIST,15.69,-36.38,15.7425,0.335,ok_<1%,,CH3Br
+propylene_carbonate,CC1COC(=O)O1,108-32-7,NIST,57.371,,,,n/a,not_in_burcat,
+S2Cl2,ClSSCl,10025-67-9,NIST,8.46,-16.736,8.4332,-0.317,ok_<1%,,S2CL2
+HNO,N=O,14332-28-6,ATcT,8.57,106.842,8.6336,0.742,ok_<1%,,HNO
+triethyl_phosphate,CCOP(=O)(OCC)OCC,78-40-0,NIST,103.656,,,,n/a,not_in_burcat,
+FeO,[Fe]=O,17125-56-3,CRC,4.17,,,,n/a,not_in_burcat,
+1_3_Cycloheptadiene,C1CC=CC=CC1,4054-38-0,ATcT_0K,72.7223,,,,n/a,not_in_burcat,
+Fulminic_acid,[C-]#[N+]O,51060-05-0,ATcT_0K,15.2783,233.147,14.7524,-3.442,fail_>2%,,HONC
+AlCl3,Cl[Al](Cl)Cl,7446-70-0,CCCBDB,13.16,-584.679,13.2516,0.696,ok_<1%,,ALCL3
+divinyl_ether,C=COC=C,109-93-3,NIST,46.194,,,,n/a,not_in_burcat,
+VOF3,F[V](=O)(F)F,,JANAF,22.558,,,,n/a,no_cas,
+MgBr2,Br[Mg]Br,7789-48-2,JANAF,7.455,-306.7,7.0222,-5.805,fail_>2%,,MgBr2
+MeSiH3,[SiH3]C,992-94-9,NIST,25.96,130.1224,24.2995,-6.396,fail_>2%,,CH3SiH3  MethylS
+3-nitrotoluene,CC1=CC(=CC=C1)[N+](=O)[O-],99-08-1,NIST,77.613,,,,n/a,not_in_burcat,
+Biallenyl,C=C=CC=C=C,29776-96-3,ATcT_0K,53.3265,410.03200000000004,53.8738,1.026,warn_1-2%,,"C6H6 1,2,4,5"
+VOCl3,Cl[V](=O)(Cl)Cl,,JANAF,19.301,,,,n/a,no_cas,
+glycine,NCC(=O)O,56-40-6,NIST,40.55,,,,n/a,not_in_burcat,
+Methyl_hypochlorite,COCl,593-78-2,ATcT_0K,18.4388,,,,n/a,not_in_burcat,
+vinyl_fluoride,C=CF,75-02-5,NIST,23.895,-136.0,23.8662,-0.121,ok_<1%,,C2H3F
+Tetrachloroethene,C(=C(Cl)Cl)(Cl)Cl,127-18-4,ATcT_0K,19.9188,-12.13,20.0102,0.459,ok_<1%,,C2Cl4
+perfluorocyclobutane,FC1(F)C(F)(F)C(F)(F)C1(F)F,115-25-3,NIST,52.282,-1558.1,52.4418,0.306,ok_<1%,,C4F8 Cy
+Cycloheptatriene,C1C=CC=CC=C1,544-25-2,ATcT_0K,67.3747,371.137536,66.2236,-1.708,warn_1-2%,,C7H8 CyTriEne
+4-nitrotoluene,CC1=CC=C(C=C1)[N+](=O)[O-],99-99-0,NIST,77.554,30.9,77.5546,0.001,ok_<1%,,C7H7NO2  p-NT
+Trimethylsiloxy,C[Si](C)(C)[O],54572-10-0,ATcT_0K,51.4013,,,,n/a,not_in_burcat,
+CuBr,Br[Cu],7787-70-4,Gurvich,3.36,,,,n/a,not_in_burcat,
+TiF4,[Ti](F)(F)(F)F,7783-63-3,JANAF,24.27,,,,n/a,not_in_burcat,
+benzofuran,c1ccc2occc2c1,271-89-6,NIST,75.676,,,,n/a,not_in_burcat,
+"1,2-difluoroethane",FCCF,624-72-6,NIST,30.161,-420.7,29.899,-0.869,ok_<1%,,C2H4F2  HFC-152
+Vinyl_iodide,C=CI,593-66-8,ATcT_0K,21.1231,130.56,21.3881,1.254,warn_1-2%,,C2H3I Iodoethyle
+malonic_acid,C(C(=O)O)C(=O)O,141-82-2,NIST,49.329,,,,n/a,not_in_burcat,
+Oxaziridine,C1NO1,6827-26-5,ATcT_0K,20.3288,,,,n/a,not_in_burcat,
+1_5_Hexadiene,C=CCCC=C,592-42-7,ATcT_0K,65.5048,,,,n/a,not_in_burcat,
+MgI,[Mg]I,,Gurvich,2.32,,,,n/a,no_cas,
+nitromethane,C[N+](=O)[O-],75-52-5,NIST,25.32,77.57136,23.4662,-7.322,fail_>2%,,CH3NO2   Nitrome
+SOCl2,ClS(Cl)=O,7719-09-7,NIST,10.172,,,,n/a,not_in_burcat,
+maleic_anhydride,O=C1OC(=O)C=C1,108-31-6,NIST,46.29,,,,n/a,not_in_burcat,
+succinic_acid,C(CC(=O)O)C(=O)O,110-15-6,NIST,62.119,-817.729,62.0732,-0.074,ok_<1%,,C4H6O4 Succinic ac
+2-nitrotoluene,CC1=CC=CC=C1[N+](=O)[O-],88-72-2,NIST,77.407,33.8904,77.5237,0.151,ok_<1%,,C7H7NO2  2-NT
+Na2F2,F[Na].[Na]F,,JANAF,9.844,,,,n/a,no_cas,
+methyl_isocyanate,CN=C=O,624-83-9,NIST,30.069,,,,n/a,not_in_burcat,
+SiH2Cl2,Cl[SiH2]Cl,4109-96-0,NIST,15.019,,,,n/a,not_in_burcat,
+CH2F2,FCF,75-10-5,CCCBDB,18.06,-452.70880000000005,18.2841,1.241,warn_1-2%,,CH2F2   FC-32
+Phosgene,C(=O)(Cl)Cl,75-44-5,ATcT_0K,14.6654,-220.5,14.8101,0.987,ok_<1%,,COCL2
+3_4_Bis_methylene_cyclobutene,C=C1C=CC1=C,71-43-2,ATcT_0K,53.9888,,,,n/a,not_in_burcat,
+SO2mol,O=S=O,7446-09-5,ATcT,11.03,-286.269,11.0048,-0.229,ok_<1%,,SO2
+Peroxyhypochlorous_acid,OOCl,67952-07-2,ATcT_0K,8.5544,,,,n/a,not_in_burcat,
+CH2I2,C(I)I,75-11-6,NIST,12.941,,,,n/a,not_in_burcat,
+succinonitrile,C(CC#N)C#N,110-61-2,NIST,47.099,188.28,46.5956,-1.069,warn_1-2%,,C4H4N2 Succinonitr
+carbonyl_sulfide,C(=O)=S,463-58-1,NIST,14.318,-141.7,14.3517,0.235,ok_<1%,,COS
+Methoxymethyl,CO[CH2],16520-04-0,ATcT_0K,28.3632,-5.0208,28.7873,1.495,warn_1-2%,,C2H5O CH3OCH2*
+Tetrafluoromethane,C(F)(F)(F)F,75-73-0,ATcT_0K,20.1929,-933.2,20.3907,0.979,ok_<1%,,CF4    FC-14
+1_3_Butadien_2_ol,C=CC(=C)O,59120-04-6,ATcT_0K,45.8781,-68.1992,46.5572,1.48,warn_1-2%,,C4H6O trans Enol
+11DFE,C=C(F)F,75-38-7,NIST,24.5,-334.0,24.4816,-0.075,ok_<1%,,"1,1-C2H2F2"
+CoF2,F[Co]F,10026-17-2,JANAF,9.737,,,,n/a,not_in_burcat,
+SiH3Br,[SiH3]Br,,JANAF,13.323,,,,n/a,no_cas,
+Chlorotrifluoromethane,C(F)(F)(F)Cl,75-72-9,ATcT_0K,18.3162,-704.2,18.4517,0.74,ok_<1%,,CF3CL   FC-13
+3_Butenyl,[CH2]CC=C,,ATcT_0K,42.8536,,,,n/a,no_cas,
+Bromotrifluoromethane,C(F)(F)(F)Br,75-63-8,ATcT_0K,17.5556,-648.8,17.7798,1.277,warn_1-2%,,CF3Br Freon 1301
+CrOF2,F[Cr](=O)F,,JANAF,15.241,,,,n/a,no_cas,
+MgCl2,Cl[Mg]Cl,7786-30-3,JANAF,8.185,-399.17,8.1761,-0.109,ok_<1%,,MgCL2
+dimethyl_phosphite,COP(=O)OC,,NIST,49.069,,,,n/a,no_cas,
+SF2,FSF,13814-25-0,JANAF,7.47,-293.17,7.5566,1.159,warn_1-2%,,SF2
+Sulfurous_acid,OS(=O)O,7782-99-2,ATcT_0K,20.1548,,,,n/a,not_in_burcat,
+nitrobenzene,C1=CC=C(C=C1)[N+](=O)[O-],98-95-3,NIST,65.229,68.53392,65.218,-0.017,ok_<1%,,C6H5NO2 NitroBen
+N2O,[N-]=[N+]=O,10024-97-2,CCCBDB,11.44,81.6,11.5348,0.829,ok_<1%,,N2O
+CBr2F2,FC(F)(Br)Br,75-61-6,NIST,15.393,-384.5,15.3773,-0.102,ok_<1%,,CBr2F2  FC-12B2
+nitrosobenzene,O=NC1=CC=CC=C1,586-96-9,NIST,61.169,200.832,61.2642,0.156,ok_<1%,,C6H5NO Nitrosobe
+Divinylacetylene,C=CC#CC=C,821-08-9,ATcT_0K,53.9183,,,,n/a,not_in_burcat,
+ScBr2,Br[Sc]Br,,Gurvich,9.862,,,,n/a,no_cas,
+Fulvene,C=C1C=CC=C1,497-20-1,ATcT_0K,55.2688,224.01136,55.8018,0.964,ok_<1%,,C6H6 Fulvene
+MnF,[Mn]F,,CRC,4.28,,,,n/a,no_cas,
+Carbon_suboxide,C(=C=O)=C=O,504-64-3,ATcT_0K,28.2157,,,,n/a,not_in_burcat,
+pyrazine,c1cnccn1,290-37-9,NIST,46.516,195.81119999999999,46.5175,0.003,ok_<1%,,C4H4N2 PYRAZINE
+vinylacetylene,C=CC#C,689-97-4,NIST,35.03,,,,n/a,not_in_burcat,
+NCl3,ClN(Cl)Cl,10025-85-1,JANAF,6.287,224.09504,6.348,0.97,ok_<1%,,NCl3
+KOH,[K]O,1310-58-3,JANAF,8.175,,,,n/a,not_in_burcat,
+N2O4,O=[N+]([O-])[N+](=O)[O-],10544-72-6,NIST,20.013,10.785,20.0165,0.017,ok_<1%,,N2O4
+triethyl_phosphite,CCOP(OCC)OCC,122-52-1,NIST,98.358,-808.0,97.8604,-0.506,ok_<1%,,C6H15PO3 (C2H5O)P
+ZnF,[Zn]F,,JANAF,3.7,,,,n/a,no_cas,
+propanac,CCC(=O)O,79-09-4,ATcT,46.3,-450.868,45.678,-1.343,warn_1-2%,,C3H6O2 C2H5COOH
+tetramethylsilane,C[Si](C)(C)C,75-76-3,NIST,63.903,-286.6,64.4585,0.869,ok_<1%,,C4H12Si Si(CH3)4
+BCl3,ClB(Cl)Cl,10294-34-5,CCCBDB,13.69,-404.5,13.8197,0.948,ok_<1%,,BCL3
+beta-propiolactone,O=C1CCO1,57-57-8,NIST,39.42,,,,n/a,not_in_burcat,
+beta_propiolactone,C1CC(=O)O1,57-57-8,NIST,39.409,,,,n/a,not_in_burcat,
+ethylene_carbonate,C1COC(=O)O1,96-49-1,NIST,45.142,,,,n/a,not_in_burcat,
+Ni(CO)4,[Ni](=C=O)(=C=O)(=C=O)=C=O,,NIST,50.74,,,,n/a,no_cas,
+Difluoromethane,C(F)F,75-10-5,ATcT_0K,18.0484,-452.70880000000005,18.2841,1.306,warn_1-2%,,CH2F2   FC-32
+Nitrosomethane,CN=O,865-40-7,ATcT_0K,20.6887,70.75980799999999,20.9542,1.283,warn_1-2%,,CH3NO Nitrosomethy
+Formaldoxime,C=NO,75-17-2,ATcT_0K,21.0014,4.457,21.6414,3.047,fail_>2%,,CH3NO     C2H=NO
+glycolic_acid,C(C(=O)O)O,79-14-1,NIST,37.689,-583.0,37.6834,-0.015,ok_<1%,,C2H4O3 Glycolic
+SCl2,ClSCl,10545-99-0,NIST,5.569,-17.57,5.5692,0.003,ok_<1%,,SCL2
+AcOH,CC(O)=O,64-19-7,NIST,33.54,-433.2,33.5482,0.025,ok_<1%,,CH3COOH
+acetic_acid,CC(=O)O,64-19-7,ATcT,33.544,-433.2,33.5482,0.013,ok_<1%,,CH3COOH
+SiF3H,F[SiH](F)F,13465-71-9,JANAF,19.658,-288.64,12.383,-37.008,fail_>2%,,SIHF3
+1_1_Dichloroethene,C=C(Cl)Cl,75-35-4,ATcT_0K,21.6078,2.2,21.8661,1.195,warn_1-2%,,"C2H2CL2 1,1-"
+trans_Cycloheptene,C1CCC=CCC1,628-92-2,ATcT_0K,77.0111,-7.86592,79.1893,2.828,fail_>2%,,C7H12  Cyclohept
+Formyl_chloride,C(=O)Cl,2565-30-2,ATcT_0K,15.2746,-182.811512,15.4217,0.963,ok_<1%,,CHClO  Formyl Ch
+BeI2,I[Be]I,7787-53-3,Gurvich,6.67,,,,n/a,not_in_burcat,
+SiH3Cl,[SiH3]Cl,13465-78-6,JANAF,13.96,,,,n/a,not_in_burcat,
+Oxiranyl,C1[CH]O1,31586-84-2,ATcT_0K,22.2306,164.473,22.5118,1.265,warn_1-2%,,C2H3O Oxyrane Rad
+SOF2,FS(=O)F,7783-42-8,NIST,12.738,-584.975,13.1635,3.34,fail_>2%,,SOF2
+Vinylidene_2143693,C=[C],,ATcT_0K,14.9624,,,,n/a,no_cas,
+NiF3,F[Ni](F)F,,Gurvich,11.762,,,,n/a,no_cas,
+SiF4,F[Si](F)(F)F,7783-61-1,NIST,24.59,-1614.98216,24.6929,0.418,ok_<1%,,SIF4
+Isocyanomethane,C[N+]#[C-],593-75-9,ATcT_0K,24.4351,187.52688,24.5893,0.631,ok_<1%,,CH3NC Methyl-Iso
+SiOF2,F[Si](=O)F,14041-22-6,Gurvich,18.692,-899.008,18.2095,-2.581,fail_>2%,,SiOF2 gas  O=SiF2
+pyridazine,c1ccnnc1,289-80-5,NIST,45.666,,,,n/a,not_in_burcat,
+FeBr3,Br[Fe](Br)Br,,JANAF,9.503,,,,n/a,no_cas,
+HOCN,OC#N,420-05-3,NIST,18.817,-14.861,17.3228,-7.941,fail_>2%,,HOCN Cyanic Acid
+CFC113a,FC(F)(F)Cl,75-72-9,NIST,18.49,-704.2,18.4517,-0.207,ok_<1%,,CF3CL   FC-13
+HCOOH,OC=O,64-18-6,ATcT,21.29,-378.6,21.0357,-1.194,warn_1-2%,,HCOOH Formic acid
+NiF,[Ni]F,,CRC,4.36,,,,n/a,no_cas,
+MgBr,[Mg]Br,,JANAF,2.922,,,,n/a,no_cas,
+SiCl2,Cl[Si]Cl,13569-32-9,JANAF,8.988,,,,n/a,not_in_burcat,
+LiH,[Li][H],7580-67-8,ATcT,2.429,139.264,2.467,1.566,warn_1-2%,,LiH
+trimethylsilane,C[SiH](C)C,993-07-7,NIST,51.231,-31.1,49.8637,-2.669,fail_>2%,,C3H10Si (CH3)3SiH
+oxalic_acid,C(=O)(C(=O)O)O,144-62-7,NIST,37.289,-721.37,37.1813,-0.289,ok_<1%,,C2H2O4 Oxalic ac
+Isofulminic_acid,C#[N+][O-],506-85-4,ATcT_0K,14.6095,169.32,15.4139,5.506,fail_>2%,,HCNO Fulminic Acid
+S2O,S=S=O,20901-21-7,Gurvich,8.908,-56.48,8.9133,0.059,ok_<1%,,S2O
+Cyanoacetylene,C#CC#N,1070-71-9,ATcT_0K,25.3782,379.4888,25.5088,0.515,ok_<1%,,C3HN Cyano-Acety
+pyridine_N-oxide,[O-][n+]1ccccc1,694-59-7,NIST,54.85,,,,n/a,not_in_burcat,
+AlF3,F[Al](F)F,7784-18-1,CCCBDB,18.29,-1209.277,18.4216,0.72,ok_<1%,,ALF3
+HCOF,C(=O)F,1493-02-3,ATcT,17.12,-382.529,17.0572,-0.367,ok_<1%,,HFCO
+Nitrosobenzene,C1=CC=C(C=C1)N=O,586-96-9,ATcT_0K,60.6239,200.832,61.2642,1.056,warn_1-2%,,C6H5NO Nitrosobe
+CoCl2,Cl[Co]Cl,7646-79-9,JANAF,7.91,,,,n/a,not_in_burcat,
+indazole,c1ccc2[nH]ncc2c1,271-44-3,NIST,72.831,,,,n/a,not_in_burcat,
+PF2Cl,FP(F)Cl,14335-40-1,JANAF,13.106,-735.077,13.8015,5.306,fail_>2%,,PF2CL
+nitroethane,CC[N+](=O)[O-],79-24-3,NIST,37.277,-103.76320000000001,37.2922,0.041,ok_<1%,,C2H5NO2 NitroEth
+Chloroallene,C=C=CCl,3223-70-9,ATcT_0K,28.1922,175.3096,28.502,1.099,warn_1-2%,,C3H3Cl CHCl=C=CH2
+FeF2,F[Fe]F,,JANAF,10.0,,,,n/a,no_cas,
+TiF,[Ti]F,,JANAF,5.84,,,,n/a,no_cas,
+1_1_Dibromoethene,C=C(Br)Br,593-92-0,ATcT_0K,20.2447,,,,n/a,not_in_burcat,
+CBrF3,FC(F)(F)Br,75-63-8,NIST,17.775,-648.8,17.7798,0.027,ok_<1%,,CF3Br Freon 1301
+Ethanimine,CC=N,20729-41-3,ATcT_0K,30.241,,,,n/a,not_in_burcat,
+SF4,FS(F)(F)F,7783-60-0,JANAF,13.86,-760.0,14.0404,1.301,warn_1-2%,,SF4
+COCl2,ClC(Cl)=O,75-44-5,NIST,14.793,-220.5,14.8101,0.116,ok_<1%,,COCL2
+FeOH,O[Fe],,Gurvich,9.478,,,,n/a,no_cas,
+NaH,[Na][H],7646-69-7,HH,1.97,,,,n/a,not_in_burcat,
+trimethylborane,CB(C)C,593-90-8,NIST,49.957,,,,n/a,not_in_burcat,
+FeF,[Fe]F,,CRC,4.51,,,,n/a,no_cas,
+cyanamide,NC#N,420-04-2,NIST,20.287,135.887952,20.3362,0.243,ok_<1%,,CH2N2 H2N-CN Cya
+BCl2H,ClB(Cl),,JANAF,12.931,,,,n/a,no_cas,
+Si2H6,[SiH3][SiH3],1590-87-0,NIST,22.08,73.64,22.121,0.185,ok_<1%,,SI2H6  Disilane
+SiF3Cl,F[Si](F)(F)Cl,14049-36-6,JANAF,21.113,,,,n/a,not_in_burcat,
+1_2_4_Cyclohexatriene,C1C=CC=C=C1,71-43-2,ATcT_0K,53.3265,,,,n/a,not_in_burcat,
+SiH3F,[SiH3]F,,JANAF,15.95,,,,n/a,no_cas,
+KH,[K][H],7693-26-7,HH,1.76,,,,n/a,not_in_burcat,
+NH2F,NF,15861-05-9,JANAF,11.35,-75.0,11.0178,-2.927,fail_>2%,,NH2F
+TiCl,[Ti]Cl,,JANAF,4.44,,,,n/a,no_cas,
+o_Benzyne,C1=CC#CC=C1,462-80-6,ATcT_0K,48.3431,518.816,48.2276,-0.239,ok_<1%,,"1,2-C6H4 BENZYNE"
+NH3,N,7664-41-7,ATcT,12.02,-45.567,12.1494,1.077,warn_1-2%,,NH3  RRHO   G3B3
+CrCl3,Cl[Cr](Cl)Cl,10025-73-7,JANAF,11.976,-283.0,10.8151,-9.693,fail_>2%,,CrCl3  trigonal
+CO,[C-]#[O+],630-08-0,ATcT,11.092,-110.53,11.156,0.577,ok_<1%,,CO
+TiOCl2,Cl[Ti](=O)Cl,,JANAF,15.938,,,,n/a,no_cas,
+PCl5,Cl[P](Cl)(Cl)(Cl)Cl,10026-13-8,NIST,12.76,-376.8,13.4715,5.576,fail_>2%,,PCL5
+FeF3,F[Fe](F)F,7783-50-8,JANAF,15.282,,,,n/a,not_in_burcat,
+ScCl3,Cl[Sc](Cl)Cl,10361-84-9,JANAF,14.745,,,,n/a,not_in_burcat,
+dimethyl_methylphosphonate,CP(=O)(OC)OC,756-79-6,NIST,62.663,,,,n/a,not_in_burcat,
+B2H6,[BH2]([H])[BH2],,JANAF,22.631,,,,n/a,no_cas,
+"1,3,5-triazine",C1=NC=NC=N1,6294-83-3,NIST,41.417,,,,n/a,not_in_burcat,
+ScCl2,Cl[Sc]Cl,,JANAF,10.98,,,,n/a,no_cas,
+Buckminsterfullerene,C12=C3C4=C5C6=C1C7=C8C9=C1C%10=C%11C(=C29)C3=C2C3=C4C4=C5C5=C9C6=C7C6=C7C8=C1C1=C8C%10=C%10C%11=C2C2=C3C3=C4C4=C5C5=C%11C%12=C(C6=C95)C7=C1C1=C%12C5=C%11C4=C3C3=C5C(=C81)C%10=C23,99685-96-8,ATcT_0K,416.2342,2560.0,419.1394,0.698,ok_<1%,,C60 Buckminsterf
+CrCl2,Cl[Cr]Cl,10049-05-5,JANAF,9.39,-117.6,7.8437,-16.468,fail_>2%,,CrCl2
+p_Benzyne,C1=C=CC=C=C1,3355-34-8,ATcT_0K,46.9404,576.5552,47.6292,1.467,warn_1-2%,,"1,4-C6H4  BENZYNE"
+Fe(CO)5,[Fe](=C=O)(=C=O)(=C=O)(=C=O)=C=O,13463-40-6,NIST,61.91,-727.85,61.9104,0.001,ok_<1%,,Fe(CO)5
+MnCl,[Mn]Cl,,CRC,3.53,,,,n/a,no_cas,
+POCl3,ClP(Cl)(Cl)=O,10025-87-3,NIST,14.78,-558.0,15.4177,4.315,fail_>2%,,POCL3
+MgCl,[Mg]Cl,,HH,3.24,,,,n/a,no_cas,
+1_Chloropropyne,CC#CCl,7747-84-4,ATcT_0K,28.0875,184.7,28.4047,1.129,warn_1-2%,,C3H3Cl 1 Chloro
+trimethyl_borate,COB(OC)OC,121-43-7,NIST,66.651,,,,n/a,not_in_burcat,
+Mg(OH)2,O[Mg]O,1317-43-7,Gurvich,17.029,,,,n/a,not_in_burcat,
+2_Cyclopropen_1_one,C1=CC1=O,2961-80-0,ATcT_0K,27.4583,,,,n/a,not_in_burcat,
+Iodosilane,[SiH3]I,13598-42-0,ATcT_0K,12.3746,,,,n/a,not_in_burcat,
+hexamethyldisiloxane,C[Si](C)(C)O[Si](C)(C)C,107-46-0,NIST,105.2,,,,n/a,not_in_burcat,
+N2H2,N=N,3618-05-1,ATcT,11.12,211.86,12.121,9.002,fail_>2%,,N2H2
+VF4,F[V](F)(F)F,,JANAF,21.306,,,,n/a,no_cas,
+NiF2,F[Ni]F,10028-18-9,JANAF,9.58,,,,n/a,not_in_burcat,
+CI4,C(I)(I)(I)I,507-25-5,NIST,9.077,,,,n/a,not_in_burcat,
+Methylene,[CH2],2465-56-7,ATcT_0K,7.408,428.8,7.5024,1.275,warn_1-2%,,CH2(1) SINGLET
+ZnI2,I[Zn]I,10139-47-6,JANAF,4.192,,,,n/a,not_in_burcat,
+IF5,F[I](F)(F)(F)F,7783-66-6,JANAF,13.745,,,,n/a,not_in_burcat,
+SF6,FS(F)(F)(F)(F)F,2551-62-4,JANAF,20.459,-1219.4,20.4471,-0.058,ok_<1%,,SF6
+3_Methylenecyclopropene,C=C1C=C1,4095-06-1,ATcT_0K,34.345,,,,n/a,not_in_burcat,
+Disulfene_oxide,O=S=S,20901-21-7,ATcT_0K,8.7766,-56.48,8.9133,1.557,warn_1-2%,,S2O
+Li2O,[Li]O[Li],,JANAF,7.614,,,,n/a,no_cas,
+VCl4,[V](Cl)(Cl)(Cl)Cl,7632-51-1,JANAF,15.8,,,,n/a,not_in_burcat,
+HBO2,OB=O,13460-50-9,JANAF,18.528,,,,n/a,not_in_burcat,
+COF2b,C(=O)(F)F,353-50-4,NIST,18.28,-640.1,18.29,0.055,ok_<1%,,COF2
+NiCl,[Ni]Cl,13931-83-4,CRC,3.63,,,,n/a,not_in_burcat,
+Isocyanic_acid,C(=N)=O,75-13-8,ATcT_0K,18.2494,-119.05,18.4027,0.84,ok_<1%,,HNCO Isocyanic Aci
+CrF3,F[Cr](F)F,7788-97-8,JANAF,15.813,,,,n/a,not_in_burcat,
+Fe2O3_frag,O=[Fe]O[Fe]=O,1309-37-1,Gurvich,19.455,,,,n/a,not_in_burcat,
+trimethyl_phosphite,COP(OC)OC,121-45-9,NIST,61.575,,,,n/a,not_in_burcat,
+NHF2,FNF,10405-27-3,JANAF,10.69,-103.0,9.8713,-7.658,fail_>2%,,NHF2
+Dioxyamidogen,[NH]O[O],71843-95-3,ATcT_0K,9.6294,,,,n/a,not_in_burcat,
+BFCl2,ClB(Cl)F,14720-31-1,JANAF,14.51,-643.0,15.8571,9.284,fail_>2%,,BFCL2
+POF3,FP(F)(F)=O,13478-20-1,JANAF,21.328,-1251.8528,21.3055,-0.105,ok_<1%,,POF3
+SF6,F[S](F)(F)(F)(F)F,2551-62-4,NIST-derived,20.27,-1219.4,20.4471,0.874,ok_<1%,,SF6
+PF5,FP(F)(F)(F)F,7647-19-0,JANAF,23.67,-1558.05,23.5419,-0.541,ok_<1%,,PF5
+thiophene,c1ccsc1,110-02-1,NIST,39.56,115.0,40.4298,2.199,fail_>2%,,C4H4S Thiophene
+H2O2,OO,7722-84-1,ATcT,11.09,-135.44,11.0877,-0.021,ok_<1%,,H2O2 DOROFEEVA e
+TiOH,O[Ti],,Gurvich,11.662,,,,n/a,no_cas,
+HNCO,N=C=O,75-13-8,ATcT,18.433,-119.05,18.4027,-0.165,ok_<1%,,HNCO Isocyanic Aci
+Ethenedione,C(=C=O)=O,4363-38-6,ATcT_0K,19.7128,,,,n/a,not_in_burcat,
+CuF2,F[Cu]F,,JANAF,7.91,,,,n/a,no_cas,
+CoCl,[Co]Cl,,CRC,3.51,,,,n/a,no_cas,
+SiBr4,Br[Si](Br)(Br)Br,7789-66-4,JANAF,13.666,,,,n/a,not_in_burcat,
+CrCl,[Cr]Cl,,CRC,3.78,,,,n/a,no_cas,

@@ -1,0 +1,96 @@
+{
+  "description": "Optional starting-geometry and spin overrides for small inorganic/radical species that RDKit MMFF/UFF does not type reliably. PySCF spin is N_alpha - N_beta, not multiplicity.",
+  "overrides": [
+    {
+      "name": "B2",
+      "smiles": "[B]=[B]",
+      "bond_length_angstrom": 1.59,
+      "spin": 2,
+      "geometry_source": "json_diatomic_re"
+    },
+    {
+      "name": "SiS",
+      "smiles": "[Si]#[S]",
+      "bond_length_angstrom": 1.929,
+      "spin": 0,
+      "geometry_source": "json_diatomic_re"
+    },
+    {
+      "name": "CuCl",
+      "smiles": "[Cu]Cl",
+      "bond_length_angstrom": 2.051,
+      "spin": 0,
+      "geometry_source": "json_diatomic_re"
+    },
+    {
+      "name": "NO",
+      "smiles": "[N]=O",
+      "bond_length_angstrom": 1.151,
+      "spin": 1,
+      "geometry_source": "json_diatomic_re"
+    },
+    {
+      "name": "NH",
+      "smiles": "[N][H]",
+      "bond_length_angstrom": 1.036,
+      "spin": 2,
+      "geometry_source": "json_diatomic_re"
+    },
+    {
+      "name": "LiF",
+      "smiles": "[Li]F",
+      "bond_length_angstrom": 1.564,
+      "spin": 0,
+      "geometry_source": "json_diatomic_re"
+    },
+    {
+      "name": "PS",
+      "smiles": "[P]=S",
+      "bond_length_angstrom": 1.9,
+      "spin": 1,
+      "geometry_source": "json_diatomic_re"
+    },
+    {
+      "name": "PO",
+      "smiles": "[P]=O",
+      "bond_length_angstrom": 1.476,
+      "spin": 1,
+      "geometry_source": "json_diatomic_re"
+    },
+    {
+      "name": "Cl2",
+      "smiles": "ClCl",
+      "bond_length_angstrom": 1.988,
+      "spin": 0,
+      "geometry_source": "json_diatomic_re"
+    },
+    {
+      "name": "N2",
+      "smiles": "N#N",
+      "bond_length_angstrom": 1.098,
+      "spin": 0,
+      "geometry_source": "json_diatomic_re"
+    },
+    {
+      "name": "H2",
+      "smiles": "[H][H]",
+      "bond_length_angstrom": 0.741,
+      "spin": 0,
+      "geometry_source": "json_diatomic_re"
+    },
+    {
+      "name": "O2",
+      "smiles": "O=O",
+      "bond_length_angstrom": 1.208,
+      "spin": 2,
+      "geometry_source": "json_diatomic_re"
+    },
+    {
+      "name": "S2",
+      "smiles": "[S]=[S]",
+      "bond_length_angstrom": 1.889,
+      "spin": 2,
+      "geometry_source": "json_diatomic_re"
+    }
+  ]
+}

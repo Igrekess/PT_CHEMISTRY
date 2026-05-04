@@ -1,0 +1,7012 @@
+{
+ "description": "Frozen input for B3LYP/def2-TZVP single-point benchmark on the screened ATcT subset with n_atoms <= 4. ZPE is recycled from B3LYP/6-31G* (Scott-Radom 0.9806 already applied). Geometries are identical to the original 6-31G* run.",
+ "ZPE_NOTE": "zpe_eV_recycled is already scaled by 0.9806 (Scott & Radom 1996); use it directly: D_at = E_atoms - E_mol - zpe_eV_recycled",
+ "n_molecules": 180,
+ "n_skipped": 3,
+ "skipped": [
+  {
+   "name": "SO3mol",
+   "reason": "pathological"
+  },
+  {
+   "name": "Na2F2",
+   "reason": "status_not_ok"
+  },
+  {
+   "name": "HBO2",
+   "reason": "pathological"
+  }
+ ],
+ "exclusion_rules": {
+  "fail_names": [
+   "B2H6",
+   "BrF3",
+   "Buckminsterfullerene",
+   "ClF3",
+   "ClO2_rad",
+   "HBF4_frag",
+   "NO2",
+   "Na2F2",
+   "o_Benzyne"
+  ],
+  "patho_pairs": [
+   [
+    "HBO2",
+    -9.287049320674095
+   ],
+   [
+    "PCl5",
+    -40.39757672735492
+   ],
+   [
+    "S2F10",
+    -114.51460532591501
+   ],
+   [
+    "SF4",
+    -5.190584799158868
+   ],
+   [
+    "SF6",
+    -29.503521489072092
+   ],
+   [
+    "SF6",
+    -29.314521489072092
+   ],
+   [
+    "SO3mol",
+    -6.884079530764565
+   ],
+   [
+    "phenanthrene",
+    -7.32752354263738
+   ]
+  ],
+  "n_atoms_max": 4
+ },
+ "molecules": [
+  {
+   "name": "B2",
+   "smiles": "[B]=[B]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "B",
+    "B"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.795
+    ],
+    [
+     0.0,
+     0.0,
+     0.795
+    ]
+   ],
+   "bond_length_angstrom": 1.59,
+   "charge": 0,
+   "spin": 2,
+   "zpe_eV_recycled": 0.06685586284724442,
+   "D_exp": 3.02,
+   "geometry_source": "json_diatomic_re",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.6424721780599225,
+    "D_elec_eV": 2.7093280409071667,
+    "err_eV": -0.3775278219400775,
+    "rel_err_pct": 12.500921256293957
+   }
+  },
+  {
+   "name": "SiS",
+   "smiles": "[Si]#[S]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Si",
+    "S"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.9645
+    ],
+    [
+     0.0,
+     0.0,
+     0.9645
+    ]
+   ],
+   "bond_length_angstrom": 1.929,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.04714643417417654,
+   "D_exp": 6.39,
+   "geometry_source": "json_diatomic_re",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 5.895413059855234,
+    "D_elec_eV": 5.94255949402941,
+    "err_eV": -0.49458694014476556,
+    "rel_err_pct": 7.740014712750636
+   }
+  },
+  {
+   "name": "NO",
+   "smiles": "[N]=O",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "N",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.5755
+    ],
+    [
+     0.0,
+     0.0,
+     0.5755
+    ]
+   ],
+   "bond_length_angstrom": 1.151,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.12448998612300385,
+   "D_exp": 6.5,
+   "geometry_source": "json_diatomic_re",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 6.481722317831631,
+    "D_elec_eV": 6.606212303954635,
+    "err_eV": -0.018277682168369225,
+    "rel_err_pct": 0.28119511028260347
+   }
+  },
+  {
+   "name": "NH",
+   "smiles": "[N][H]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "N",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.518
+    ],
+    [
+     0.0,
+     0.0,
+     0.518
+    ]
+   ],
+   "bond_length_angstrom": 1.036,
+   "charge": 0,
+   "spin": 2,
+   "zpe_eV_recycled": 0.204221617330206,
+   "D_exp": 3.47,
+   "geometry_source": "json_diatomic_re",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.448598389330953,
+    "D_elec_eV": 3.652820006661159,
+    "err_eV": -0.021401610669047333,
+    "rel_err_pct": 0.6167611143817675
+   }
+  },
+  {
+   "name": "LiF",
+   "smiles": "[Li]F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Li",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.782
+    ],
+    [
+     0.0,
+     0.0,
+     0.782
+    ]
+   ],
+   "bond_length_angstrom": 1.564,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.06056101484207622,
+   "D_exp": 5.97,
+   "geometry_source": "json_diatomic_re",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 5.687718326089655,
+    "D_elec_eV": 5.748279340931731,
+    "err_eV": -0.28228167391034464,
+    "rel_err_pct": 4.728336246404433
+   }
+  },
+  {
+   "name": "PS",
+   "smiles": "[P]=S",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "P",
+    "S"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.95
+    ],
+    [
+     0.0,
+     0.0,
+     0.95
+    ]
+   ],
+   "bond_length_angstrom": 1.9,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.04712740241728408,
+   "D_exp": 4.5,
+   "geometry_source": "json_diatomic_re",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.152282574526287,
+    "D_elec_eV": 4.199409976943571,
+    "err_eV": -0.3477174254737134,
+    "rel_err_pct": 7.7270538994158535
+   }
+  },
+  {
+   "name": "PO",
+   "smiles": "[P]=O",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "P",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.738
+    ],
+    [
+     0.0,
+     0.0,
+     0.738
+    ]
+   ],
+   "bond_length_angstrom": 1.476,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.08011109653631619,
+   "D_exp": 5.69,
+   "geometry_source": "json_diatomic_re",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 5.668879273442539,
+    "D_elec_eV": 5.748990369978856,
+    "err_eV": -0.02112072655746111,
+    "rel_err_pct": 0.3711902734175942
+   }
+  },
+  {
+   "name": "SiH",
+   "smiles": "[Si][H]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Si",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.7100000000000001
+    ],
+    [
+     0.0,
+     0.0,
+     0.7100000000000001
+    ]
+   ],
+   "bond_length_angstrom": 1.4200000000000002,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.15913934083787615,
+   "D_exp": 3.06,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.8935845029920046,
+    "D_elec_eV": 3.052723843829881,
+    "err_eV": -0.1664154970079954,
+    "rel_err_pct": 5.438414934901811
+   }
+  },
+  {
+   "name": "Cl2",
+   "smiles": "ClCl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Cl",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.994
+    ],
+    [
+     0.0,
+     0.0,
+     0.994
+    ]
+   ],
+   "bond_length_angstrom": 1.988,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.03639799998026635,
+   "D_exp": 2.51,
+   "geometry_source": "json_diatomic_re",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.0393474168794516,
+    "D_elec_eV": 2.075745416859718,
+    "err_eV": -0.47065258312054814,
+    "rel_err_pct": 18.751098929105506
+   }
+  },
+  {
+   "name": "ClNO",
+   "smiles": "ClN=O",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "Cl",
+    "N",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     1.3447786741097485,
+     -0.1699057833543278,
+     0.0
+    ],
+    [
+     -0.23825617253185033,
+     0.5240822552020213,
+     0.0
+    ],
+    [
+     -1.1065225015778983,
+     -0.35417647184769513,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.16303108057700977,
+   "D_exp": 8.203,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 7.586447806531115,
+    "D_elec_eV": 7.7494788871081255,
+    "err_eV": -0.616552193468884,
+    "rel_err_pct": 7.516179366925321
+   }
+  },
+  {
+   "name": "N2",
+   "smiles": "N#N",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "N",
+    "N"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.549
+    ],
+    [
+     0.0,
+     0.0,
+     0.549
+    ]
+   ],
+   "bond_length_angstrom": 1.098,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.1533304643538341,
+   "D_exp": 9.759,
+   "geometry_source": "json_diatomic_re",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 9.501621047195991,
+    "D_elec_eV": 9.654951511549825,
+    "err_eV": -0.25737895280400913,
+    "rel_err_pct": 2.6373496547188147
+   }
+  },
+  {
+   "name": "PH",
+   "smiles": "[P][H]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "P",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.6900000000000001
+    ],
+    [
+     0.0,
+     0.0,
+     0.6900000000000001
+    ]
+   ],
+   "bond_length_angstrom": 1.3800000000000001,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.1645575118256463,
+   "D_exp": 2.95,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 1.588893949499666,
+    "D_elec_eV": 1.7534514613253123,
+    "err_eV": -1.3611060505003343,
+    "rel_err_pct": 46.1391881525537
+   }
+  },
+  {
+   "name": "NaF",
+   "smiles": "[Na]F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Na",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.115
+    ],
+    [
+     0.0,
+     0.0,
+     1.115
+    ]
+   ],
+   "bond_length_angstrom": 2.23,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.013784689976853882,
+   "D_exp": 4.91,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.954240957266995,
+    "D_elec_eV": 3.9680256472438487,
+    "err_eV": -0.9557590427330052,
+    "rel_err_pct": 19.465560951792366
+   }
+  },
+  {
+   "name": "H2",
+   "smiles": "[H][H]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.3705
+    ],
+    [
+     0.0,
+     0.0,
+     0.3705
+    ]
+   ],
+   "bond_length_angstrom": 0.741,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.27224510468267227,
+   "D_exp": 4.478,
+   "geometry_source": "json_diatomic_re",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.487969978002197,
+    "D_elec_eV": 4.760215082684869,
+    "err_eV": 0.009969978002197344,
+    "rel_err_pct": 0.22264354627506353
+   }
+  },
+  {
+   "name": "CO2",
+   "smiles": "O=C=O",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "O",
+    "C",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     -1.2956002544461886,
+     0.16435889667318102,
+     0.0
+    ],
+    [
+     -2.2537774395249261e-07,
+     -0.3791887919200385,
+     0.0
+    ],
+    [
+     1.2956004798239298,
+     -0.9227371770567062,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.10593649688235401,
+   "D_exp": 16.56,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 12.942807837403958,
+    "D_elec_eV": 13.048744334286312,
+    "err_eV": -3.617192162596041,
+    "rel_err_pct": 21.842947841763532
+   }
+  },
+  {
+   "name": "BeCl2",
+   "smiles": "Cl[Be]Cl",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "Cl",
+    "Be",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     -1.7611868574034824,
+     0.09047294785554004,
+     0.0
+    ],
+    [
+     -0.08270172737144318,
+     -0.30827896511953234,
+     0.0
+    ],
+    [
+     1.8438885847749253,
+     -0.9197610550395707,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.10045006669018083,
+   "D_exp": 9.55,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 9.164681591300242,
+    "D_elec_eV": 9.265131657990423,
+    "err_eV": -0.3853184086997583,
+    "rel_err_pct": 4.034747735076003
+   }
+  },
+  {
+   "name": "Carbon_dioxide_124389",
+   "smiles": "C(=O)=O",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "C",
+    "O",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     -3.480037080659828e-08,
+     3.6815610053059565e-08,
+     0.0
+    ],
+    [
+     -1.4049999108118074,
+     0.00018537251293932955,
+     0.0
+    ],
+    [
+     1.4049999456121776,
+     -0.000185409328549594,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.10540361190808789,
+   "D_exp": 16.5642,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 12.94324971345074,
+    "D_elec_eV": 13.048653325358828,
+    "err_eV": -3.6209502865492595,
+    "rel_err_pct": 21.860097599336278
+   }
+  },
+  {
+   "name": "LiBr",
+   "smiles": "[Li]Br",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Li",
+    "Br"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.24
+    ],
+    [
+     0.0,
+     0.0,
+     1.24
+    ]
+   ],
+   "bond_length_angstrom": 2.48,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.020056784011207123,
+   "D_exp": 4.34,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.991967164267304,
+    "D_elec_eV": 4.012023948278511,
+    "err_eV": -0.34803283573269583,
+    "rel_err_pct": 8.019189763426171
+   }
+  },
+  {
+   "name": "H2O",
+   "smiles": "O",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "O",
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.007544053151176805,
+     0.3977434312055661,
+     0.0
+    ],
+    [
+     -0.7671031370575054,
+     -0.18439316493075208,
+     0.0
+    ],
+    [
+     0.7595590839063285,
+     -0.21335026627481346,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.5632867691757238,
+   "D_exp": 9.511,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 8.881091724075228,
+    "D_elec_eV": 9.444378493250952,
+    "err_eV": -0.6299082759247714,
+    "rel_err_pct": 6.6229447579094884
+   }
+  },
+  {
+   "name": "Li2",
+   "smiles": "[Li][Li]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Li",
+    "Li"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.28
+    ],
+    [
+     0.0,
+     0.0,
+     1.28
+    ]
+   ],
+   "bond_length_angstrom": 2.56,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.02477466392472194,
+   "D_exp": 1.046,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 0.8290348475202569,
+    "D_elec_eV": 0.8538095114449789,
+    "err_eV": -0.21696515247974313,
+    "rel_err_pct": 20.742366393856894
+   }
+  },
+  {
+   "name": "PN",
+   "smiles": "[P]#N",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "P",
+    "N"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.6942
+    ],
+    [
+     0.0,
+     0.0,
+     0.6942
+    ]
+   ],
+   "bond_length_angstrom": 1.3884,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.11219177848851043,
+   "D_exp": 6.39,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 5.384433883008581,
+    "D_elec_eV": 5.496625661497092,
+    "err_eV": -1.0055661169914183,
+    "rel_err_pct": 15.7365589513524
+   }
+  },
+  {
+   "name": "CN",
+   "smiles": "[C]#[N]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "C",
+    "N"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.5733
+    ],
+    [
+     0.0,
+     0.0,
+     0.5733
+    ]
+   ],
+   "bond_length_angstrom": 1.1466,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.14348253337307068,
+   "D_exp": 7.72,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 7.465516806589722,
+    "D_elec_eV": 7.608999339962793,
+    "err_eV": -0.2544831934102776,
+    "rel_err_pct": 3.2964144224129224
+   }
+  },
+  {
+   "name": "SiCl",
+   "smiles": "[Si]Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Si",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.065
+    ],
+    [
+     0.0,
+     0.0,
+     1.065
+    ]
+   ],
+   "bond_length_angstrom": 2.13,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.02949032926181186,
+   "D_exp": 4.02,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.140139970366086,
+    "D_elec_eV": 4.169630299627897,
+    "err_eV": 0.12013997036608615,
+    "rel_err_pct": 2.9885564767683124
+   }
+  },
+  {
+   "name": "BeF",
+   "smiles": "[Be]F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Be",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.7649999999999999
+    ],
+    [
+     0.0,
+     0.0,
+     0.7649999999999999
+    ]
+   ],
+   "bond_length_angstrom": 1.5299999999999998,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.04848452604468431,
+   "D_exp": 5.85,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 5.744947415872649,
+    "D_elec_eV": 5.7934319419173335,
+    "err_eV": -0.10505258412735063,
+    "rel_err_pct": 1.7957706688436006
+   }
+  },
+  {
+   "name": "BrCl",
+   "smiles": "ClBr",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Cl",
+    "Br"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.1099999999999999
+    ],
+    [
+     0.0,
+     0.0,
+     1.1099999999999999
+    ]
+   ],
+   "bond_length_angstrom": 2.2199999999999998,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.026169340935285394,
+   "D_exp": 2.173,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.0659375708404872,
+    "D_elec_eV": 2.0921069117757725,
+    "err_eV": -0.1070624291595128,
+    "rel_err_pct": 4.926941056581353
+   }
+  },
+  {
+   "name": "AlCl",
+   "smiles": "[Al]Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Al",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.115
+    ],
+    [
+     0.0,
+     0.0,
+     1.115
+    ]
+   ],
+   "bond_length_angstrom": 2.23,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.025154317518369645,
+   "D_exp": 5.13,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.939525577090338,
+    "D_elec_eV": 4.964679894608707,
+    "err_eV": -0.190474422909662,
+    "rel_err_pct": 3.7129517136386356
+   }
+  },
+  {
+   "name": "Hypofluorous_acid",
+   "smiles": "OF",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "O",
+    "F",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.21603920711643,
+     0.41783579724081804,
+     0.0
+    ],
+    [
+     1.0930974975167502,
+     -0.12304483519751519,
+     0.0
+    ],
+    [
+     -0.8770582904003213,
+     -0.2947909620433033,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.3682705049626387,
+   "D_exp": 6.4728,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 6.157411711498425,
+    "D_elec_eV": 6.525682216461064,
+    "err_eV": -0.3153882885015751,
+    "rel_err_pct": 4.872517125534159
+   }
+  },
+  {
+   "name": "BeO",
+   "smiles": "[Be]=O",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Be",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.7047
+    ],
+    [
+     0.0,
+     0.0,
+     0.7047
+    ]
+   ],
+   "bond_length_angstrom": 1.4094,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.07315042549931015,
+   "D_exp": 4.54,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.436046505413966,
+    "D_elec_eV": 4.5091969309132764,
+    "err_eV": -0.10395349458603409,
+    "rel_err_pct": 2.289724550353174
+   }
+  },
+  {
+   "name": "BeH",
+   "smiles": "[Be][H]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Be",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.635
+    ],
+    [
+     0.0,
+     0.0,
+     0.635
+    ]
+   ],
+   "bond_length_angstrom": 1.27,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.14923444437890943,
+   "D_exp": 2.034,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.3127370398447153,
+    "D_elec_eV": 2.461971484223625,
+    "err_eV": 0.27873703984471554,
+    "rel_err_pct": 13.703885931401945
+   }
+  },
+  {
+   "name": "PCl",
+   "smiles": "[P]Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "P",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.045
+    ],
+    [
+     0.0,
+     0.0,
+     1.045
+    ]
+   ],
+   "bond_length_angstrom": 2.09,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.03004809682964762,
+   "D_exp": 3.19,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 1.8800891059138514,
+    "D_elec_eV": 1.910137202743499,
+    "err_eV": -1.3099108940861486,
+    "rel_err_pct": 41.06303743216767
+   }
+  },
+  {
+   "name": "SF",
+   "smiles": "[S]F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "S",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.81
+    ],
+    [
+     0.0,
+     0.0,
+     0.81
+    ]
+   ],
+   "bond_length_angstrom": 1.62,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.05219386411513554,
+   "D_exp": 3.36,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.438709643802984,
+    "D_elec_eV": 3.4909035079181194,
+    "err_eV": 0.07870964380298417,
+    "rel_err_pct": 2.3425489227078624
+   }
+  },
+  {
+   "name": "NS",
+   "smiles": "[N]=S",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "N",
+    "S"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.7656
+    ],
+    [
+     0.0,
+     0.0,
+     0.7656
+    ]
+   ],
+   "bond_length_angstrom": 1.5312,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.0710029541714501,
+   "D_exp": 4.85,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.529154926045561,
+    "D_elec_eV": 4.6001578802170116,
+    "err_eV": -0.3208450739544384,
+    "rel_err_pct": 6.61536234957605
+   }
+  },
+  {
+   "name": "NF3",
+   "smiles": "FN(F)F",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "F",
+    "N",
+    "F",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     -0.5935308181205372,
+     1.1653453124068,
+     -0.10645839477480701
+    ],
+    [
+     0.0005053254967975096,
+     -0.0006102831961797852,
+     0.3286081958515613
+    ],
+    [
+     -0.712531877361025,
+     -1.096237470737656,
+     -0.11047812931246824
+    ],
+    [
+     1.3055573699847642,
+     -0.0684975584729652,
+     -0.11167167176428597
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.2628226199254231,
+   "D_exp": 8.59,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 8.429503563638214,
+    "D_elec_eV": 8.692326183563637,
+    "err_eV": -0.160496436361786,
+    "rel_err_pct": 1.8684102021162516
+   }
+  },
+  {
+   "name": "BrF",
+   "smiles": "FBr",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "F",
+    "Br"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.885
+    ],
+    [
+     0.0,
+     0.0,
+     0.885
+    ]
+   ],
+   "bond_length_angstrom": 1.77,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.04386027117499417,
+   "D_exp": 2.55,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.5033044595672305,
+    "D_elec_eV": 2.5471647307422245,
+    "err_eV": -0.046695540432769356,
+    "rel_err_pct": 1.8311976640301708
+   }
+  },
+  {
+   "name": "Dihydrogen",
+   "smiles": "[HH]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.3705
+    ],
+    [
+     0.0,
+     0.0,
+     0.3705
+    ]
+   ],
+   "bond_length_angstrom": 0.741,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.27224510468267227,
+   "D_exp": 4.4634,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.487969978002197,
+    "D_elec_eV": 4.760215082684869,
+    "err_eV": 0.024569978002197068,
+    "rel_err_pct": 0.5504767218308256
+   }
+  },
+  {
+   "name": "BF2H",
+   "smiles": "FB(F)",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "F",
+    "B",
+    "F",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.6243749039261389,
+     1.247805486454444,
+     -0.03023493222748731
+    ],
+    [
+     0.08021671452963174,
+     -0.004982766126915354,
+     0.09969180257151047
+    ],
+    [
+     -0.7147601355152413,
+     -1.2121956075254345,
+     -0.03054989902303004
+    ],
+    [
+     1.2589183249117482,
+     -0.03062711280209394,
+     -0.038906971320991565
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.4290175036049248,
+   "D_exp": 16.176,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 16.770799921432584,
+    "D_elec_eV": 17.19981742503751,
+    "err_eV": 0.5947999214325854,
+    "rel_err_pct": 3.6770519376396233
+   }
+  },
+  {
+   "name": "CP",
+   "smiles": "[C]=[P]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "C",
+    "P"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.79605
+    ],
+    [
+     0.0,
+     0.0,
+     0.79605
+    ]
+   ],
+   "bond_length_angstrom": 1.5921,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.07160349768671423,
+   "D_exp": 5.33,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 5.06984771254613,
+    "D_elec_eV": 5.1414512102328445,
+    "err_eV": -0.2601522874538702,
+    "rel_err_pct": 4.880905955982556
+   }
+  },
+  {
+   "name": "OCl",
+   "smiles": "[O]Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "O",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.8400000000000001
+    ],
+    [
+     0.0,
+     0.0,
+     0.8400000000000001
+    ]
+   ],
+   "bond_length_angstrom": 1.6800000000000002,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.04249677951053978,
+   "D_exp": 2.75,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.5030522367570742,
+    "D_elec_eV": 2.545549016267614,
+    "err_eV": -0.24694776324292578,
+    "rel_err_pct": 8.979918663379118
+   }
+  },
+  {
+   "name": "ClO",
+   "smiles": "[Cl][O]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Cl",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.8400000000000001
+    ],
+    [
+     0.0,
+     0.0,
+     0.8400000000000001
+    ]
+   ],
+   "bond_length_angstrom": 1.6800000000000002,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.04249838172334951,
+   "D_exp": 2.75,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.5030489878695463,
+    "D_elec_eV": 2.545547369592896,
+    "err_eV": -0.24695101213045367,
+    "rel_err_pct": 8.98003680474377
+   }
+  },
+  {
+   "name": "BH",
+   "smiles": "[B][H]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "B",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.575
+    ],
+    [
+     0.0,
+     0.0,
+     0.575
+    ]
+   ],
+   "bond_length_angstrom": 1.15,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.1811267344115617,
+   "D_exp": 3.42,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.3456477287652593,
+    "D_elec_eV": 3.526774463176821,
+    "err_eV": -0.07435227123474064,
+    "rel_err_pct": 2.1740430185596678
+   }
+  },
+  {
+   "name": "Nitrous_acid",
+   "smiles": "N(=O)O",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "N",
+    "O",
+    "O",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.47506569163096424,
+     0.1815496843267425,
+     -0.40624876532984827
+    ],
+    [
+     1.5376888920338598,
+     -0.0275724050243629,
+     0.18493601042090743
+    ],
+    [
+     -0.6350156269922478,
+     -0.1855301797800459,
+     0.4037090628403783
+    ],
+    [
+     -1.3777389566725902,
+     0.031552900477671175,
+     -0.1823963079314479
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.5213344510987623,
+   "D_exp": 12.9725,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 12.64927814429456,
+    "D_elec_eV": 13.170612595393322,
+    "err_eV": -0.32322185570544093,
+    "rel_err_pct": 2.4915926437112423
+   }
+  },
+  {
+   "name": "NOBr",
+   "smiles": "BrN=O",
+   "category": "Inorganique",
+   "n_atoms": 3,
+   "atoms": [
+    "Br",
+    "N",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     1.4333380632960493,
+     -0.1489250842583957,
+     0.0
+    ],
+    [
+     -0.30029039509712846,
+     0.5304615477600485,
+     0.0
+    ],
+    [
+     -1.133047668198921,
+     -0.38153646350165205,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.15745137062782513,
+   "D_exp": 7.791,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 7.245101257607018,
+    "D_elec_eV": 7.402552628234844,
+    "err_eV": -0.545898742392982,
+    "rel_err_pct": 7.006786579296392
+   }
+  },
+  {
+   "name": "Br2",
+   "smiles": "BrBr",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Br",
+    "Br"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.2
+    ],
+    [
+     0.0,
+     0.0,
+     1.2
+    ]
+   ],
+   "bond_length_angstrom": 2.4,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.023927291546237038,
+   "D_exp": 1.971,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 1.9884526254206558,
+    "D_elec_eV": 2.012379916966893,
+    "err_eV": 0.017452625420655732,
+    "rel_err_pct": 0.8854705946552882
+   }
+  },
+  {
+   "name": "S2",
+   "smiles": "[S]=[S]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "S",
+    "S"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.9445
+    ],
+    [
+     0.0,
+     0.0,
+     0.9445
+    ]
+   ],
+   "bond_length_angstrom": 1.889,
+   "charge": 0,
+   "spin": 2,
+   "zpe_eV_recycled": 0.04661645784998337,
+   "D_exp": 4.369,
+   "geometry_source": "json_diatomic_re",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.09672374351086,
+    "D_elec_eV": 4.143340201360843,
+    "err_eV": -0.2722762564891399,
+    "rel_err_pct": 6.232004039577475
+   }
+  },
+  {
+   "name": "C2H2",
+   "smiles": "C#C",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "C",
+    "C",
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.5969558994363714,
+     0.25362918496777165,
+     0.00965743362079095
+    ],
+    [
+     0.5969558942012837,
+     0.13145172947577857,
+     -0.00965685496072235
+    ],
+    [
+     -1.6570857334765443,
+     0.3621162836748077,
+     0.026806381744849585
+    ],
+    [
+     1.657085738711635,
+     0.022965140058540737,
+     -0.02680696040491714
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.7134714275860868,
+   "D_exp": 17.07,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 16.53363906084192,
+    "D_elec_eV": 17.247110488428007,
+    "err_eV": -0.5363609391580795,
+    "rel_err_pct": 3.142126181359575
+   }
+  },
+  {
+   "name": "C2",
+   "smiles": "[C]#[C]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "C",
+    "C"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.5928
+    ],
+    [
+     0.0,
+     0.0,
+     0.5928
+    ]
+   ],
+   "bond_length_angstrom": 1.1856,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.1416476047248018,
+   "D_exp": 6.248,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.812723080111447,
+    "D_elec_eV": 4.954370684836249,
+    "err_eV": -1.4352769198885529,
+    "rel_err_pct": 22.971781688357122
+   }
+  },
+  {
+   "name": "ClF",
+   "smiles": "FCl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "F",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.7949999999999999
+    ],
+    [
+     0.0,
+     0.0,
+     0.7949999999999999
+    ]
+   ],
+   "bond_length_angstrom": 1.5899999999999999,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.05765209007002135,
+   "D_exp": 2.62,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.329066863831415,
+    "D_elec_eV": 2.386718953901436,
+    "err_eV": -0.2909331361685852,
+    "rel_err_pct": 11.10431817437348
+   }
+  },
+  {
+   "name": "LiCl",
+   "smiles": "[Li]Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Li",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.15
+    ],
+    [
+     0.0,
+     0.0,
+     1.15
+    ]
+   ],
+   "bond_length_angstrom": 2.3,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.02342750982120194,
+   "D_exp": 4.9,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.390947310452022,
+    "D_elec_eV": 4.414374820273224,
+    "err_eV": -0.5090526895479783,
+    "rel_err_pct": 10.388830398938333
+   }
+  },
+  {
+   "name": "HOCl",
+   "smiles": "ClO",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "Cl",
+    "O",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     1.2648441799336223,
+     -0.12230518676828799,
+     0.0
+    ],
+    [
+     -0.32165914593221046,
+     0.4348133524765441,
+     0.0
+    ],
+    [
+     -0.9431850340014092,
+     -0.31250816570825657,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.3515029543873026,
+   "D_exp": 6.871,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 6.285553577031846,
+    "D_elec_eV": 6.637056531419148,
+    "err_eV": -0.5854464229681549,
+    "rel_err_pct": 8.520541740185633
+   }
+  },
+  {
+   "name": "NF",
+   "smiles": "[N]F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "N",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.6399999999999999
+    ],
+    [
+     0.0,
+     0.0,
+     0.6399999999999999
+    ]
+   ],
+   "bond_length_angstrom": 1.2799999999999998,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.08262184732666979,
+   "D_exp": 3.47,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 1.571847758467805,
+    "D_elec_eV": 1.6544696057944748,
+    "err_eV": -1.8981522415321952,
+    "rel_err_pct": 54.701793704097845
+   }
+  },
+  {
+   "name": "Hydrogen_fluoride",
+   "smiles": "F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "F",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.4585
+    ],
+    [
+     0.0,
+     0.0,
+     0.4585
+    ]
+   ],
+   "bond_length_angstrom": 0.917,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.255999442704152,
+   "D_exp": 5.8661,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 5.267738047852262,
+    "D_elec_eV": 5.523737490556414,
+    "err_eV": -0.5983619521477381,
+    "rel_err_pct": 10.200336716860232
+   }
+  },
+  {
+   "name": "O2",
+   "smiles": "O=O",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "O",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.604
+    ],
+    [
+     0.0,
+     0.0,
+     0.604
+    ]
+   ],
+   "bond_length_angstrom": 1.208,
+   "charge": 0,
+   "spin": 2,
+   "zpe_eV_recycled": 0.10296820306839345,
+   "D_exp": 5.116,
+   "geometry_source": "json_diatomic_re",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 5.27778143806936,
+    "D_elec_eV": 5.380749641137754,
+    "err_eV": 0.16178143806936074,
+    "rel_err_pct": 3.1622642312228453
+   }
+  },
+  {
+   "name": "SOBr2",
+   "smiles": "BrS(Br)=O",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "Br",
+    "S",
+    "Br",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     -1.6271171197048377,
+     -0.8991455748668247,
+     -0.17765875490134592
+    ],
+    [
+     -0.0046439159478318184,
+     0.267831781420988,
+     0.6528278408618945
+    ],
+    [
+     1.6727937635409476,
+     -0.8078147857687736,
+     -0.19165320854616247
+    ],
+    [
+     -0.04103272788828132,
+     1.4391285792146098,
+     -0.28351587741438533
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.18475675709532147,
+   "D_exp": 8.707,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 7.395081484326063,
+    "D_elec_eV": 7.579838241421385,
+    "err_eV": -1.3119185156739377,
+    "rel_err_pct": 15.067399973285145
+   }
+  },
+  {
+   "name": "BS",
+   "smiles": "[B]#[S]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "B",
+    "S"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.7371000000000001
+    ],
+    [
+     0.0,
+     0.0,
+     0.7371000000000001
+    ]
+   ],
+   "bond_length_angstrom": 1.4742000000000002,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.10345583793367158,
+   "D_exp": 5.8,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 5.038121487198277,
+    "D_elec_eV": 5.141577325131948,
+    "err_eV": -0.7618785128017231,
+    "rel_err_pct": 13.135836427615915
+   }
+  },
+  {
+   "name": "BeF2",
+   "smiles": "F[Be]F",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "F",
+    "Be",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     -1.6096636820074004,
+     0.08774159513189138,
+     0.0
+    ],
+    [
+     -0.07598670418527348,
+     -0.30827896511953234,
+     0.0
+    ],
+    [
+     1.685650386192674,
+     -0.9170297023159218,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.07081720962243135,
+   "D_exp": 13.17,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 10.697706928438025,
+    "D_elec_eV": 10.768524138060457,
+    "err_eV": -2.4722930715619746,
+    "rel_err_pct": 18.772156959468298
+   }
+  },
+  {
+   "name": "BN",
+   "smiles": "[B]=[N]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "B",
+    "N"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.6742499999999999
+    ],
+    [
+     0.0,
+     0.0,
+     0.6742499999999999
+    ]
+   ],
+   "bond_length_angstrom": 1.3484999999999998,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.08344985226371417,
+   "D_exp": 3.9,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.687076842763742,
+    "D_elec_eV": 3.7705266950274563,
+    "err_eV": -0.21292315723625777,
+    "rel_err_pct": 5.459568134263019
+   }
+  },
+  {
+   "name": "HF",
+   "smiles": "[H]F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "H",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.4585
+    ],
+    [
+     0.0,
+     0.0,
+     0.4585
+    ]
+   ],
+   "bond_length_angstrom": 0.917,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.255999442704152,
+   "D_exp": 5.869,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 5.267738047852262,
+    "D_elec_eV": 5.523737490556414,
+    "err_eV": -0.6012619521477376,
+    "rel_err_pct": 10.244708675204253
+   }
+  },
+  {
+   "name": "Si2",
+   "smiles": "[Si]=[Si]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Si",
+    "Si"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.9657000000000001
+    ],
+    [
+     0.0,
+     0.0,
+     0.9657000000000001
+    ]
+   ],
+   "bond_length_angstrom": 1.9314000000000002,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.048616817208875014,
+   "D_exp": 3.21,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 1.698735229312098,
+    "D_elec_eV": 1.747352046520973,
+    "err_eV": -1.5112647706879019,
+    "rel_err_pct": 47.07989939837701
+   }
+  },
+  {
+   "name": "SiO",
+   "smiles": "[Si]#[O]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Si",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.755
+    ],
+    [
+     0.0,
+     0.0,
+     0.755
+    ]
+   ],
+   "bond_length_angstrom": 1.51,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.07880139225136457,
+   "D_exp": 8.26,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 7.7352391986702855,
+    "D_elec_eV": 7.81404059092165,
+    "err_eV": -0.5247608013297143,
+    "rel_err_pct": 6.353036335710827
+   }
+  },
+  {
+   "name": "AlO",
+   "smiles": "[Al]=O",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Al",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.81345
+    ],
+    [
+     0.0,
+     0.0,
+     0.81345
+    ]
+   ],
+   "bond_length_angstrom": 1.6269,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.0598287222195277,
+   "D_exp": 5.27,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.891012122931579,
+    "D_elec_eV": 4.950840845151106,
+    "err_eV": -0.37898787706842096,
+    "rel_err_pct": 7.1914208172375895
+   }
+  },
+  {
+   "name": "AlCl2",
+   "smiles": "Cl[Al]Cl",
+   "category": "Inorganique",
+   "n_atoms": 3,
+   "atoms": [
+    "Cl",
+    "Al",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     -1.9164399589942127,
+     -0.362448026923932,
+     -0.0
+    ],
+    [
+     -0.0021932456651051215,
+     0.7236605988187804,
+     -0.0
+    ],
+    [
+     1.9186332046593177,
+     -0.3612125718948484,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.06338636413674749,
+   "D_exp": 8.837,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 7.648530552004742,
+    "D_elec_eV": 7.71191691614149,
+    "err_eV": -1.1884694479952573,
+    "rel_err_pct": 13.448788593360387
+   }
+  },
+  {
+   "name": "MgO",
+   "smiles": "[Mg]=O",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Mg",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.90045
+    ],
+    [
+     0.0,
+     0.0,
+     0.90045
+    ]
+   ],
+   "bond_length_angstrom": 1.8009,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.04239187542716986,
+   "D_exp": 3.53,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 1.977813793234959,
+    "D_elec_eV": 2.020205668662129,
+    "err_eV": -1.5521862067650407,
+    "rel_err_pct": 43.971280644902
+   }
+  },
+  {
+   "name": "KF",
+   "smiles": "[K]F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "K",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.2999999999999998
+    ],
+    [
+     0.0,
+     0.0,
+     1.2999999999999998
+    ]
+   ],
+   "bond_length_angstrom": 2.5999999999999996,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.004075740356207169,
+   "D_exp": 5.144,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.5745324710720108,
+    "D_elec_eV": 3.578608211428218,
+    "err_eV": -1.5694675289279894,
+    "rel_err_pct": 30.51064403048191
+   }
+  },
+  {
+   "name": "Na2",
+   "smiles": "[Na][Na]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Na",
+    "Na"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.66
+    ],
+    [
+     0.0,
+     0.0,
+     1.66
+    ]
+   ],
+   "bond_length_angstrom": 3.32,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.006502180017329191,
+   "D_exp": 0.735,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 0.6958534954456389,
+    "D_elec_eV": 0.7023556754629681,
+    "err_eV": -0.03914650455436108,
+    "rel_err_pct": 5.3260550414096715
+   }
+  },
+  {
+   "name": "MgF2",
+   "smiles": "F[Mg]F",
+   "category": "Inorganique",
+   "n_atoms": 3,
+   "atoms": [
+    "F",
+    "Mg",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     -1.9132714166424707,
+     0.09408869799829606,
+     0.0
+    ],
+    [
+     0.0177109233659462,
+     -0.317497088866476,
+     0.0
+    ],
+    [
+     1.8955604932765249,
+     -0.9141586814353829,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.06442461457843371,
+   "D_exp": 10.85,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 9.333230115931679,
+    "D_elec_eV": 9.397654730510112,
+    "err_eV": -1.5167698840683208,
+    "rel_err_pct": 13.979445936113558
+   }
+  },
+  {
+   "name": "BCl",
+   "smiles": "[B]Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "B",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.9299999999999999
+    ],
+    [
+     0.0,
+     0.0,
+     0.9299999999999999
+    ]
+   ],
+   "bond_length_angstrom": 1.8599999999999999,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.03611718247391483,
+   "D_exp": 5.17,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.9657359580991605,
+    "D_elec_eV": 5.0018531405730755,
+    "err_eV": -0.20426404190083947,
+    "rel_err_pct": 3.9509485860897384
+   }
+  },
+  {
+   "name": "CS",
+   "smiles": "[C]#[S]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "C",
+    "S"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.7059000000000001
+    ],
+    [
+     0.0,
+     0.0,
+     0.7059000000000001
+    ]
+   ],
+   "bond_length_angstrom": 1.4118000000000002,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.11173851100448888,
+   "D_exp": 7.36,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 6.2842081413766095,
+    "D_elec_eV": 6.395946652381099,
+    "err_eV": -1.0757918586233908,
+    "rel_err_pct": 14.616737209556941
+   }
+  },
+  {
+   "name": "HBr",
+   "smiles": "[H]Br",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "H",
+    "Br"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.755
+    ],
+    [
+     0.0,
+     0.0,
+     0.755
+    ]
+   ],
+   "bond_length_angstrom": 1.51,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.1303640902192989,
+   "D_exp": 3.76,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.6728674826876535,
+    "D_elec_eV": 3.8032315729069524,
+    "err_eV": -0.08713251731234628,
+    "rel_err_pct": 2.3173541838389973
+   }
+  },
+  {
+   "name": "OH",
+   "smiles": "[O][H]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "O",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.485
+    ],
+    [
+     0.0,
+     0.0,
+     0.485
+    ]
+   ],
+   "bond_length_angstrom": 0.97,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.230874475578982,
+   "D_exp": 4.392,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.169561158999134,
+    "D_elec_eV": 4.400435634578116,
+    "err_eV": -0.22243884100086664,
+    "rel_err_pct": 5.06463663481026
+   }
+  },
+  {
+   "name": "Hydrogen_bromide",
+   "smiles": "Br",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Br",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.755
+    ],
+    [
+     0.0,
+     0.0,
+     0.755
+    ]
+   ],
+   "bond_length_angstrom": 1.51,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.1303640902192989,
+   "D_exp": 3.6871,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.6728674826876535,
+    "D_elec_eV": 3.8032315729069524,
+    "err_eV": -0.014232517312346538,
+    "rel_err_pct": 0.3860084432846014
+   }
+  },
+  {
+   "name": "HOBr",
+   "smiles": "BrO",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "Br",
+    "O",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     1.3505209485951426,
+     -0.11573220676271778,
+     0.0
+    ],
+    [
+     -0.37441841985708474,
+     0.4395596782271699,
+     0.0
+    ],
+    [
+     -0.976102528738058,
+     -0.3238274714644517,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.34133497617565295,
+   "D_exp": 6.582,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 6.183955037100737,
+    "D_elec_eV": 6.52529001327639,
+    "err_eV": -0.39804496289926306,
+    "rel_err_pct": 6.047477406552158
+   }
+  },
+  {
+   "name": "SCl",
+   "smiles": "[S]Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "S",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.0350000000000001
+    ],
+    [
+     0.0,
+     0.0,
+     1.0350000000000001
+    ]
+   ],
+   "bond_length_angstrom": 2.0700000000000003,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.029962156942400658,
+   "D_exp": 2.68,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.5747790792707574,
+    "D_elec_eV": 2.604741236213158,
+    "err_eV": -0.10522092072924272,
+    "rel_err_pct": 3.9261537585538324
+   }
+  },
+  {
+   "name": "thioformaldehyde",
+   "smiles": "C=S",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "C",
+    "S",
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.12123309646258185,
+     0.012956356886662763,
+     0.00023213055469296361
+    ],
+    [
+     1.5394512823480535,
+     -0.16452345897892645,
+     -0.0029479697266138714
+    ],
+    [
+     -0.6102668328235684,
+     1.0006362254334962,
+     0.002316247800491934
+    ],
+    [
+     -0.8079513530619032,
+     -0.8490691233412333,
+     0.00039959137143466116
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.6476097070158988,
+   "D_exp": 14.694,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 13.215373014463157,
+    "D_elec_eV": 13.862982721479057,
+    "err_eV": -1.4786269855368435,
+    "rel_err_pct": 10.062794239395966
+   }
+  },
+  {
+   "name": "PF",
+   "smiles": "[P]F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "P",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.8200000000000001
+    ],
+    [
+     0.0,
+     0.0,
+     0.8200000000000001
+    ]
+   ],
+   "bond_length_angstrom": 1.6400000000000001,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.04911388732515416,
+   "D_exp": 4.47,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.1783537932612607,
+    "D_elec_eV": 3.2274676805864146,
+    "err_eV": -1.291646206738739,
+    "rel_err_pct": 28.895888293931527
+   }
+  },
+  {
+   "name": "NaCl",
+   "smiles": "[Na]Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Na",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.3399999999999999
+    ],
+    [
+     0.0,
+     0.0,
+     1.3399999999999999
+    ]
+   ],
+   "bond_length_angstrom": 2.6799999999999997,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.012296896604812192,
+   "D_exp": 4.23,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.699919542564612,
+    "D_elec_eV": 3.712216439169424,
+    "err_eV": -0.5300804574353886,
+    "rel_err_pct": 12.53145289445363
+   }
+  },
+  {
+   "name": "dicyanog",
+   "smiles": "N#CC#N",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "N",
+    "C",
+    "C",
+    "N"
+   ],
+   "coords_angstrom": [
+    [
+     -1.819281191698111,
+     -0.06587191232844986,
+     -0.47033415769756665
+    ],
+    [
+     -0.7280176800095931,
+     -0.026359522978922377,
+     -0.0727204772135554
+    ],
+    [
+     0.7280177528001044,
+     0.02635964095579395,
+     0.45780153117739103
+    ],
+    [
+     1.819281118907595,
+     0.06587179435156866,
+     0.8554154419106234
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.41650025165930255,
+   "D_exp": 21.45,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 20.70334769448615,
+    "D_elec_eV": 21.119847946145455,
+    "err_eV": -0.7466523055138481,
+    "rel_err_pct": 3.4808965292020893
+   }
+  },
+  {
+   "name": "HCN",
+   "smiles": "C#N",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "C",
+    "N",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.0316639944051871,
+     -0.0003967006991310295,
+     0.0
+    ],
+    [
+     1.1282452136944994,
+     0.014127359270363715,
+     0.0
+    ],
+    [
+     -1.0965812192893125,
+     -0.013730658571232027,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.4375869682293846,
+   "D_exp": 13.39,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 12.95044291113531,
+    "D_elec_eV": 13.388029879364694,
+    "err_eV": -0.43955708886469047,
+    "rel_err_pct": 3.2827265785264412
+   }
+  },
+  {
+   "name": "K2",
+   "smiles": "[K][K]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "K",
+    "K"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -2.03
+    ],
+    [
+     0.0,
+     0.0,
+     2.03
+    ]
+   ],
+   "bond_length_angstrom": 4.06,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.0,
+   "D_exp": 0.514,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 0.4942531665728893,
+    "D_elec_eV": 0.4942531665728893,
+    "err_eV": -0.0197468334271107,
+    "rel_err_pct": 3.8417963865974123
+   }
+  },
+  {
+   "name": "HCl",
+   "smiles": "[H]Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "H",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.665
+    ],
+    [
+     0.0,
+     0.0,
+     0.665
+    ]
+   ],
+   "bond_length_angstrom": 1.33,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.15860790474477143,
+   "D_exp": 4.43,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.150048428556998,
+    "D_elec_eV": 4.308656333301769,
+    "err_eV": -0.27995157144300187,
+    "rel_err_pct": 6.319448565304783
+   }
+  },
+  {
+   "name": "NCl",
+   "smiles": "[N]Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "N",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.865
+    ],
+    [
+     0.0,
+     0.0,
+     0.865
+    ]
+   ],
+   "bond_length_angstrom": 1.73,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.03924648687252327,
+   "D_exp": 2.75,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 0.8401789074071553,
+    "D_elec_eV": 0.8794253942796786,
+    "err_eV": -1.9098210925928447,
+    "rel_err_pct": 69.4480397306489
+   }
+  },
+  {
+   "name": "Nitrosyl_chloride",
+   "smiles": "N(=O)Cl",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "N",
+    "O",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     -0.24328831464671485,
+     0.5217652798888306,
+     0.0
+    ],
+    [
+     -1.1030633422495513,
+     -0.3648079136290333,
+     0.0
+    ],
+    [
+     1.3463516568962672,
+     -0.15695736625979706,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.16305807279818205,
+   "D_exp": 8.1107,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 7.586410787127218,
+    "D_elec_eV": 7.7494688599254005,
+    "err_eV": -0.5242892128727812,
+    "rel_err_pct": 6.464167246634461
+   }
+  },
+  {
+   "name": "PCl3",
+   "smiles": "ClP(Cl)Cl",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "Cl",
+    "P",
+    "Cl",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     -0.6036746337902634,
+     1.732099105331467,
+     -0.23588870717048288
+    ],
+    [
+     0.012470409233239405,
+     -0.005006234842253357,
+     0.7705055359288913
+    ],
+    [
+     -1.2028845940618933,
+     -1.382958622132364,
+     -0.24643060161404176
+    ],
+    [
+     1.794088818618918,
+     -0.34413424835684703,
+     -0.2881862271443678
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.1303480380881856,
+   "D_exp": 9.94,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 8.880697043598277,
+    "D_elec_eV": 9.011045081686461,
+    "err_eV": -1.059302956401723,
+    "rel_err_pct": 10.656971392371458
+   }
+  },
+  {
+   "name": "Hydrogen_chloride",
+   "smiles": "Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Cl",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.665
+    ],
+    [
+     0.0,
+     0.0,
+     0.665
+    ]
+   ],
+   "bond_length_angstrom": 1.33,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.15860790474477143,
+   "D_exp": 4.4322,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.150048428556998,
+    "D_elec_eV": 4.308656333301769,
+    "err_eV": -0.28215157144300207,
+    "rel_err_pct": 6.365948545710981
+   }
+  },
+  {
+   "name": "AlBr3",
+   "smiles": "Br[Al](Br)Br",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "Br",
+    "Al",
+    "Br",
+    "Br"
+   ],
+   "coords_angstrom": [
+    [
+     -1.892793805138538,
+     -1.397795862254,
+     -0.003025225232180203
+    ],
+    [
+     0.001037182230684817,
+     0.038543066811164775,
+     -0.2018964114103951
+    ],
+    [
+     2.147442152958002,
+     -0.9648114771781203,
+     0.03966557634143316
+    ],
+    [
+     -0.25568553005014955,
+     2.324064272620957,
+     -0.7767484135247784
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.12095019793640294,
+   "D_exp": 11.304,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 10.428709722512501,
+    "D_elec_eV": 10.549659920448903,
+    "err_eV": -0.8752902774874993,
+    "rel_err_pct": 7.743190706718854
+   }
+  },
+  {
+   "name": "CaO",
+   "smiles": "[Ca]=O",
+   "category": "Inorganique",
+   "n_atoms": 2,
+   "atoms": [
+    "Ca",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.0527
+    ],
+    [
+     0.0,
+     0.0,
+     1.0527
+    ]
+   ],
+   "bond_length_angstrom": 2.1054,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.03275654899723398,
+   "D_exp": 4.695,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 1.9191433695920996,
+    "D_elec_eV": 1.9518999185893335,
+    "err_eV": -2.7758566304079006,
+    "rel_err_pct": 59.12367689899681
+   }
+  },
+  {
+   "name": "Hydrogen_isocyanide",
+   "smiles": "[C-]#[NH+]",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "C",
+    "N",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.9481128288358326,
+     0.21631801601726577,
+     0.0
+    ],
+    [
+     -0.042663570663013205,
+     -0.4059857672465478,
+     0.0
+    ],
+    [
+     -0.9054492581728173,
+     -0.9478993210742772,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.4303170590097069,
+   "D_exp": 12.4988,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 12.228549847058236,
+    "D_elec_eV": 12.658866906067942,
+    "err_eV": -0.27025015294176313,
+    "rel_err_pct": 2.1622087955784806
+   }
+  },
+  {
+   "name": "P2",
+   "smiles": "[P]#[P]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "P",
+    "P"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.8346000000000001
+    ],
+    [
+     0.0,
+     0.0,
+     0.8346000000000001
+    ]
+   ],
+   "bond_length_angstrom": 1.6692000000000002,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.08049370104271057,
+   "D_exp": 5.033,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.1717174427547565,
+    "D_elec_eV": 3.2522111437974672,
+    "err_eV": -1.8612825572452438,
+    "rel_err_pct": 36.98157276465813
+   }
+  },
+  {
+   "name": "H2S",
+   "smiles": "S",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "S",
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.037739243387850785,
+     0.6120903363061241,
+     0.0
+    ],
+    [
+     -0.9550390686727493,
+     -0.3660926260729789,
+     0.0
+    ],
+    [
+     0.9927783120606,
+     -0.24599771023314387,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.41108923887497456,
+   "D_exp": 7.45,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 7.20670208078207,
+    "D_elec_eV": 7.617791319657044,
+    "err_eV": -0.24329791921793031,
+    "rel_err_pct": 3.2657438821198697
+   }
+  },
+  {
+   "name": "CaF",
+   "smiles": "[Ca]F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Ca",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.165
+    ],
+    [
+     0.0,
+     0.0,
+     1.165
+    ]
+   ],
+   "bond_length_angstrom": 2.33,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.015192473870797862,
+   "D_exp": 5.29,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.065163824813112,
+    "D_elec_eV": 4.08035629868391,
+    "err_eV": -1.224836175186888,
+    "rel_err_pct": 23.153802933589564
+   }
+  },
+  {
+   "name": "SiOCl2",
+   "smiles": "Cl[Si](=O)Cl",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "Cl",
+    "Si",
+    "O",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     1.7862145287994047,
+     -0.8728924116317757,
+     0.20775217622098716
+    ],
+    [
+     -0.010987663080764607,
+     0.22097180934700547,
+     0.38268501675157696
+    ],
+    [
+     -0.010908106554646036,
+     1.5814125708468578,
+     -0.3488976891747237
+    ],
+    [
+     -1.7643187591639953,
+     -0.929491968562087,
+     0.14253487252455907
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.1768155078154041,
+   "D_exp": 15.395,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 12.617875043137106,
+    "D_elec_eV": 12.79469055095251,
+    "err_eV": -2.7771249568628935,
+    "rel_err_pct": 18.03913580294182
+   }
+  },
+  {
+   "name": "CH",
+   "smiles": "[C][H]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "C",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.535
+    ],
+    [
+     0.0,
+     0.0,
+     0.535
+    ]
+   ],
+   "bond_length_angstrom": 1.07,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.20482089958069455,
+   "D_exp": 3.465,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.3467036586864523,
+    "D_elec_eV": 3.551524558267147,
+    "err_eV": -0.1182963413135476,
+    "rel_err_pct": 3.4140358243448086
+   }
+  },
+  {
+   "name": "3_Dioxiranone",
+   "smiles": "C1(=O)OO1",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "C",
+    "O",
+    "O",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     0.20573407232187826,
+     -0.00010734339575568512,
+     0.09210149564733802
+    ],
+    [
+     1.2786700007150522,
+     -0.0006670834341476593,
+     -0.4317042597433951
+    ],
+    [
+     -0.5880922385334605,
+     -0.6805976127534473,
+     0.8712805978638649
+    ],
+    [
+     -0.8963118345034721,
+     0.6813720395833542,
+     0.23848450440908986
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.3877903297709308,
+   "D_exp": 16.7055,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 16.419827588022393,
+    "D_elec_eV": 16.807617917793323,
+    "err_eV": -0.2856724119776075,
+    "rel_err_pct": 1.7100500552369429
+   }
+  },
+  {
+   "name": "KCl",
+   "smiles": "[K]Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "K",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.525
+    ],
+    [
+     0.0,
+     0.0,
+     1.525
+    ]
+   ],
+   "bond_length_angstrom": 3.05,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.007063311253093017,
+   "D_exp": 4.43,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.7658786327689295,
+    "D_elec_eV": 3.7729419440220227,
+    "err_eV": -0.6641213672310702,
+    "rel_err_pct": 14.991452984900006
+   }
+  },
+  {
+   "name": "BO",
+   "smiles": "[B]#[O]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "B",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.585
+    ],
+    [
+     0.0,
+     0.0,
+     0.585
+    ]
+   ],
+   "bond_length_angstrom": 1.17,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.13278608174639933,
+   "D_exp": 8.28,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 8.204257558742047,
+    "D_elec_eV": 8.337043640488446,
+    "err_eV": -0.07574244125795282,
+    "rel_err_pct": 0.914763783308609
+   }
+  },
+  {
+   "name": "CCl",
+   "smiles": "[C]Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "C",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.89
+    ],
+    [
+     0.0,
+     0.0,
+     0.89
+    ]
+   ],
+   "bond_length_angstrom": 1.78,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.03980827504761926,
+   "D_exp": 3.96,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.931140553835064,
+    "D_elec_eV": 3.9709488288826833,
+    "err_eV": -0.028859446164935854,
+    "rel_err_pct": 0.7287738930539357
+   }
+  },
+  {
+   "name": "SiC",
+   "smiles": "[Si]#[C]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Si",
+    "C"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.7293000000000001
+    ],
+    [
+     0.0,
+     0.0,
+     0.7293000000000001
+    ]
+   ],
+   "bond_length_angstrom": 1.4586000000000001,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.1030861517598099,
+   "D_exp": 4.64,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.0323885110241533,
+    "D_elec_eV": 2.135474662783963,
+    "err_eV": -2.6076114889758464,
+    "rel_err_pct": 56.19852346930704
+   }
+  },
+  {
+   "name": "Hypochlorous_acid",
+   "smiles": "OCl",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "O",
+    "Cl",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.32235913553381174,
+     0.43429483318763856,
+     0.0
+    ],
+    [
+     1.2650394229030348,
+     -0.1202677725982173,
+     0.0
+    ],
+    [
+     -0.9426802873692226,
+     -0.3140270605894213,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.35150388290939893,
+   "D_exp": 6.8025,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 6.285553085612903,
+    "D_elec_eV": 6.637056968522302,
+    "err_eV": -0.5169469143870975,
+    "rel_err_pct": 7.599366620905512
+   }
+  },
+  {
+   "name": "LiOH",
+   "smiles": "[Li]O",
+   "category": "Inorganique",
+   "n_atoms": 3,
+   "atoms": [
+    "Li",
+    "O",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     1.3800972334355215,
+     -0.11426379163153265,
+     0.0
+    ],
+    [
+     -0.3834769743500201,
+     0.4428308741616266,
+     -0.0
+    ],
+    [
+     -0.9966202590855009,
+     -0.32856708253009437,
+     -0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.29015488281582863,
+   "D_exp": 8.921,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 7.967578186613094,
+    "D_elec_eV": 8.257733069428923,
+    "err_eV": -0.953421813386905,
+    "rel_err_pct": 10.687387214291055
+   }
+  },
+  {
+   "name": "S2F2",
+   "smiles": "FSSF",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "F",
+    "S",
+    "S",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     -1.6154909700995215,
+     -0.6004340803696953,
+     -0.147308029025795
+    ],
+    [
+     -0.8430305890005678,
+     0.580942873776332,
+     0.5939386859378839
+    ],
+    [
+     0.8357071341590044,
+     0.6026035806196625,
+     -0.5825968149858226
+    ],
+    [
+     1.6228144249410803,
+     -0.5831123740262991,
+     0.13596615807373363
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.16777124885850883,
+   "D_exp": 11.412,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 9.297913458279771,
+    "D_elec_eV": 9.46568470713828,
+    "err_eV": -2.11408654172023,
+    "rel_err_pct": 18.52511866211207
+   }
+  },
+  {
+   "name": "SiF",
+   "smiles": "[Si]F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Si",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.8400000000000001
+    ],
+    [
+     0.0,
+     0.0,
+     0.8400000000000001
+    ]
+   ],
+   "bond_length_angstrom": 1.6800000000000002,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.045555798601497804,
+   "D_exp": 5.57,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 5.815234851600536,
+    "D_elec_eV": 5.860790650202034,
+    "err_eV": 0.24523485160053582,
+    "rel_err_pct": 4.4027801005482186
+   }
+  },
+  {
+   "name": "AlH",
+   "smiles": "[Al][H]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Al",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.76
+    ],
+    [
+     0.0,
+     0.0,
+     0.76
+    ]
+   ],
+   "bond_length_angstrom": 1.52,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.13524779412667676,
+   "D_exp": 2.98,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.8439175052323336,
+    "D_elec_eV": 2.9791652993590105,
+    "err_eV": -0.13608249476766643,
+    "rel_err_pct": 4.566526670055921
+   }
+  },
+  {
+   "name": "NaO",
+   "smiles": "[Na][O]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Na",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.16
+    ],
+    [
+     0.0,
+     0.0,
+     1.16
+    ]
+   ],
+   "bond_length_angstrom": 2.32,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.015077678944557447,
+   "D_exp": 2.6,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.255230552268209,
+    "D_elec_eV": 2.2703082312127663,
+    "err_eV": -0.3447694477317911,
+    "rel_err_pct": 13.260363374299654
+   }
+  },
+  {
+   "name": "CS2",
+   "smiles": "S=C=S",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "S",
+    "C",
+    "S"
+   ],
+   "coords_angstrom": [
+    [
+     -1.71254952871152,
+     0.16964311439948132,
+     0.0
+    ],
+    [
+     4.4590073264583885e-07,
+     -0.3791885120332298,
+     0.0
+    ],
+    [
+     1.712549082810788,
+     -0.9280216746698134,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.11542696779408325,
+   "D_exp": 11.09,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 9.750900307400553,
+    "D_elec_eV": 9.866327275194635,
+    "err_eV": -1.3390996925994472,
+    "rel_err_pct": 12.074839428308811
+   }
+  },
+  {
+   "name": "NaBr",
+   "smiles": "[Na]Br",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Na",
+    "Br"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.43
+    ],
+    [
+     0.0,
+     0.0,
+     1.43
+    ]
+   ],
+   "bond_length_angstrom": 2.86,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.012035782839787334,
+   "D_exp": 3.79,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.390185254817213,
+    "D_elec_eV": 3.402221037657,
+    "err_eV": -0.39981474518278715,
+    "rel_err_pct": 10.549201719862458
+   }
+  },
+  {
+   "name": "SH",
+   "smiles": "[S][H]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "S",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.68
+    ],
+    [
+     0.0,
+     0.0,
+     0.68
+    ]
+   ],
+   "bond_length_angstrom": 1.36,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.1598826226283361,
+   "D_exp": 3.56,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.508941573660943,
+    "D_elec_eV": 3.668824196289279,
+    "err_eV": -0.05105842633905722,
+    "rel_err_pct": 1.4342254589622814
+   }
+  },
+  {
+   "name": "BF",
+   "smiles": "[B]F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "B",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.705
+    ],
+    [
+     0.0,
+     0.0,
+     0.705
+    ]
+   ],
+   "bond_length_angstrom": 1.41,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.052154443235797106,
+   "D_exp": 7.81,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 7.434544843131387,
+    "D_elec_eV": 7.486699286367184,
+    "err_eV": -0.37545515686861286,
+    "rel_err_pct": 4.80736436451489
+   }
+  },
+  {
+   "name": "CaF2",
+   "smiles": "F[Ca]F",
+   "category": "Inorganique",
+   "n_atoms": 3,
+   "atoms": [
+    "F",
+    "Ca",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     -1.8618828359751824,
+     0.09197469207668647,
+     0.0
+    ],
+    [
+     -0.0871840960645792,
+     -0.30827896511953234,
+     0.0
+    ],
+    [
+     1.9490669320397622,
+     -0.9212627992607171,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.08778776974083004,
+   "D_exp": 11.684,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 9.12434882522342,
+    "D_elec_eV": 9.21213659496425,
+    "err_eV": -2.5596511747765796,
+    "rel_err_pct": 21.907319195280554
+   }
+  },
+  {
+   "name": "CF",
+   "smiles": "[C]F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "C",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.665
+    ],
+    [
+     0.0,
+     0.0,
+     0.665
+    ]
+   ],
+   "bond_length_angstrom": 1.33,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.0686795041900175,
+   "D_exp": 5.56,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 5.742802477239534,
+    "D_elec_eV": 5.8114819814295515,
+    "err_eV": 0.1828024772395347,
+    "rel_err_pct": 3.287814338840552
+   }
+  },
+  {
+   "name": "CH2O",
+   "smiles": "C=O",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "C",
+    "O",
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.012187589520586737,
+     0.001875648265316283,
+     0.000183161460533902
+    ],
+    [
+     1.1980616047362143,
+     -0.18437325151215833,
+     -0.01800530944947428
+    ],
+    [
+     -0.45129555499281315,
+     1.0122821663246542,
+     0.00231594369236916
+    ],
+    [
+     -0.7345784602228171,
+     -0.8297845630778137,
+     0.015506204296568262
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.7160094298387327,
+   "D_exp": 15.46,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 15.420936866220972,
+    "D_elec_eV": 16.136946296059705,
+    "err_eV": -0.03906313377902926,
+    "rel_err_pct": 0.25267227541416076
+   }
+  },
+  {
+   "name": "BH3",
+   "smiles": "[BH3]",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "B",
+    "H",
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.01606034359972853,
+     -0.010190597559791096,
+     0.048084543415588626
+    ],
+    [
+     -0.8596722907156578,
+     -0.8037604778156971,
+     0.006137958862249298
+    ],
+    [
+     -0.30662447021345046,
+     1.1279185096619488,
+     -0.008045464020658314
+    ],
+    [
+     1.1502364173293795,
+     -0.31396743428646057,
+     -0.04617703825717655
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.7189439826143051,
+   "D_exp": 11.535,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 11.698663951870216,
+    "D_elec_eV": 12.417607934484522,
+    "err_eV": 0.1636639518702161,
+    "rel_err_pct": 1.4188465701795934
+   }
+  },
+  {
+   "name": "MgH",
+   "smiles": "[Mg][H]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Mg",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.86
+    ],
+    [
+     0.0,
+     0.0,
+     0.86
+    ]
+   ],
+   "bond_length_angstrom": 1.72,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.09398569397158478,
+   "D_exp": 1.28,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 1.333340473430913,
+    "D_elec_eV": 1.427326167402498,
+    "err_eV": 0.05334047343091308,
+    "rel_err_pct": 4.167224486790085
+   }
+  },
+  {
+   "name": "SO",
+   "smiles": "O=S",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "O",
+    "S"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.74385
+    ],
+    [
+     0.0,
+     0.0,
+     0.74385
+    ]
+   ],
+   "bond_length_angstrom": 1.4877,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.07440203371167023,
+   "D_exp": 5.343,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.716427387482178,
+    "D_elec_eV": 3.7908294211938482,
+    "err_eV": -1.6265726125178221,
+    "rel_err_pct": 30.443058441284336
+   }
+  },
+  {
+   "name": "PFCl2",
+   "smiles": "ClP(Cl)F",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "Cl",
+    "P",
+    "Cl",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     -1.5307520002681223,
+     -0.9061105715449348,
+     -0.3107641028278532
+    ],
+    [
+     -0.028790126807702168,
+     0.16126786229538925,
+     0.6966156155527661
+    ],
+    [
+     1.6354220175872662,
+     -0.7333841866847,
+     -0.21989709582052183
+    ],
+    [
+     -0.07587989051141614,
+     1.4782268959343028,
+     -0.16595441690442236
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.1636059931438314,
+   "D_exp": 11.188,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 10.784231567548447,
+    "D_elec_eV": 10.947837560692278,
+    "err_eV": -0.40376843245155314,
+    "rel_err_pct": 3.6089420133317223
+   }
+  },
+  {
+   "name": "F2",
+   "smiles": "FF",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "F",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.57
+    ],
+    [
+     0.0,
+     0.0,
+     0.57
+    ]
+   ],
+   "bond_length_angstrom": 1.14,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.13595121749926264,
+   "D_exp": 1.602,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": -0.7567838538995996,
+    "D_elec_eV": -0.6208326364003369,
+    "err_eV": -2.3587838538995998,
+    "rel_err_pct": 147.2399409425468
+   }
+  },
+  {
+   "name": "AlF",
+   "smiles": "[Al]F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Al",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.8899999999999999
+    ],
+    [
+     0.0,
+     0.0,
+     0.8899999999999999
+    ]
+   ],
+   "bond_length_angstrom": 1.7799999999999998,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.03696796372097449,
+   "D_exp": 6.88,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 6.63043354821965,
+    "D_elec_eV": 6.667401511940625,
+    "err_eV": -0.24956645178034975,
+    "rel_err_pct": 3.627419357272525
+   }
+  },
+  {
+   "name": "Hypobromous_acid",
+   "smiles": "OBr",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "O",
+    "Br",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.37433247958290083,
+     0.43963269990460346,
+     0.0
+    ],
+    [
+     1.350498438437833,
+     -0.11599584169291702,
+     0.0
+    ],
+    [
+     -0.9761659588549318,
+     -0.3236368582116868,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.3413349381959271,
+   "D_exp": 6.4892,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 6.183954963685552,
+    "D_elec_eV": 6.525289901881479,
+    "err_eV": -0.30524503631444855,
+    "rel_err_pct": 4.7038931812002795
+   }
+  },
+  {
+   "name": "KBr",
+   "smiles": "[K]Br",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "K",
+    "Br"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.6149999999999998
+    ],
+    [
+     0.0,
+     0.0,
+     1.6149999999999998
+    ]
+   ],
+   "bond_length_angstrom": 3.2299999999999995,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.008522902163151727,
+   "D_exp": 3.93,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.506386055248383,
+    "D_elec_eV": 3.514908957411535,
+    "err_eV": -0.42361394475161696,
+    "rel_err_pct": 10.778980782483892
+   }
+  },
+  {
+   "name": "Cl2O",
+   "smiles": "ClOCl",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "Cl",
+    "O",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     -1.380409378098452,
+     -0.3213285467428496,
+     0.0
+    ],
+    [
+     -0.0006707052995622892,
+     0.6397632873328414,
+     0.0
+    ],
+    [
+     1.3810800833980148,
+     -0.3184347405899922,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.11119675701955588,
+   "D_exp": 4.265,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.7634573919222163,
+    "D_elec_eV": 3.8746541489417723,
+    "err_eV": -0.5015426080777834,
+    "rel_err_pct": 11.759498430897619
+   }
+  },
+  {
+   "name": "CaCl",
+   "smiles": "[Ca]Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Ca",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.3900000000000001
+    ],
+    [
+     0.0,
+     0.0,
+     1.3900000000000001
+    ]
+   ],
+   "bond_length_angstrom": 2.7800000000000002,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.012827728094526298,
+   "D_exp": 4.13,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.4255573713218106,
+    "D_elec_eV": 3.4383850994163367,
+    "err_eV": -0.7044426286781893,
+    "rel_err_pct": 17.056722244023955
+   }
+  },
+  {
+   "name": "BF2Cl",
+   "smiles": "FB(F)Cl",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "F",
+    "B",
+    "F",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     -0.8196271462848904,
+     -1.2121533157865254,
+     0.24902958196955682
+    ],
+    [
+     -0.124862575689583,
+     0.06516393296318572,
+     0.3420072042565734
+    ],
+    [
+     -0.7718908190951778,
+     1.1780470578818796,
+     -0.33867704737844845
+    ],
+    [
+     1.71638054106965,
+     -0.03105767505854088,
+     0.13171463747471723
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.2265286583631756,
+   "D_exp": 17.071,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 16.489736307424383,
+    "D_elec_eV": 16.71626496578756,
+    "err_eV": -0.581263692575618,
+    "rel_err_pct": 3.404977403641368
+   }
+  },
+  {
+   "name": "Dibromophosgene",
+   "smiles": "C(=O)(Br)Br",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "C",
+    "O",
+    "Br",
+    "Br"
+   ],
+   "coords_angstrom": [
+    [
+     -0.013079449810228705,
+     0.12123480631075297,
+     0.08225913726517792
+    ],
+    [
+     -0.1101371529452986,
+     1.0208728629352528,
+     -0.7360985474236367
+    ],
+    [
+     -1.5718145838661983,
+     -0.589081251688899,
+     0.8859078770750138
+    ],
+    [
+     1.6950311866217262,
+     -0.5530264175571077,
+     0.538093871260342
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.2612778943910604,
+   "D_exp": 13.2659,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 13.213972945796012,
+    "D_elec_eV": 13.475250840187073,
+    "err_eV": -0.05192705420398802,
+    "rel_err_pct": 0.3914325767870105
+   }
+  },
+  {
+   "name": "OF",
+   "smiles": "[O]F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "O",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.615
+    ],
+    [
+     0.0,
+     0.0,
+     0.615
+    ]
+   ],
+   "bond_length_angstrom": 1.23,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.100575500212287,
+   "D_exp": 2.24,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 1.9998495066276545,
+    "D_elec_eV": 2.1004250068399415,
+    "err_eV": -0.24015049337234573,
+    "rel_err_pct": 10.72100416840829
+   }
+  },
+  {
+   "name": "MgF",
+   "smiles": "[Mg]F",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Mg",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.99
+    ],
+    [
+     0.0,
+     0.0,
+     0.99
+    ]
+   ],
+   "bond_length_angstrom": 1.98,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.023729194502011608,
+   "D_exp": 4.59,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.012248075021744,
+    "D_elec_eV": 4.035977269523755,
+    "err_eV": -0.5777519249782559,
+    "rel_err_pct": 12.587187908023004
+   }
+  },
+  {
+   "name": "LiO",
+   "smiles": "[Li][O]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Li",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.97
+    ],
+    [
+     0.0,
+     0.0,
+     0.97
+    ]
+   ],
+   "bond_length_angstrom": 1.94,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.027078079269852205,
+   "D_exp": 3.44,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.2265008672975064,
+    "D_elec_eV": 3.253578946567359,
+    "err_eV": -0.21349913270249354,
+    "rel_err_pct": 6.206370136700394
+   }
+  },
+  {
+   "name": "BeCl",
+   "smiles": "[Be]Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Be",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.99
+    ],
+    [
+     0.0,
+     0.0,
+     0.99
+    ]
+   ],
+   "bond_length_angstrom": 1.98,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.033820565817236505,
+   "D_exp": 3.85,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 3.899893547737506,
+    "D_elec_eV": 3.9337141135547427,
+    "err_eV": 0.04989354773750598,
+    "rel_err_pct": 1.2959363048702852
+   }
+  },
+  {
+   "name": "PH3",
+   "smiles": "P",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "P",
+    "H",
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.011345373346510736,
+     -0.006508985355952595,
+     0.5627871244538997
+    ],
+    [
+     -0.4340167865463873,
+     1.1216700115757756,
+     -0.1659748574005012
+    ],
+    [
+     1.18080350658661,
+     -0.18471073510320166,
+     -0.21363618082446734
+    ],
+    [
+     -0.7581320933867293,
+     -0.9304502911166178,
+     -0.1831760862289285
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.6549158198583636,
+   "D_exp": 9.89,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 9.725561841503147,
+    "D_elec_eV": 10.38047766136151,
+    "err_eV": -0.1644381584968535,
+    "rel_err_pct": 1.6626709655900251
+   }
+  },
+  {
+   "name": "BF3",
+   "smiles": "FB(F)F",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "F",
+    "B",
+    "F",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     1.2702063766628735,
+     -0.6457348018968019,
+     -0.0528399794040798
+    ],
+    [
+     -0.0034983665128383006,
+     0.012839630613147286,
+     0.1070162021045061
+    ],
+    [
+     -1.180591410218314,
+     -0.8208034149529045,
+     -0.019020047068920774
+    ],
+    [
+     -0.08611659993172094,
+     1.4536985862365588,
+     -0.03515617563150555
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.2587087701154327,
+   "D_exp": 20.01,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 19.007082903934545,
+    "D_elec_eV": 19.26579167404998,
+    "err_eV": -1.002917096065456,
+    "rel_err_pct": 5.012079440606977
+   }
+  },
+  {
+   "name": "Al2",
+   "smiles": "[Al]=[Al]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Al",
+    "Al"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.0527
+    ],
+    [
+     0.0,
+     0.0,
+     1.0527
+    ]
+   ],
+   "bond_length_angstrom": 2.1054,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.03967974621333227,
+   "D_exp": 1.55,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": -0.3075894042219802,
+    "D_elec_eV": -0.26790965800864797,
+    "err_eV": -1.8575894042219803,
+    "rel_err_pct": 119.84447769174066
+   }
+  },
+  {
+   "name": "NaOH",
+   "smiles": "[Na]O",
+   "category": "Inorganique",
+   "n_atoms": 3,
+   "atoms": [
+    "Na",
+    "O",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     1.495813754639768,
+     -0.10368494171013287,
+     0.0
+    ],
+    [
+     -0.4535527743375872,
+     0.4469436704524269,
+     -0.0
+    ],
+    [
+     -1.0422609803021812,
+     -0.34325872874229396,
+     -0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.2839591761753898,
+   "D_exp": 8.006,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 7.009640432867368,
+    "D_elec_eV": 7.293599609042758,
+    "err_eV": -0.9963595671326324,
+    "rel_err_pct": 12.44516071861894
+   }
+  },
+  {
+   "name": "S2Cl2",
+   "smiles": "ClSSCl",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "Cl",
+    "S",
+    "S",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     -1.874756874265895,
+     -0.7664120887943792,
+     -0.18931796638493587
+    ],
+    [
+     -0.7777483843633142,
+     0.6743702208323428,
+     0.732018444945046
+    ],
+    [
+     0.746699192558568,
+     0.7973634712828345,
+     -0.634169362588348
+    ],
+    [
+     1.905806066070647,
+     -0.7053216033208003,
+     0.09146888402824432
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.12825541074360144,
+   "D_exp": 8.46,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 7.063509492656725,
+    "D_elec_eV": 7.191764903400326,
+    "err_eV": -1.3964905073432758,
+    "rel_err_pct": 16.5069799922373
+   }
+  },
+  {
+   "name": "HNO",
+   "smiles": "N=O",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "N",
+    "O",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.08300721747277469,
+     0.42156088236660294,
+     0.0
+    ],
+    [
+     0.972203069950156,
+     -0.22012155168058162,
+     0.0
+    ],
+    [
+     -0.8891958524773813,
+     -0.20143933068602213,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.3890201698183128,
+   "D_exp": 8.57,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 8.306397346303921,
+    "D_elec_eV": 8.695417516122234,
+    "err_eV": -0.26360265369607916,
+    "rel_err_pct": 3.0758769392774696
+   }
+  },
+  {
+   "name": "Fulminic_acid",
+   "smiles": "[C-]#[N+]O",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "C",
+    "N",
+    "O",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     1.626137773413386,
+     -0.07957949925714519,
+     -0.21868912853834932
+    ],
+    [
+     0.5026581017927604,
+     0.13736114903523158,
+     0.017645923777492335
+    ],
+    [
+     -0.8645445988314145,
+     0.37772584482173405,
+     0.3122294137972913
+    ],
+    [
+     -1.2642512763747404,
+     -0.4355074945998148,
+     0.6589761291404623
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.517645222698105,
+   "D_exp": 15.2783,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 14.193635104921428,
+    "D_elec_eV": 14.711280327619534,
+    "err_eV": -1.0846648950785713,
+    "rel_err_pct": 7.0993820979989355
+   }
+  },
+  {
+   "name": "AlCl3",
+   "smiles": "Cl[Al](Cl)Cl",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "Cl",
+    "Al",
+    "Cl",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     2.1654379339922016,
+     -0.3325092467616386,
+     -0.07556799214117771
+    ],
+    [
+     -0.010271668178799629,
+     -0.008508561409202576,
+     0.13105223546595865
+    ],
+    [
+     -0.7606064591623806,
+     2.0706153505175218,
+     -0.03157122891105316
+    ],
+    [
+     -1.3945598066510212,
+     -1.7295975423466812,
+     -0.02391301441373194
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.11561172389269442,
+   "D_exp": 13.16,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 11.923945045208487,
+    "D_elec_eV": 12.039556769101182,
+    "err_eV": -1.2360549547915127,
+    "rel_err_pct": 9.39251485403885
+   }
+  },
+  {
+   "name": "MgBr2",
+   "smiles": "Br[Mg]Br",
+   "category": "Inorganique",
+   "n_atoms": 3,
+   "atoms": [
+    "Br",
+    "Mg",
+    "Br"
+   ],
+   "coords_angstrom": [
+    [
+     -2.5028404420737513,
+     0.09871149329616856,
+     0.0
+    ],
+    [
+     0.01574267759612119,
+     -0.31424478304658987,
+     0.0
+    ],
+    [
+     2.487097764477632,
+     -0.9220337825531408,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.0511172277662958,
+   "D_exp": 7.455,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 6.3339107430031465,
+    "D_elec_eV": 6.385027970769443,
+    "err_eV": -1.1210892569968536,
+    "rel_err_pct": 15.038085271587573
+   }
+  },
+  {
+   "name": "SOCl2",
+   "smiles": "ClS(Cl)=O",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "Cl",
+    "S",
+    "Cl",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     -1.5013124152880952,
+     -0.8911034244104467,
+     -0.09342190576611518
+    ],
+    [
+     -0.007069129203581881,
+     0.2678484262793882,
+     0.6089887330237896
+    ],
+    [
+     1.5725683919177438,
+     -0.7549321872992383,
+     -0.11763612593437235
+    ],
+    [
+     -0.06418684742606677,
+     1.3781871854302974,
+     -0.39793070132329983
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.19209762215711426,
+   "D_exp": 10.172,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 8.086096898727313,
+    "D_elec_eV": 8.278194520884426,
+    "err_eV": -2.085903101272688,
+    "rel_err_pct": 20.506322269688244
+   }
+  },
+  {
+   "name": "Phosgene",
+   "smiles": "C(=O)(Cl)Cl",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "C",
+    "O",
+    "Cl",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     -0.015055709738600159,
+     0.12134577724932559,
+     0.05121496480943954
+    ],
+    [
+     -0.11387784350034218,
+     0.917832401750676,
+     -0.8764144947304362
+    ],
+    [
+     -1.3700371444322619,
+     -0.5229809445792303,
+     0.9475890339346743
+    ],
+    [
+     1.4989706976712027,
+     -0.5161972344207706,
+     0.6477728341632175
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.2753737233069099,
+   "D_exp": 14.6654,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 14.208201629589968,
+    "D_elec_eV": 14.483575352896878,
+    "err_eV": -0.45719837041003153,
+    "rel_err_pct": 3.117530857733383
+   }
+  },
+  {
+   "name": "SO2mol",
+   "smiles": "O=S=O",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "O",
+    "S",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     -1.3821194268382224,
+     -0.30624350057410876,
+     0.0
+    ],
+    [
+     -0.0005505979328705111,
+     0.6099914689364222,
+     0.0
+    ],
+    [
+     1.382670024771098,
+     -0.30374796836231693,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.10286646067586067,
+   "D_exp": 11.03,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 8.173901805769427,
+    "D_elec_eV": 8.276768266445288,
+    "err_eV": -2.8560981942305723,
+    "rel_err_pct": 25.893909285861945
+   }
+  },
+  {
+   "name": "Peroxyhypochlorous_acid",
+   "smiles": "OOCl",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "O",
+    "O",
+    "Cl",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.7723406073730805,
+     -0.45840107299233096,
+     0.3797598160666674
+    ],
+    [
+     0.31993248077888853,
+     0.48363095812648893,
+     0.5110168116694892
+    ],
+    [
+     1.6036511859424014,
+     0.026971530111721743,
+     -0.4731710315303959
+    ],
+    [
+     -1.151243059348211,
+     -0.052201415245890975,
+     -0.417605596205761
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.45318611103264045,
+   "D_exp": 8.5544,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 8.1546305349739,
+    "D_elec_eV": 8.60781664600654,
+    "err_eV": -0.39976946502609856,
+    "rel_err_pct": 4.673261304429284
+   }
+  },
+  {
+   "name": "carbonyl_sulfide",
+   "smiles": "C(=O)=S",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "C",
+    "O",
+    "S"
+   ],
+   "coords_angstrom": [
+    [
+     -0.2074477204567819,
+     0.0004893273756663967,
+     0.0
+    ],
+    [
+     -1.3834444230329648,
+     0.0032633762774201143,
+     0.0
+    ],
+    [
+     1.5908921434897454,
+     -0.0037527036530865155,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.20518293185084688,
+   "D_exp": 14.318,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 13.299297481897906,
+    "D_elec_eV": 13.504480413748752,
+    "err_eV": -1.018702518102094,
+    "rel_err_pct": 7.114838092625324
+   }
+  },
+  {
+   "name": "MgCl2",
+   "smiles": "Cl[Mg]Cl",
+   "category": "Inorganique",
+   "n_atoms": 3,
+   "atoms": [
+    "Cl",
+    "Mg",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     -2.3353729667002936,
+     0.09772542279750433,
+     0.0
+    ],
+    [
+     0.016337703442295688,
+     -0.3149883898154241,
+     0.0
+    ],
+    [
+     2.319035263257998,
+     -0.9203041052856428,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.050054783940156555,
+   "D_exp": 8.185,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 7.187297723063223,
+    "D_elec_eV": 7.237352507003379,
+    "err_eV": -0.9977022769367778,
+    "rel_err_pct": 12.189398618653364
+   }
+  },
+  {
+   "name": "SF2",
+   "smiles": "FSF",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "F",
+    "S",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     -1.2003222224695507,
+     -0.3557231311168456,
+     0.0
+    ],
+    [
+     -0.0039094591816967224,
+     0.6979779041098462,
+     0.0
+    ],
+    [
+     1.2042316816512477,
+     -0.3422547729929999,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.12931811490438438,
+   "D_exp": 7.47,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 6.968515119439468,
+    "D_elec_eV": 7.097833234343852,
+    "err_eV": -0.5014848805605316,
+    "rel_err_pct": 6.713318347530545
+   }
+  },
+  {
+   "name": "N2O",
+   "smiles": "[N-]=[N+]=O",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "N",
+    "N",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     1.3307406020881074,
+     0.19156320650528394,
+     0.0
+    ],
+    [
+     -0.01105204247388632,
+     -0.38392890401239976,
+     0.0
+    ],
+    [
+     -1.3196885596142192,
+     -0.9452013747964463,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.10264226766891828,
+   "D_exp": 11.44,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 6.945716047900285,
+    "D_elec_eV": 7.048358315569203,
+    "err_eV": -4.494283952099715,
+    "rel_err_pct": 39.28569888199051
+   }
+  },
+  {
+   "name": "NCl3",
+   "smiles": "ClN(Cl)Cl",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "Cl",
+    "N",
+    "Cl",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     -0.9555784932223141,
+     -1.3695092309316717,
+     -0.13761390986416114
+    ],
+    [
+     0.0008977654609853893,
+     6.828621614916887e-05,
+     0.4196400978745675
+    ],
+    [
+     1.6633479475294086,
+     -0.14257789495045714,
+     -0.1434155161367378
+    ],
+    [
+     -0.7086672197680826,
+     1.512018839665973,
+     -0.13861067187366766
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.17020307049058234,
+   "D_exp": 6.287,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 5.660813585047824,
+    "D_elec_eV": 5.831016655538406,
+    "err_eV": -0.6261864149521763,
+    "rel_err_pct": 9.960019324831816
+   }
+  },
+  {
+   "name": "KOH",
+   "smiles": "[K]O",
+   "category": "Inorganique",
+   "n_atoms": 3,
+   "atoms": [
+    "K",
+    "O",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     1.7160275421857758,
+     -0.08752021139442394,
+     0.0
+    ],
+    [
+     -0.5819961248976192,
+     0.45188095744114026,
+     -0.0
+    ],
+    [
+     -1.134031417288157,
+     -0.364360746046717,
+     -0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.269402085325132,
+   "D_exp": 8.175,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 6.683964317749919,
+    "D_elec_eV": 6.9533664030750515,
+    "err_eV": -1.4910356822500814,
+    "rel_err_pct": 18.238968590215062
+   }
+  },
+  {
+   "name": "BCl3",
+   "smiles": "ClB(Cl)Cl",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "Cl",
+    "B",
+    "Cl",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     -0.9001363884608821,
+     1.5883582911187406,
+     -0.040626574673845894
+    ],
+    [
+     0.013025375837132024,
+     -0.002845833251628214,
+     0.12346396098199389
+    ],
+    [
+     -0.9675197364651158,
+     -1.563060756191312,
+     -0.04090661001790126
+    ],
+    [
+     1.8546307490888663,
+     -0.02245170167580049,
+     -0.04193077629024604
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.17794696843576616,
+   "D_exp": 13.69,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 13.017701356327404,
+    "D_elec_eV": 13.19564832476317,
+    "err_eV": -0.6722986436725957,
+    "rel_err_pct": 4.910873949398069
+   }
+  },
+  {
+   "name": "SCl2",
+   "smiles": "ClSCl",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "Cl",
+    "S",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     -1.5283035842934773,
+     -0.4559741012983805,
+     0.0
+    ],
+    [
+     -0.0066116218362227645,
+     0.8891707753776334,
+     0.0
+    ],
+    [
+     1.5349152061297004,
+     -0.4331966740792519,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.07987474556444854,
+   "D_exp": 5.569,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 4.677506826619937,
+    "D_elec_eV": 4.757381572184386,
+    "err_eV": -0.8914931733800628,
+    "rel_err_pct": 16.008137428264728
+   }
+  },
+  {
+   "name": "Formyl_chloride",
+   "smiles": "C(=O)Cl",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "C",
+    "O",
+    "Cl",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.10761495110332864,
+     -0.00680033383371422,
+     0.1031855352400434
+    ],
+    [
+     -0.6752131641303575,
+     0.8638247179149582,
+     -0.5491984849244866
+    ],
+    [
+     1.2261870710960274,
+     0.19707084730198193,
+     1.1867827361155174
+    ],
+    [
+     -0.443358955862338,
+     -1.0540952313832292,
+     0.02939255174582457
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.5098525101290744,
+   "D_exp": 15.2746,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 14.994065705192318,
+    "D_elec_eV": 15.503918215321391,
+    "err_eV": -0.28053429480768166,
+    "rel_err_pct": 1.8366064892545904
+   }
+  },
+  {
+   "name": "SOF2",
+   "smiles": "FS(=O)F",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "F",
+    "S",
+    "O",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     -1.1602023314153582,
+     -0.7875503617889099,
+     -0.1272505183195214
+    ],
+    [
+     -0.011074997742459982,
+     0.08661045021962464,
+     0.548795330978605
+    ],
+    [
+     -0.09367428838978417,
+     1.310087456878784,
+     -0.3150801700467883
+    ],
+    [
+     1.2649516175475992,
+     -0.6091475453095053,
+     -0.10646464261229437
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.24568071177203454,
+   "D_exp": 12.738,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 11.629471159127537,
+    "D_elec_eV": 11.875151870899572,
+    "err_eV": -1.108528840872463,
+    "rel_err_pct": 8.70253447065837
+   }
+  },
+  {
+   "name": "Vinylidene_2143693",
+   "smiles": "C=[C]",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "C",
+    "C",
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.10848068337227527,
+     0.01756475246830789,
+     -0.002244386715101298
+    ],
+    [
+     1.4127493597038165,
+     -0.22874709496975937,
+     0.0292344541174758
+    ],
+    [
+     -0.50306733773417,
+     1.026572512325219,
+     -0.010849185407136074
+    ],
+    [
+     -0.8012013385973695,
+     -0.8153901698237669,
+     -0.016140881995236236
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.5974752813646815,
+   "D_exp": 14.9624,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 13.68588296259331,
+    "D_elec_eV": 14.283358243957991,
+    "err_eV": -1.2765170374066912,
+    "rel_err_pct": 8.531499207391134
+   }
+  },
+  {
+   "name": "SiOF2",
+   "smiles": "F[Si](=O)F",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "F",
+    "Si",
+    "O",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     -1.0933853789722754,
+     -1.2545292011772282,
+     -0.07722115259798157
+    ],
+    [
+     0.052253674546403964,
+     -0.015696279141849186,
+     0.0037787223992040942
+    ],
+    [
+     1.5416918729441889,
+     -0.3125881938855478,
+     0.11241011588596848
+    ],
+    [
+     -0.5005601685183181,
+     1.5828136742046253,
+     -0.03896768568719396
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.22582046019157262,
+   "D_exp": 18.692,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 16.563028152991716,
+    "D_elec_eV": 16.78884861318329,
+    "err_eV": -2.128971847008284,
+    "rel_err_pct": 11.389748807020563
+   }
+  },
+  {
+   "name": "HOCN",
+   "smiles": "OC#N",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "O",
+    "C",
+    "N",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.7643660292978866,
+     0.23851972188980108,
+     -0.23254416414158172
+    ],
+    [
+     0.49903048349233564,
+     0.06681733597716072,
+     0.12328759168502978
+    ],
+    [
+     1.5936922426124218,
+     -0.10041681008334478,
+     0.46036734460903833
+    ],
+    [
+     -1.328356696806866,
+     -0.20492024778361845,
+     0.4190515660244061
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.5699710646408415,
+   "D_exp": 18.817,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 16.819086930579513,
+    "D_elec_eV": 17.389057995220355,
+    "err_eV": -1.9979130694204876,
+    "rel_err_pct": 10.617596159964329
+   }
+  },
+  {
+   "name": "MgBr",
+   "smiles": "[Mg]Br",
+   "category": "Inorganique",
+   "n_atoms": 2,
+   "atoms": [
+    "Mg",
+    "Br"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.305
+    ],
+    [
+     0.0,
+     0.0,
+     1.305
+    ]
+   ],
+   "bond_length_angstrom": 2.61,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.015638266124533676,
+   "D_exp": 2.922,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.503630595643535,
+    "D_elec_eV": 2.5192688617680687,
+    "err_eV": -0.41836940435646497,
+    "rel_err_pct": 14.317912537866698
+   }
+  },
+  {
+   "name": "SiCl2",
+   "smiles": "Cl[Si]Cl",
+   "category": "Inorganique",
+   "n_atoms": 3,
+   "atoms": [
+    "Cl",
+    "Si",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     -1.6202517611867064,
+     -0.42452480881625004,
+     0.0
+    ],
+    [
+     -0.003420051498714898,
+     0.8357749425884772,
+     0.0
+    ],
+    [
+     1.6236718126854184,
+     -0.41125013377222897,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.0824741094562848,
+   "D_exp": 8.988,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 8.199401102645737,
+    "D_elec_eV": 8.281875212102022,
+    "err_eV": -0.7885988973542624,
+    "rel_err_pct": 8.77390851528997
+   }
+  },
+  {
+   "name": "LiH",
+   "smiles": "[Li][H]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Li",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.795
+    ],
+    [
+     0.0,
+     0.0,
+     0.795
+    ]
+   ],
+   "bond_length_angstrom": 1.59,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.08977744434299162,
+   "D_exp": 2.429,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.3752381717279656,
+    "D_elec_eV": 2.465015616070957,
+    "err_eV": -0.05376182827203424,
+    "rel_err_pct": 2.2133317526568237
+   }
+  },
+  {
+   "name": "Isofulminic_acid",
+   "smiles": "C#[N+][O-]",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "C",
+    "N",
+    "O",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.8163973457021075,
+     0.1334750039229773,
+     -0.0032638958724587257
+    ],
+    [
+     0.6379106119639125,
+     0.238692566822334,
+     0.0025502145147316218
+    ],
+    [
+     2.054791639486407,
+     0.3412022974199419,
+     0.008215081233773501
+    ],
+    [
+     -1.8763049057482102,
+     0.056792470011646085,
+     -0.007501399876047825
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.3454252965713467,
+   "D_exp": 14.6095,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 11.314040648055045,
+    "D_elec_eV": 11.65946594462639,
+    "err_eV": -3.295459351944956,
+    "rel_err_pct": 22.556961921660264
+   }
+  },
+  {
+   "name": "S2O",
+   "smiles": "S=S=O",
+   "category": "Inorganique",
+   "n_atoms": 3,
+   "atoms": [
+    "S",
+    "S",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     1.668659451524847,
+     -0.004892279077041343,
+     0.0
+    ],
+    [
+     -0.295129622702153,
+     -0.6270921502030271,
+     0.0
+    ],
+    [
+     -1.3735298288227282,
+     0.6319844292800799,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.08801771495063301,
+   "D_exp": 8.908,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 6.891774147572056,
+    "D_elec_eV": 6.9797918625226885,
+    "err_eV": -2.0162258524279437,
+    "rel_err_pct": 22.63387800210983
+   }
+  },
+  {
+   "name": "AlF3",
+   "smiles": "F[Al](F)F",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "F",
+    "Al",
+    "F",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     -0.07230583214102762,
+     1.7823467134349402,
+     0.010620561361156225
+    ],
+    [
+     0.010061640109328846,
+     -0.008640193599173155,
+     -0.021282398233480795
+    ],
+    [
+     -1.5448958700596906,
+     -0.9247421500158248,
+     0.13211983820547948
+    ],
+    [
+     1.6071400620913896,
+     -0.8489643698199425,
+     -0.12145800133315779
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.16389443028910095,
+   "D_exp": 18.29,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 16.54793371327597,
+    "D_elec_eV": 16.71182814356507,
+    "err_eV": -1.7420662867240289,
+    "rel_err_pct": 9.524692655680859
+   }
+  },
+  {
+   "name": "HCOF",
+   "smiles": "C(=O)F",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "C",
+    "O",
+    "F",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.04693024602102143,
+     0.046787145967951235,
+     0.11615855600219399
+    ],
+    [
+     -0.6713505790347964,
+     -0.7429066909982406,
+     0.8069756326710611
+    ],
+    [
+     1.0318074092060747,
+     -0.41132916246148515,
+     -0.5316287499635803
+    ],
+    [
+     -0.3135265841502539,
+     1.107448707491776,
+     -0.007431062387269164
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.548103950288829,
+   "D_exp": 17.12,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 16.75069252954697,
+    "D_elec_eV": 17.2987964798358,
+    "err_eV": -0.36930747045303036,
+    "rel_err_pct": 2.1571698040480745
+   }
+  },
+  {
+   "name": "PF2Cl",
+   "smiles": "FP(F)Cl",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "F",
+    "P",
+    "F",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     -0.6993280763017427,
+     1.2160810655628482,
+     -0.22884297879158613
+    ],
+    [
+     -0.1316963942837117,
+     0.039832801827268643,
+     0.6514180801714161
+    ],
+    [
+     -0.9012706228591433,
+     -1.09154288349489,
+     -0.12856245217754483
+    ],
+    [
+     1.7322950934445929,
+     -0.16437098389522553,
+     -0.29401264920228676
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.20068366019557907,
+   "D_exp": 13.106,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 12.732324022372552,
+    "D_elec_eV": 12.933007682568132,
+    "err_eV": -0.37367597762744786,
+    "rel_err_pct": 2.851182493723851
+   }
+  },
+  {
+   "name": "COCl2",
+   "smiles": "ClC(Cl)=O",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "Cl",
+    "C",
+    "Cl",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     -1.4261279323519007,
+     -0.8286990478545411,
+     -0.004813563484581868
+    ],
+    [
+     -0.0037025278863266095,
+     0.18680326731681857,
+     0.003908041922615786
+    ],
+    [
+     1.4578347620775887,
+     -0.7710417499405128,
+     -0.02865399239986658
+    ],
+    [
+     -0.028004301839363355,
+     1.4129375304782381,
+     0.029559513961833494
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.2753253172712527,
+   "D_exp": 14.793,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 14.208192844135866,
+    "D_elec_eV": 14.483518161407119,
+    "err_eV": -0.5848071558641337,
+    "rel_err_pct": 3.9532694914090025
+   }
+  },
+  {
+   "name": "NaH",
+   "smiles": "[Na][H]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Na",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.985
+    ],
+    [
+     0.0,
+     0.0,
+     0.985
+    ]
+   ],
+   "bond_length_angstrom": 1.97,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.062491910424528826,
+   "D_exp": 1.97,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 1.8911450770258802,
+    "D_elec_eV": 1.953636987450409,
+    "err_eV": -0.07885492297411978,
+    "rel_err_pct": 4.0027879682294305
+   }
+  },
+  {
+   "name": "BCl2H",
+   "smiles": "ClB(Cl)",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "Cl",
+    "B",
+    "Cl",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -1.4724757931780066,
+     -0.7836773920989647,
+     -0.2696798604531397
+    ],
+    [
+     0.0903040134376344,
+     0.1943557930026804,
+     -0.04806300502903882
+    ],
+    [
+     1.4877550540999045,
+     -0.7187253273886138,
+     0.7576560817836258
+    ],
+    [
+     -0.1055832743595341,
+     1.3080469264848988,
+     0.330249121875447
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.37148746513154285,
+   "D_exp": 12.931,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 12.347308613267922,
+    "D_elec_eV": 12.718796078399464,
+    "err_eV": -0.5836913867320774,
+    "rel_err_pct": 4.513892094440317
+   }
+  },
+  {
+   "name": "KH",
+   "smiles": "[K][H]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "K",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.17
+    ],
+    [
+     0.0,
+     0.0,
+     1.17
+    ]
+   ],
+   "bond_length_angstrom": 2.34,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.05532032760782954,
+   "D_exp": 1.76,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 1.6742560224309397,
+    "D_elec_eV": 1.7295763500387693,
+    "err_eV": -0.08574397756906027,
+    "rel_err_pct": 4.8718169073329705
+   }
+  },
+  {
+   "name": "NH2F",
+   "smiles": "NF",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "N",
+    "F",
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.09557955171313552,
+     0.0065370764997825055,
+     0.2850319619489836
+    ],
+    [
+     1.2335627374286142,
+     -0.05934002232232123,
+     -0.07643355067876242
+    ],
+    [
+     -0.6077437076566585,
+     -0.786454626827676,
+     -0.0986515244126319
+    ],
+    [
+     -0.5302394780588189,
+     0.8392575726502163,
+     -0.10994688685758888
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.7374845625882211,
+   "D_exp": 11.35,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 10.073806139768706,
+    "D_elec_eV": 10.811290702356928,
+    "err_eV": -1.2761938602312934,
+    "rel_err_pct": 11.243998768557653
+   }
+  },
+  {
+   "name": "NH3",
+   "smiles": "N",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "N",
+    "H",
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.004319640746797859,
+     0.004533311785545674,
+     0.29552868276955346
+    ],
+    [
+     0.9170901077002496,
+     -0.19955088661307438,
+     -0.10889773852137483
+    ],
+    [
+     -0.63203571055395,
+     -0.6979143201444901,
+     -0.0786096512023802
+    ],
+    [
+     -0.2893740378930972,
+     0.8929318949720186,
+     -0.10802129304579876
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.9217471303511452,
+   "D_exp": 12.02,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 11.677001885285113,
+    "D_elec_eV": 12.598749015636258,
+    "err_eV": -0.34299811471488617,
+    "rel_err_pct": 2.8535616864799183
+   }
+  },
+  {
+   "name": "CO",
+   "smiles": "[C-]#[O+]",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "C",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -0.5538
+    ],
+    [
+     0.0,
+     0.0,
+     0.5538
+    ]
+   ],
+   "bond_length_angstrom": 1.1076,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.1490497743982938,
+   "D_exp": 11.092,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 10.752051562951406,
+    "D_elec_eV": 10.9011013373497,
+    "err_eV": -0.33994843704859434,
+    "rel_err_pct": 3.06480740216908
+   }
+  },
+  {
+   "name": "MgCl",
+   "smiles": "[Mg]Cl",
+   "category": "Organique",
+   "n_atoms": 2,
+   "atoms": [
+    "Mg",
+    "Cl"
+   ],
+   "coords_angstrom": [
+    [
+     0.0,
+     0.0,
+     -1.2149999999999999
+    ],
+    [
+     0.0,
+     0.0,
+     1.2149999999999999
+    ]
+   ],
+   "bond_length_angstrom": 2.4299999999999997,
+   "charge": 0,
+   "spin": 1,
+   "zpe_eV_recycled": 0.017912885570750124,
+   "D_exp": 3.24,
+   "geometry_source": "diatomic_table_or_covalent_radii",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 2.920884057202729,
+    "D_elec_eV": 2.938796942773479,
+    "err_eV": -0.3191159427972714,
+    "rel_err_pct": 9.849257493742943
+   }
+  },
+  {
+   "name": "N2H2",
+   "smiles": "N=N",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "N",
+    "N",
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.49432268038552013,
+     0.36301178557520014,
+     0.10700265631315356
+    ],
+    [
+     0.49432288459688756,
+     -0.3630108928222996,
+     -0.10700161305028952
+    ],
+    [
+     -1.3858090622506598,
+     -0.1320565678137707,
+     -0.043828408919000195
+    ],
+    [
+     1.38580885803929,
+     0.13205567506086996,
+     0.043827365656136597
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.7529811991719874,
+   "D_exp": 11.12,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 11.881030367782099,
+    "D_elec_eV": 12.634011566954086,
+    "err_eV": 0.7610303677820998,
+    "rel_err_pct": 6.843798271421761
+   }
+  },
+  {
+   "name": "Methylene",
+   "smiles": "[CH2]",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "C",
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -7.096385867296854e-08,
+     -1.1283870756737731e-07,
+     0.0
+    ],
+    [
+     -1.0636640773369623,
+     -0.05333063372347832,
+     0.0
+    ],
+    [
+     1.0636641483008187,
+     0.05333074656217366,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.4954131877462202,
+   "D_exp": 7.408,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 5.627091443296609,
+    "D_elec_eV": 6.12250463104283,
+    "err_eV": -1.780908556703391,
+    "rel_err_pct": 24.04034228811273
+   }
+  },
+  {
+   "name": "Disulfene_oxide",
+   "smiles": "O=S=S",
+   "category": "Organique",
+   "n_atoms": 3,
+   "atoms": [
+    "O",
+    "S",
+    "S"
+   ],
+   "coords_angstrom": [
+    [
+     -1.5115954253670787,
+     0.03267353959189815,
+     0.0
+    ],
+    [
+     -0.0209664498957412,
+     -0.6927525543288034,
+     0.0
+    ],
+    [
+     1.532561875261991,
+     0.6600790147357373,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.0878487623820206,
+   "D_exp": 8.7766,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 6.891896828284405,
+    "D_elec_eV": 6.979745590666425,
+    "err_eV": -1.8847031717155955,
+    "rel_err_pct": 21.474183302367607
+   }
+  },
+  {
+   "name": "Li2O",
+   "smiles": "[Li]O[Li]",
+   "category": "Inorganique",
+   "n_atoms": 3,
+   "atoms": [
+    "Li",
+    "O",
+    "Li"
+   ],
+   "coords_angstrom": [
+    [
+     -1.5201331208466835,
+     -0.3528872597976947,
+     -0.0
+    ],
+    [
+     -0.0024637540231899494,
+     0.7041012150226835,
+     -0.0
+    ],
+    [
+     1.5225968748698733,
+     -0.35121395522498955,
+     0.0
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.08249280503142008,
+   "D_exp": 7.614,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 6.399831085674209,
+    "D_elec_eV": 6.482323890705629,
+    "err_eV": -1.214168914325791,
+    "rel_err_pct": 15.946531577696229
+   }
+  },
+  {
+   "name": "COF2b",
+   "smiles": "C(=O)(F)F",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "C",
+    "O",
+    "F",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     -0.005759341301077588,
+     0.02226926103541841,
+     0.11163413966300201
+    ],
+    [
+     -0.2584753770150829,
+     0.9994294403620556,
+     0.796833775893665
+    ],
+    [
+     -0.9839701702018475,
+     -0.5902180930537443,
+     -0.5606459091342474
+    ],
+    [
+     1.2482048885180066,
+     -0.4314806083437309,
+     0.036252369899980215
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.3568471987552171,
+   "D_exp": 18.28,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 17.568315647747426,
+    "D_elec_eV": 17.925162846502644,
+    "err_eV": -0.7116843522525755,
+    "rel_err_pct": 3.893240439018465
+   }
+  },
+  {
+   "name": "Isocyanic_acid",
+   "smiles": "C(=N)=O",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "C",
+    "N",
+    "O",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     0.43201536310118666,
+     0.1302170991215218,
+     0.005561597547817414
+    ],
+    [
+     -0.6881686876291756,
+     0.4657122685598464,
+     -0.04146028890004317
+    ],
+    [
+     1.546103996704739,
+     -0.23519472458766078,
+     0.05386503586454729
+    ],
+    [
+     -1.2899506721767484,
+     -0.3607346430937069,
+     -0.017966344512314658
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.5747155135189561,
+   "D_exp": 18.2494,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 17.808827292762228,
+    "D_elec_eV": 18.383542806281184,
+    "err_eV": -0.44057270723777364,
+    "rel_err_pct": 2.41417639614329
+   }
+  },
+  {
+   "name": "NHF2",
+   "smiles": "FNF",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "F",
+    "N",
+    "F",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -1.0923440859361622,
+     -0.6511414248268984,
+     -0.08502283799779468
+    ],
+    [
+     -0.006444926623305588,
+     0.11089330282095207,
+     0.29146474636069664
+    ],
+    [
+     1.1675104327589017,
+     -0.5029823087756656,
+     -0.09142197843879395
+    ],
+    [
+     -0.06872142019943467,
+     1.043230430781614,
+     -0.1150199299241084
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.508637991760212,
+   "D_exp": 10.69,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 9.047480820972863,
+    "D_elec_eV": 9.556118812733075,
+    "err_eV": -1.6425191790271363,
+    "rel_err_pct": 15.365006351984437
+   }
+  },
+  {
+   "name": "Dioxyamidogen",
+   "smiles": "[NH]O[O]",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "N",
+    "O",
+    "O",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.5811880391179739,
+     -0.37676093187673854,
+     0.14907031672807117
+    ],
+    [
+     0.4639694641246219,
+     0.4661442594465595,
+     0.1065824311743374
+    ],
+    [
+     1.580562898186026,
+     -0.18595744230970068,
+     -0.11068704767128094
+    ],
+    [
+     -1.463344323192674,
+     0.0965741147398801,
+     -0.14496570023112784
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.48561177533555017,
+   "D_exp": 9.6294,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 8.97925678897956,
+    "D_elec_eV": 9.464868564315111,
+    "err_eV": -0.6501432110204401,
+    "rel_err_pct": 6.7516481922076155
+   }
+  },
+  {
+   "name": "BFCl2",
+   "smiles": "ClB(Cl)F",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "Cl",
+    "B",
+    "Cl",
+    "F"
+   ],
+   "coords_angstrom": [
+    [
+     -1.5795732604670463,
+     -0.8518844725095254,
+     -0.03469433952600189
+    ],
+    [
+     0.008320188504582545,
+     0.0876471900629178,
+     0.000197010676873104
+    ],
+    [
+     1.6279436374058323,
+     -0.77124638812082,
+     0.03578346974080019
+    ],
+    [
+     -0.056690565443368555,
+     1.5354836705674275,
+     -0.0012861408916700302
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.20629300730631261,
+   "D_exp": 14.51,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 15.125270760670746,
+    "D_elec_eV": 15.331563767977059,
+    "err_eV": 0.6152707606707466,
+    "rel_err_pct": 4.240322265132644
+   }
+  },
+  {
+   "name": "H2O2",
+   "smiles": "OO",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "O",
+    "O",
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.5674794659065144,
+     0.436147067229213,
+     0.24342354766382945
+    ],
+    [
+     0.5824837891323074,
+     -0.4507206804960815,
+     0.17052039959205068
+    ],
+    [
+     -1.2087896064426848,
+     -0.17271484302371617,
+     -0.16976776362828463
+    ],
+    [
+     1.1937852832168965,
+     0.18728845629057922,
+     -0.24417618362759602
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.7023970587069512,
+   "D_exp": 11.09,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 10.446337139389511,
+    "D_elec_eV": 11.148734198096463,
+    "err_eV": -0.6436628606104886,
+    "rel_err_pct": 5.803993332826769
+   }
+  },
+  {
+   "name": "AlH3",
+   "smiles": "[AlH3]",
+   "category": "Inorganique",
+   "n_atoms": 4,
+   "atoms": [
+    "Al",
+    "H",
+    "H",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.03430555276493224,
+     0.005094467684126327,
+     0.09997374140328628
+    ],
+    [
+     -1.2259605918896435,
+     -0.6829477168710076,
+     0.8742443757976636
+    ],
+    [
+     -0.123667091136672,
+     1.4213702133014428,
+     -0.6175407106008304
+    ],
+    [
+     1.3839332357912462,
+     -0.743516964114562,
+     0.02739696972227866
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.49162789184168026,
+   "D_exp": 10.675,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 8.636206567507607,
+    "D_elec_eV": 9.127834459349287,
+    "err_eV": -2.038793432492394,
+    "rel_err_pct": 19.09876751749315
+   }
+  },
+  {
+   "name": "HNCO",
+   "smiles": "N=C=O",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "N",
+    "C",
+    "O",
+    "H"
+   ],
+   "coords_angstrom": [
+    [
+     -0.3757515614215876,
+     0.605197233059617,
+     -0.2372620127415342
+    ],
+    [
+     0.43951631785967427,
+     -0.09808692033526394,
+     0.22133293433755677
+    ],
+    [
+     1.2350518278667206,
+     -0.8187161269973701,
+     0.6955374796754032
+    ],
+    [
+     -1.2988165843051,
+     0.3116058142728865,
+     0.09055393690550358
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.5747526525098804,
+   "D_exp": 18.433,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 17.80879881143145,
+    "D_elec_eV": 18.38355146394133,
+    "err_eV": -0.6242011885685486,
+    "rel_err_pct": 3.3863244646479065
+   }
+  },
+  {
+   "name": "Ethenedione",
+   "smiles": "C(=C=O)=O",
+   "category": "Organique",
+   "n_atoms": 4,
+   "atoms": [
+    "C",
+    "C",
+    "O",
+    "O"
+   ],
+   "coords_angstrom": [
+    [
+     0.5998138015904425,
+     0.15546881525956024,
+     0.009648226632264998
+    ],
+    [
+     -0.5998137430316866,
+     0.22961242860536354,
+     -0.00964826841102567
+    ],
+    [
+     -1.7755306164673514,
+     0.30227830899611885,
+     -0.02856008546901704
+    ],
+    [
+     1.7755305579085947,
+     0.08280278531585285,
+     0.028560127247794193
+    ]
+   ],
+   "bond_length_angstrom": null,
+   "charge": 0,
+   "spin": 0,
+   "zpe_eV_recycled": 0.40256635653608525,
+   "D_exp": 19.7128,
+   "geometry_source": "rdkit_mmff",
+   "ref_b3lyp_631gs": {
+    "D_b3lyp_eV": 18.74296516418886,
+    "D_elec_eV": 19.145531520724944,
+    "err_eV": -0.9698348358111417,
+    "rel_err_pct": 4.919822834965817
+   }
+  }
+ ]
+}
