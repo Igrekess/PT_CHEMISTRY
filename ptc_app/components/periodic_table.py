@@ -58,28 +58,19 @@ for i, Z in enumerate(range(89, 103)): _PT_LAYOUT[(7, 3+i)] = Z   # f-block: col
 for i, Z in enumerate(range(103, 113)): _PT_LAYOUT[(7, 17+i)] = Z  # d-block: cols 17-26
 for i, Z in enumerate(range(113, 119)): _PT_LAYOUT[(7, 27+i)] = Z  # p-block: cols 27-32
 
-# ── EXTENDED PERIODS (zone de falsification — PT prédit qu'elles n'existent PAS) ──
-# 3 full rows of 32 elements each = 96 éléments dans la zone de falsification.
-# La PT prédit qu'AUCUN d'entre eux n'aura de chimie de type g.
-# Affichés ici uniquement pour la pédagogie (extrapolation des formules
-# atomiques au-delà de l'horizon PT).
-#
-# Period 8: Z=119-150 (32 elements)
-for i in range(32):
-    _PT_LAYOUT[(8, 1+i)] = 119 + i
+# Pas de périodes 8, 9, 10 dans le layout visuel : PT (P21) prédit que
+# le tableau se ferme structurellement à Z=118. Au-delà, c'est la zone
+# de falsification, et la dessiner sous forme de cellules contredit
+# visuellement la prédiction. Pour calculer IE/EA d'un Z hypothétique
+# > 118, utiliser le champ « ou Z personnalisé » plus bas — qui affiche
+# un avertissement explicite que c'est une extrapolation hors-domaine.
 
-# Period 9: Z=151-182 (32 elements)
-for i in range(32):
-    _PT_LAYOUT[(9, 1+i)] = 151 + i
-
-# Period 10: Z=183-214 (32 elements)
-for i in range(32):
-    _PT_LAYOUT[(10, 1+i)] = 183 + i
-
-# Total rows for rendering
-_N_ROWS = 10
+# Total rows for rendering : 7 périodes connues
+_N_ROWS = 7
 
 # Éléments au-delà de Z=118 — zone de falsification PT (P21 : pas de bloc g)
+# Conservé comme set pour les fonctions d'analyse (avertissements dans
+# _element_detail / _stability_analysis), pas pour le rendu du tableau.
 _PT_FALSIF_ZONE = set(range(119, 215))
 _PT_PREDICTED = _PT_FALSIF_ZONE  # alias rétro-compatible
 # Pics extrapolés des formules atomiques (maxima locaux d'IE au-delà de Z=118).
@@ -119,12 +110,16 @@ def _block_color(Z):
     return "#fb923c"  # orange
 
 
-def _render_periodic_table(show_predicted: bool = False):
-    """Render an interactive periodic table using HTML grid."""
-    max_row = _N_ROWS if show_predicted else 7  # rows 8-10 = predictions
+def _render_periodic_table():
+    """Render the interactive periodic table — Z=1 to 118, aligned with P21.
 
+    PT (P21) predicts no g-block: the table closes structurally at f.
+    Z > 118 is the falsification zone (handled via the manual Z input,
+    not displayed in the visual table). See _stability_analysis() and
+    the explicit warning in _element_detail() for hypothetical Z > 118.
+    """
     cells = []
-    for per in range(1, max_row + 1):
+    for per in range(1, _N_ROWS + 1):
         for grp in range(1, _N_COLS + 1):
             Z = _PT_LAYOUT.get((per, grp))
             if Z is None:
@@ -132,43 +127,23 @@ def _render_periodic_table(show_predicted: bool = False):
             else:
                 sym = SYMBOLS.get(Z, f'{Z}')
                 bg = _block_color(Z)
-                extra_class = ""
-                border = ""
-                if Z in _PT_ISLANDS:
-                    border = "border:2px solid #b8860b;"
-                    extra_class = " pt-island"
-                elif Z in _PT_PREDICTED:
-                    border = "border:1px dashed #888;"
-                    extra_class = " pt-pred"
                 cells.append(
-                    f'<div class="pt-cell{extra_class}" style="background:{bg};{border}" '
+                    f'<div class="pt-cell" style="background:{bg};" '
                     f'title="{sym} (Z={Z})">'
                     f'<span class="pt-z">{Z}</span>'
                     f'<span class="pt-sym">{sym}</span>'
                     f'</div>'
                 )
 
-    # Separator row between main table and lanthanides/actinides
-    for per in (8,):
-        for grp in range(1, 19):
-            cells_idx = (per - 1) * 18 + (grp - 1)
-
     # Legend
-    legend_base = """
+    legend = """
 <div style="display:flex;gap:12px;flex-wrap:wrap;margin:8px 0;font-size:11px;">
   <span><span style="display:inline-block;width:14px;height:14px;background:#ff6b6b;border-radius:2px;vertical-align:middle;"></span> s-block</span>
   <span><span style="display:inline-block;width:14px;height:14px;background:#fb923c;border-radius:2px;vertical-align:middle;"></span> p-block</span>
   <span><span style="display:inline-block;width:14px;height:14px;background:#60a5fa;border-radius:2px;vertical-align:middle;"></span> d-block</span>
   <span><span style="display:inline-block;width:14px;height:14px;background:#34d399;border-radius:2px;vertical-align:middle;"></span> f-block</span>
-  <span><span style="display:inline-block;width:14px;height:14px;background:#c084fc;border-radius:2px;vertical-align:middle;"></span> gaz nobles</span>"""
-
-    if show_predicted:
-        legend = legend_base + """
-  <span><span style="display:inline-block;width:14px;height:14px;background:#b0b0b0;border:1px dashed #888;border-radius:2px;vertical-align:middle;"></span> zone de falsification (PT predit AUCUN bloc g)</span>
-  <span><span style="display:inline-block;width:14px;height:14px;background:#ffd700;border:2px solid #b8860b;border-radius:2px;vertical-align:middle;"></span> pic extrapole (formule atomique)</span>
+  <span><span style="display:inline-block;width:14px;height:14px;background:#c084fc;border-radius:2px;vertical-align:middle;"></span> gaz nobles</span>
 </div>"""
-    else:
-        legend = legend_base + "\n</div>"
 
     html = f"""<!DOCTYPE html>
 <html><head><style>
@@ -192,22 +167,18 @@ body {{ margin: 0; padding: 4px; font-family: sans-serif; }}
 .pt-empty {{ background: transparent; }}
 .pt-z {{ font-size: 7px; color: #333; line-height: 1; }}
 .pt-sym {{ font-size: 10px; font-weight: 700; color: #111; line-height: 1.1; }}
-.pt-pred .pt-sym {{ color: #444; font-style: italic; }}
-.pt-island {{ animation: glow 2s ease-in-out infinite alternate; }}
-@keyframes glow {{ from {{ box-shadow: 0 0 2px #ffd700; }} to {{ box-shadow: 0 0 8px #ffd700; }} }}
 </style></head><body>
 {legend}
 <div class="pt-grid">
 """ + "\n".join(cells) + """
 </div>
 <div style="margin-top:6px;font-size:10px;color:#666;">
-  {"Periodes 1-7 : 118 elements connus. Periodes 8-10 : 96 elements dans la ZONE DE FALSIFICATION — PT predit qu'aucun d'entre eux n'a de chimie de type g (P21). Si un seul est synthetise stable avec un bloc g actif, la PT est falsifiee. Pics dores : maxima extrapoles des formules atomiques (Z=144, 164, 194), pas des predictions de stabilite." if show_predicted else "118 elements (Z=1-118). IE et EA calcules depuis s = 1/2"}
+  118 elements (Z=1-118). IE et EA calcules depuis s = 1/2. PT (P21) predit que le tableau se ferme au bloc f.
 </div>
 </body></html>"""
 
     import streamlit.components.v1 as components
-    h = 500 if show_predicted else 330
-    components.html(html, height=h, scrolling=False)
+    components.html(html, height=330, scrolling=False)
 
 
 def _stability_analysis(Z: int, ie: float) -> dict:
@@ -315,8 +286,15 @@ def _element_detail(Z: int):
     )
 
     if Z > 118:
-        st.caption(
-            "Prediction PT pure — aucune donnee experimentale."
+        st.warning(
+            "**Z > 118 : zone de falsification PT (P21).** "
+            "PT prédit qu'aucun élément n'existe avec une chimie de type g "
+            "au-delà du bloc f. La valeur calculée ci-dessus est une "
+            "**extrapolation numérique des formules atomiques au-delà de leur "
+            "domaine de validité PT** — pas une prédiction de stabilité. Si "
+            "un tel élément est synthétisé un jour avec une chimie 5g^k "
+            "cohérente, P21 est falsifiée.",
+            icon="⚠️",
         )
 
 
@@ -325,24 +303,21 @@ def render_periodic_tab():
     st.subheader("Tableau Periodique PT")
     st.caption("IE et EA calcules depuis s = 1/2. MAE(IE) = 0.057%.")
 
-    show_ext = st.checkbox(
-        "Afficher les elements extrapoles (Z = 119-214, periodes 8-10)",
-        value=False,
-        key="pt_show_extended",
-    )
-
-    _render_periodic_table(show_predicted=show_ext)
+    _render_periodic_table()
 
     st.markdown("---")
 
     # Element selector — searchable dropdown + manual Z input
+    # Le dropdown ne liste que Z = 1–118 (élements connus, alignés avec P21).
+    # Le champ « ou Z personnalisé » plus bas permet d'extrapoler à n'importe
+    # quel Z, avec un avertissement de zone de falsification dans la fiche.
     col_sel, col_detail = st.columns([1, 3])
     with col_sel:
-        # Build element list for dropdown
+        # Build element list for dropdown — Z = 1 à 118
         elem_options = []
-        for z in range(1, 215):
+        for z in range(1, 119):
             sym = SYMBOLS.get(z, f'E{z}')
-            label = f"{z} - {sym}" if z <= 118 else f"{z} - E{z} (extrapol.)"
+            label = f"{z} - {sym}"
             elem_options.append(label)
 
         selected = st.selectbox(
