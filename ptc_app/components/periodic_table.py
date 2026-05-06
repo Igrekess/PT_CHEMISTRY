@@ -6,10 +6,13 @@ from ptc.geometry import period_of
 from ptc_app.components.gauges import error_gauge
 
 # ── Periodic table layout (period, group) -> Z ─────────────────────
-# Extended 32-column layout to accommodate g-block (Z>118)
-# Columns: 1-2 (s), 3-20 (g, 18 cols), 21-34 (f, 14 cols),
-#          but we use 32 columns for visual compactness.
-# Standard 18-column for periods 1-7, then 32 for 8+
+# PT prédiction P21 : pas de bloc g (9 = 3² composite, γ₁₁ < 1/2).
+# Le tableau se ferme structurellement au bloc f à Z=118.
+# Ce layout 32-col existe pour visualiser la ZONE DE FALSIFICATION
+# (Z = 119–214) : ce que les formules atomiques extrapoleraient SI
+# le bloc g existait. Toute synthèse stable d'un tel élément avec
+# chimie g cohérente falsifierait P21. Voir /predictions et
+# /demonstration-tableau-periodique sur le site.
 
 # We use a WIDE grid (32 columns) where standard elements map to
 # the same relative positions and extended elements fill g/f blocks.
@@ -55,9 +58,11 @@ for i, Z in enumerate(range(89, 103)): _PT_LAYOUT[(7, 3+i)] = Z   # f-block: col
 for i, Z in enumerate(range(103, 113)): _PT_LAYOUT[(7, 17+i)] = Z  # d-block: cols 17-26
 for i, Z in enumerate(range(113, 119)): _PT_LAYOUT[(7, 27+i)] = Z  # p-block: cols 27-32
 
-# ── EXTENDED PERIODS (PT predictions) ──
-# 3 full rows of 32 elements each = 96 predicted (Z=119-214)
-# Same width as periods 6-7. Uniform grid.
+# ── EXTENDED PERIODS (zone de falsification — PT prédit qu'elles n'existent PAS) ──
+# 3 full rows of 32 elements each = 96 éléments dans la zone de falsification.
+# La PT prédit qu'AUCUN d'entre eux n'aura de chimie de type g.
+# Affichés ici uniquement pour la pédagogie (extrapolation des formules
+# atomiques au-delà de l'horizon PT).
 #
 # Period 8: Z=119-150 (32 elements)
 for i in range(32):
@@ -74,10 +79,14 @@ for i in range(32):
 # Total rows for rendering
 _N_ROWS = 10
 
-# Elements beyond Z=118 (PT predictions)
-_PT_PREDICTED = set(range(119, 215))
-# Stability islands
-_PT_ISLANDS = {144, 164, 194}
+# Éléments au-delà de Z=118 — zone de falsification PT (P21 : pas de bloc g)
+_PT_FALSIF_ZONE = set(range(119, 215))
+_PT_PREDICTED = _PT_FALSIF_ZONE  # alias rétro-compatible
+# Pics extrapolés des formules atomiques (maxima locaux d'IE au-delà de Z=118).
+# Ce ne sont PAS des prédictions de stabilité chimique en PT — ce sont les
+# valeurs que les équations donneraient si le bloc g existait.
+_PT_FORMULA_PEAKS = {144, 164, 194}
+_PT_ISLANDS = _PT_FORMULA_PEAKS  # alias rétro-compatible
 
 # Block colors
 def _block_color(Z):
@@ -155,8 +164,8 @@ def _render_periodic_table(show_predicted: bool = False):
 
     if show_predicted:
         legend = legend_base + """
-  <span><span style="display:inline-block;width:14px;height:14px;background:#b0b0b0;border:1px dashed #888;border-radius:2px;vertical-align:middle;"></span> extrapol. PT</span>
-  <span><span style="display:inline-block;width:14px;height:14px;background:#ffd700;border:2px solid #b8860b;border-radius:2px;vertical-align:middle;"></span> ilot de stabilite</span>
+  <span><span style="display:inline-block;width:14px;height:14px;background:#b0b0b0;border:1px dashed #888;border-radius:2px;vertical-align:middle;"></span> zone de falsification (PT predit AUCUN bloc g)</span>
+  <span><span style="display:inline-block;width:14px;height:14px;background:#ffd700;border:2px solid #b8860b;border-radius:2px;vertical-align:middle;"></span> pic extrapole (formule atomique)</span>
 </div>"""
     else:
         legend = legend_base + "\n</div>"
@@ -192,7 +201,7 @@ body {{ margin: 0; padding: 4px; font-family: sans-serif; }}
 """ + "\n".join(cells) + """
 </div>
 <div style="margin-top:6px;font-size:10px;color:#666;">
-  {"Periodes 1-7 : 118 elements connus. Periodes 8-10 : 96 extrapolations PT (Z=119-214). Or : ilots de stabilite supposes (Z=144, 164, 194)." if show_predicted else "118 elements (Z=1-118). IE et EA calcules depuis s = 1/2"}
+  {"Periodes 1-7 : 118 elements connus. Periodes 8-10 : 96 elements dans la ZONE DE FALSIFICATION — PT predit qu'aucun d'entre eux n'a de chimie de type g (P21). Si un seul est synthetise stable avec un bloc g actif, la PT est falsifiee. Pics dores : maxima extrapoles des formules atomiques (Z=144, 164, 194), pas des predictions de stabilite." if show_predicted else "118 elements (Z=1-118). IE et EA calcules depuis s = 1/2"}
 </div>
 </body></html>"""
 
@@ -219,18 +228,20 @@ def _stability_analysis(Z: int, ie: float) -> dict:
     """
     from ptc.constants import RY, P1, AEM
 
-    # PT-predicted stability islands (IE local maxima beyond Z=118)
-    # Half-life estimates via Geiger-Nuttall with alpha_EM PT-derived
-    ISLANDS = {
-        144: ("IE = 9.5 eV — ilot intermediaire (fermeture de couche g). "
-              "Demi-vie estimee (Gamow PT) : > 10^11 ans si Q_alpha < 10 MeV."),
-        164: ("IE = 10.2 eV — shell closure majeure. "
-              "Demi-vie estimee (Gamow PT) : > 10^28 ans si Q_alpha < 9 MeV "
-              "(stabilite comparable aux actinides)."),
-        194: ("IE = 10.0 eV — dernier ilot significatif. "
-              "Demi-vie estimee (Gamow PT) : > 10^37 ans si Q_alpha < 10 MeV. "
-              "Derniere oasis de stabilite supposee par PT."),
+    # NB : ces "pics" sont des MAXIMA EXTRAPOLÉS des formules atomiques au-delà
+    # de Z=118, dans une zone que PT (P21) prédit comme falsifiable. Ce ne
+    # sont PAS des prédictions de stabilité chimique au sens PT.
+    FORMULA_PEAKS = {
+        144: ("IE = 9.5 eV — pic extrapole de la formule atomique. "
+              "PT (P21) predit qu'AUCUN bloc g n'existe : si Z=144 etait "
+              "synthetise avec une chimie coherente avec la couche g, P21 "
+              "serait falsifiee."),
+        164: ("IE = 10.2 eV — pic extrapole. Meme statut : zone de "
+              "falsification PT, pas une prediction positive de stabilite."),
+        194: ("IE = 10.0 eV — dernier maximum local de la formule etendue. "
+              "PT ne predit aucune stabilite reelle au-dela de Z=118."),
     }
+    ISLANDS = FORMULA_PEAKS  # alias rétro-compatible
 
     if Z <= 118:
         if Z <= 82:
@@ -242,22 +253,25 @@ def _stability_analysis(Z: int, ie: float) -> dict:
         else:
             status = "Superheavy — synthetise, tres instable"
             color = "#fd7e14"
-    elif Z in ISLANDS:
-        status = f"ILOT DE STABILITE SUPPOSE — {ISLANDS[Z]}"
+    elif Z in FORMULA_PEAKS:
+        status = f"PIC EXTRAPOLE (zone de falsification PT) — {FORMULA_PEAKS[Z]}"
         color = "#2196F3"
     elif Z <= 214:
+        # Zone de falsification : PT predit AUCUN element avec chimie g.
+        # Les valeurs IE sont des extrapolations numériques des formules
+        # atomiques au-dela de leur domaine de validite PT.
         if ie > 5.0:
-            status = f"Extrapolation PT: potentiellement synthetisable (IE = {ie:.1f} eV)"
+            status = f"Zone de falsification PT (P21) : IE extrapolee = {ie:.1f} eV. PT predit pas de chimie g distinctive."
             color = "#fd7e14"
         elif ie > 2.0:
-            status = f"Extrapolation PT: instable mais lie (IE = {ie:.1f} eV)"
+            status = f"Zone de falsification PT : IE extrapolee = {ie:.1f} eV (faible)."
             color = "#fd7e14"
         else:
-            status = f"Extrapolation PT: tres instable (IE = {ie:.1f} eV, faiblement lie)"
+            status = f"Zone de falsification PT : IE extrapolee = {ie:.1f} eV (tres faible)."
             color = "#dc3545"
     else:
-        status = (f"Au-dela du tableau etendu. "
-                  f"IE = {ie:.1f} eV — PT ne suppose aucun element stable au-dela de Z=194.")
+        status = (f"Au-dela du tableau etendu (Z>214). "
+                  f"IE = {ie:.1f} eV — extrapolation hors domaine.")
         color = "#dc3545"
 
     return {"status": status, "color": color, "Z_feynman": 0}
@@ -391,24 +405,39 @@ est le MEME alpha qui donne la constante de structure fine.
 ShellPolygon (amplitudes capture/ejection sur le polygone).
 MAE = 1.37% sur 73 elements.
 
-**Au-dela de Z = 118** : PT extrapole les formules sans parametre
-supplementaire. La "limite de Feynman" classique Z_c = 1/alpha ≈ 137
-est un artefact du noyau ponctuel — le screening sur le polygone
-Z/(2P_l)Z regularise naturellement la singularite (noyau fini).
-PT suppose donc des elements stables au-dela de Z = 137.
-NB : ces extrapolations ne tiennent pas compte de tous les effets
-relativistes (Breit, QED, polarisation du vide) qui deviennent
-dominants a tres grand Z. Les ilots sont des HYPOTHESES, pas des
-certitudes.
+**Au-dela de Z = 118 — la prediction P21 (pas de bloc g)** :
 
-**Ilots de stabilite PT** (IE local maxima, fermetures de couche) :
-- **Z = 144** : IE = 9.50 eV (fermeture de couche g, ilot intermediaire)
-- **Z = 164** : IE = 10.17 eV (shell closure majeure, plus haut IE > Og)
-- **Z = 194** : IE = 9.98 eV (dernier ilot significatif)
+PT predit que **le tableau periodique se ferme structurellement au
+bloc f**. La raison est arithmetique : l'identite 2l+1 = premier
+tient pour l = 1, 2, 3 (donnant les premiers 3, 5, 7 = blocs p, d, f)
+mais casse a l = 4 puisque 9 = 3² n'est pas premier. Et le premier
+suivant, p = 11, a gamma_11 = 0.426 < 1/2 — il est inactif au point
+fixe mu* = 15. Deux barrieres independantes interdisent le bloc g.
 
-Au-dela de **Z = 194**, les IE tombent sous 3 eV et ne remontent plus.
-PT ne suppose aucun element stable au-dela. Le tableau s'etend jusqu'a
-Z = 214 (3 periodes de 32 elements) pour montrer la decroissance.
+**Consequence** : aucun element Z > 118 n'a de chimie de type g.
+La synthese stable d'un seul tel element (avec configuration 5g^k
+pertinente pour la liaison) **falsifierait P21**.
+
+Les elements Z = 119–214 affiches ici (case « Afficher elements
+extrapoles ») sont donc dans la **zone de falsification**, pas une
+zone de prediction. Les valeurs IE sont l'extrapolation NUMERIQUE
+des formules atomiques au-dela de leur domaine de validite PT —
+elles montrent ce que les equations *donneraient* si le bloc g
+existait, ce qui est precisement ce que l'experience devra contredire.
+
+**Pics extrapoles** (maxima locaux de la formule, NON des ilots PT) :
+- **Z = 144** : IE = 9.50 eV (pic numerique, pas de signification PT)
+- **Z = 164** : IE = 10.17 eV (maximum local)
+- **Z = 194** : IE = 9.98 eV (dernier pic)
+
+PT ne predit aucun element stable avec chimie distinctive au-dela
+de Z = 118. Le tableau s'etend jusqu'a Z = 214 uniquement pour
+visualiser la zone de test.
+
+**Reference sur le site** :
+- `/predictions` (P21–P23 : statut de prediction falsifiable)
+- `/demonstration-tableau-periodique` (derivation formelle)
+- `/essays/why-periodic-table` (vulgarise)
 """)
 
     # Full IE/EA table
