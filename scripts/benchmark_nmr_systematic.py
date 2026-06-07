@@ -143,11 +143,153 @@ REFERENCE_SET = [
 # ─────────────────────────────────────────────────────────────────────
 
 
+def _cache_key(Z_list, coords, bonds, basis_type, include_core, zeta_method,
+               grid):
+    """Stable cache key for molecule-level quantities.
+
+    Probe-dependent magnetic operators are intentionally excluded; SCF,
+    basis construction and MP2 amplitudes can be shared by all probed
+    nuclei of the same molecule.
+    """
+    coords_key = tuple(
+        tuple(round(float(x), 10) for x in row)
+        for row in np.asarray(coords, dtype=float)
+    )
+    bonds_key = tuple(tuple(b) for b in bonds)
+    grid_key = tuple((k, grid[k]) for k in sorted(grid))
+    return (
+        tuple(int(z) for z in Z_list),
+        coords_key,
+        bonds_key,
+        basis_type,
+        bool(include_core),
+        zeta_method,
+        grid_key,
+    )
+
+
+def _sigma_p_iso_from_response(basis, mo_coeffs, U_imag, probe, grid):
+    """Contract a cached CPHF magnetic response with the probe operator.
+
+    The expensive CPHF response U_imag depends on the molecule and the
+    orbital level, but not on the probed nucleus. The Ramsey magnetic
+    dipole operator M(K) is the probe-dependent piece.
+    """
+    from ptc.constants import A_BOHR, ALPHA_PHYS
+    from ptc.lcao.giao import magnetic_dipole_matrices
+
+    M_imag_AO = magnetic_dipole_matrices(basis, probe, **grid)
+    M_imag_MO = np.array([
+        mo_coeffs.T @ M_imag_AO[k] @ mo_coeffs for k in range(3)
+    ])
+
+    HARTREE_eV = 27.211386245988
+    unit_factor = (A_BOHR ** 4) * HARTREE_eV
+    n_occ = U_imag.shape[2]
+
+    sigma_p_diag = np.zeros(3)
+    for alpha in range(3):
+        M_ia = M_imag_MO[alpha, :n_occ, n_occ:]
+        U_ai = U_imag[alpha]
+        sigma_p_diag[alpha] = (
+            -4.0
+            * (ALPHA_PHYS ** 2)
+            * float((U_ai.T * M_ia).sum())
+            * unit_factor
+        )
+    return float(sigma_p_diag.mean()) * 1.0e6
+
+
+def _pt_shell_response_delta_ppm(Z_list, bonds, probe_idx):
+    """PT shell-response deshielding correction for NMR sigma_iso.
+
+    Exploratory bridge, opt-in only. The correction estimates the
+    missing paramagnetic deshielding from radial shell compactness gated
+    by local magnetic-response channels. All weights are fixed PT
+    constants; no fitted coefficient is used.
+
+    Returns a negative delta for additional deshielding, except for the
+    saturated-carbon channel, where the V3.1 benchmark indicates the
+    current engine is already over-deshielded.
+    """
+    from ptc.constants import A_BOHR, GAMMA_3, GAMMA_5, GAMMA_7, MU_STAR, P1, P2, P3
+    from ptc.lcao.atomic_basis import (
+        Z_eff_shell,
+        _zeta_core_slater,
+        core_shells,
+    )
+
+    valence_electrons = {
+        1: 1,
+        6: 4,
+        7: 5,
+        8: 6,
+        9: 7,
+    }
+
+    def valence_zeta(Z):
+        if Z == 1:
+            return Z_eff_shell(1, 1, 0, method="pt-shielding") / A_BOHR
+        return Z_eff_shell(Z, 2, 1, method="pt-shielding") / (2.0 * A_BOHR)
+
+    def compactness(Z):
+        if Z == 1:
+            return 0.0
+        z_val = valence_zeta(Z)
+        total = 0.0
+        for n, l, n_e in core_shells(Z):
+            z_core = _zeta_core_slater(Z, n, l)
+            total += float(n_e) * (z_core / z_val) ** 3
+        return total
+
+    Z = int(Z_list[probe_idx])
+    local_bonds = []
+    for i, j, bo in bonds:
+        if i == probe_idx:
+            local_bonds.append((j, float(bo)))
+        elif j == probe_idx:
+            local_bonds.append((i, float(bo)))
+
+    bond_order_sum = sum(bo for _, bo in local_bonds)
+    pi_excess = sum(max(bo - 1.0, 0.0) for _, bo in local_bonds)
+    ve = float(valence_electrons.get(Z, max(Z, 1)))
+    lone_pairs = max(0.0, ve - bond_order_sum) / 2.0
+    max_neighbor_Z = max((int(Z_list[j]) for j, _ in local_bonds), default=0)
+
+    C_A = compactness(Z)
+    C_F = max(compactness(9), 1.0)
+
+    F_LP = C_A * lone_pairs / P2
+    F_pi_het = C_A * pi_excess / P1 * max(Z - 6, 0) / 3.0
+    F_pi_Cpol = 0.0
+    if Z == 6:
+        F_pi_Cpol = C_A * pi_excess / P1 * max(max_neighbor_Z - Z, 0) / 3.0
+
+    F_Hind = 0.0
+    if Z == 1:
+        induction = sum(bo * compactness(int(Z_list[j])) / C_F for j, bo in local_bonds)
+        F_Hind = induction * C_F / P3
+
+    F_Csat = 0.0
+    if Z == 6 and pi_excess == 0.0 and lone_pairs == 0.0:
+        F_Csat = C_A / P2
+
+    predicted_error = (
+        (P3 + GAMMA_3) * F_LP
+        + (MU_STAR * GAMMA_7) * F_pi_het
+        + (P2 * GAMMA_5) * F_pi_Cpol
+        + (P3 / P1) * F_Hind
+        - (P1 / GAMMA_3) * F_Csat
+    )
+    return -float(predicted_error)
+
+
 def run_cascade(Z_list, coords, bonds, probe_idx, basis_type,
                   levels, n_radial=12, n_theta=8, n_phi=10,
                   include_core=True, zeta_method="pt-shielding",
                   use_becke=False, lebedev_order=26,
-                  probe_offset=0.1):
+                  probe_offset=0.1, cache=None,
+                  pt_shell_response=False):
     """Run HF → (optionally) MP2 / MP3 / CCSD-Λ for one molecule.
 
     Returns dict {level: σ_iso (ppm)} for each level. σ_iso = σ_d + σ_p
@@ -155,28 +297,55 @@ def run_cascade(Z_list, coords, bonds, probe_idx, basis_type,
     and σ_p (paramagnetic, CPHF response) is recomputed at each level.
     """
     from ptc.lcao.cluster import build_explicit_cluster
-    from ptc.lcao.fock import (
-        density_matrix_PT_scf,
-        paramagnetic_shielding_iso_coupled,
-    )
-    from ptc.lcao.giao import shielding_diamagnetic_iso
+    from ptc.lcao.fock import density_matrix_PT_scf
+    from ptc.lcao.giao import shielding_diamagnetic_tensor_GIAO
     from ptc.lcao.mp2 import mp2_at_hf
 
     coords = np.asarray(coords, dtype=float)
     grid = dict(n_radial=n_radial, n_theta=n_theta, n_phi=n_phi,
                 use_becke=use_becke, lebedev_order=lebedev_order)
-    iso_grid = {k: v for k, v in grid.items()
-                if k not in ("use_becke", "lebedev_order")}
+    iso_grid = dict(grid)
 
-    basis, topo = build_explicit_cluster(
-        Z_list=Z_list, coords=coords, bonds=bonds, basis_type=basis_type,
-        include_core=include_core, zeta_method=zeta_method,
+    need_mp2 = any(L in levels for L in ("MP2", "MP3", "CCSD", "CCSD-Λ"))
+    key = _cache_key(
+        Z_list, coords, bonds, basis_type, include_core, zeta_method, grid
     )
-    rho, S, eigvals, c, conv, _ = density_matrix_PT_scf(
-        topo, basis=basis, mode="hf", max_iter=20, tol=1e-4, **grid,
-    )
-    n_occ = int(round(basis.total_occ)) // 2
-    n_e = 2 * n_occ
+    if cache is not None and key in cache:
+        prep = cache[key]
+    else:
+        basis, topo = build_explicit_cluster(
+            Z_list=Z_list, coords=coords, bonds=bonds, basis_type=basis_type,
+            include_core=include_core, zeta_method=zeta_method,
+        )
+        rho, S, eigvals, c, conv, _ = density_matrix_PT_scf(
+            topo, basis=basis, mode="hf", max_iter=20, tol=1e-4, **grid,
+        )
+        n_occ = int(round(basis.total_occ)) // 2
+        prep = {
+            "basis": basis,
+            "topo": topo,
+            "rho": rho,
+            "S": S,
+            "eigvals": eigvals,
+            "c": c,
+            "n_occ": n_occ,
+            "n_e": 2 * n_occ,
+            "mp2": None,
+            "U_HF": None,
+            "mp2_z_vector": None,
+            "mp2_full_orbitals": None,
+            "U_MP2": None,
+        }
+        if cache is not None:
+            cache[key] = prep
+
+    basis = prep["basis"]
+    topo = prep["topo"]
+    rho = prep["rho"]
+    eigvals = prep["eigvals"]
+    c = prep["c"]
+    n_occ = prep["n_occ"]
+    n_e = prep["n_e"]
 
     # Probe at offset above target nucleus. With use_becke=True we can
     # safely probe ON the nucleus (probe_offset=0) because the Becke
@@ -190,33 +359,69 @@ def run_cascade(Z_list, coords, bonds, probe_idx, basis_type,
         offset = max(probe_offset, 0.1)
     probe = coords[probe_idx] + np.array([0.0, 0.0, offset])
 
-    # σ_d (diamagnetic) is method-independent at this level — computed
-    # once on the HF density and added to every σ_p.
-    sigma_d = float(shielding_diamagnetic_iso(rho, basis, probe, **grid))
+    # σ_d (diamagnetic) is method-independent at this level, but for a
+    # multi-centre absolute shielding it must be the London/GIAO tensor
+    # trace. The legacy scalar common-origin formula is only safe for
+    # one-centre/spherical checks such as the H Lamb validation.
+    sigma_d_tensor = shielding_diamagnetic_tensor_GIAO(rho, basis, probe, **grid)
+    sigma_d = float(np.trace(sigma_d_tensor) / 3.0)
+    delta_pt = (
+        _pt_shell_response_delta_ppm(Z_list, bonds, probe_idx)
+        if pt_shell_response else 0.0
+    )
 
-    out = {"σ_d": sigma_d}
+    out = {"σ_d": sigma_d, "Δ_PT": delta_pt}
     if "HF" in levels:
-        sigma_p_HF = float(paramagnetic_shielding_iso_coupled(
-            basis, eigvals, c, n_e, probe, **iso_grid,
-        ))
-        out["HF"] = sigma_d + sigma_p_HF
-
-    if any(L in levels for L in ("MP2", "MP3", "CCSD", "CCSD-Λ")):
-        mp2 = mp2_at_hf(basis, eigvals, c, n_occ, **grid)
-        if "MP2" in levels:
-            from ptc.lcao.mp2 import mp2_paramagnetic_shielding_coupled
-            res = mp2_paramagnetic_shielding_coupled(
-                basis, topo, eigvals, c, n_occ, probe,
-                mp2_result=mp2,
-                mp2_kwargs=grid, lagrangian_kwargs=grid,
-                z_vector_kwargs=dict(max_iter=15, tol=1e-5,
-                                      n_radial_grid=n_radial,
-                                      n_theta_grid=n_theta,
-                                      n_phi_grid=n_phi),
-                relax_kwargs=dict(n_radial=n_radial, n_theta=n_theta, n_phi=n_phi),
-                cphf_kwargs=iso_grid,
+        if prep["U_HF"] is None:
+            from ptc.lcao.fock import coupled_cphf_response
+            prep["U_HF"] = coupled_cphf_response(
+                basis, eigvals, c, n_e,
+                n_radial_op=n_radial, n_theta_op=n_theta, n_phi_op=n_phi,
+                use_becke=use_becke, lebedev_order=lebedev_order,
             )
-            out["MP2"] = sigma_d + float(res["sigma_p_MP2_full"])
+        sigma_p_HF = _sigma_p_iso_from_response(
+            basis, c, prep["U_HF"], probe, iso_grid,
+        )
+        out["HF"] = sigma_d + sigma_p_HF + delta_pt
+
+    if need_mp2:
+        if prep["mp2"] is None:
+            prep["mp2"] = mp2_at_hf(basis, eigvals, c, n_occ, **grid)
+        mp2 = prep["mp2"]
+        if "MP2" in levels:
+            if prep["mp2_full_orbitals"] is None:
+                from ptc.lcao.mp2 import (
+                    mp2_lagrangian,
+                    mp2_relax_orbitals,
+                    solve_z_vector,
+                )
+                L = mp2_lagrangian(basis, c, n_occ, mp2, **grid)
+                z_vector = solve_z_vector(
+                    basis, eigvals, c, n_occ, L,
+                    max_iter=15, tol=1e-5,
+                    n_radial_grid=n_radial,
+                    n_theta_grid=n_theta,
+                    n_phi_grid=n_phi,
+                )
+                prep["mp2_z_vector"] = z_vector
+                prep["mp2_full_orbitals"] = mp2_relax_orbitals(
+                    basis, topo, c, n_occ, mp2,
+                    z_vector=z_vector,
+                    n_radial=n_radial, n_theta=n_theta, n_phi=n_phi,
+                )
+
+            eigvals_full, c_full = prep["mp2_full_orbitals"]
+            if prep["U_MP2"] is None:
+                from ptc.lcao.fock import coupled_cphf_response
+                prep["U_MP2"] = coupled_cphf_response(
+                    basis, eigvals_full, c_full, n_e,
+                    n_radial_op=n_radial, n_theta_op=n_theta, n_phi_op=n_phi,
+                    use_becke=use_becke, lebedev_order=lebedev_order,
+                )
+            sigma_p_MP2 = _sigma_p_iso_from_response(
+                basis, c_full, prep["U_MP2"], probe, iso_grid,
+            )
+            out["MP2"] = sigma_d + sigma_p_MP2 + delta_pt
 
         if "MP3" in levels:
             from ptc.lcao.mp3 import mp3_at_hf
@@ -324,6 +529,10 @@ def main():
                        help="Probe offset above nucleus (Å). Default 0.1 for "
                             "Stanton-Gauss convention; set 0.0 with "
                             "use-becke=true for true on-nucleus σ_iso.")
+    ap.add_argument("--pt-shell-response", type=lambda s: s.lower() == "true",
+                       default=False,
+                       help="Apply exploratory PT shell-response NMR correction "
+                            "(default False).")
     ap.add_argument("--molecules", nargs="+", default=None,
                        help="Optional list of molecule labels to keep "
                             "(e.g. H₂ HF N₂). Default: full reference set.")
@@ -355,12 +564,14 @@ def main():
           f"n_radial = {args.n_radial}")
     print(f" Becke = {args.use_becke}  probe_offset = {args.probe_offset} Å")
     print(f" Levels : {' / '.join(args.levels)}")
+    print(f" PT shell-response correction : {args.pt_shell_response}")
     print(f" Reference entries : {len(ref_set)}")
     print("=" * 76)
 
-    rows_csv = [["molecule", "nucleus", "ref_ppm"] + args.levels + ["t_seconds"]]
+    rows_csv = [["molecule", "nucleus", "ref_ppm", "delta_pt_ppm"] + args.levels + ["t_seconds"]]
     per_level = {L: {"calc": [], "ref": []} for L in args.levels}
     per_level_per_nuc = {}
+    system_cache = {}
 
     for label, Z, coords, bonds, idx, nucleus, ref in ref_set:
         print(f"\n  {label}  [{nucleus}@{idx}]   ref σ_iso = {ref:+.1f} ppm")
@@ -374,12 +585,17 @@ def main():
                 use_becke=args.use_becke,
                 lebedev_order=args.lebedev_order,
                 probe_offset=args.probe_offset,
+                cache=system_cache,
+                pt_shell_response=args.pt_shell_response,
             )
         except Exception as e:
             print(f"    FAILED : {type(e).__name__} {e}")
             continue
         dt = time.time() - t0
-        line = [label, nucleus, ref]
+        delta_pt = float(calc.get("Δ_PT", 0.0))
+        if args.pt_shell_response:
+            print(f"    Δ_PT shell-response = {delta_pt:+8.2f} ppm")
+        line = [label, nucleus, ref, delta_pt]
         for L in args.levels:
             sigma = calc.get(L)
             line.append(sigma)

@@ -1,5 +1,27 @@
 #!/usr/bin/env python3
 """
+DEPRECATED — This script computed B3LYP atomization without ZPE correction
+(D_at = E_atoms - E_mol instead of D_at = E_atoms - E_mol - ZPE_scaled),
+which inflated the B3LYP MAE in the comparison panel by ~1.1 percentage
+points. It also did not perform Hessian/ZPE calculations.
+
+Use instead :
+  - benchmarkb3lyp/run_b3lyp_atct.py    (proper B3LYP with Hessian + ZPE)
+  - scripts/regenerate_dft_comparison_data.py
+        (rebuilds ptc_app/dft_comparison_data.json from canonical sources)
+
+Kept here for git history. To run anyway, set PTC_RUN_BUGGY_FAIR=1.
+"""
+import os, sys
+if os.environ.get("PTC_RUN_BUGGY_FAIR") != "1":
+    sys.stderr.write(
+        "run_benchmark_fair.py is DEPRECATED (missing ZPE correction).\n"
+        "Use scripts/regenerate_dft_comparison_data.py instead, or set\n"
+        "PTC_RUN_BUGGY_FAIR=1 to bypass this guard.\n"
+    )
+    sys.exit(2)
+"""ORIGINAL DOCSTRING (preserved for reference) :
+
 Fair benchmark: PTC vs B3LYP/6-31G* on the SAME 1000 molecules.
 
 Reads the fixed benchmark_1000.json (same list as Benchmark tab).
