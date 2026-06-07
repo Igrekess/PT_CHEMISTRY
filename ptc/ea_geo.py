@@ -22,14 +22,14 @@ from ptc.ie_geo import IE_geo_eV
 def _closed_polygon_tunnel(Z: int, shell) -> float:
     """Multi-channel tunneling capture through a closed active polygon.
 
-    PT insights #16-#18: when the active polygon is CLOSED, the captured
+    When the active polygon is CLOSED, the captured
     electron tunnels to the next available shells via up to 2 channels:
 
     Tree-level (p-channel):
         EA_p = IE × cap_p(n=1) × s × δ_blocking
         Tunneling through the blocking polygon's gap.
 
-    1-loop NLO (d-channel, insight #18):
+    1-loop NLO (d-channel):
         When cap_d/cap_p > s  (d quasi-accessible):
             EA_d = IE × cap_d(n=1) × s × sin²₅
             The d-channel is an open propagation channel (sin²₅),

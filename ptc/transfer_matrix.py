@@ -5740,8 +5740,8 @@ def compute_D_at_transfer(topology: Topology,
     # because they can donate into center vacancy. However, when the
     # center LACKS d-vacancy (period-2 atoms: B, C, N, O), the LP has
     # nowhere to go and MUST be counted as crowding.
-    # This resolves the CF₄/CBr₄ overbinding asymmetry: CF₄ previously
-    # had zero LP crowding (all F excluded) while CBr₄ had 6.5%.
+    # This keeps the CF₄/CBr₄ overbinding symmetric: a period-2 centre
+    # otherwise excludes all the F LP crowding while CBr₄ retains it.
     if topology.n_atoms >= 3:
         for v in range(topology.n_atoms):
             z_v = topology.z_count[v]
@@ -6659,8 +6659,8 @@ def compute_D_at_transfer(topology: Topology,
             # When ring atoms have f-block (l=3) exocyclic neighbors
             # (e.g. U-capped Bi₃), the 5f orbitals donate into the σ
             # ring system via the pent-hept cross-face coupling R₅₇
-            # = D₅·D₇ — same mechanism as atom.py insight #75, now on
-            # the ring cycle rather than on a single atom.
+            # = D₅·D₇ — the same pent–hept cross-face as the atom.py f-block
+            # cascade, here on the ring cycle rather than a single atom.
             #
             # Magnitude:  + R₅₇ · D_ring · (n_f_cap / N_ring)
             # where n_f_cap = number of ring atoms having ≥1 exocyclic

@@ -23,9 +23,8 @@ def IE_geo_eV(Z: int) -> float:
 
     IE = Ry × (Z_eff / per)² × ejection
 
-    The ejection_amplitude now contains the unified PT formula
-    (insight #30: I_Fisher - I_GFT), absorbing the former 2-loop
-    self-energy correction.  No separate 2-loop term needed.
+    The ejection_amplitude is the unified PT formula I_Fisher − I_GFT
+    (Fisher information minus the GFT anti-double-counting term).
 
     Parameters
     ----------

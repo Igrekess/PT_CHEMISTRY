@@ -419,7 +419,7 @@ class ShellPolygon:
             else:
                 amp *= (1.0 - _D3)
 
-        # n=P₁+1 spin-cascade boost (insight #55, replaces per-specific d-channel):
+        # n=P₁+1 spin-cascade boost:
         # The captured electron at position n+1=P₁+2 enters via a spin cascade.
         # Amplitude per spin level = S₃×s/P₁ (hex vertex × spin × filling⁻¹).
         # Each period beyond the native hex period P₁=3 adds one cascade level
@@ -582,7 +582,7 @@ class ShellPolygon:
                     flux = memory + S_HALF * math.sqrt(c_df * active)
                     result = flux * proj_2.get(n_second, 1.0)
 
-            # ── Heptagonal gap correction (insight #41) ──────────
+            # ── Heptagonal gap correction ──────────
             # PT: the heptagonal gap δ₇ provides a bidirectional coupling
             # between the buried f-shell and the valence surface.
             # The Koide ratio depends on the polygon geometry (Z/14Z):
@@ -802,15 +802,15 @@ class ShellPolygon:
         if self.vacancies <= 0:
             return 0.0
 
-        # p-block: hexagonal Z/6Z completion functional (insight #13)
+        # p-block: hexagonal Z/6Z completion functional
         if self.prime == P1:
             return self._p_hex_capture()
 
-        # d-block: pentagonal Z/10Z amplitude (insight #14)
+        # d-block: pentagonal Z/10Z amplitude
         if self.prime == P2:
             return self._d_pent_capture()
 
-        # f-block: heptagonal Z/14Z amplitude (insight #15)
+        # f-block: heptagonal Z/14Z amplitude
         if self.prime == P3:
             return self._f_hept_capture()
 
@@ -859,7 +859,7 @@ class ShellPolygon:
 
         result = coupling * k * ex * cl_norm * radial * pairing_damp
 
-        # s-block spin-doubling (insight #17): the s-pair capture from
+        # s-block spin-doubling: the s-pair capture from
         # a core-screened atom has 2 degenerate spin channels (↑ and ↓).
         # Factor 1/s = 2.  For H (per=1, bare nucleus), only 1 channel
         # is open — the spin is already fixed by the nuclear field.
@@ -885,7 +885,7 @@ class ShellPolygon:
     def ejection_amplitude(self) -> float:
         """IE-like amplitude: cost of leaving vertex n.
 
-        Unified PT formula (insight #30):
+        Unified PT formula:
 
             ejection = 1 + sym_mod × A
             A = δ²s × (I_Fisher - I_propagator) × cos²₃^tier
@@ -911,7 +911,7 @@ class ShellPolygon:
 
         sym_raw = self.polygon_symmetry()
 
-        # ── GFT k=1 Koide projection (anti-double-counting, insight #33) ──
+        # ── GFT k=1 Koide projection (anti-double-counting) ──
         # The k=1 Fourier mode of polygon_symmetry is partially in the
         # screening DFT (peer_values → synthesis).  The GFT partition
         # D_KL + H = log₂(m) splits as Q_Koide = 2/3 (screening/geometry)

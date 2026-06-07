@@ -347,7 +347,7 @@ def _lp_screening(lp_a, lp_b, z_a, z_b, per_A, per_B, bo, nf_a, nf_b,
             n_radial = max(0, max(per_A, per_B) - 2)
             if n_radial > 0:
                 S_lp *= (1.0 + n_radial * C3)
-            # π-LP destructive interference [insight #36]
+            # π-LP destructive interference
             if bo >= 2 and max(per_A, per_B) <= 2:
                 S_lp *= (1.0 + (bo - 1) * S3 * P1)
         else:
@@ -384,7 +384,7 @@ def _lp_screening(lp_a, lp_b, z_a, z_b, per_A, per_B, bo, nf_a, nf_b,
                 chi_B_lp = (atom_data[Zb]['IE'] + atom_data[Zb]['EA']) / 2.0
                 Q_lp = abs(chi_A_lp - chi_B_lp) / max(0.1, chi_A_lp + chi_B_lp)
                 S_lp *= (1.0 + Q_lp)
-                # LP closure boost: full p-shell (LP=P₁) [insight #30]
+                # LP closure boost: full p-shell (LP=P₁)
                 # Both LP complete → face P₁ fully occupied → max repulsion.
                 # For per≤2: standard S₃ boost (F₂, O₂).
                 # For cross-period (Δper>0): period-scaled boost (ICl, BrF).
@@ -1024,7 +1024,7 @@ def _compute_D_at_polygon(topology: Topology,
         d = atom_data[Z]
         ie_k = d['IE']
 
-        # Formal charge adjustment [insight #38]
+        # Formal charge adjustment
         q_formal = charges[k] if k < len(charges) else 0
         if q_formal != 0:
             ie_k = ie_k * (1.0 + q_formal * S3)
@@ -1301,7 +1301,7 @@ def _compute_D_at_polygon(topology: Topology,
                      + scr_comp['comp_vertex'] * ALPHA_VERTEX_P3
                      + scr_comp['comp_asym'] * ALPHA_ASYM_P3)
 
-        # ── S_MOL_CORE: 3D polyhedron faces [insight #22] ──────
+        # ── S_MOL_CORE: 3D polyhedron faces ──────
         # P₁ channel: LP structural cooperation (σ = D₅ sin(θ/2) LP/P₁)
         # P₂ channel: EM triangular faces (resonance − screening per face)
         S_mol_core = 0.0
@@ -1381,7 +1381,7 @@ def _compute_D_at_polygon(topology: Topology,
         vac = _vacancy_operator(i, j, bo, topology, atom_data)
         channel_cap += vac['cap_boost']
 
-        # ── FORMAL CHARGE screening [insight #38] ──────────
+        # ── FORMAL CHARGE screening ──────────
         S_charge = 0.0
         qi = charges[i] if i < len(charges) else 0
         qj = charges[j] if j < len(charges) else 0

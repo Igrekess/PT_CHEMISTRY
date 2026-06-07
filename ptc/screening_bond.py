@@ -1873,8 +1873,8 @@ def _D_P3_energy(ie_A, ie_B, ea_A, ea_B, per_A, per_B, l_A, l_B, bo,
             D_P3 += COULOMB_EV_A**2 * S3 / (r_h**2 * ie2_h)
     # PT: d10s2 metals (Zn, Cd, Hg) are post-transition — they bond
     # ionically like alkaline earths (lose 2 s-electrons, d10 is inert).
-    # IE2 polarization correction was missing because the l_min==0 gate
-    # excludes d-block (l=2). Gate: d10s2 cation + ionic bond (q_rel < s).
+    # IE2 polarization correction for d10s2 cations: the l_min==0 gate
+    # excludes the d-block (l=2). Gate: d10s2 cation + ionic bond (q_rel < s).
     # 0 adjustable parameters.
     if D_P3 > 0 and q_rel < S_HALF:
         Z_cat_d10 = Z_A if ie_A < ie_B else Z_B

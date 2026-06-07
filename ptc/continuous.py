@@ -92,7 +92,7 @@ def _sigma_ex_prop(per: int) -> float:
 
 
 def _pairing_factor(per: int) -> float:
-    """Pairing cascade factor (insight #48)."""
+    """Pairing cascade factor: spin → sieve cascade {s, C₃, C₅, C₇} by period."""
     _pf = {P1: S_HALF, P1 + 1: C3, P1 + 2: C5, P1 + 3: C7}
     return _pf.get(per, C7)
 
