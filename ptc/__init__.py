@@ -3,10 +3,14 @@
 from ptc.atom import (
     Atom,
     EA_eV,
+    IE_cpr_eV,
     IE_eV,
     benchmark_atom_ea_models_against_nist,
     compare_ea_channels,
     effective_charge,
+    S_cpr_continuum,
+    S_cpr_interchannel,
+    S_jj2_p_superheavy,
     screening_action,
 )
 from ptc.base import AtomProvider, BaseCalculator, Result
@@ -30,7 +34,11 @@ __all__ = [
     "EA_operator_eV",
     "HierarchicalEAOperator",
     "IE_eV",
+    "IE_cpr_eV",
     "Result",
+    "S_cpr_continuum",
+    "S_cpr_interchannel",
+    "S_jj2_p_superheavy",
     "atomic_capture_state",
     "benchmark_atom_ea_models_against_nist",
     "build_atomic_hierarchical_ea_operator",

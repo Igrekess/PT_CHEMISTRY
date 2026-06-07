@@ -860,6 +860,7 @@ def mp2_paramagnetic_shielding_coupled(basis: PTMolecularBasis,
                                           lagrangian_kwargs: dict | None = None,
                                           z_vector_kwargs: dict | None = None,
                                           isotropic: bool = True,
+                                          compute_baselines: bool = True,
                                           ) -> dict:
     """Full Stanton-Gauss σ_p MP2-GIAO via CPHF on Z-relaxed orbitals.
 
@@ -895,6 +896,11 @@ def mp2_paramagnetic_shielding_coupled(basis: PTMolecularBasis,
     -------
     dict with σ_p^HF, σ_p^MP2_LO, σ_p^MP2_full, the three sets of MO orbitals,
     and the Z-vector / mp2_result objects. Sigmas are in ppm.
+
+    If ``compute_baselines`` is False, skip the auxiliary HF and
+    leading-order MP2 shielding evaluations. This keeps systematic
+    benchmarks from solving two extra CPHF problems when only the full
+    MP2 response is needed.
     """
     from ptc.lcao.fock import (
         paramagnetic_shielding_iso_coupled,
@@ -924,40 +930,49 @@ def mp2_paramagnetic_shielding_coupled(basis: PTMolecularBasis,
             **z_vector_kwargs,
         )
 
-    # Step 4a: leading-order relaxed orbitals (occupation-shift only)
-    eigvals_LO, c_LO = mp2_relax_orbitals(
-        basis, topology, mo_coeffs_HF, n_occ, mp2_result,
-        z_vector=None, **relax_kwargs,
-    )
+    # Step 4a: leading-order relaxed orbitals (occupation-shift only).
+    # Diagnostic baseline; not needed for the production MP2 value.
+    if compute_baselines:
+        eigvals_LO, c_LO = mp2_relax_orbitals(
+            basis, topology, mo_coeffs_HF, n_occ, mp2_result,
+            z_vector=None, **relax_kwargs,
+        )
+    else:
+        eigvals_LO, c_LO = None, None
     # Step 4b: full Z-vector-relaxed orbitals
     eigvals_full, c_full = mp2_relax_orbitals(
         basis, topology, mo_coeffs_HF, n_occ, mp2_result,
         z_vector=z_vector, **relax_kwargs,
     )
 
-    # The iso version does not accept ``use_becke`` / ``lebedev_order`` ;
-    # filter them transparently so callers can pass a unified cphf_kwargs.
     if isotropic:
-        iso_kwargs = {k: v for k, v in cphf_kwargs.items()
-                       if k not in ("use_becke", "lebedev_order")}
-        sigma_HF = paramagnetic_shielding_iso_coupled(
-            basis, mo_eigvals_HF, mo_coeffs_HF, n_e_total, K_probe,
-            **iso_kwargs,
-        )
-        sigma_LO = paramagnetic_shielding_iso_coupled(
-            basis, eigvals_LO, c_LO, n_e_total, K_probe, **iso_kwargs,
-        )
+        iso_kwargs = dict(cphf_kwargs)
+        if compute_baselines:
+            sigma_HF = paramagnetic_shielding_iso_coupled(
+                basis, mo_eigvals_HF, mo_coeffs_HF, n_e_total, K_probe,
+                **iso_kwargs,
+            )
+            sigma_LO = paramagnetic_shielding_iso_coupled(
+                basis, eigvals_LO, c_LO, n_e_total, K_probe, **iso_kwargs,
+            )
+        else:
+            sigma_HF = None
+            sigma_LO = None
         sigma_full = paramagnetic_shielding_iso_coupled(
             basis, eigvals_full, c_full, n_e_total, K_probe, **iso_kwargs,
         )
     else:
-        sigma_HF = paramagnetic_shielding_tensor_coupled(
-            basis, mo_eigvals_HF, mo_coeffs_HF, n_e_total, K_probe,
-            **cphf_kwargs,
-        )
-        sigma_LO = paramagnetic_shielding_tensor_coupled(
-            basis, eigvals_LO, c_LO, n_e_total, K_probe, **cphf_kwargs,
-        )
+        if compute_baselines:
+            sigma_HF = paramagnetic_shielding_tensor_coupled(
+                basis, mo_eigvals_HF, mo_coeffs_HF, n_e_total, K_probe,
+                **cphf_kwargs,
+            )
+            sigma_LO = paramagnetic_shielding_tensor_coupled(
+                basis, eigvals_LO, c_LO, n_e_total, K_probe, **cphf_kwargs,
+            )
+        else:
+            sigma_HF = None
+            sigma_LO = None
         sigma_full = paramagnetic_shielding_tensor_coupled(
             basis, eigvals_full, c_full, n_e_total, K_probe, **cphf_kwargs,
         )
@@ -974,8 +989,12 @@ def mp2_paramagnetic_shielding_coupled(basis: PTMolecularBasis,
         "sigma_p_HF": sigma_HF,
         "sigma_p_MP2_LO": sigma_LO,
         "sigma_p_MP2_full": sigma_full,
-        "delta_LO_minus_HF": (np.array(sigma_LO) - np.array(sigma_HF)).tolist()
-            if not isotropic else float(sigma_LO - sigma_HF),
-        "delta_full_minus_LO": (np.array(sigma_full) - np.array(sigma_LO)).tolist()
-            if not isotropic else float(sigma_full - sigma_LO),
+        "delta_LO_minus_HF": (
+            (np.array(sigma_LO) - np.array(sigma_HF)).tolist()
+            if not isotropic else float(sigma_LO - sigma_HF)
+        ) if compute_baselines else None,
+        "delta_full_minus_LO": (
+            (np.array(sigma_full) - np.array(sigma_LO)).tolist()
+            if not isotropic else float(sigma_full - sigma_LO)
+        ) if compute_baselines else None,
     }

@@ -674,6 +674,8 @@ def paramagnetic_shielding_iso_coupled(
     n_radial: int = 30,
     n_theta: int = 14,
     n_phi: int = 18,
+    use_becke: bool = False,
+    lebedev_order: int = 50,
     verbose: bool = False,
 ) -> float:
     """Coupled-CPHF paramagnetic isotropic shielding sigma^p_iso(K) (ppm).
@@ -709,6 +711,7 @@ def paramagnetic_shielding_iso_coupled(
         basis, mo_eigvals, mo_coeffs, n_e_total,
         use_giao=use_giao, max_iter=max_iter, tol=tol,
         n_radial_op=n_radial, n_theta_op=n_theta, n_phi_op=n_phi,
+        use_becke=use_becke, lebedev_order=lebedev_order,
         verbose=verbose,
     )
 
@@ -716,6 +719,7 @@ def paramagnetic_shielding_iso_coupled(
     M_imag_AO = magnetic_dipole_matrices(
         basis, K_probe,
         n_radial=n_radial, n_theta=n_theta, n_phi=n_phi,
+        use_becke=use_becke, lebedev_order=lebedev_order,
     )
     M_imag_MO = np.array([
         mo_coeffs.T @ M_imag_AO[k] @ mo_coeffs for k in range(3)
