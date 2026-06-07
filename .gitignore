@@ -12,3 +12,10 @@ build/
 
 superpowers/
 qm9_parsed_132k.json
+
+# local data backups (not for version control)
+*.backup_*.json
+*.pre_*.json
+
+# generated script outputs
+scripts/output/
