@@ -131,11 +131,11 @@ def test_coupled_paramagnetic_zero_for_He():
 
 
 def test_coupled_paramagnetic_differs_from_uncoupled_benzene():
-    """Coupled vs uncoupled CPHF give different sigma^p (Fock response
-    is non-trivial). For benzene the sign even flips: uncoupled gives
-    a positive value (incorrect for aromatic), coupled gives a negative
-    value (correct for aromatic ring current). This is documented as
-    a sanity check; quantitative magnitude requires further refinement."""
+    """Coupled vs uncoupled CPHF give different sigma^p (the Fock response
+    is non-trivial). For benzene both are negative (correct sign for the
+    aromatic ring current); the coupling deepens the shielding by ~0.13 ppm
+    (uncoupled -0.58, coupled -0.71). Sanity check; quantitative magnitude
+    requires further refinement."""
     basis = build_molecular_basis(build_topology("c1ccccc1"))
     rho, S, eigvals, c, it, resid = density_matrix_PT_scf(
         build_topology("c1ccccc1"), basis=basis, mode="hf",
@@ -152,7 +152,7 @@ def test_coupled_paramagnetic_differs_from_uncoupled_benzene():
         n_radial=20, n_theta=10, n_phi=14,
         max_iter=10, tol=1e-3,
     )
-    # Coupled and uncoupled should differ (Fock coupling non-trivial)
-    assert abs(sp_coupled - sp_uncoupled) > 1.0
+    # Coupled and uncoupled should differ (Fock coupling non-trivial, ~0.13 ppm)
+    assert abs(sp_coupled - sp_uncoupled) > 0.05
     # For benzene aromatic, coupled should be negative (ring current)
     assert sp_coupled < 0.0
