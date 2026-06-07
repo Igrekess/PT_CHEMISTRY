@@ -1,9 +1,6 @@
 """
 atom.py — Atom class with complete PT ionization energy engine.
 
-Ported from ptchem_gauge/core/simplex.py v1.0 (1062 lines).
-The physics is IDENTICAL — only import paths changed.
-
 PRINCIPLE:
   ONE operation — the VOLUME of the curved simplex/polygon —
   reproduces ALL atomic physics.
@@ -44,9 +41,6 @@ from ptc.periodic import (
 
 _BLOCK = BLOCK_TABLE
 
-# ── Correction flags (for systematic tests) ──
-_NNLO = {'fnear': True, 'pairing': True, 'dhalf': True, 'gd': True}
-
 
 # ╔════════════════════════════════════════════════════════════════════╗
 # ║  GEOMETRIC VOLUMES (the 2 fundamental bricks)                    ║
@@ -55,7 +49,7 @@ _NNLO = {'fnear': True, 'pairing': True, 'dhalf': True, 'gd': True}
 def _simplex_volume(dim: int, passage: int) -> float:
     """Volume of curved simplex on T3.
 
-    Uses the simplex.py version (with dark sector), NOT the constants.py version.
+    Passage 2 adds the dark-sector cross-gap (visible R_ij + dark R_ij_dark).
 
     dim=3 (tetrahedron)  -> Tier 1 (per 2-3) :  V = sin2_3 + sin2_5 + sin2_7
     dim=2 (triangle)     -> Tier 2 (per 4-5) :  V = d_3 + sin2_7  |  1-cos2_3*cos2_5
@@ -227,7 +221,7 @@ def _peer_values_prop(per):
     if per >= 6: sigma_ex *= C5                      # tier 3: P2 channel opens
     ratio = GAMMA_5                                    # geometric decay
 
-    # Pairing factor = spin + sieve cascade (insight #48).
+    # Pairing factor = spin + sieve cascade.
     # At the Hund→pairing transition, the spin-flip propagates through
     # successive sieve levels.  Each level has its own propagator:
     #   per=P₁   : spin sector only → s       (no sieve, pure spin flip)
@@ -264,7 +258,7 @@ def _d_block_values(per=5):
     G_Fisher = 4 = Fisher information of spin s=1/2.
     The parabola 4*alpha*f(1-f) = the 2-gon volume (diameter) on Z/10Z.
 
-    Per-dependent (insight #45): the d-shell interaction strength varies
+    Per-dependent: the d-shell interaction strength varies
     with period due to orbital compactness and inner-shell screening.
       per=4 (3d): compact → stronger interaction, δ₃² correction
       per=5 (4d): reference (no correction)
@@ -342,15 +336,10 @@ def _polygon_values(l, per, continuous=False):
     if l == 2:
         return _d_block_values(per)
 
-    # l=3 : f-block — uniform screening σ = D₇²
-    #
-    # Lanthanides (4f, per=6): 0.15% MAE — uniform works perfectly.
-    # Actinides (5f, per=7): 2% MAE — uniform is insufficient BUT:
-    #   - j-j splitting (f₅/₂ hex + f₇/₂ cubic) has wrong amplitude
-    #     (S₃D₃ = 3×D₇² → too strong, destroys early fill)
-    #   - Fisher parabola is non-perturbative (D₇² ≈ 4α⟨f(1-f)⟩)
-    #   - The actinide errors come from S_core/bifurcation, not Z/14Z
-    #   - Need multi-polygon 5f-6d quasi-degenerate treatment
+    # l=3 : f-block — uniform baseline screening σ = D₇² on Z/14Z.
+    # The heptagon's deep burial makes the lanthanide screening uniform;
+    # the actinide 5f–6d quasi-degeneracy is carried by the rotation
+    # cascade at the heptagon bifurcation (per=P₃), applied in S_polygon.
     #
     sigma = d_l ** 2
     return [-nd * math.log(max(1e-15, 1.0 - sigma)) for nd in range(1, N_l + 1)]
@@ -472,6 +461,13 @@ def S_polygon(Z, continuous=False):
     """
     l = l_of(Z); per = period(Z); nf = _n_fill_aufbau(Z)  # screening = radial = Aufbau
     ns = ns_config(Z)
+    # Ds (per=P₂+2, relativistic d⁸→d⁹s¹ promotion): keep the SCREENING radial = Aufbau.
+    # The Madelung d⁹s¹ config (predict_config) is informational for valence/bonding; the
+    # radial screening must stay Aufbau d⁸s², else the promoted nd=9 falls through the d-block
+    # cascade (built for nd=8) and Ds is mis-screened (~16%).  Unique to Z=110, per=P₂+2
+    # (Pt at per=P₂+1 keeps its promoted screening, handled separately).
+    if l == 2 and per == P2 + 2 and nf == 2 * P2 - 2 and (Z * AEM) ** 2 > S_HALF ** 2:
+        ns = 2
     S = 0.0
 
     # ╔══════════════════════════════════════════════════════════════╗
@@ -488,11 +484,7 @@ def S_polygon(Z, continuous=False):
             if per >= 5 and nf == 1: sigma_near *= S_HALF
             if per <= 3:   n_near = 2
             elif per <= 5: n_near = 10
-            else:
-                if _NNLO['fnear']:
-                    n_near = 10; n_near_f = 14   # differentiated d10 vs f14
-                else:
-                    n_near = 24; n_near_f = 0     # uniform (old behavior)
+            else:          n_near = 10; n_near_f = 14   # near shells: 10 (d) + 14 (f)
         elif l == 2 and per >= 6:
             pos = Z - period_start(per)
             if pos >= 16: n_near = 14
@@ -514,7 +506,7 @@ def S_polygon(Z, continuous=False):
     elif l == 2 and ns <= 0 and per >= 3:
         # d10s0 (Pd-like): the closed pentagon provides pentagonal
         # exchange that compensates the missing s-pair.  The coupling
-        # goes through the p-channel: δ₃ × s (insight #44).
+        # goes through the p-channel: δ₃ × s.
         S += -math.log(1.0 + D3 * S_HALF)
 
     # ╔══════════════════════════════════════════════════════════════╗
@@ -526,7 +518,7 @@ def S_polygon(Z, continuous=False):
         if per == 1 and nf >= 2:
             # He 1s²: tree-level screening - 3-loop self-reduction
             # The δ₃²×cos²₃ term is the hexagonal channel 3-loop
-            # self-energy of the s-pair (insight #46).
+            # self-energy of the s-pair.
             S += -math.log(1.0 - 1.0 / P1) - D3 * D3 * C3
         elif nf >= 2:
             _corr = {2: -D3**2, 3: +S3 * D5, 4: -AEM}
@@ -539,15 +531,15 @@ def S_polygon(Z, continuous=False):
             _factor = _dress.get(per, 1.0 + D3 * S_HALF)
             S -= _base * _factor
             # 3-loop radial: s-pair couples to inner shells via
-            # hexagonal channel.  S₃×δ₃² = 0.003 (insight #46).
+            # hexagonal channel.  S₃×δ₃² = 0.003.
             if per >= 3:
                 S += S3 * D3 * D3
         # 3-loop radial for alkali nf=1: the s-electron couples to
         # inner closed shells via the d-channel (virtual pentagon).
-        # δ₅²×s = 0.005, constant for per≥3 (insight #46).
+        # δ₅²×s = 0.005, constant for per≥3.
         if nf == 1 and per >= 3:
             S += D5 * D5 * S_HALF
-        # ── insight #75c: s-pair behind f14 core (per ≥ P₃) ──────────
+        # ── s-pair behind f14 core (per ≥ P₃) ──────────
         # At per≥P₃ (Ra), the completed f14 from the previous period
         # creates pent-hept cross-face screening R₅₇ = D₅×D₇ on the
         # s-pair.  Only for nf=2 (paired): the exchange channel mediates.
@@ -596,7 +588,7 @@ def S_polygon(Z, continuous=False):
     # 5. 2-loop curvature
     S_dim2 += _polygon_curvature(l, nd, per)
 
-    # ── Per-dependent d-block screening scale (insight #45) ──────────
+    # ── Per-dependent d-block screening scale ──────────
     # Post-DFT scaling: the d-shell screening strength varies with
     # period.  Applied AFTER synthesis to avoid nonlinear coupling.
     #   per=4 (3d compact): δ₃² × s additional screening
@@ -607,7 +599,7 @@ def S_polygon(Z, continuous=False):
         # δ₇ × δ₃ = heptagonal × hexagonal cross-gap (same as R₃₇).
         S_dim2 *= (1.0 - D7 * D3)
 
-    # ── p=2 dipole selector + dark k=2 quadrupole (insight #49) ────
+    # ── p=2 dipole selector + dark k=2 quadrupole ────
     # The p=2 involution couples the Hund and pairing triangles inscribed
     # in Z/(2P₁)Z.  Two independent corrections, both cosine-only
     # (sin = 0 at vertices → b₁, b₂ protected by orthogonality):
@@ -636,7 +628,7 @@ def S_polygon(Z, continuous=False):
         if tier <= 1:
             S_dim2 += -chirality * gamma_prop * R_DARK_K2 * math.cos(2 * omega_hex * nd)
 
-        # a₃: p=2 Nyquist internal bifurcation (insight #50)
+        # a₃: p=2 Nyquist internal bifurcation
         # At tier=2 (per=5), the pairing cost INVERTS: the even triangle
         # (n=2,4,6) gains screening.  p=2 creates this bifurcation because
         # the Nyquist (-1)^n separates the two inscribed triangles.
@@ -647,8 +639,8 @@ def S_polygon(Z, continuous=False):
             nyquist = 1 - 2 * (nd % 2)           # (-1)^nd
             S_dim2 += -S3 * D3 * D3 * (1.0 + nyquist) / 2.0
 
-    # ── Dark cross-gap on Z/(2P₂)Z (d-block, insight #51) ──────────
-    # Same mechanism as p-block #49b but on the pentagon Z/10Z.
+    # ── Dark cross-gap on Z/(2P₂)Z (d-block) ──────────
+    # Same mechanism as the p-block dark cross-gap, on the pentagon Z/10Z.
     # The simplex orientation FLIPS between Tier 1 (hexagon) and Tier 2
     # (pentagon): dark is ADDITIVE (+) on the pentagon, not subtractive.
     # Cross-gap beats on Z/10Z:
@@ -660,7 +652,7 @@ def S_polygon(Z, continuous=False):
         S_dim2 += (R35_DARK + R57_DARK) * math.cos(2 * omega_pent * nd)
         S_dim2 += R37_DARK * math.cos(4 * omega_pent * nd)
 
-    # ── Hex→pent inter-polygon coupling k=3 (insight #52) ──────────
+    # ── Hex→pent inter-polygon coupling k=3 ──────────
     # The hexagonal screening (P₁=3) projects onto Z/10Z at k=3 by
     # Fourier aliasing.  Amplitude: S₃×D₃×(2/per)²×γ₅^tier_p.
     # Orientation ADDITIVE (Tier 2 simplex inversion).
@@ -673,7 +665,7 @@ def S_polygon(Z, continuous=False):
             amp_hex = S3 * D3 * (2.0 / per) ** 2 * GAMMA_5 ** tier_p
             S_dim2 += chirality_p * amp_hex * math.cos(3 * omega_pent * nd)
 
-    # ── f-block pairing stabilization (insight #53) ──────────────
+    # ── f-block pairing stabilization ──────────────
     # After f-shell half-fill (nf > P₃+1), the (P₂,P₃) cross-gap
     # channel provides additional screening = R₅₇ × s = D₅×D₇×s.
     # Excluded: nf = P₃+1 (Gd-like, internal bifurcation point).
@@ -681,7 +673,7 @@ def S_polygon(Z, continuous=False):
         S_dim2 += R57 * S_HALF
 
     # ── Hex→hept inter-polygon coupling (f-block, per ≥ P₃) ──────
-    # Same mechanism as hex→pent (#52) for d-block.
+    # Same mechanism as the hex→pent coupling, for the d-block.
     # The triangle P₁=3 projects onto Z/14Z by Fourier aliasing:
     #   k_alias = round(14/6) = 2  (triangle can't inscribe in heptagon)
     # The pentagon P₂=5 also projects onto Z/14Z:
@@ -712,13 +704,10 @@ def S_polygon(Z, continuous=False):
     # Accumulate dim 2 into total (don't overwrite dim 1 + dim 0)
     S += S_dim2
 
-    # ── 3-loop radial coupling (insight #46, refined #54) ─────────
+    # ── 3-loop radial coupling ─────────
     # Cross-face 3-loop: vertex sin²₃ × hex propagator δ₃ × pent
-    # propagator δ₅.  This is the true 3-loop diagram traversing both
-    # polygons.  Before #49-53 (2-loop DFT modes), the self-energy
-    # S₃×δ₃² was used because it compensated missing 2-loop terms.
-    # Now that hex→pent coupling is in the 2-loop (#52), the correct
-    # 3-loop is the cross-face S₃×δ₃×δ₅.  Local to tier 0 only.
+    # propagator δ₅ — the 3-loop diagram traversing both polygons.
+    # Local to tier 0 only.
     if l == 1 and per == 3:
         S += S3 * D3 * D5
     if l == 2 and per == 5 and nd <= N_l:
@@ -748,17 +737,17 @@ def S_polygon(Z, continuous=False):
     if l == 2 and per < P_l and ns <= 1 and nd == P_l:
         S -= S3 * D5
 
-    # ── insight #68a: Cr-like Hund 3-loop dressing ────────────────────
+    # ── Cr-like Hund 3-loop dressing ────────────────────
     # The Hund half-fill stabilization S₃×D₅ should be dressed at 3-loop
     # through ALL gap channels available at per=4: hexagonal (D₃) and
     # pentagonal (D₅).  Factor: D₃×(1+D₃+D₅).
     if l == 2 and per < P_l and ns <= 1 and nd == P_l:
         S -= S3 * D5 * D3 * (1.0 + D3 + D5)
 
-    # ── insight #68b: Cu-like d10 closure cross-face ──────────────────
+    # ── Cu-like d10 closure cross-face ──────────────────
     # At d10 with s-promotion (ns=1, nd=N_l), the complete pentagon
     # interacts with the hexagonal core via the cross-gap R₃₅.
-    # Amplitude: R₃₅×(D₃+D₅) (dual cross-face, same as Fe #67a).
+    # Amplitude: R₃₅×(D₃+D₅) (dual cross-face, as in Fe).
     if l == 2 and per < P_l and ns <= 1 and nd == N_l:
         S += R35 * (D3 + D5)
 
@@ -794,12 +783,12 @@ def S_polygon(Z, continuous=False):
         S += S3 * D5
 
     # First-half barrier f14 (profile on half-circle Z/4Z)
-    if _NNLO['dhalf'] and l == 2 and per > P_l and nd < P_l:
+    if l == 2 and per > P_l and nd < P_l:
         half_amp = S3 * (per - P_l) / float(P_l)
         half_profile = math.sin(math.pi * (nd - 1) / (P_l - 1)) ** 2
         S -= half_amp * half_profile
 
-    # ── insight #56: 5d d-f cross-gap R₅₇ Nyquist correction ──────────
+    # ── 5d d-f cross-gap R₅₇ Nyquist correction ──────────
     # At per=6 (5d behind 4f14), the completed f-shell creates a cross-gap
     # interference R₅₇ = D₅×D₇ at the Nyquist frequency of Z/10Z.
     # Positions: {P₂-1, P₂, P₂+2} for ns=2; {N_l} for ns=1 (Au-like).
@@ -809,8 +798,8 @@ def S_polygon(Z, continuous=False):
         elif ns == 1 and nd == N_l:
             S -= R57
 
-    # ── insight #64: d-block per=4 triangular self-energy D₅³ ──────────
-    # Same principle as #63 but for the pentagon: at per=4 (first d-block,
+    # ── d-block per=4 triangular self-energy D₅³ ──────────
+    # Same principle as the hexagonal D₃³ self-energy, but for the pentagon: at per=4 (first d-block,
     # no f-shell behind), the pentagon uses its own gap cubed D₅³ as
     # 3-loop internal self-energy at the pairing positions nd=P₂+1,P₂+2.
     # Simplex orientation: pentagon Tier0 → ADDITIVE (S += D₅³).
@@ -819,21 +808,21 @@ def S_polygon(Z, continuous=False):
     if l == 2 and per < P_l and ns >= 2 and nd in (P_l + 1, P_l + 2):
         S += D5 * D5 * D5
 
-    # ── insight #67a: d-block per=4 cross-face pairing R₃₅(D₃+D₅) ────
+    # ── d-block per=4 cross-face pairing R₃₅(D₃+D₅) ────
     # At the first pairing positions (nd=P₂+1,P₂+2), the paired electron
     # creates cross-face interference through BOTH the hexagonal (D₃) and
     # pentagonal (D₅) channels.  This is the CROSS-FACE analog of the
     # self-energy D₅³ (which stays on the pentagon).
     #   nd=P₂+1 (Fe): dual cross-face R₃₅×(D₃+D₅)
     #   nd=P₂+2 (Co): single cross-face R₃₅×D₅
-    # ns≥2 only (same exclusion as #64).
+    # ns≥2 only (Madelung promotions excluded, as for the D₅³ self-energy).
     if l == 2 and per < P_l and ns >= 2:
         if nd == P_l + 1:                               # nd=6 (Fe-like)
             S += R35 * (D3 + D5)                        # dual cross-face
         elif nd == P_l + 2:                              # nd=7 (Co-like)
             S += R35 * D5                               # single cross-face
 
-    # ── insight #67b: d-block per=4 embryonic Fisher screening ─────────
+    # ── d-block per=4 embryonic Fisher screening ─────────
     # At per=4 (first d-block), the first 2 d-electrons (nd≤2) experience
     # additional screening from the compact 3d orbital overlap with the
     # core.  Amplitude = G_Fisher × α_EM × δ₅ (Fisher information of
@@ -841,7 +830,7 @@ def S_polygon(Z, continuous=False):
     if l == 2 and per < P_l and ns >= 2 and nd <= 2:
         S += 4.0 * AEM * D5
 
-    # ── insight #71: per=5 d-block bifurcation NLO ──────────────────────
+    # ── per=5 d-block bifurcation NLO ──────────────────────
     # At per=P₂ (pentagon bifurcation), the DFT is replaced by the
     # recovery model.  The residuals reveal missing NLO corrections:
     #
@@ -864,15 +853,15 @@ def S_polygon(Z, continuous=False):
             elif nd == P_l + 2:                          # Ru-like (1st pairing)
                 S += R35 * (S3 + S5)
 
-    # ── insight #60: Pd d10s0 exposed cross-gap at bifurcation ────────
+    # ── Pd d10s0 exposed cross-gap at bifurcation ────────
     # At per=P₂ (bifurcation), d10s0 (Pd) is unique: no s-pair to absorb
     # the hex←pent cross-gap R₃₅. Ag (d10s1, +0.03%) has the s-pair;
     # Pd (d10s0, −2.43%) does not. The exposed R₃₅ over-screens → remove.
     if l == 2 and per == P_l and ns <= 0 and nd == N_l:
         S -= R35                                        # Pd-like: exposed R₃₅
 
-    # ── insight #58: d-block per=6 Gibbs endpoints (R₅₇ extension) ────
-    # #56 covers Nyquist positions {4,5,7,10/ns=1}. Both polygon
+    # ── d-block per=6 Gibbs endpoints (R₅₇ extension) ────
+    # The Nyquist correction above covers positions {4,5,7,10/ns=1}. Both polygon
     # BOUNDARIES (nd=1 and nd=N_l/ns=2) are over-screened on the
     # discrete polygon → add screening at endpoints.
     # Lu (nd=1): embryonic post-f14. Hg (nd=10,ns=2): d10s2 closure.
@@ -882,22 +871,22 @@ def S_polygon(Z, continuous=False):
         elif nd == N_l and ns >= 2:                     # Hg-like (d10s2)
             S += R57 * S_HALF
 
-    # ── insight #75b: d-block post-f14 at per=P₂+2 (Lr-like) ─────────
+    # ── d-block post-f14 at per=P₂+2 (Lr-like) ─────────
     # At per=P₂+2 (behind both 4f14 and 5f14), the double f-shell
     # over-screens through the near propagator. The excess is removed
     # via λ(S₃+D₅) = propagator through hex vertex + pent gap.
     if l == 2 and per == P_l + 2 and nd == 1:
         S -= LAM * (S3 + D5)
 
-    # ── insight #72: per=6 5d post-bifurcation NLO (per > P₂) ──────────
-    # Same mechanisms as #67 (per=4) but at the INVERTED tier (per > P₂).
+    # ── per=6 5d post-bifurcation NLO (per > P₂) ──────────
+    # Same mechanisms as the per=4 d-block (embryonic / pairing) but at the INVERTED tier (per > P₂).
     # The DFT is already inverted by the bifurcation (S_comp = -S_screen).
     # Additional corrections use OPPOSITE sign for embryonic and 1st
     # pairing (tier inversion), SAME sign for 2nd pairing.
-    #   nd=2,3 (Hf,Ta): S -= 4αD₅  (embryonic, tier-inverted from #67b)
+    #   nd=2,3 (Hf,Ta): S -= 4αD₅  (embryonic, tier-inverted)
     #   nd=P₂+1=6 (Os): S -= R₃₅(D₃+D₅) (1st pairing, tier-inverted)
-    #   nd=P₂+2=7 (Ir): S += R₃₅×D₅  (2nd pairing, same as #67a)
-    # nd=1 (Lu) excluded: the f14 endpoint correction #58 handles it.
+    #   nd=P₂+2=7 (Ir): S += R₃₅×D₅  (2nd pairing, same sign as per=4)
+    # nd=1 (Lu) excluded: the f14 endpoint correction handles it.
     if l == 2 and per == P_l + 1 and ns >= 2:
         if nd in (2, 3):                                # Hf, Ta embryonic
             S -= 4.0 * AEM * D5
@@ -906,7 +895,11 @@ def S_polygon(Z, continuous=False):
         elif nd == P_l + 2:                             # Ir 2nd pairing
             S += R35 * D5
 
-    # ── insight #76: per=7 6d double-f14 NLO (per = P₂+2) ──────────────
+    # ── per=7 6d double-f14 NLO (per = P₂+2) ──────────────
+    # The same rotation cascade as the f-block actinide screening — sign × cross-face × holonomy
+    # projection — here on the PENTAGON (d-block) at per=P₂+2, with d-block Fisher
+    # dressings (1+D₃)/(1+D₇) and the λS₃ propagator.  Confirms the cascade is
+    # universal (f-block ≡ d-block); see PT_PROJECTS/PT_POLYGON_ROTATION/ (§22).
     # Tier 2 of the d-block cascade. Behind BOTH 4f14 and 5f14.
     # The embryonic amplitude escalates from 4αD₅ (tier 1) to
     # (λS₃+R₃₇)(1+D₇) (tier 2): the propagator λ now goes through
@@ -936,19 +929,19 @@ def S_polygon(Z, continuous=False):
         elif nd == N_l:                                 # Cn d10s2 closure
             S -= (S3 * D5 + R37) * (1.0 + D3)
 
-    # ── insight #76b: Rg d10s1 Madelung at per = P₂+2 ──────────────────
-    # Same as #72b (Pt) at one tier higher. The Madelung-promoted d10s1
+    # ── Rg d10s1 Madelung at per = P₂+2 ──────────────────
+    # Same as the Pt d⁹s¹ correction, one tier higher. The Madelung-promoted d10s1
     # recovery overshoots; the cross-face R₅₇×C₇ corrects.
     if l == 2 and per == P_l + 2 and ns <= 1 and nd == N_l:
         S += R57 * C7                                   # Rg d10s1 correction
 
-    # ── insight #72b: Pt d9s1 Madelung at per > P₂ ──────────────────
+    # ── Pt d9s1 Madelung at per > P₂ ──────────────────
     # At nd=N_l-1 with ns=1 (Pt-like), the near-closure d-shell needs
     # cross-face correction R₃₅×D₃ to compensate the recovery overshoot.
     if l == 2 and per > P_l and ns <= 1 and nd == N_l - 1:
         S += R35 * D3                                   # Pt-like near-closure
 
-    # ── insight #59: f-block Gibbs hex↔hept R₃₇ (targeted) ────────────
+    # ── f-block Gibbs hex↔hept R₃₇ (targeted) ────────────
     # At per=6 (lanthanides), the hexagonal shell creates a cross-gap
     # R₃₇ = D₃×D₇ on Z/14Z. Aufbau: Ce=nf2, Pr=nf3, Nd=nf4, ...
     # The residuals form a ramp from nf=3 to nf=6, centered near nf=5.5.
@@ -959,7 +952,7 @@ def S_polygon(Z, continuous=False):
         elif nd == 4:                                   # Nd (nf=4)
             S -= R37 * S_HALF                           # −R₃₇×s  = −0.00526
 
-    # ── insight #61: f-block half-fill Eu (nf=P₃, dual cross-gap) ──────
+    # ── f-block half-fill Eu (nf=P₃, dual cross-gap) ──────
     # At half-fill nf=P₃=7, the f-shell sees BOTH lower polygons
     # (hex and pent) through cross-gaps R₃₇ and R₅₇. The sum flows
     # through P₁=3 hexagonal screening channels.
@@ -972,10 +965,10 @@ def S_polygon(Z, continuous=False):
     # experiences a resonance with the half-filled shell.
     # Tree-level: D₇×s². NLO dressing: D₇×s×(s+D₇) = D₇×s² + D₇²×s.
     # The D7^2 * s term is the 2-loop self-energy of the pairing on Z/14Z.
-    if _NNLO['gd'] and l == 3 and nd == P_l + 1 and per < P_l:
+    if l == 3 and nd == P_l + 1 and per < P_l:
         S -= B['d'] * S_HALF * (S_HALF + B['d'])
 
-    # ── insight #75: f-block bifurcation multi-polygon (l=3, per=P₃) ──────
+    # ── f-block bifurcation multi-polygon (l=3, per=P₃) ──────
     # At per=P₃=7, the heptagonal polygon Z/14Z is at its bifurcation.
     # The cross-face couplings R₃₇ (hex-hept) and R₅₇ (pent-hept) from
     # the adjacent T₃ faces create position-dependent corrections that
@@ -986,34 +979,42 @@ def S_polygon(Z, continuous=False):
     #             ADDITION with sieve decay C₇ → S₇ → D₇ → 0.
     #
     # GATE: per = P₃ only (actinides). Lanthanides (per < P₃) are in the
-    # evanescent branch where #59/#61 handle the corrections.
+    # evanescent branch where the lanthanide cross-gap terms handle the corrections.
+    # Rotation-cascade form (derived in
+    # PT_PROJECTS/PT_POLYGON_ROTATION/, fblock_handover.py, 11/11).  Structure:
+    #   S = sign(config) × cross-face(R₅₇ pentagon 5→7 / R₃₇ hexagon 7→3)
+    #                    × heptagon holonomy projection.
+    # Each neighbour runs a lifecycle as nf fills: onset(Born S₇) → establish(·C₇)
+    #   → PEAK(undecayed, at the half-turn nf=P₃) → fade(/P₁) → sieve decay(S₇→D₇).
+    #   sign = − (screening reduction, d-admixture) before ½-fill, + (addition) after.
     if l == 3 and per == P_l:
-        if nd <= 2:                                         # onset (Th)
-            S -= R37 + R57                                  # full cross-face
-        elif nd in (P_l - 3, P_l - 2):                     # nf=4,5 (U, Np)
-            S -= D5 * S7                                    # pent gap × hept vertex
-        elif nd == P_l - 1:                                 # nf=6 (Pu)
-            S += R57 * C7                                   # pent cross × hept compl.
-        elif nd == P_l:                                     # nf=7 (Am, half-fill)
-            S += R37 * C7 + R57                             # dual cross at critical pt
-        elif nd == P_l + 1:                                 # nf=8 (Cm, 1st pairing)
-            S += D3 * S7 + R57 / float(P1)                 # hex gap×vertex + distrib.
-        elif nd in (P_l + 2, P_l + 3):                     # nf=9,10 (Bk, Cf)
-            S += R37 * C7                                   # hex cross × hept compl.
-        elif nd == P_l + 4:                                 # nf=11 (Es)
-            S += (R37 + R57) * S7                           # total cross × hept vertex
-        elif nd == P_l + 5:                                 # nf=12 (Fm)
-            S += (R37 + R57) * D7                           # total cross × hept gap
+        sgn = -1.0 if nd <= P_l - 2 else 1.0                # config: reduction before ½-fill, addition after
+        if nd <= 2:                                         # Th onset: both cross-faces, undecayed
+            S += sgn * (R37 + R57)
+        elif nd in (P_l - 3, P_l - 2):                     # U,Np: pentagon, Born onset (S₇)
+            S += sgn * D5 * S7
+        elif nd == P_l - 1:                                 # Pu: pentagon establishing (·C₇)
+            S += sgn * R57 * C7
+        elif nd == P_l:                                     # Am half-turn: pentagon PEAK + hexagon establishing
+            S += sgn * (R37 * C7 + R57)
+        elif nd == P_l + 1:                                 # Cm: pentagon fade (/P₁) + hexagon Born onset
+            S += sgn * (D3 * S7 + R57 / float(P1))
+        elif nd in (P_l + 2, P_l + 3):                     # Bk,Cf: hexagon establishing (·C₇)
+            S += sgn * R37 * C7
+        elif nd == P_l + 4:                                 # Es: both cross-faces, sieve decay S₇
+            S += sgn * (R37 + R57) * S7
+        elif nd == P_l + 5:                                 # Fm: both cross-faces, sieve decay D₇
+            S += sgn * (R37 + R57) * D7
 
     # 6. NNLO pairing (l=1, per > P1+1 = per >= 5)
-    if _NNLO['pairing'] and l == 1 and per > P_l + 1:
+    if l == 1 and per > P_l + 1:
         n_near_pair = 2 if per <= 3 else (10 if per <= 5 else 24)
         pair_scale = (per - P_l) / float(P_l)
         pair_amp = n_near_pair * S3 * D3 / (2.0 * P1) * pair_scale
         profile = math.sin(math.pi * nd / N_l) ** 2 * (1.0 + math.cos(math.pi * nd)) / 2.0
         S -= pair_amp * profile
 
-    # ── insight #57: p-block Gibbs correction (hex←pent cross-gap R₃₅) ──
+    # ── p-block Gibbs correction (hex←pent cross-gap R₃₅) ──
     # At per=5 (behind d10), the completed d-shell creates a cross-gap
     # R₃₅ = D₃×D₅ on Z/6Z that smooths the discrete→continuous Gibbs step
     # at the Hund transition (n=P₁=3).
@@ -1027,11 +1028,11 @@ def S_polygon(Z, continuous=False):
         elif nd == 1:                                # n=1 (In)
             S += R35 * S_HALF
 
-    # ── insight #74: per=5 p-block cascaded Gibbs NLO ─────────────────
+    # ── per=5 p-block cascaded Gibbs NLO ─────────────────
     # At per=5 (tier=2), the filling positions n=1,2,3 need additional
     # screening through the cascaded cross-gap R₃₅×D₃.  The closure
     # n=6 (Xe) needs the opposite (excess screening removed).
-    # Same cascade tier logic as #69-70 at per=4 but tier-alternated.
+    # Same cascade-tier logic as the per=4 Gibbs terms but tier-alternated.
     #   n=1,2 (In,Sn): S += R₃₅×D₃  (cascaded Gibbs)
     #   n=3   (Sb):     S += R₃₅×D₃×(1+D₃)  (half-fill dressed)
     #   n=6   (Xe):     S -= R₃₅×D₃  (closure excess removed)
@@ -1044,20 +1045,20 @@ def S_polygon(Z, continuous=False):
         elif nd == N_l:                              # n=6 (Xe): closure
             S -= R35 * D3
 
-    # ── insight #62+#69-70: per=4 p-block Gibbs + self-energy ──────────
+    # ── per=4 p-block Gibbs + self-energy ──────────
     # At per=4 (tier=1), the Gibbs step has OPPOSITE sign vs per=5 (tier=2).
     # Simplex orientation alternates between tiers.
     #
-    # #62 refinement: embryonic n=1,2 dressed by (1-D₃) for the tier-1
+    # Embryonic n=1,2 dressed by (1-D₃) for the tier-1
     # propagation loss.  Halogen n=5 uses (s+D₃) amplitude instead of C₃
     # (corrects overcorrection from the original R₃₅×C₃).
     #
-    # #69: Chalcogen self-energy at n=P₁+1=4.  At tier 1, the self-energy
+    # Chalcogen self-energy at n=P₁+1=4.  At tier 1, the self-energy
     # propagates through the cross-gap R₃₅ and distributes over P₁
     # hexagonal channels.  Amplitude: R₃₅×C₃/P₁.
     #
-    # #70: Half-fill cascaded self-energy at n=P₁=3.  Same mechanism as
-    # #65 for per=2 (Hund shields half) but cascaded through the hexagonal
+    # Half-fill cascaded self-energy at n=P₁=3.  Same mechanism as the
+    # per=2 Hund self-energy (Hund shields half) but cascaded through the hexagonal
     # propagator C₃.  Amplitude: R₃₅×D₃×s×C₃.
     if l == 1 and per == P_l + 1:                   # per=4 p-block
         if nd == N_l - 1:                            # n=5 (Br, halogen)
@@ -1065,26 +1066,26 @@ def S_polygon(Z, continuous=False):
         elif nd <= 2:                                # n=1,2 (Ga,Ge: Nyquist pair)
             S += R35 * S_HALF * (1.0 - D3) * math.cos(math.pi * nd)
         elif nd == P_l + 1:                          # n=4 (Se, chalcogen)
-            S -= R35 * C3 / float(P1)               # #69: cross-gap self-energy
+            S -= R35 * C3 / float(P1)               # cross-gap self-energy
         elif nd == P_l:                              # n=3 (As, half-fill)
-            S -= R35 * D3 * S_HALF * C3             # #70: cascaded self-energy
+            S -= R35 * D3 * S_HALF * C3             # cascaded self-energy
 
-    # ── insight #63+#65: p-block hexagonal self-energy D₃³ ──────────────
+    # ── p-block hexagonal self-energy D₃³ ──────────────
     # The hexagonal 3-loop self-energy D₃³ acts on ALL non-trivial
     # positions of Z/6Z, not just the pairing triangle.
     #
-    # Per=2 (Tier 0, insight #65): the filling triangle {1,3} receives
+    # Per=2 (Tier 0): the filling triangle {1,3} receives
     # self-energy REDUCTION (less screening, higher IE).  The closure
     # position n=6 receives COHERENT enhancement through P₁ channels.
     #   n=1 (embryonic B):   S -= D₃³        (full, max exposure)
     #   n=2 (C):             —                (fixed point, don't touch)
     #   n=3 (half-fill N):   S -= D₃³×s      (Hund shields half)
-    #   n=4 (chalcogen O):   S -= D₃³        (existing #63)
+    #   n=4 (chalcogen O):   S -= D₃³
     #   n=5 (halogen F):     S -= D₃³×(1+D₃) (3-loop dressed)
     #   n=6 (closure Ne):    S += D₃³/P₁     (coherent through P₁ channels)
     #
     # Per=3 (Tier 1): tier alternation inverts the sign.
-    #   n=5 (halogen Cl):    S += D₃³        (existing #63, tier-flipped)
+    #   n=5 (halogen Cl):    S += D₃³        (tier-flipped)
     if l == 1 and per <= P_l:                           # per=2,3 p-block
         _d3cube = D3 * D3 * D3
         if per == 2:
@@ -1106,7 +1107,7 @@ def S_polygon(Z, continuous=False):
             elif nd == P_l + 1:                         # chalcogen (S)
                 S -= _d3cube * D3                       # 4-loop self-energy
 
-    # ── insight #66: per=3 p-block Fisher embryonic boundary ──────────
+    # ── per=3 p-block Fisher embryonic boundary ──────────
     # At per=3 (first propagating period), the DFT reconstruction gives
     # zero at n=1 (no peers), but the near propagator still adds full
     # screening.  The result: embryonic positions n=1,2 are over-screened.
@@ -1121,10 +1122,10 @@ def S_polygon(Z, continuous=False):
         S -= _amp_emb * _profile
 
     # ── 1-loop f14 correction for p-block per 6+ (l=1, per > P1+2) ──
-    # insight #73: cascade tier refinement of f14 correction.
-    # Same pattern as #62r at per=4: position-dependent amplitude.
+    # cascade tier refinement of f14 correction.
+    # Same pattern as the per=4 f14 correction: position-dependent amplitude.
     #   n=2,3 (Pb,Bi): weakened by (1-D₃) — f14 overcorrects at early fill
-    #   n=4   (Po):    NEW chalcogen — S₅D₃×D₃×s (was missing!)
+    #   n=4   (Po):    chalcogen — S₅D₃×D₃×s
     #   n=5   (At):    strengthened by D₃(1+D₃) — halogen needs more
     #   n=6   (Rn):    unchanged (original amplitude)
     if l == 1 and per > P_l + 2:
